@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 
 /**
  * Write a description of class StatisticsViewer here.
@@ -23,7 +24,7 @@ public class StatisticsViewer extends Stage
     /**
      * Constructor for objects of class StatisticsViewer
      */
-    public void start(Stage stage)
+    public StatisticsViewer()
     {
         // The layout of the window
         VBox window = new VBox();
@@ -69,12 +70,11 @@ public class StatisticsViewer extends Stage
         expensive.getChildren().add(expensiveTitle); 
         expensive.getChildren().add(expensiveInfo);
         
+        //initStyle(StageStyle.DECORATED);
         Scene scene = new Scene(window, 300,100);
-        stage.setTitle("Test");
-        stage.setScene(scene);
-
-        // Show the Stage (window)
-        stage.show();
+        scene.getStylesheets().add("stylesheet.css");
+        setTitle("Statistics");
+        setScene(scene);
         
     }
 }
