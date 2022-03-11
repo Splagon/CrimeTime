@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class MapViewer extends Stage
+public class MainViewer extends Stage
 {
     // instance variables - replace the example below with your own
     private int x;
@@ -22,7 +22,7 @@ public class MapViewer extends Stage
     /**
      * Constructor for objects of class MapViewer
      */
-    public MapViewer()
+    public MainViewer()
     {
         // initialise instance variables
         x = 0;

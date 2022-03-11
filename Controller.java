@@ -22,8 +22,7 @@ public class Controller extends Application
     
     private DataHandler dataHandler = new DataHandler();
     
-    private WelcomeViewer welcomeViewer = new WelcomeViewer();
-    private MapViewer mapViewer = new MapViewer();
+    private MainViewer mainViewer = new MainViewer();
     private StatisticsViewer statsViewer = new StatisticsViewer();
     private PropertyViewer propertyViewer = new PropertyViewer();
 
@@ -34,7 +33,7 @@ public class Controller extends Application
      *
      * @param  stage the primary stage for this application.
      */
-    @Override
+
     public void start(Stage stage)
     {
         // Create a Button or any control item
@@ -61,6 +60,10 @@ public class Controller extends Application
 
         // Show the Stage (window)
         stage.show();
+    }
+    
+    public void update() {
+        
     }
 
     /**
