@@ -60,8 +60,6 @@ public class Controller extends Application
 
         // Show the Stage (window)
         stage.show();
-        
-        mainViewer.show();
     }
     
     public void update() {
