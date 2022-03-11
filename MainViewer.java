@@ -17,20 +17,23 @@ import javafx.stage.Stage;
 public class MainViewer extends Stage
 {
     // instance variables - replace the example below with your o
+    Scene welcomeScene;
+    Scene mapScene;
 
     /**
      * Constructor for objects of class MapViewer
      */
     public MainViewer()
     {
-        this.setScene(makeWelcomeScene());
+        makeWelcomeScene();
+        setScene(welcomeScene);
     }
     
-    private Scene makeWelcomeScene() {
-        return null;
+    private void makeWelcomeScene() {
+        
     }
     
-    private Scene makeMapScene() {
-        return null;
+    private void makeMapScene() {
+        
     }
 }
