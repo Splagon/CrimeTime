@@ -1,0 +1,18 @@
+#statsgrid{
+    -fx-hgap: 0px;
+    -fx-vgap: 0px;
+    -fx-grid-lines-visible: true; 
+}
+
+.statsvbox {
+    -fx-padding: 10;
+    -fx-spacing: 8;
+}
+
+.label {
+    -fx-font: 12px "Comic Sans MS";
+}
+
+.titlelabel {
+    -fx-font: 20px "Comic Sans MS";
+}

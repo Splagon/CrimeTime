@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.Group;
+// javafx.scene.control.MenuBar;
+import javafx.scene.control.ComboBox;
 
 /**
  * Write a description of class MapViewer here.
@@ -20,23 +22,41 @@ public class MainViewer extends Stage
     // instance variables - replace the example below with your o
     Scene welcomeScene;
     Scene mapScene;
+    BorderPane root = new BorderPane();
 
     /**
      * Constructor for objects of class MapViewer
      */
     public MainViewer()
     {
-        makeWelcomeScene();
+        ComboBox<String> minBox = new ComboBox<String>();
+        minBox.getItems().addAll("No Min", "500", "600", "700", "800", "900");
+        
+        ComboBox<String> maxBox = new ComboBox<String>();
+        maxBox.getItems().addAll("500", "600", "700", "800", "900", "No Max");
+        
+        HBox minMaxBox = new HBox();
+        minMaxBox.getChildren().addAll(minBox, maxBox);
+            
+        root.setTop(minMaxBox);
+        
+        //makeWelcomeScene();
         makeMapScene();
         
         setScene(mapScene);
         //setScene(welcomeScene);
     }
+    
 
     private void makeWelcomeScene() {
+        setTitle("Welcome");
+        
         //All labels in the window
         Label title = new Label("Welcome!");
         Label instructionsTitle = new Label("Instructions: ");
+        Label instructionsText = new Label("    - When you are ready click start, this will send you to the next window where you will be able to enter your price range." + "\n" +
+                                       "    - Once your price range has been selected you will then be able to view the map and see where the you be able to find " + "\n" +
+                                       "      a property");
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
@@ -49,19 +69,20 @@ public class MainViewer extends Stage
         //adding elements to the window
         window.getChildren().addAll(title, instrcutionsAndStart); 
         
-        instructions.getChildren().add(instructionsTitle); 
+        instructions.getChildren().addAll(instructionsTitle, instructionsText); 
         
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
         //creating the scene
-        welcomeScene = new Scene(window, 300, 300);
+        root.setCenter(window);
+        welcomeScene = new Scene(root, 1000, 300);
     }
     
     private void makeMapScene() {
         setTitle("Map of London");
         
-        Pane root = new FlowPane();
+        Pane window = new FlowPane();
         
         GridPane stats = new GridPane();
             Label statsLabel = new Label("Stats");
@@ -89,7 +110,6 @@ public class MainViewer extends Stage
             map.add(nb3, 2, 1);
             map.add(nb4, 1, 2);
             
-        
         GridPane key = new GridPane();
             Label keyLabel = new Label("Key");
             Label keyLabel1 = new Label("Value 1");
@@ -97,19 +117,15 @@ public class MainViewer extends Stage
             Label keyLabel3 = new Label("Value 3");
             Label keyLabel4 = new Label("Value 4");
             
-            stats.add(keyLabel, 0, 0);
-            stats.add(keyLabel1, 1, 0);
-            stats.add(keyLabel2, 2, 0);
-            stats.add(keyLabel3, 3, 0);
-            stats.add(keyLabel4, 4, 0);
+            key.add(keyLabel, 0, 0);
+            key.add(keyLabel1, 0, 1);
+            key.add(keyLabel2, 0, 2);
+            key.add(keyLabel3, 0, 3);
+            key.add(keyLabel4, 0, 4);
         
-        root.getChildren().add(stats);
-        root.getChildren().add(map);
-        root.getChildren().add(key);
+        window.getChildren().addAll(stats, map, key);
         
-        Scene scene = new Scene(root, 500, 500);
-        
-        setScene(scene);
-        show();
+        root.setCenter(window);
+        mapScene = new Scene(root, 500, 500);
     }
 }
