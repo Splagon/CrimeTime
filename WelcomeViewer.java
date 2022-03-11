@@ -9,22 +9,20 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- * Write a description of class WelcomeViewer here.
+ * This panel will be dispalyed when the javafx application is being run
+ * This panel will show the insctructions on how to use the application
+ * There will also be a start button whuch once click will change the panel to where the user is able
+ * to enter their desired price range in order to view properties within that range
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Charles Suddens-Spiers
+ * @version 11/03/21
  */
-public class WelcomeViewer extends Stage
+public class WelcomeViewer
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
     /**
      * Constructor for objects of class WelcomeViewer
      */
     public WelcomeViewer()
     {
-        // initialise instance variables
-        x = 0;
     }
 }

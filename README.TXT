@@ -3,4 +3,3 @@ PURPOSE OF PROJECT: To load the AirBnB London data set from the provided csv fil
 HOW TO START THIS PROJECT: Use the method 'load' in the the class 'AirbnbDataLoader'
 AUTHORS: KCL Informatics, PPA, Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
          Matthew Palmer (K21005255), Aymen Berbache (K21074588)
-         test
