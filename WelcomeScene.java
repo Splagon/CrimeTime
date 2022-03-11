@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
+import javafx.scene.layout.VBox;
 
 /**
  * Write a description of class WelcomeScene here.
@@ -17,14 +18,11 @@ import javafx.scene.Parent;
  */
 public class WelcomeScene extends Scene
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
     /**
      * Constructor for objects of class WelcomeScene
      */
     public WelcomeScene(Parent root)
     {
-        super(root);
+        super(root); 
     }
 }
