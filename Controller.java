@@ -19,6 +19,8 @@ public class Controller extends Application
     // We keep track of the count, and label displaying the count:
     private int count = 0;
     private Label myLabel = new Label("0");
+    
+    private DataHandler dataHandler = new DataHandler();
 
     /**
      * The start method is the main entry point for every JavaFX application. 
