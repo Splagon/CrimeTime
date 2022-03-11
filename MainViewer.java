@@ -26,7 +26,7 @@ public class MainViewer extends Stage
      */
     public MainViewer()
     {
-        makeWelcomeScene();
+        //makeWelcomeScene();
         makeMapScene();
         
         //setScene(mapScene);
@@ -66,7 +66,7 @@ public class MainViewer extends Stage
     private void makeMapScene() {
         setTitle("Map of London");
         
-        Pane root = new FlowPane();
+        Pane window = new FlowPane();
         
         GridPane stats = new GridPane();
             Label statsLabel = new Label("Stats");
@@ -94,7 +94,6 @@ public class MainViewer extends Stage
             map.add(nb3, 2, 1);
             map.add(nb4, 1, 2);
             
-        
         GridPane key = new GridPane();
             Label keyLabel = new Label("Key");
             Label keyLabel1 = new Label("Value 1");
@@ -102,19 +101,14 @@ public class MainViewer extends Stage
             Label keyLabel3 = new Label("Value 3");
             Label keyLabel4 = new Label("Value 4");
             
-            stats.add(keyLabel, 0, 0);
-            stats.add(keyLabel1, 1, 0);
-            stats.add(keyLabel2, 2, 0);
-            stats.add(keyLabel3, 3, 0);
-            stats.add(keyLabel4, 4, 0);
+            key.add(keyLabel, 0, 0);
+            key.add(keyLabel1, 0, 1);
+            key.add(keyLabel2, 0, 2);
+            key.add(keyLabel3, 0, 3);
+            key.add(keyLabel4, 0, 4);
         
-        root.getChildren().add(stats);
-        root.getChildren().add(map);
-        root.getChildren().add(key);
+        window.getChildren().addAll(stats, map, key);
         
-        Scene scene = new Scene(root, 500, 500);
-        
-        setScene(scene);
-        show();
+        mapScene = new Scene(window, 500, 500);
     }
 }
