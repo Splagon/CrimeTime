@@ -31,7 +31,7 @@ public class StatisticsViewer extends Stage
         GridPane statsGrid = new GridPane(); 
         VBox reviews = new VBox();
         VBox available = new VBox(); 
-        VBox noHomeAndAppartments = new VBox();
+        VBox noHomeAndApartments = new VBox();
         VBox expensive = new VBox(); 
           
         
@@ -39,13 +39,13 @@ public class StatisticsViewer extends Stage
         Label title = new Label("Statistics");
         Label reviewTitle = new Label("Average Reviews Per Property:");
         Label availableTitle = new Label("Total Available Properties:");
-        Label noHomeAndAppartmentsTitle = new Label("Entire Home and Apartments:");
+        Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
         Label expensiveTitle = new Label("Most Expensive Borough:");
         
         // The information labels in the window
         Label reviewInfo = new Label("default");
         Label availableInfo = new Label("default");
-        Label noHomeAndAppartmentsInfo = new Label("default");
+        Label noHomeAndApartmentsInfo = new Label("default");
         Label expensiveInfo = new Label("default");
         
         // Adding components 
@@ -54,7 +54,7 @@ public class StatisticsViewer extends Stage
         
         statsGrid.add(reviews, 0, 0);
         statsGrid.add(available, 0, 1);
-        statsGrid.add(noHomeAndAppartments, 1, 0);
+        statsGrid.add(noHomeAndApartments, 1, 0);
         statsGrid.add(expensive, 1, 1);
         
         
@@ -64,15 +64,22 @@ public class StatisticsViewer extends Stage
         available.getChildren().add(availableTitle); 
         available.getChildren().add(availableInfo);
         
-        noHomeAndAppartments.getChildren().add(noHomeAndAppartmentsTitle); 
-        noHomeAndAppartments.getChildren().add(noHomeAndAppartmentsInfo);
+        noHomeAndApartments.getChildren().add(noHomeAndApartmentsTitle); 
+        noHomeAndApartments.getChildren().add(noHomeAndApartmentsInfo);
         
         expensive.getChildren().add(expensiveTitle); 
         expensive.getChildren().add(expensiveInfo);
         
-        //initStyle(StageStyle.DECORATED);
-        Scene scene = new Scene(window, 300,100);
+        //Set the scene and add CSS
+        Scene scene = new Scene(window, 500,300);
+        
         scene.getStylesheets().add("stylesheet.css");
+        statsGrid.setId("statsgrid"); 
+        reviews.getStyleClass().add("statsvbox"); 
+        available.getStyleClass().add("statsvbox");
+        noHomeAndApartments.getStyleClass().add("statsvbox");
+        expensive.getStyleClass().add("statsvbox");
+        
         setTitle("Statistics");
         setScene(scene);
         
