@@ -29,14 +29,19 @@ public class MainViewer extends Stage
         makeWelcomeScene();
         makeMapScene();
         
-        setScene(mapScene);
-        //setScene(welcomeScene);
+        //setScene(mapScene);
+        setScene(welcomeScene);
     }
 
     private void makeWelcomeScene() {
+        setTitle("Welcome");
+        
         //All labels in the window
         Label title = new Label("Welcome!");
         Label instructionsTitle = new Label("Instructions: ");
+        Label instructionsText = new Label("    - When you are ready click start, this will send you to the next window where you will be able to enter your price range." + "\n" +
+                                       "    - Once your price range has been selected you will then be able to view the map and see where the you be able to find " + "\n" +
+                                       "      a property");
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
@@ -49,13 +54,13 @@ public class MainViewer extends Stage
         //adding elements to the window
         window.getChildren().addAll(title, instrcutionsAndStart); 
         
-        instructions.getChildren().add(instructionsTitle); 
+        instructions.getChildren().addAll(instructionsTitle, instructionsText); 
         
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
         //creating the scene
-        welcomeScene = new Scene(window, 300, 300);
+        welcomeScene = new Scene(window, 1000, 300);
     }
     
     private void makeMapScene() {
