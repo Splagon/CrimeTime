@@ -21,6 +21,10 @@ public class Controller extends Application
     private Label myLabel = new Label("0");
     
     private DataHandler dataHandler = new DataHandler();
+    
+    private MainViewer mainViewer = new MainViewer();
+    private StatisticsViewer statsViewer = new StatisticsViewer();
+    private PropertyViewer propertyViewer = new PropertyViewer();
 
     /**
      * The start method is the main entry point for every JavaFX application. 
@@ -29,7 +33,7 @@ public class Controller extends Application
      *
      * @param  stage the primary stage for this application.
      */
-    @Override
+
     public void start(Stage stage)
     {
         // Create a Button or any control item
@@ -56,6 +60,10 @@ public class Controller extends Application
 
         // Show the Stage (window)
         stage.show();
+    }
+    
+    public void update() {
+        
     }
 
     /**

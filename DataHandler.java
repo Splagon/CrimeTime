@@ -20,7 +20,7 @@ public class DataHandler
     }
     
     public String getPropertiesFromNeighbourhood(String neighbourhood) {
-        return null;
+        return neighbourhood;
     }
 
 }
