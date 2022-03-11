@@ -9,6 +9,10 @@
     -fx-spacing: 8;
 }
 
-.statslabels {
-    -fx-alignment: center;
+.label {
+    -fx-font: 12px "Comic Sans MS";
+}
+
+.titlelabel {
+    -fx-font: 20px "Comic Sans MS";
 }
