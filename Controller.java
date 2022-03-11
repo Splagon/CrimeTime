@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import java.io.FileNotFoundException;
 
 /**
  * Write a description of JavaFX class Controller here.
@@ -19,12 +20,9 @@ public class Controller extends Application
     // We keep track of the count, and label displaying the count:
     private int count = 0;
     private Label myLabel = new Label("0");
-    
     private DataHandler dataHandler = new DataHandler();
     
-    private MainViewer mainViewer = new MainViewer();
-    private StatisticsViewer statsViewer = new StatisticsViewer();
-    //private PropertyViewer propertyViewer = new PropertyViewer();
+    
 
     /**
      * The start method is the main entry point for every JavaFX application. 
@@ -34,8 +32,12 @@ public class Controller extends Application
      * @param  stage the primary stage for this application.
      */
 
-    public void start(Stage stage)
+    public void start(Stage stage) throws FileNotFoundException
     {
+        MainViewer mainViewer = new MainViewer();
+        StatisticsViewer statsViewer = new StatisticsViewer();
+        PropertyViewer propertyViewer = new PropertyViewer();
+        
         // Create a Button or any control item
         Button myButton = new Button("Count");
 

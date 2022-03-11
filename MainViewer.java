@@ -8,7 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.Group;
-// javafx.scene.control.MenuBar;
+import javafx.scene.image.*;
+import javafx.scene.shape.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import javafx.scene.control.ComboBox;
 
 /**
@@ -23,12 +26,16 @@ public class MainViewer extends Stage
     Scene welcomeScene;
     Scene mapScene;
     BorderPane root = new BorderPane();
+    Image boroughs;
+    ImageView imageView = new ImageView();
 
     /**
      * Constructor for objects of class MapViewer
      */
-    public MainViewer()
-    {
+    public MainViewer() throws FileNotFoundException
+    {        
+        boroughs = new Image(new FileInputStream(System.getProperty("user.dir") + "\\boroughs.png"));
+        
         ComboBox<String> minBox = new ComboBox<String>();
         minBox.getItems().addAll("No Min", "500", "600", "700", "800", "900");
         
@@ -98,17 +105,29 @@ public class MainViewer extends Stage
             stats.add(statsLabel4, 0, 4);
         
         GridPane map = new GridPane();
-            Button nb0 = new Button("nb0");
-            Button nb1 = new Button("nb1");
-            Button nb2 = new Button("nb2");
-            Button nb3 = new Button("nb3");
-            Button nb4 = new Button("nb4");
+            // Button nb0 = new Button("nb0");
+            // Button nb1 = new Button("nb1");
+            // Button nb2 = new Button("nb2");
+            // Button nb3 = new Button("nb3");
+            // Button nb4 = new Button("nb4");
+            
+            Circle nb0 = new Circle(20);
+            Circle nb1 = new Circle(20);
+            Circle nb2 = new Circle(20);
+            Circle nb3 = new Circle(20);
+            Circle nb4 = new Circle(20);
             
             map.add(nb0, 1, 0);
             map.add(nb1, 0, 1);
             map.add(nb2, 1, 1);
             map.add(nb3, 2, 1);
             map.add(nb4, 1, 2);
+            
+        ImageView actualMap = new ImageView(boroughs);
+            actualMap.setFitWidth(900);
+            actualMap.setPreserveRatio(true);
+            //actualMap.setSmooth(true);
+            //actualMap.setCache(true);
             
         GridPane key = new GridPane();
             Label keyLabel = new Label("Key");
@@ -123,7 +142,8 @@ public class MainViewer extends Stage
             key.add(keyLabel3, 0, 3);
             key.add(keyLabel4, 0, 4);
         
-        window.getChildren().addAll(stats, map, key);
+        //window.getChildren().addAll(stats, map, key);
+        window.getChildren().addAll(stats, actualMap, key);
         
         root.setCenter(window);
         mapScene = new Scene(root, 500, 500);
