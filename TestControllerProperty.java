@@ -1,5 +1,3 @@
-
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import java.io.FileNotFoundException;
 
 /**
  * Write a description of JavaFX class TestControllerProperty here.
@@ -26,8 +25,8 @@ public class TestControllerProperty extends Application
      * @param  stage the primary stage for this application.
      */
     @Override
-    public void start(Stage stage)
-    {
+    public void start(Stage stage) throws FileNotFoundException
+    { 
         // Create a Button or any control item
         stage = new PropertyViewer();
         stage.show();

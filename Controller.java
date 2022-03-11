@@ -24,7 +24,7 @@ public class Controller extends Application
     
     private MainViewer mainViewer = new MainViewer();
     private StatisticsViewer statsViewer = new StatisticsViewer();
-    private PropertyViewer propertyViewer = new PropertyViewer();
+    //private PropertyViewer propertyViewer = new PropertyViewer();
 
     /**
      * The start method is the main entry point for every JavaFX application. 
