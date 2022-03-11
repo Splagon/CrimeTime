@@ -27,6 +27,8 @@ public class MainViewer extends Stage
     }
     
     private Scene makeWelcomeScene() {
+        
+        
         return null;
     }
     
