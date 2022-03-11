@@ -21,6 +21,11 @@ public class Controller extends Application
     private Label myLabel = new Label("0");
     
     private DataHandler dataHandler = new DataHandler();
+    
+    private WelcomeViewer welcomeViewer = new WelcomeViewer();
+    private MapViewer mapViewer = new MapViewer();
+    private StatisticsViewer statsViewer = new StatisticsViewer();
+    private PropertyViewer propertyViewer = new PropertyViewer();
 
     /**
      * The start method is the main entry point for every JavaFX application. 
