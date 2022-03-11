@@ -79,6 +79,17 @@ public class StatisticsViewer extends Stage
         available.getStyleClass().add("statsvbox");
         noHomeAndApartments.getStyleClass().add("statsvbox");
         expensive.getStyleClass().add("statsvbox");
+        window.getStyleClass().add("statsvbox");
+        
+        reviewTitle.getStyleClass().add("statslabels"); 
+        availableTitle.getStyleClass().add("statslabels"); 
+        noHomeAndApartmentsTitle.getStyleClass().add("statslabels"); 
+        expensiveTitle.getStyleClass().add("statslabels"); 
+        reviewInfo.getStyleClass().add("statslabels"); 
+        availableInfo.getStyleClass().add("statslabels"); 
+        noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
+        expensiveInfo.getStyleClass().add("statslabels"); 
+        
         
         setTitle("Statistics");
         setScene(scene);

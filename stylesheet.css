@@ -8,3 +8,7 @@
     -fx-padding: 10;
     -fx-spacing: 8;
 }
+
+.statslabels {
+    -fx-alignment: center;
+}
