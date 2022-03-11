@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
@@ -16,15 +16,24 @@ import javafx.stage.Stage;
  */
 public class MainViewer extends Stage
 {
-    // instance variables - replace the example below with your own
-    private int x;
+    // instance variables - replace the example below with your o
+    Scene welcomeScene;
+    Scene mapScene;
 
     /**
      * Constructor for objects of class MapViewer
      */
     public MainViewer()
     {
-        // initialise instance variables
-        x = 0;
+        makeWelcomeScene();
+        setScene(welcomeScene);
+    }
+    
+    private void makeWelcomeScene() {
+        
+    }
+    
+    private void makeMapScene() {
+        
     }
 }
