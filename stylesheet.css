@@ -10,9 +10,14 @@
 }
 
 .label {
-    -fx-font: 12px "Brush Script MT";
+    -fx-font: 16px "Brush Script MT";
 }
 
 .titlelabel {
     -fx-font: 20px "Comic Sans MS";
+}
+
+.boroughButton {
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
 }

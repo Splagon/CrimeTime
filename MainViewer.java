@@ -13,6 +13,7 @@ import javafx.scene.shape.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javafx.scene.control.ComboBox;
+import java.util.ArrayList;
 
 /**
  * Write a description of class MapViewer here.
@@ -89,6 +90,9 @@ public class MainViewer extends Stage
     private void makeMapScene() {
         setTitle("Map of London");
         
+        mapScene = new Scene(root, 500, 500);
+        mapScene.getStylesheets().add("stylesheet.css");
+        
         Pane window = new FlowPane();
         
         GridPane stats = new GridPane();
@@ -104,30 +108,22 @@ public class MainViewer extends Stage
             stats.add(statsLabel3, 0, 3);
             stats.add(statsLabel4, 0, 4);
         
-        GridPane map = new GridPane();
-            // Button nb0 = new Button("nb0");
-            // Button nb1 = new Button("nb1");
-            // Button nb2 = new Button("nb2");
-            // Button nb3 = new Button("nb3");
-            // Button nb4 = new Button("nb4");
+        StackPane mapView = new StackPane();
             
-            Circle nb0 = new Circle(20);
-            Circle nb1 = new Circle(20);
-            Circle nb2 = new Circle(20);
-            Circle nb3 = new Circle(20);
-            Circle nb4 = new Circle(20);
-            
-            map.add(nb0, 1, 0);
-            map.add(nb1, 0, 1);
-            map.add(nb2, 1, 1);
-            map.add(nb3, 2, 1);
-            map.add(nb4, 1, 2);
-            
-        ImageView actualMap = new ImageView(boroughs);
-            actualMap.setFitWidth(900);
-            actualMap.setPreserveRatio(true);
-            //actualMap.setSmooth(true);
-            //actualMap.setCache(true);
+            ImageView mapImage = new ImageView(boroughs);
+                mapImage.setFitWidth(900);
+                mapImage.setPreserveRatio(true);
+        
+            FlowPane mapButtons = new FlowPane();
+                ArrayList[] buttonArray = new ArrayList[33];
+                for (int i = 0; i < 33; i++) {
+                    Button boroughButton = new Button("Borough");
+                    boroughButton.setShape(new Circle(100));
+                    boroughButton.getStyleClass().add("boroughButton");
+                    mapButtons.getChildren().add(boroughButton);
+                }
+                
+            mapView.getChildren().addAll(mapImage, mapButtons);
             
         GridPane key = new GridPane();
             Label keyLabel = new Label("Key");
@@ -143,9 +139,9 @@ public class MainViewer extends Stage
             key.add(keyLabel4, 0, 4);
         
         //window.getChildren().addAll(stats, map, key);
-        window.getChildren().addAll(stats, actualMap, key);
+        window.getChildren().addAll(stats, mapView, key);
         
         root.setCenter(window);
-        mapScene = new Scene(root, 500, 500);
+        
     }
 }
