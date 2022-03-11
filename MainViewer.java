@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.Group;
+// javafx.scene.control.MenuBar;
+import javafx.scene.control.ComboBox;
 
 /**
  * Write a description of class MapViewer here.
@@ -20,18 +22,31 @@ public class MainViewer extends Stage
     // instance variables - replace the example below with your o
     Scene welcomeScene;
     Scene mapScene;
+    BorderPane root = new BorderPane();
 
     /**
      * Constructor for objects of class MapViewer
      */
     public MainViewer()
     {
+        ComboBox<String> minBox = new ComboBox<String>();
+        minBox.getItems().addAll("No Min", "500", "600", "700", "800", "900");
+        
+        ComboBox<String> maxBox = new ComboBox<String>();
+        maxBox.getItems().addAll("500", "600", "700", "800", "900", "No Max");
+        
+        HBox minMaxBox = new HBox();
+        minMaxBox.getChildren().addAll(minBox, maxBox);
+            
+        root.setTop(minMaxBox);
+        
         //makeWelcomeScene();
         makeMapScene();
         
-        //setScene(mapScene);
-        setScene(welcomeScene);
+        setScene(mapScene);
+        //setScene(welcomeScene);
     }
+    
 
     private void makeWelcomeScene() {
         setTitle("Welcome");
@@ -60,7 +75,8 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setCenter(startButton);
         
         //creating the scene
-        welcomeScene = new Scene(window, 1000, 300);
+        root.setCenter(window);
+        welcomeScene = new Scene(root, 1000, 300);
     }
     
     private void makeMapScene() {
@@ -109,6 +125,7 @@ public class MainViewer extends Stage
         
         window.getChildren().addAll(stats, map, key);
         
-        mapScene = new Scene(window, 500, 500);
+        root.setCenter(window);
+        mapScene = new Scene(root, 500, 500);
     }
 }
