@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import javafx.stage.StageStyle;
+import javafx.scene.text.TextAlignment;
 
 /**
  * Write a description of class StatisticsViewer here.
@@ -89,6 +90,9 @@ public class StatisticsViewer extends Stage
         availableInfo.getStyleClass().add("statslabels"); 
         noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
         expensiveInfo.getStyleClass().add("statslabels"); 
+        
+        title.getStyleClass().add("titlelabel"); 
+        
         
         
         setTitle("Statistics");
