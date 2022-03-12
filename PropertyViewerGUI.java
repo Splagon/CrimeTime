@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
-import javafx.event.ActionEvent;
+
 
 public class PropertyViewerGUI extends Stage {
     public PropertyViewerGUI() throws Exception {
@@ -25,39 +25,9 @@ public class PropertyViewerGUI extends Stage {
         
         // Create scene for the Vbox
         Scene scene = new Scene(root);
+        setResizable(false);
         setScene(scene);
         show();
     } 
-
-    // ------- Implementations of the buttons -------- //
-    
-    /**
-     * Implements the action when the "next" button is clicked.
-     */
-    @FXML
-    private void nextAction(ActionEvent event) {
-        System.out.println("1");
-    }
-    /**
-     * Implements the action when the "previous" button is clicked.
-     */
-    @FXML
-    private void previousAction(ActionEvent event) {
-        
-    }
-    /**
-     * Implements the action when the image is clicked.
-     * (It may be a good idea to implement a pop up window that displays
-     * the description of the property when the mouse hovers over the image.)
-     */
-    private void imageAction(ActionEvent event){
-        
-    }
-    /**
-     * Implements the view on map button's action 
-     */
-    private void viewOnMapAction(ActionEvent event){
-        
-    }
 }
 

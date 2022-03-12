@@ -10,7 +10,7 @@ public class DataHandler
 {
     // instance variables - replace the example below with your own
     private AirbnbDataLoader dataLoader = new AirbnbDataLoader();
-    private ArrayList<AirbnbListing> listings;
+    public ArrayList<AirbnbListing> listings;  // Contoller of property viewer needs it temporarly.
 
     /**
      * Constructor for objects of class DataHandler
