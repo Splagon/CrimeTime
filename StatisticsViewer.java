@@ -20,7 +20,13 @@ import javafx.scene.text.TextAlignment;
 public class StatisticsViewer extends Stage
 {
     // instance variables - replace the example below with your own
-    private int x;
+    private StatisticsData data = new StatisticsData(); 
+    
+    // The information labels in the window
+    Label reviewInfo = new Label("default");
+    Label availableInfo = new Label("default");
+    Label noHomeAndApartmentsInfo = new Label("default");
+    Label expensiveInfo = new Label("default");
 
     /**
      * Constructor for objects of class StatisticsViewer
@@ -43,11 +49,6 @@ public class StatisticsViewer extends Stage
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
         Label expensiveTitle = new Label("Most Expensive Borough:");
         
-        // The information labels in the window
-        Label reviewInfo = new Label("default");
-        Label availableInfo = new Label("default");
-        Label noHomeAndApartmentsInfo = new Label("default");
-        Label expensiveInfo = new Label("default");
         
         // Adding components 
         window.getChildren().add(title); 
@@ -93,10 +94,41 @@ public class StatisticsViewer extends Stage
         
         title.getStyleClass().add("titlelabel"); 
         
+        setInfo();
         
-        
-        setTitle("Statistics");
+        setTitle("Information");
         setScene(scene);
         
+    }
+    
+    /**
+     * Update all of the info labels
+     */
+    private void setInfo()
+    {
+        setReviewInfo(); 
+        setNoHomeAndApartmentsInfo();
+        setAvailableInfo();
+    }
+    
+    /**
+     * Get the review info data, round it to 2 d.p and set the label to the data
+     */
+    private void setReviewInfo()
+    {
+        String x = "" + String.format("%.2f", data.getAverageNoReviews());
+        reviewInfo.setText(x);
+    }
+    
+    private void setNoHomeAndApartmentsInfo()
+    {
+        String x = "" + data.getNoHomeAndApartments();
+        noHomeAndApartmentsInfo.setText(x); 
+    }
+    
+    private void setAvailableInfo()
+    {
+        String x = "" + data.getAvailableInfo();
+        availableInfo.setText(x); 
     }
 }

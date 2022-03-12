@@ -38,5 +38,12 @@ public class DataHandler
         
         return listingsFromBorough;
     }
-
+    
+    /**
+     * @return the Arraylist of Airbnb Listings 
+     */
+    protected ArrayList<AirbnbListing> getData()
+    {
+        return listings; 
+    }
 }
