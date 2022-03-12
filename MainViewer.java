@@ -33,7 +33,7 @@ public class MainViewer extends Stage
     /**
      * Constructor for objects of class MapViewer
      */
-    public MainViewer() throws FileNotFoundException
+    public MainViewer() throws Exception
     {        
         boroughs = new Image(new FileInputStream(System.getProperty("user.dir") + "\\boroughs.png"));
         
@@ -87,7 +87,7 @@ public class MainViewer extends Stage
         welcomeScene = new Scene(root, 1000, 300);
     }
     
-    private void makeMapScene() {
+    private void makeMapScene() throws Exception {
         setTitle("Map of London");
         
         mapScene = new Scene(root, 500, 500);
@@ -137,11 +137,13 @@ public class MainViewer extends Stage
             key.add(keyLabel2, 0, 2);
             key.add(keyLabel3, 0, 3);
             key.add(keyLabel4, 0, 4);
-        
-        //window.getChildren().addAll(stats, map, key);
+
         window.getChildren().addAll(stats, mapView, key);
         
         root.setCenter(window);
         
+        //Testing to see if a stage can launch another stage
+        //PropertyViewer p = new PropertyViewer();
+        //p.show();
     }
 }

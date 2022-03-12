@@ -25,7 +25,7 @@ public class TestControllerMain extends Application
      * @param  stage the primary stage for this application.
      */
     @Override
-    public void start(Stage stage) throws FileNotFoundException
+    public void start(Stage stage) throws Exception
     {
         // Create a Button or any control item
         stage = new MainViewer();
