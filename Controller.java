@@ -22,8 +22,6 @@ public class Controller extends Application
     private Label myLabel = new Label("0");
     private DataHandler dataHandler = new DataHandler();
     
-    
-
     /**
      * The start method is the main entry point for every JavaFX application. 
      * It is called after the init() method has returned and after 
@@ -32,7 +30,7 @@ public class Controller extends Application
      * @param  stage the primary stage for this application.
      */
 
-    public void start(Stage stage) throws FileNotFoundException
+    public void start(Stage stage) throws Exception
     {
         MainViewer mainViewer = new MainViewer();
         StatisticsViewer statsViewer = new StatisticsViewer();

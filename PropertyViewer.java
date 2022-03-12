@@ -8,37 +8,23 @@ import javafx.stage.Stage;
 import javafx.scene.paint.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
+import java.net.URL;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;
 
 public class PropertyViewer extends Stage {
 
-    public PropertyViewer() throws FileNotFoundException {
+    public PropertyViewer() throws Exception {
         makePropertyViewerScene();
     }
 
-    private void makePropertyViewerScene() throws FileNotFoundException {
-        // Sets the title of the frame
-        setTitle("property Viewer");
+    private void makePropertyViewerScene() throws Exception {
+        setTitle("Property Viewer !");
+        URL url = getClass().getResource("propertyViewer.fxml");
+        Pane root = FXMLLoader.load(url);
         
-        //---------------------------------------------------
-        // Create the labels needed for the scene
-        Label boroughLabel = new Label("Marylebone");
-        Label hostLabel = new Label("Kolling");
-        Label priceLabel = new Label("£500");
-        Label roomsLabel = new Label("One Bedroom En-suite");
-        Label minNights = new Label("15  nights min guys");
-        Label numReviews = new Label("1200");
-        Pane stats = new HBox(boroughLabel,hostLabel, priceLabel, roomsLabel, minNights, numReviews);
-        
-        Button nextButton = new Button();
-        Button previousButton = new Button();
-
-        // Create Border Pane that is contained by VBox
-        BorderPane root = new BorderPane(null,boroughLabel,nextButton,stats,previousButton);
-
         // Create scene for the Vbox
-        Scene scene = new Scene(root,600,500);
+        Scene scene = new Scene(root);
         setScene(scene);
         show();
     }
