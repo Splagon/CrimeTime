@@ -27,8 +27,8 @@ public class TestControllerProperty extends Application
     public void start(Stage stage) throws Exception
     { 
         // Create a Button or any control item
-        stage = new PropertyViewer();
-        stage.setResizable(false);
+        stage = new PropertyViewerGUI();
         stage.show();
+        System.out.println("Executed");
     }
 }

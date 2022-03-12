@@ -34,7 +34,7 @@ public class Controller extends Application
     {
         MainViewer mainViewer = new MainViewer();
         StatisticsViewer statsViewer = new StatisticsViewer();
-        PropertyViewer propertyViewer = new PropertyViewer();
+        PropertyViewerGUI propertyViewer = new PropertyViewerGUI();
         
         // Create a Button or any control item
         Button myButton = new Button("Count");

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * Write a description of class DataHandler here.
@@ -7,20 +8,27 @@
  */
 public class DataHandler
 {
-    // instance variables - replace the example below with your own
-    private AirbnbDataLoader dataLoader = new AirbnbDataLoader();
-
+    private AirbnbDataLoader dataLoader;
+    // Create a list holding all AirbnbListings
+    private ArrayList<AirbnbListing> propertiesList;
+    
     /**
      * Constructor for objects of class DataHandler
      */
     public DataHandler()
     {
-        // initialise instance variables
-
+        dataLoader = new AirbnbDataLoader();
+        propertiesList = dataLoader.load();
     }
     
     public String getPropertiesFromNeighbourhood(String neighbourhood) {
         return neighbourhood;
     }
-
+    
+    /**
+     * Query the database to retrieve all properties from one neighbourhood.  
+     */
+    public ArrayList<AirbnbListing> getPropertiesFrom(String neighbourhood){
+        return null;
+    }
 }
