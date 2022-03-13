@@ -32,9 +32,6 @@ public class MainViewer extends Stage
     Scene welcomeScene;
     Scene mapScene;
     BorderPane root = new BorderPane();
-    Image boroughs;
-    ImageView imageView = new ImageView();
-    ArrayList<Image> boroughHexagons = new ArrayList<Image>();
     String[][] mapPositions = {{ null, null, null, "Enfield", null, null, null },
                                { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
                                { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
@@ -44,36 +41,12 @@ public class MainViewer extends Stage
                                { null, "Kingston upon Thames", "Sutton", "Croydon", "Bromley", null, null },
                               };
     
+    
     /**
      * Constructor for objects of class MapViewer
      */
     public MainViewer() throws Exception
-    {        
-        boroughs = new Image(new FileInputStream(System.getProperty("user.dir") + "\\boroughs.png"));
-             
-        File dir = new File((System.getProperty("user.dir") + "\\BoroughHexagons"));
-        File[] directoryListing = dir.listFiles();
-        
-        if (directoryListing != null) 
-        {
-            for (File child : directoryListing)
-            {
-                Image hexagonImage = new Image(new FileInputStream(child));
-                boroughHexagons.add(hexagonImage);
-            }
-        }
-        
-        ComboBox<String> minBox = new ComboBox<String>();
-        minBox.getItems().addAll("No Min", "500", "600", "700", "800", "900");
-        
-        ComboBox<String> maxBox = new ComboBox<String>();
-        maxBox.getItems().addAll("500", "600", "700", "800", "900", "No Max");
-        
-        HBox minMaxBox = new HBox();
-        minMaxBox.getChildren().addAll(minBox, maxBox);
-            
-        root.setTop(minMaxBox);
-        
+    {         
         //makeWelcomeScene();
         makeMapScene();
         
@@ -116,6 +89,17 @@ public class MainViewer extends Stage
     private void makeMapScene() throws Exception {
         setTitle("Map of London");
         
+        ComboBox<String> minBox = new ComboBox<String>();
+        minBox.getItems().addAll("No Min", "500", "600", "700", "800", "900");
+        
+        ComboBox<String> maxBox = new ComboBox<String>();
+        maxBox.getItems().addAll("500", "600", "700", "800", "900", "No Max");
+        
+        HBox minMaxBox = new HBox();
+        minMaxBox.getChildren().addAll(minBox, maxBox);
+            
+        root.setTop(minMaxBox);
+        
         mapScene = new Scene(root, 500, 500);
         mapScene.getStylesheets().add("stylesheet.css");
         
@@ -133,62 +117,77 @@ public class MainViewer extends Stage
             stats.add(statsLabel2, 0, 2);
             stats.add(statsLabel3, 0, 3);
             stats.add(statsLabel4, 0, 4);
-        
-        StackPane mapView = new StackPane();
             
-            //ImageView mapImage = new ImageView(boroughs);
-            //    mapImage.setFitWidth(705);
-            //    mapImage.setPreserveRatio(true);
-            Rectangle mapImage = new Rectangle(708, 700);
-                mapImage.setFill(Color.SKYBLUE);
-            
+        AnchorPane mapView = new AnchorPane();
+            mapView.setMinSize(708, 700);
         
-            FlowPane mapButtons = new FlowPane();
-                // ArrayList[] buttonArray = new ArrayList[33];
-                // for (int i = 0; i < 33; i++) {
-                    // Button boroughButton = new Button("Borough");
-                    // boroughButton.setShape(new Circle(100));
-                    // boroughButton.getStyleClass().add("boroughButton");
-                    // mapButtons.getChildren().add(boroughButton);
-                // }
+            ArrayList<StackPane> mapRows = new ArrayList<StackPane>();
+
+            // rows
+            for (int m = 0; m < mapPositions.length; m++) {
                 
-                Iterator i = boroughHexagons.iterator();
-                ArrayList<MapButton> buttonArray = new ArrayList<MapButton>();
+                StackPane row = new StackPane();
                 
-                // rows
-                for (int m = 0; m < mapPositions.length; m++) {
-                    //columns
-                    if (m % 2 == 0) {
-                            Rectangle insetSpace = new Rectangle(47,94);
-                            mapButtons.getChildren().add(insetSpace);
+                FlowPane hexagonRow = new FlowPane();
+                    hexagonRow.setMinWidth(mapView.getMinWidth());
+                
+                FlowPane buttonRow = new FlowPane();
+                    buttonRow.setMinWidth(mapView.getMinWidth());
+                
+                if (m % 2 == 0) {
+                        Rectangle HRinsetSpace = new Rectangle(47,94);
+                            HRinsetSpace.setFill(Color.TRANSPARENT);
+                        Rectangle BRinsetSpace = new Rectangle(47,94);
+                            BRinsetSpace.setFill(Color.TRANSPARENT);
+                        hexagonRow.getChildren().add(HRinsetSpace);
+                        buttonRow.getChildren().add(BRinsetSpace);
+                }
+                
+                //columns
+                for (int n = 0; n < mapPositions[m].length; n++) {
+                    if (mapPositions[m][n] != null) {
+                        MapButton boroughButton = new MapButton(mapPositions[m][n]);
+                        boroughButton.setShape(new Circle(94));
+                        boroughButton.getStyleClass().add("boroughButton");
+                        boroughButton.setOnAction(e ->
+                            {
+                                try { openPropertyViewer(boroughButton.getBoroughName()); }
+                                catch (Exception ex) {}
+                            });
+
+                        buttonRow.getChildren().add(boroughButton);
+                        
+                        ImageView hexagonIV = new ImageView(new Image("/hexagon.png", true));
+                            hexagonIV.setFitWidth(94);
+                            hexagonIV.setFitHeight(94);
+
+                        hexagonRow.getChildren().add(hexagonIV);
                     }
-                    for (int n = 0; n < mapPositions[m].length; n++) {
-                        if (mapPositions[m][n] != null && i.hasNext()) {
-                            MapButton boroughButton = new MapButton(mapPositions[m][n]);
-                            boroughButton.setShape(new Circle(94));
-                            boroughButton.getStyleClass().add("boroughButton");
-                            boroughButton.setOnAction(e ->
-                                {
-                                    try { openPropertyViewer(boroughButton.getBoroughName()); }
-                                    catch (Exception ex) {}
-                                });
-                            
-                            mapButtons.getChildren().add(boroughButton);
-                            buttonArray.add(boroughButton);
-                        }
-                        else {
-                            Rectangle emptySpace = new Rectangle(94,94);
-                            mapButtons.getChildren().add(emptySpace);
-                        }
-                    }
-                    if (m % 2 == 1) {
-                            Rectangle insetSpace = new Rectangle(47,94);
-                            mapButtons.getChildren().add(insetSpace);
+                    else {
+                        Rectangle HRemptySpace = new Rectangle(94,94);
+                        Rectangle BRemptySpace = new Rectangle(94,94);
+                            HRemptySpace.setFill(Color.TRANSPARENT);
+                            BRemptySpace.setFill(Color.TRANSPARENT);
+                        hexagonRow.getChildren().add(HRemptySpace);
+                        buttonRow.getChildren().add(BRemptySpace);
                     }
                 }
-
                 
-            mapView.getChildren().addAll(mapImage, mapButtons);
+                if (m % 2 == 1) {
+                        Rectangle HRinsetSpace = new Rectangle(47,94);
+                            HRinsetSpace.setFill(Color.TRANSPARENT);
+                        Rectangle BRinsetSpace = new Rectangle(47,94);
+                            BRinsetSpace.setFill(Color.TRANSPARENT);
+                        hexagonRow.getChildren().add(HRinsetSpace);
+                        buttonRow.getChildren().add(BRinsetSpace);
+                }
+                
+                row.getChildren().addAll(hexagonRow, buttonRow);
+                mapRows.add(row);
+                
+                AnchorPane.setTopAnchor(row, m*82.0);
+                mapView.getChildren().add(row);
+            }
             
         GridPane key = new GridPane();
             Label keyLabel = new Label("Key");
@@ -206,10 +205,7 @@ public class MainViewer extends Stage
         window.getChildren().addAll(stats, mapView, key);
         
         root.setCenter(window);
-        
-        //Testing to see if a stage can launch another stage
-        //PropertyViewer p = new PropertyViewer();
-        //p.show();
+
     }
     
     private void openPropertyViewer(String boroughName) throws Exception {
