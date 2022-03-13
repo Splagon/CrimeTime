@@ -21,7 +21,7 @@ public class DataHandler
         listings = dataLoader.load();
     }
     
-    protected ArrayList<AirbnbListing> getPropertiesFromBorough(String borough) 
+    public ArrayList<AirbnbListing> getPropertiesFromBorough(String borough) 
     {
         ArrayList<AirbnbListing> listingsFromBorough = new ArrayList<AirbnbListing>();
         Iterator i = listings.iterator();
@@ -42,7 +42,7 @@ public class DataHandler
     /**
      * @return the Arraylist of Airbnb Listings 
      */
-    protected ArrayList<AirbnbListing> getData()
+    public ArrayList<AirbnbListing> getData()
     {
         return listings; 
     }
