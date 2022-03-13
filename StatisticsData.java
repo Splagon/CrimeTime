@@ -32,6 +32,9 @@ public class StatisticsData extends DataHandler
         return average; 
     }
     
+    /**
+     * @return int the number of home and apartment airbnb properties 
+     */
     public int getNoHomeAndApartments()
     {
         int counter = 0;
@@ -45,6 +48,9 @@ public class StatisticsData extends DataHandler
         return counter; 
     }
     
+    /**
+     * @return int the number of available properties
+     */
     public int getAvailableInfo()
     {
         int counter = 0; 
@@ -55,5 +61,38 @@ public class StatisticsData extends DataHandler
             }
         }
         return counter; 
+    }
+    
+    public String getExpensiveInfo()
+    {
+        String expensiveBorough = "test";
+        String[] boroughs = {"Kingston upon Thames", "Croydon", "Bromley", "Hounslow", "Ealing", "Havering", "Hillingdon", 
+            "Harrow", "Brent", "Barnet", "Enfield", "Waltham Forest", "Redbridge", "Sutton", "Lambeth", "Southwark",
+            "Lewisham", "Greenwich", "Bexley", "Richmond upon Thames", "Merton", "Wandsworth", "Hammersmith and Fulham", 
+            "Kensington and Chelsea", "City of London", "Westminster", "Camden", "Tower Hamlets", "Islington", "Hackney",
+            "Haringey", "Newham", "Barking and Dagenham"};
+
+        for(int i = 0; i < boroughs.length; i++) // A for loop iterating through the boroughs array
+        {
+            ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(boroughs[i]);
+            int totalPrice = 0;
+            System.out.println(boroughProperty.size());
+            int lastTotalPrice = 0;  
+            for (int j = 0; j < boroughProperty.size(); j++) {
+                AirbnbListing property = boroughProperty.get(j);
+                totalPrice += property.getPrice() * property.getMinimumNights();
+            }
+            System.out.println(totalPrice);
+            if(totalPrice > lastTotalPrice)
+            {
+                lastTotalPrice = totalPrice;
+                expensiveBorough = boroughs[i];
+            }
+        }
+        
+        return expensiveBorough; 
+            
+        
+        
     }
 }

@@ -109,6 +109,7 @@ public class StatisticsViewer extends Stage
         setReviewInfo(); 
         setNoHomeAndApartmentsInfo();
         setAvailableInfo();
+        getExpensiveInfo();
     }
     
     /**
@@ -120,15 +121,27 @@ public class StatisticsViewer extends Stage
         reviewInfo.setText(x);
     }
     
+    /**
+     * Get the number of homes and apartments properties and set the info label to the value received
+     */
     private void setNoHomeAndApartmentsInfo()
     {
         String x = "" + data.getNoHomeAndApartments();
         noHomeAndApartmentsInfo.setText(x); 
     }
     
+    /**
+     * Get the number of available properties and set the available info label to the value received
+     */
     private void setAvailableInfo()
     {
         String x = "" + data.getAvailableInfo();
         availableInfo.setText(x); 
+    }
+    
+    private void getExpensiveInfo()
+    {
+        String x = "" + data.getExpensiveInfo();
+        expensiveInfo.setText(x); 
     }
 }
