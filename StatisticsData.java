@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class StatisticsData extends DataHandler
 {
     // instance variables - replace the example below with your own
-    private ArrayList<AirbnbListing> listings; 
+    //private ArrayList<AirbnbListing> listings; 
     String[] boroughs = {"Kingston upon Thames", "Croydon", "Bromley", "Hounslow", "Ealing", "Havering", "Hillingdon", 
             "Harrow", "Brent", "Barnet", "Enfield", "Waltham Forest", "Redbridge", "Sutton", "Lambeth", "Southwark",
             "Lewisham", "Greenwich", "Bexley", "Richmond upon Thames", "Merton", "Wandsworth", "Hammersmith and Fulham", 

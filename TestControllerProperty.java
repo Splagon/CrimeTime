@@ -35,11 +35,12 @@ public class TestControllerProperty extends Application
     private Label roomType;
     private DataHandler dataHandler = new DataHandler();
     // List holding all properties of one borough
-    private ArrayList<AirbnbListing> boroughProperties = dataHandler.listings;
+    private ArrayList<AirbnbListing> boroughProperties = dataHandler.getData();
     // Object to randomize
     private Random rand = new Random();
     private int currentPropertyIndex;
     private String borough;
+    Stage PVGUI;
     
     /**
      * Display the characteristics of the first property 
@@ -56,10 +57,10 @@ public class TestControllerProperty extends Application
      *
      * @param  stage the primary stage for this application.
      */
-    @Override
     public void start(Stage stage) throws Exception
     { 
         stage = new PropertyViewerGUI();
+        PVGUI = stage;
         stage.show();
     }
     
@@ -124,7 +125,7 @@ public class TestControllerProperty extends Application
     /**
      * Get the borough concerned
      */
-    public void setBoroughConcerned(String Borough){
+    public void setBoroughConcerned(String borough){
         this.borough = borough;
     }
     // ------- Main method to launch application -------- //

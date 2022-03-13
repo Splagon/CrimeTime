@@ -12,8 +12,8 @@ import java.net.URL;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
 
-
 public class PropertyViewerGUI extends Stage {
+    
     public PropertyViewerGUI() throws Exception {
         makePropertyViewerScene();
     }
@@ -27,7 +27,7 @@ public class PropertyViewerGUI extends Stage {
         Scene scene = new Scene(root);
         setResizable(false);
         setScene(scene);
-        show();
-    } 
+        //show();
+    }
 }
 

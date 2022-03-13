@@ -10,7 +10,15 @@ public class DataHandler
 {
     // instance variables - replace the example below with your own
     private AirbnbDataLoader dataLoader = new AirbnbDataLoader();
-    public ArrayList<AirbnbListing> listings;  // Contoller of property viewer needs it temporarly.
+    protected ArrayList<AirbnbListing> listings;
+    protected String[][] mapPositions = {{ null, null, null, "Enfield", null, null, null },
+                                         { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
+                                         { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
+                                         { "Hillingdon", "Ealing", "Kensington and Chelsea", "Westminster", "Tower Hamlets", "Newham", "Barking and Dagenham" },
+                                         { "Hounslow", "Hammersmith and Fulham", "Wandsworth", "City of London", "Greenwich", "Bexley", null },
+                                         { null, "Richmond upon Thames", "Merton", "Lambeth", "Southwark", "Lewisham", null },
+                                         { null, "Kingston upon Thames", "Sutton", "Croydon", "Bromley", null, null },
+                                        };
 
     /**
      * Constructor for objects of class DataHandler
@@ -45,5 +53,9 @@ public class DataHandler
     public ArrayList<AirbnbListing> getData()
     {
         return listings; 
+    }
+    
+    public String[][] getMapPositions() {
+        return mapPositions;
     }
 }
