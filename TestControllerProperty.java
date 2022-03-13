@@ -107,7 +107,6 @@ public class TestControllerProperty extends Application
         //currentProperty = boroughProperties.get(rand.nextInt(boroughProperties.size()-1));
         currentPropertyIndex = 0;
         displayData(boroughProperties.get(currentPropertyIndex));
-        System.out.println(boroughProperties.get(currentPropertyIndex));
     }
     // ------- Support Methods -------- //
     /**
