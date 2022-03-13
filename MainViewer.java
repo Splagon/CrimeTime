@@ -139,6 +139,7 @@ public class MainViewer extends Stage
                             HRinsetSpace.setFill(Color.TRANSPARENT);
                         Rectangle BRinsetSpace = new Rectangle(47,94);
                             BRinsetSpace.setFill(Color.TRANSPARENT);
+                            //BRinsetSpace.setFill(Color.GOLD);
                         hexagonRow.getChildren().add(HRinsetSpace);
                         buttonRow.getChildren().add(BRinsetSpace);
                 }
@@ -154,13 +155,14 @@ public class MainViewer extends Stage
                                 try { openPropertyViewer(boroughButton.getBoroughName()); }
                                 catch (Exception ex) {}
                             });
-
+                            
+                        buttonRow.setMargin(boroughButton, new Insets(0,3,0,3));
                         buttonRow.getChildren().add(boroughButton);
                         
                         ImageView hexagonIV = new ImageView(new Image("/hexagon.png", true));
                             hexagonIV.setFitWidth(94);
                             hexagonIV.setFitHeight(94);
-
+                    
                         hexagonRow.getChildren().add(hexagonIV);
                     }
                     else {
@@ -168,6 +170,7 @@ public class MainViewer extends Stage
                         Rectangle BRemptySpace = new Rectangle(94,94);
                             HRemptySpace.setFill(Color.TRANSPARENT);
                             BRemptySpace.setFill(Color.TRANSPARENT);
+                            //BRemptySpace.setFill(Color.GOLD);
                         hexagonRow.getChildren().add(HRemptySpace);
                         buttonRow.getChildren().add(BRemptySpace);
                     }
@@ -185,7 +188,7 @@ public class MainViewer extends Stage
                 row.getChildren().addAll(hexagonRow, buttonRow);
                 mapRows.add(row);
                 
-                AnchorPane.setTopAnchor(row, m*82.0);
+                AnchorPane.setTopAnchor(row, m*72.0);
                 mapView.getChildren().add(row);
             }
             

@@ -18,9 +18,9 @@
 }
 
 .boroughButton {
-    -fx-min-width: 94px;
-    -fx-min-height: 94px;
+    -fx-min-width: 88px;
+    -fx-min-height: 80px;
     -fx-background-color: rgba(00,00,00,0.2);
-    -fx-font-size: 20px;
+    -fx-font-size: 18px;
     -fx-text-fill: white;
 }
