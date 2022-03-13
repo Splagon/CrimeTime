@@ -14,7 +14,7 @@ public class StatisticsData extends DataHandler
             "Harrow", "Brent", "Barnet", "Enfield", "Waltham Forest", "Redbridge", "Sutton", "Lambeth", "Southwark",
             "Lewisham", "Greenwich", "Bexley", "Richmond upon Thames", "Merton", "Wandsworth", "Hammersmith and Fulham", 
             "Kensington and Chelsea", "City of London", "Westminster", "Camden", "Tower Hamlets", "Islington", "Hackney",
-            "Haringey", "Newham", "Barking and Dagenham"};
+            "Haringey", "Newham", "Barking and Dagenham", "test"};
 
     /**
      * Constructor for objects of class StatisticsData
@@ -36,7 +36,7 @@ public class StatisticsData extends DataHandler
         double average = scoreCounter / listings.size(); 
         return average; 
     }
-    
+
     /**
      * @return int the number of home and apartment airbnb properties 
      */
@@ -52,7 +52,7 @@ public class StatisticsData extends DataHandler
         }
         return counter; 
     }
-    
+
     /**
      * @return int the number of available properties
      */
@@ -67,24 +67,25 @@ public class StatisticsData extends DataHandler
         }
         return counter; 
     }
-    
+
     /**
      * @return String the most expensive borough
      */
-    public String getExpensiveInfo()
+    public String getExpensiveInfoTest()
     {
         String expensiveBorough = "";
+        int lastTotalPrice = 0;
         for(int i = 0; i < boroughs.length; i++) // A for loop iterating through the boroughs array
         {
             ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(boroughs[i]);
             int totalPrice = 0;
-            int lastTotalPrice = 0;  
             for (int j = 0; j < boroughProperty.size(); j++) 
             {
                 AirbnbListing property = boroughProperty.get(j);
                 totalPrice += property.getPrice() * property.getMinimumNights();
             }
-            
+            System.out.println(totalPrice);
+            System.out.println(lastTotalPrice);
             if(totalPrice > lastTotalPrice)
             {
                 lastTotalPrice = totalPrice;
@@ -93,10 +94,42 @@ public class StatisticsData extends DataHandler
         }
         return expensiveBorough; 
     }
-    
+
+    /**
+     * @return String the most expensive borough
+     */
+    public String getExpensiveInfo()
+    {
+        String expensiveBorough = "";
+        int lastTotalPrice = 0; 
+        for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
+        {
+            for(int columns = 0; columns < mapPositions[rows].length; columns++)
+            {   
+                if(mapPositions[rows][columns] != null)
+                {
+                    ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns]);
+                    int totalPrice = 0;
+                    for (int j = 0; j < boroughProperty.size(); j++) 
+                    {
+                        AirbnbListing property = boroughProperty.get(j);
+                        totalPrice += property.getPrice() * property.getMinimumNights();
+                    }
+
+                    if(totalPrice > lastTotalPrice)
+                    {
+                        lastTotalPrice = totalPrice;
+                        expensiveBorough = mapPositions[rows][columns];
+                    }
+                }
+            }
+        }
+        return expensiveBorough; 
+    }
+
     public int getPricesdInfo()
     {
-        
+
         return 0; 
     }
 }
