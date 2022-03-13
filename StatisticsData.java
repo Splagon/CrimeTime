@@ -63,6 +63,9 @@ public class StatisticsData extends DataHandler
         return counter; 
     }
     
+    /**
+     * @return String the most expensive borough
+     */
     public String getExpensiveInfo()
     {
         String expensiveBorough = "test";
@@ -76,23 +79,18 @@ public class StatisticsData extends DataHandler
         {
             ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(boroughs[i]);
             int totalPrice = 0;
-            System.out.println(boroughProperty.size());
             int lastTotalPrice = 0;  
             for (int j = 0; j < boroughProperty.size(); j++) {
                 AirbnbListing property = boroughProperty.get(j);
                 totalPrice += property.getPrice() * property.getMinimumNights();
             }
-            System.out.println(totalPrice);
+            
             if(totalPrice > lastTotalPrice)
             {
                 lastTotalPrice = totalPrice;
                 expensiveBorough = boroughs[i];
             }
         }
-        System.out.println("test");
         return expensiveBorough; 
-            
-        
-        
     }
 }
