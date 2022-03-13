@@ -39,6 +39,7 @@ public class TestControllerProperty extends Application
     // Object to randomize
     private Random rand = new Random();
     private int currentPropertyIndex;
+    private String borough;
     
     /**
      * Display the characteristics of the first property 
@@ -119,6 +120,12 @@ public class TestControllerProperty extends Application
         numReviews.setText(property.getNumberOfReviews() + " Review(s)");
         price.setText("Price: £" + property.getPrice());
         roomType.setText(property.getRoom_type());
+    }
+    /**
+     * Get the borough concerned
+     */
+    public void setBoroughConcerned(String Borough){
+        this.borough = borough;
     }
     // ------- Main method to launch application -------- //
     public static void main(String[] args) {
