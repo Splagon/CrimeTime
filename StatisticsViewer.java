@@ -27,6 +27,7 @@ public class StatisticsViewer extends Stage
     Label availableInfo = new Label("default");
     Label noHomeAndApartmentsInfo = new Label("default");
     Label expensiveInfo = new Label("default");
+    Label pricesdInfo = new Label("default");
 
     /**
      * Constructor for objects of class StatisticsViewer
@@ -40,6 +41,7 @@ public class StatisticsViewer extends Stage
         VBox available = new VBox(); 
         VBox noHomeAndApartments = new VBox();
         VBox expensive = new VBox(); 
+        VBox pricesd = new VBox(); 
           
         
         // The "title" labels in the window
@@ -48,6 +50,7 @@ public class StatisticsViewer extends Stage
         Label availableTitle = new Label("Total Available Properties:");
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
         Label expensiveTitle = new Label("Most Expensive Borough:");
+        Label pricesdTitle = new Label("Price Standard Deviation:");
         
         
         // Adding components 
@@ -58,6 +61,7 @@ public class StatisticsViewer extends Stage
         statsGrid.add(available, 0, 1);
         statsGrid.add(noHomeAndApartments, 1, 0);
         statsGrid.add(expensive, 1, 1);
+        statsGrid.add(pricesd, 0, 2); 
         
         
         reviews.getChildren().add(reviewTitle); 
@@ -72,6 +76,9 @@ public class StatisticsViewer extends Stage
         expensive.getChildren().add(expensiveTitle); 
         expensive.getChildren().add(expensiveInfo);
         
+        pricesd.getChildren().add(pricesdTitle); 
+        pricesd.getChildren().add(pricesdInfo);
+        
         //Set the scene and add CSS
         Scene scene = new Scene(window, 500,300);
         
@@ -81,16 +88,20 @@ public class StatisticsViewer extends Stage
         available.getStyleClass().add("statsvbox");
         noHomeAndApartments.getStyleClass().add("statsvbox");
         expensive.getStyleClass().add("statsvbox");
+        pricesd.getStyleClass().add("statsvbox");
         window.getStyleClass().add("statsvbox");
         
         reviewTitle.getStyleClass().add("statslabels"); 
         availableTitle.getStyleClass().add("statslabels"); 
         noHomeAndApartmentsTitle.getStyleClass().add("statslabels"); 
         expensiveTitle.getStyleClass().add("statslabels"); 
+        pricesdTitle.getStyleClass().add("statslabels");
+        
         reviewInfo.getStyleClass().add("statslabels"); 
         availableInfo.getStyleClass().add("statslabels"); 
         noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
         expensiveInfo.getStyleClass().add("statslabels"); 
+        pricesdInfo.getStyleClass().add("statslabels"); 
         
         title.getStyleClass().add("titlelabel"); 
         
@@ -117,7 +128,7 @@ public class StatisticsViewer extends Stage
      */
     private void setReviewInfo()
     {
-        String x = "" + String.format("%.2f", data.getAverageNoReviews());
+        String x = "" + String.format("%.2f", data.getAverageNoReviews()) + " (2 d.p)"; 
         reviewInfo.setText(x);
     }
     

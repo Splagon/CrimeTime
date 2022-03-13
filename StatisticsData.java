@@ -10,6 +10,11 @@ public class StatisticsData extends DataHandler
 {
     // instance variables - replace the example below with your own
     private ArrayList<AirbnbListing> listings; 
+    String[] boroughs = {"Kingston upon Thames", "Croydon", "Bromley", "Hounslow", "Ealing", "Havering", "Hillingdon", 
+            "Harrow", "Brent", "Barnet", "Enfield", "Waltham Forest", "Redbridge", "Sutton", "Lambeth", "Southwark",
+            "Lewisham", "Greenwich", "Bexley", "Richmond upon Thames", "Merton", "Wandsworth", "Hammersmith and Fulham", 
+            "Kensington and Chelsea", "City of London", "Westminster", "Camden", "Tower Hamlets", "Islington", "Hackney",
+            "Haringey", "Newham", "Barking and Dagenham"};
 
     /**
      * Constructor for objects of class StatisticsData
@@ -68,19 +73,14 @@ public class StatisticsData extends DataHandler
      */
     public String getExpensiveInfo()
     {
-        String expensiveBorough = "test";
-        String[] boroughs = {"Kingston upon Thames", "Croydon", "Bromley", "Hounslow", "Ealing", "Havering", "Hillingdon", 
-            "Harrow", "Brent", "Barnet", "Enfield", "Waltham Forest", "Redbridge", "Sutton", "Lambeth", "Southwark",
-            "Lewisham", "Greenwich", "Bexley", "Richmond upon Thames", "Merton", "Wandsworth", "Hammersmith and Fulham", 
-            "Kensington and Chelsea", "City of London", "Westminster", "Camden", "Tower Hamlets", "Islington", "Hackney",
-            "Haringey", "Newham", "Barking and Dagenham"};
-
+        String expensiveBorough = "";
         for(int i = 0; i < boroughs.length; i++) // A for loop iterating through the boroughs array
         {
             ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(boroughs[i]);
             int totalPrice = 0;
             int lastTotalPrice = 0;  
-            for (int j = 0; j < boroughProperty.size(); j++) {
+            for (int j = 0; j < boroughProperty.size(); j++) 
+            {
                 AirbnbListing property = boroughProperty.get(j);
                 totalPrice += property.getPrice() * property.getMinimumNights();
             }
