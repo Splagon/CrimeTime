@@ -127,9 +127,17 @@ public class StatisticsData extends DataHandler
         return expensiveBorough; 
     }
 
-    public int getPricesdInfo()
+    public double getPriceSDInfo()
     {
-
-        return 0; 
+        double standardDeviation = 0; 
+        int x = 0;
+        int y = 0; 
+        int size = listings.size(); 
+        for (int i = 0; i < size; i++) {
+            x += (listings.get(i).getPrice())*(listings.get(i).getPrice());
+            y += listings.get(i).getPrice();
+        }
+        standardDeviation = Math.sqrt((x/size) - (y/size)*(y/size));
+        return standardDeviation; 
     }
 }
