@@ -127,6 +127,9 @@ public class StatisticsData extends DataHandler
         return expensiveBorough; 
     }
 
+    /**
+     * @return double The standard deviation of price from all of the airbnb properties
+     */
     public double getPriceSDInfo()
     {
         double standardDeviation = 0; 
@@ -134,8 +137,9 @@ public class StatisticsData extends DataHandler
         int y = 0; 
         int size = listings.size(); 
         for (int i = 0; i < size; i++) {
-            x += (listings.get(i).getPrice())*(listings.get(i).getPrice());
-            y += listings.get(i).getPrice();
+            int price = listings.get(i).getPrice();
+            x += (price)*(price);
+            y += price;
         }
         standardDeviation = Math.sqrt((x/size) - (y/size)*(y/size));
         return standardDeviation; 

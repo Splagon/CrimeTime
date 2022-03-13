@@ -50,7 +50,7 @@ public class StatisticsViewer extends Stage
         Label availableTitle = new Label("Total Available Properties:");
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
         Label expensiveTitle = new Label("Most Expensive Borough:");
-        Label priceSDTitle = new Label("Standard Deviation of Price :");
+        Label priceSDTitle = new Label("Standard Deviation of Price (£):");
         
         
         // Adding components 
@@ -151,12 +151,18 @@ public class StatisticsViewer extends Stage
         availableInfo.setText(x); 
     }
     
+    /**
+     * Get the most expensive borough and set the expensive info label to the value received
+     */
     private void getExpensiveInfo()
     {
         String x = "" + data.getExpensiveInfo();
         expensiveInfo.setText(x); 
     }
     
+    /**
+     * Get the standard deviation of price and set the pricesd info label to the value received
+     */
     private void getPriceSDInfo()
     {
         String x = "" + String.format("%.2f", data.getPriceSDInfo()) + " (2 d.p)";
