@@ -93,4 +93,10 @@ public class StatisticsData extends DataHandler
         }
         return expensiveBorough; 
     }
+    
+    public int getPricesdInfo()
+    {
+        
+        return 0; 
+    }
 }
