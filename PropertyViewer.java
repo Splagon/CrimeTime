@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import javafx.geometry.*;
+import javafx.scene.web.WebView;
+import javafx.scene.web.WebEngine;
 
 /**
  * JavaFX version of PVGUI in code
@@ -31,6 +33,8 @@ public class PropertyViewer extends Stage {
     private final String pricePrefix = "Price: £";
     private final String noOfReviewsPostfix = " review(s)";
     private final String minNightsPostfix = " night(s) minimum";
+    
+    private WebEngine webEngine;
     
     public PropertyViewer(String borough) throws Exception {
         this.borough = borough;
@@ -58,10 +62,14 @@ public class PropertyViewer extends Stage {
         root.setAlignment(titleLabel, Pos.CENTER);
         root.setTop(titleLabel);
         
-        ImageView googleMaps = new ImageView(new Image("/Michael.JPG", true));
-            googleMaps.setFitHeight(300);
-            googleMaps.setPreserveRatio(true);
-        root.setCenter(googleMaps);
+        // ImageView googleMaps = new ImageView(new Image("/Michael.JPG", true));
+            // googleMaps.setFitHeight(300);
+            // googleMaps.setPreserveRatio(true);
+        // root.setCenter(googleMaps);
+        
+        WebView googleMaps = new WebView();
+            webEngine = googleMaps.getEngine();
+            root.setCenter(googleMaps);
         
         prevButton = new Button("Previous");
             prevButton.setOnAction(e -> viewPreviousProperty());
@@ -77,6 +85,7 @@ public class PropertyViewer extends Stage {
         root.setRight(nextButton);
         
         info = new GridPane();
+            info.setGridLinesVisible(true);
             info.setAlignment(Pos.CENTER);
             info.setPrefWidth(600);
             
@@ -130,6 +139,9 @@ public class PropertyViewer extends Stage {
         noOfReviewsLabel.setText(listing.getNumberOfReviews() + noOfReviewsPostfix);
         roomTypeLabel.setText(listing.getRoom_type());
         minNightsLabel.setText(listing.getMinimumNights() + minNightsPostfix);
+        
+        String url = "https://www.openstreetmap.org/query?lat=" + listing.getLatitude() + "&lon=" + listing.getLongitude();
+        webEngine.load(url);
     }
     
     private void viewNextProperty() {
