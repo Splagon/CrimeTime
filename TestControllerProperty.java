@@ -47,7 +47,7 @@ public class TestControllerProperty extends Application
      */
     @FXML
     public void initialize(){
-        displayInitialData();
+        update();
     }
     
     /**
@@ -75,7 +75,7 @@ public class TestControllerProperty extends Application
         if(currentPropertyIndex > boroughProperties.size() - 1){
             currentPropertyIndex = 0;
         }
-        displayData(boroughProperties.get(currentPropertyIndex));
+        update();
     }
     /**
      * Implements the action when the "previous" button is clicked.
@@ -86,9 +86,9 @@ public class TestControllerProperty extends Application
         if(currentPropertyIndex < 0){
             currentPropertyIndex = boroughProperties.size()-1;
         }
-        displayData(boroughProperties.get(currentPropertyIndex));
+        update();
     }
-        /**
+    /**
      * Implements the action when the image is clicked.
      * (It may be a good idea to implement a pop up window that displays
      * the description of the property when the mouse hovers over the image.)
@@ -102,19 +102,12 @@ public class TestControllerProperty extends Application
     private void viewOnMapAction(ActionEvent event) {
         
     }
-    /**
-     * Display the characteristics of the first property
-     */
-    private void displayInitialData(){
-        //currentProperty = boroughProperties.get(rand.nextInt(boroughProperties.size()-1));
-        currentPropertyIndex = 0;
-        displayData(boroughProperties.get(currentPropertyIndex));
-    }
     // ------- Support Methods -------- //
     /**
      * Display the characteristics of a property
      */
-    private void displayData(AirbnbListing property){
+    private void update(){
+        AirbnbListing property = boroughProperties.get(currentPropertyIndex);
         hostName.setText("Host: " + property.getHost_name());
         neighbourhood.setText(property.getNeighbourhood());
         minNights.setText(property.getMinimumNights() + " minimum night(s)");

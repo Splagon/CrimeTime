@@ -40,7 +40,6 @@ public class PropertyViewer extends Stage {
         this.borough = borough;
         currentPropertyIndex = 0;
         makePropertyViewerScene();
-        show();
     }
 
     private void makePropertyViewerScene() throws Exception {
@@ -49,10 +48,11 @@ public class PropertyViewer extends Stage {
         properties = dataHandler.getPropertiesFromBorough(borough);
         
         BorderPane root = new BorderPane();
-        root.setPrefSize(600, 600);
+        root.setPadding(new Insets(0, 10, 0, 10));
+        root.setPrefSize(600, 400);
         
         // Create scene for the Vbox
-        Scene scene = new Scene(root, 600, 500);
+        Scene scene = new Scene(root);
         scene.getStylesheets().add("stylesheet.css");
         
         Label titleLabel = new Label(borough);
@@ -73,14 +73,13 @@ public class PropertyViewer extends Stage {
         
         prevButton = new Button("Previous");
             prevButton.setOnAction(e -> viewPreviousProperty());
-            prevButton.setPrefSize(100, 300);
-            prevButton.setPadding(new Insets(20));
+            prevButton.setPrefSize(130, 230);
         root.setAlignment(prevButton, Pos.CENTER);
         root.setLeft(prevButton);
         
         nextButton = new Button("Next");
             nextButton.setOnAction(e -> viewNextProperty());
-            nextButton.setPrefSize(100, 300);
+            nextButton.setPrefSize(130, 230);
         root.setAlignment(nextButton, Pos.CENTER);
         root.setRight(nextButton);
         
@@ -147,7 +146,7 @@ public class PropertyViewer extends Stage {
     private void viewNextProperty() {
         currentPropertyIndex++;
         
-        if (currentPropertyIndex > properties.size()) {
+        if (currentPropertyIndex > properties.size() - 1) {
             currentPropertyIndex = 0;
         }
         
@@ -158,7 +157,7 @@ public class PropertyViewer extends Stage {
         currentPropertyIndex--;
         
         if (currentPropertyIndex < 0) {
-            currentPropertyIndex = properties.size();
+            currentPropertyIndex = properties.size() -  1;
         }
         
         update();
