@@ -10,8 +10,8 @@
 }
 
 .label {
-    	-fx-font: 16px "Verdana";
-    	-fx-text-alignment: center;
+        -fx-font: 16px "Verdana";
+        -fx-text-alignment: center;
 }
 
 .titlelabel {
@@ -19,23 +19,19 @@
 }
 
 .boroughButton {
-    	-fx-min-width: 88px;
-    	-fx-min-height: 80px;
-    	-fx-background-color: rgba(00,00,00,0.2);
-    	-fx-font-size: 18px;
-    	-fx-text-fill: white;
+        -fx-min-width: 88px;
+        -fx-min-height: 80px;
+        -fx-background-color: rgba(00,00,00,0.2);
+        -fx-font-size: 18px;
+        -fx-text-fill: white;
 }
 
 .propertyViewerInfoLabels {
-	-fx-padding: 10px;
-	-fx-font: 12px "Verdana";
+    -fx-padding: 10px;
+    -fx-font: 12px "Verdana";
 }
 
 .title {
-	-fx-underline: true;
-	-fx-font-weight: bold;
-}
-
-.propertyViewerButtons {
-	-fx-padding: 10px;
+    -fx-underline: true;
+    -fx-font-weight: bold;
 }
