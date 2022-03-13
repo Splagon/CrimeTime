@@ -89,7 +89,7 @@ public class StatisticsData extends DataHandler
                 expensiveBorough = boroughs[i];
             }
         }
-        
+        System.out.println("test");
         return expensiveBorough; 
             
         

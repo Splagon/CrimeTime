@@ -30,7 +30,7 @@ public class DataHandler
         {
             AirbnbListing nextListing = (AirbnbListing) i.next();
             
-            if (nextListing.getNeighbourhood().toLowerCase() == borough.toLowerCase()) 
+            if((nextListing.getNeighbourhood().toLowerCase()).equals(borough.toLowerCase())) 
             {
                 listingsFromBorough.add(nextListing);
             }
