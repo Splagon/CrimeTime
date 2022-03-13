@@ -41,6 +41,14 @@ public class TestControllerProperty extends Application
     private int currentPropertyIndex;
     
     /**
+     * Display the characteristics of the first property 
+     */
+    @FXML
+    public void initialize(){
+        displayInitialData();
+    }
+    
+    /**
      * The start method is the main entry point for every JavaFX application. 
      * It is called after the init() method has returned and after 
      * the system is ready for the application to begin running.
@@ -99,7 +107,9 @@ public class TestControllerProperty extends Application
         //currentProperty = boroughProperties.get(rand.nextInt(boroughProperties.size()-1));
         currentPropertyIndex = 0;
         displayData(boroughProperties.get(currentPropertyIndex));
+        System.out.println(boroughProperties.get(currentPropertyIndex));
     }
+    // ------- Support Methods -------- //
     /**
      * Display the characteristics of a property
      */
@@ -110,5 +120,9 @@ public class TestControllerProperty extends Application
         numReviews.setText(property.getNumberOfReviews() + " Review(s)");
         price.setText("Price: £" + property.getPrice());
         roomType.setText(property.getRoom_type());
+    }
+    // ------- Main method to launch application -------- //
+    public static void main(String[] args) {
+        launch(args);
     }
 }
