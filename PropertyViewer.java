@@ -62,14 +62,11 @@ public class PropertyViewer extends Stage {
         root.setAlignment(titleLabel, Pos.CENTER);
         root.setTop(titleLabel);
         
-        // ImageView googleMaps = new ImageView(new Image("/Michael.JPG", true));
-            // googleMaps.setFitHeight(300);
-            // googleMaps.setPreserveRatio(true);
-        // root.setCenter(googleMaps);
-        
-        WebView googleMaps = new WebView();
-            webEngine = googleMaps.getEngine();
-            root.setCenter(googleMaps);
+        ImageView googleMaps = new ImageView(new Image("/Michael.JPG", true));
+            googleMaps.setFitHeight(230);
+            googleMaps.setFitWidth(230);
+            googleMaps.setPreserveRatio(false);
+        root.setCenter(googleMaps);
         
         prevButton = new Button("Previous");
             prevButton.setOnAction(e -> viewPreviousProperty());
