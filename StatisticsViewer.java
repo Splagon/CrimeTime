@@ -50,7 +50,7 @@ public class StatisticsViewer extends Stage
         Label availableTitle = new Label("Total Available Properties:");
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
         Label expensiveTitle = new Label("Most Expensive Borough:");
-        Label priceSDTitle = new Label("Price Standard Deviation:");
+        Label priceSDTitle = new Label("Standard Deviation of Price :");
         
         
         // Adding components 
