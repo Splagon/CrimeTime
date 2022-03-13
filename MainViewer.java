@@ -29,18 +29,14 @@ import javafx.scene.paint.Color;
 public class MainViewer extends Stage
 {
     // instance variables - replace the example below with your o
-    Scene welcomeScene;
-    Scene mapScene;
-    BorderPane root = new BorderPane();
-    String[][] mapPositions = {{ null, null, null, "Enfield", null, null, null },
-                               { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
-                               { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
-                               { "Hillingdon", "Ealing", "Kensington and Chelsea", "Westminster", "Tower Hamlets", "Newham", "Barking and Dagenham" },
-                               { "Hounslow", "Hammersmith and Fulham", "Wandsworth", "City of London", "Greenwich", "Bexley", null },
-                               { null, "Richmond upon Thames", "Merton", "Lambeth", "Southwark", "Lewisham", null },
-                               { null, "Kingston upon Thames", "Sutton", "Croydon", "Bromley", null, null },
-                              };
+    private Scene welcomeScene;
+    private Scene mapScene;
     
+    private BorderPane root = new BorderPane();
+    
+    private String[][] mapPositions;
+    
+    private DataHandler dataHandler = new DataHandler();
     
     /**
      * Constructor for objects of class MapViewer
@@ -48,10 +44,10 @@ public class MainViewer extends Stage
     public MainViewer() throws Exception
     {         
         //makeWelcomeScene();
-        makeMapScene();
-        
-        setScene(mapScene);
         //setScene(welcomeScene);
+        
+        makeMapScene();
+        setScene(mapScene);
     }
     
 
@@ -87,6 +83,8 @@ public class MainViewer extends Stage
     }
     
     private void makeMapScene() throws Exception {
+        mapPositions = dataHandler.getMapPositions();
+        
         setTitle("Map of London");
         
         ComboBox<String> minBox = new ComboBox<String>();
@@ -212,7 +210,13 @@ public class MainViewer extends Stage
     }
     
     private void openPropertyViewer(String boroughName) throws Exception {
-        Stage stage = new PropertyViewerGUI();
+        // Stage stage = new PropertyViewerGUI();
+
+        // TestControllerProperty tcp = new TestControllerProperty();
+        // tcp.setBoroughConcerned(boroughName);
+        // tcp.start(stage);
+        
+        Stage stage = new PropertyViewer(boroughName);
         stage.show();
     }
 }
