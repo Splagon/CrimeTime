@@ -48,8 +48,7 @@ public class MainViewer extends Stage
         
         makeMapScene();
         setScene(mapScene);
-    }   
-    
+    }
 
     private void makeWelcomeScene() {
         setTitle("Welcome");
