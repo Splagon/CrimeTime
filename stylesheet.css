@@ -14,6 +14,10 @@
         -fx-text-alignment: center;
 }
 
+.statslabels {
+    -fx-font-weight: bold; 
+}
+
 .titlelabel {
     -fx-font: 20px "Comic Sans MS";
 }

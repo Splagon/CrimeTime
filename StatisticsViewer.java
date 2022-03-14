@@ -99,12 +99,6 @@ public class StatisticsViewer extends Stage
         priceSD.getStyleClass().add("statsvbox");
         window.getStyleClass().add("statsvbox");
         
-        reviewTitle.getStyleClass().add("statslabels"); 
-        availableTitle.getStyleClass().add("statslabels"); 
-        noHomeAndApartmentsTitle.getStyleClass().add("statslabels"); 
-        expensiveTitle.getStyleClass().add("statslabels"); 
-        priceSDTitle.getStyleClass().add("statslabels");
-        
         reviewInfo.getStyleClass().add("statslabels"); 
         availableInfo.getStyleClass().add("statslabels"); 
         noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
