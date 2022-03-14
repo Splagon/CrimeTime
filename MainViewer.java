@@ -43,13 +43,12 @@ public class MainViewer extends Stage
      * Constructor for objects of class MapViewer
      */
     public MainViewer() throws Exception
-    {         
-        makeWelcomeScene();
-        makeMapScene();
-        setScene(welcomeScene);
+    {
+        //makeWelcomeScene();
+        //setScene(welcomeScene);
         
-        //makeMapScene();
-        //setScene(mapScene);
+        makeMapScene();
+        setScene(mapScene);
     }
     
 
@@ -129,34 +128,105 @@ public class MainViewer extends Stage
             stats.add(statsLabel3, 0, 3);
             stats.add(statsLabel4, 0, 4);
             
+        // AnchorPane mapView = new AnchorPane();
+            // mapView.setMinSize(708, 700);
+        
+            // ArrayList<StackPane> mapRows = new ArrayList<StackPane>();
+
+            // // rows
+            // for (int m = 0; m < mapPositions.length; m++) {
+                
+                // StackPane row = new StackPane();
+                
+                // FlowPane hexagonRow = new FlowPane();
+                    // hexagonRow.setMinWidth(mapView.getMinWidth());
+                
+                // FlowPane buttonRow = new FlowPane();
+                    // buttonRow.setMinWidth(mapView.getMinWidth());
+                
+                // if (m % 2 == 0) {
+                        // Rectangle HRinsetSpace = new Rectangle(47,94);
+                            // HRinsetSpace.setFill(Color.TRANSPARENT);
+                        // Rectangle BRinsetSpace = new Rectangle(47,94);
+                            // BRinsetSpace.setFill(Color.TRANSPARENT);
+                            // //BRinsetSpace.setFill(Color.GOLD);
+                        // hexagonRow.getChildren().add(HRinsetSpace);
+                        // buttonRow.getChildren().add(BRinsetSpace);
+                // }
+                
+                // //columns
+                // for (int n = 0; n < mapPositions[m].length; n++) {
+                    // if (mapPositions[m][n] != null) {
+                        // MapButton boroughButton = new MapButton(mapPositions[m][n]);
+                        // boroughButton.setShape(new Circle(94));
+                        // boroughButton.getStyleClass().add("boroughButton");
+                        // boroughButton.setOnAction(e ->
+                            // {
+                                // try { openPropertyViewer(boroughButton.getBoroughName()); }
+                                // catch (Exception ex) {}
+                            // });
+                            
+                        // buttonRow.setMargin(boroughButton, new Insets(0,3,0,3));
+                        // buttonRow.getChildren().add(boroughButton);
+                        
+                        // ImageView hexagonIV = new ImageView(new Image("/hexagon.png", true));
+                            // hexagonIV.setFitWidth(94);
+                            // hexagonIV.setFitHeight(94);
+                    
+                        // hexagonRow.getChildren().add(hexagonIV);
+                    // }
+                    // else {
+                        // Rectangle HRemptySpace = new Rectangle(94,94);
+                        // Rectangle BRemptySpace = new Rectangle(94,94);
+                            // HRemptySpace.setFill(Color.TRANSPARENT);
+                            // BRemptySpace.setFill(Color.TRANSPARENT);
+                            // //BRemptySpace.setFill(Color.GOLD);
+                        // hexagonRow.getChildren().add(HRemptySpace);
+                        // buttonRow.getChildren().add(BRemptySpace);
+                    // }
+                // }
+                
+                // if (m % 2 == 1) {
+                        // Rectangle HRinsetSpace = new Rectangle(47,94);
+                            // HRinsetSpace.setFill(Color.TRANSPARENT);
+                        // Rectangle BRinsetSpace = new Rectangle(47,94);
+                            // BRinsetSpace.setFill(Color.TRANSPARENT);
+                        // hexagonRow.getChildren().add(HRinsetSpace);
+                        // buttonRow.getChildren().add(BRinsetSpace);
+                // }
+                
+                // row.getChildren().addAll(hexagonRow, buttonRow);
+                // mapRows.add(row);
+                
+                // AnchorPane.setTopAnchor(row, m*72.0);
+                // mapView.getChildren().add(row);
+            // }
+            
         AnchorPane mapView = new AnchorPane();
             mapView.setMinSize(708, 700);
         
-            ArrayList<StackPane> mapRows = new ArrayList<StackPane>();
+            //ArrayList<StackPane> mapRows = new ArrayList<StackPane>();
 
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
                 
-                StackPane row = new StackPane();
+                FlowPane row = new FlowPane();
+                StackPane rowSpace;
                 
-                FlowPane hexagonRow = new FlowPane();
-                    hexagonRow.setMinWidth(mapView.getMinWidth());
-                
-                FlowPane buttonRow = new FlowPane();
-                    buttonRow.setMinWidth(mapView.getMinWidth());
+                row.setMinWidth(mapView.getMinWidth());
                 
                 if (m % 2 == 0) {
-                        Rectangle HRinsetSpace = new Rectangle(47,94);
-                            HRinsetSpace.setFill(Color.TRANSPARENT);
-                        Rectangle BRinsetSpace = new Rectangle(47,94);
-                            BRinsetSpace.setFill(Color.TRANSPARENT);
-                            //BRinsetSpace.setFill(Color.GOLD);
-                        hexagonRow.getChildren().add(HRinsetSpace);
-                        buttonRow.getChildren().add(BRinsetSpace);
+                        rowSpace = new StackPane();
+                        Rectangle insetSpace = new Rectangle(47,94);
+                            insetSpace.setFill(Color.TRANSPARENT);
+                            //insetSpace.setFill(Color.GOLD);
+                        rowSpace.getChildren().add(insetSpace);
+                        row.getChildren().add(rowSpace);
                 }
                 
                 //columns
                 for (int n = 0; n < mapPositions[m].length; n++) {
+                    rowSpace = new StackPane();
                     if (mapPositions[m][n] != null) {
                         MapButton boroughButton = new MapButton(mapPositions[m][n]);
                         boroughButton.setShape(new Circle(94));
@@ -167,37 +237,34 @@ public class MainViewer extends Stage
                                 catch (Exception ex) {}
                             });
                             
-                        buttonRow.setMargin(boroughButton, new Insets(0,3,0,3));
-                        buttonRow.getChildren().add(boroughButton);
+                        //buttonRow.setMargin(boroughButton, new Insets(0,3,0,3));
+                        //buttonRow.getChildren().add(boroughButton);
                         
                         ImageView hexagonIV = new ImageView(new Image("/hexagon.png", true));
                             hexagonIV.setFitWidth(94);
                             hexagonIV.setFitHeight(94);
                     
-                        hexagonRow.getChildren().add(hexagonIV);
+                        rowSpace.getChildren().addAll(hexagonIV, boroughButton);
                     }
                     else {
-                        Rectangle HRemptySpace = new Rectangle(94,94);
-                        Rectangle BRemptySpace = new Rectangle(94,94);
-                            HRemptySpace.setFill(Color.TRANSPARENT);
-                            BRemptySpace.setFill(Color.TRANSPARENT);
-                            //BRemptySpace.setFill(Color.GOLD);
-                        hexagonRow.getChildren().add(HRemptySpace);
-                        buttonRow.getChildren().add(BRemptySpace);
+                        Rectangle emptySpace = new Rectangle(94,94);
+                            emptySpace.setFill(Color.TRANSPARENT);
+                            //emptySpace.setFill(Color.GOLD);
+                        rowSpace.getChildren().add(emptySpace);
                     }
+                    row.getChildren().add(rowSpace);
                 }
                 
                 if (m % 2 == 1) {
-                        Rectangle HRinsetSpace = new Rectangle(47,94);
-                            HRinsetSpace.setFill(Color.TRANSPARENT);
-                        Rectangle BRinsetSpace = new Rectangle(47,94);
-                            BRinsetSpace.setFill(Color.TRANSPARENT);
-                        hexagonRow.getChildren().add(HRinsetSpace);
-                        buttonRow.getChildren().add(BRinsetSpace);
+                    rowSpace = new StackPane();
+                    Rectangle insetSpace = new Rectangle(47,94);
+                        insetSpace.setFill(Color.TRANSPARENT);
+                        //insetSpace.setFill(Color.GOLD);
+                    rowSpace.getChildren().add(insetSpace);
+                    row.getChildren().add(rowSpace);
                 }
                 
-                row.getChildren().addAll(hexagonRow, buttonRow);
-                mapRows.add(row);
+                //mapRows.add(row);
                 
                 AnchorPane.setTopAnchor(row, m*72.0);
                 mapView.getChildren().add(row);
@@ -223,12 +290,6 @@ public class MainViewer extends Stage
     }
     
     private void openPropertyViewer(String boroughName) throws Exception {
-        // Stage stage = new PropertyViewerGUI();
-
-        // TestControllerProperty tcp = new TestControllerProperty();
-        // tcp.setBoroughConcerned(boroughName);
-        // tcp.start(stage);
-        
         Stage stage = new PropertyViewer(boroughName);
         stage.show();
     }
