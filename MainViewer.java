@@ -45,6 +45,7 @@ public class MainViewer extends Stage
     public MainViewer() throws Exception
     {         
         makeWelcomeScene();
+        makeMapScene();
         setScene(welcomeScene);
         
         //makeMapScene();
@@ -60,12 +61,6 @@ public class MainViewer extends Stage
         Label instructionsTitle = new Label("Instructions: ");
         Label instructions1 = new Label("- When you are ready click start, this will send you to the next window where you will be able to enter your price range.");
         Label instructions2 = new Label("- Once your price range has been selected you will then be able to view the map and see where the you be able to find a property. ");
-            
-        // instructions1.setWrapText(true);
-        // instructions1.setPrefWidth(350);
-        
-        // instructions2.setWrapText(true);
-        // instructions2.setPrefWidth(350);
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
