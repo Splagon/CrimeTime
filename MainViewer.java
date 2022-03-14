@@ -20,7 +20,6 @@ import java.io.File;
 import java.util.Iterator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.effect.ColorAdjust;
-import java.util.Random;
 
 /**
  * Write a description of class MapViewer here.
@@ -38,7 +37,7 @@ public class MainViewer extends Stage
     
     private String[][] mapPositions;
     
-    private DataHandler dataHandler = new DataHandler();
+    private StatisticsData dataHandler = new StatisticsData();
     
     /**
      * Constructor for objects of class MapViewer
@@ -173,7 +172,7 @@ public class MainViewer extends Stage
                             hexagonOutline.setFitHeight(94);
                         
                         Image hexagonFilledImage = new Image("/hexagonFilled.png");
-                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage));
+                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName()));
                             hexagonFilled.setFitWidth(94);
                             hexagonFilled.setFitHeight(94);
                     
@@ -227,22 +226,22 @@ public class MainViewer extends Stage
         stage.show();
     }
     
-    private Image setHexagonFilledColour(Image hexagon) {
+    private Image setHexagonFilledColour(Image hexagon, String boroughName) {
         int height = (int) hexagon.getHeight();
         int width = (int) hexagon.getWidth();
         
         WritableImage renderedHexagon = new WritableImage(hexagon.getPixelReader(), width, height);
         final PixelReader pixelReader = renderedHexagon.getPixelReader();
         final PixelWriter pixelWriter = renderedHexagon.getPixelWriter();
-        Random rand = new Random();
+
         
-        Color randColour = Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));
+        Color boroughColour = dataHandler.getBoroughMapColour(boroughName);
         
         for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++) { 
                 if (! pixelReader.getColor(x, y).equals(Color.rgb(0, 0, 0, 0.0))) {
                     //pixelWriter.setColor(x, y, Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)));
-                    pixelWriter.setColor(x,y,randColour);
+                    pixelWriter.setColor(x,y,boroughColour);
                 }            
             }
         }
