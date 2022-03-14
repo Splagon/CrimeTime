@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.image.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,8 +19,8 @@ import java.net.URL;
 import java.io.File;
 import java.util.Iterator;
 import javafx.scene.layout.GridPane;
-
-import javafx.scene.paint.Color;
+import javafx.scene.effect.ColorAdjust;
+import java.util.Random;
 
 /**
  * Write a description of class MapViewer here.
@@ -246,90 +247,14 @@ public class MainViewer extends Stage
             stats.add(statsLabel2, 0, 2);
             stats.add(statsLabel3, 0, 3);
             stats.add(statsLabel4, 0, 4);
-            
-        // AnchorPane mapView = new AnchorPane();
-            // mapView.setMinSize(708, 700);
-        
-            // ArrayList<StackPane> mapRows = new ArrayList<StackPane>();
-
-            // // rows
-            // for (int m = 0; m < mapPositions.length; m++) {
-                
-                // StackPane row = new StackPane();
-                
-                // FlowPane hexagonRow = new FlowPane();
-                    // hexagonRow.setMinWidth(mapView.getMinWidth());
-                
-                // FlowPane buttonRow = new FlowPane();
-                    // buttonRow.setMinWidth(mapView.getMinWidth());
-                
-                // if (m % 2 == 0) {
-                        // Rectangle HRinsetSpace = new Rectangle(47,94);
-                            // HRinsetSpace.setFill(Color.TRANSPARENT);
-                        // Rectangle BRinsetSpace = new Rectangle(47,94);
-                            // BRinsetSpace.setFill(Color.TRANSPARENT);
-                            // //BRinsetSpace.setFill(Color.GOLD);
-                        // hexagonRow.getChildren().add(HRinsetSpace);
-                        // buttonRow.getChildren().add(BRinsetSpace);
-                // }
-                
-                // //columns
-                // for (int n = 0; n < mapPositions[m].length; n++) {
-                    // if (mapPositions[m][n] != null) {
-                        // MapButton boroughButton = new MapButton(mapPositions[m][n]);
-                        // boroughButton.setShape(new Circle(94));
-                        // boroughButton.getStyleClass().add("boroughButton");
-                        // boroughButton.setOnAction(e ->
-                            // {
-                                // try { openPropertyViewer(boroughButton.getBoroughName()); }
-                                // catch (Exception ex) {}
-                            // });
-                            
-                        // buttonRow.setMargin(boroughButton, new Insets(0,3,0,3));
-                        // buttonRow.getChildren().add(boroughButton);
-                        
-                        // ImageView hexagonIV = new ImageView(new Image("/hexagon.png", true));
-                            // hexagonIV.setFitWidth(94);
-                            // hexagonIV.setFitHeight(94);
-                    
-                        // hexagonRow.getChildren().add(hexagonIV);
-                    // }
-                    // else {
-                        // Rectangle HRemptySpace = new Rectangle(94,94);
-                        // Rectangle BRemptySpace = new Rectangle(94,94);
-                            // HRemptySpace.setFill(Color.TRANSPARENT);
-                            // BRemptySpace.setFill(Color.TRANSPARENT);
-                            // //BRemptySpace.setFill(Color.GOLD);
-                        // hexagonRow.getChildren().add(HRemptySpace);
-                        // buttonRow.getChildren().add(BRemptySpace);
-                    // }
-                // }
-                
-                // if (m % 2 == 1) {
-                        // Rectangle HRinsetSpace = new Rectangle(47,94);
-                            // HRinsetSpace.setFill(Color.TRANSPARENT);
-                        // Rectangle BRinsetSpace = new Rectangle(47,94);
-                            // BRinsetSpace.setFill(Color.TRANSPARENT);
-                        // hexagonRow.getChildren().add(HRinsetSpace);
-                        // buttonRow.getChildren().add(BRinsetSpace);
-                // }
-                
-                // row.getChildren().addAll(hexagonRow, buttonRow);
-                // mapRows.add(row);
-                
-                // AnchorPane.setTopAnchor(row, m*72.0);
-                // mapView.getChildren().add(row);
-            // }
-            
+    
         AnchorPane mapView = new AnchorPane();
-            mapView.setMinSize(708, 700);
-        
-            //ArrayList<StackPane> mapRows = new ArrayList<StackPane>();
-
+            mapView.setMinSize(720, 700);
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
                 
                 FlowPane row = new FlowPane();
+                row.setHgap(1.0);
                 StackPane rowSpace;
                 
                 row.setMinWidth(mapView.getMinWidth());
@@ -355,15 +280,17 @@ public class MainViewer extends Stage
                                 try { openPropertyViewer(boroughButton.getBoroughName()); }
                                 catch (Exception ex) {}
                             });
-                            
-                        //buttonRow.setMargin(boroughButton, new Insets(0,3,0,3));
-                        //buttonRow.getChildren().add(boroughButton);
                         
-                        ImageView hexagonIV = new ImageView(new Image("/hexagon.png", true));
-                            hexagonIV.setFitWidth(94);
-                            hexagonIV.setFitHeight(94);
+                        ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
+                            hexagonOutline.setFitWidth(94);
+                            hexagonOutline.setFitHeight(94);
+                        
+                        Image hexagonFilledImage = new Image("/hexagonFilled.png");
+                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage));
+                            hexagonFilled.setFitWidth(94);
+                            hexagonFilled.setFitHeight(94);
                     
-                        rowSpace.getChildren().addAll(hexagonIV, boroughButton);
+                        rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
                     }
                     else {
                         Rectangle emptySpace = new Rectangle(94,94);
@@ -411,5 +338,28 @@ public class MainViewer extends Stage
     private void openPropertyViewer(String boroughName) throws Exception {
         Stage stage = new PropertyViewer(boroughName);
         stage.show();
+    }
+    
+    private Image setHexagonFilledColour(Image hexagon) {
+        int height = (int) hexagon.getHeight();
+        int width = (int) hexagon.getWidth();
+        
+        WritableImage renderedHexagon = new WritableImage(hexagon.getPixelReader(), width, height);
+        final PixelReader pixelReader = renderedHexagon.getPixelReader();
+        final PixelWriter pixelWriter = renderedHexagon.getPixelWriter();
+        Random rand = new Random();
+        
+        Color randColour = Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));
+        
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) { 
+                if (! pixelReader.getColor(x, y).equals(Color.rgb(0, 0, 0, 0.0))) {
+                    //pixelWriter.setColor(x, y, Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)));
+                    pixelWriter.setColor(x,y,randColour);
+                }            
+            }
+        }
+        
+        return (Image) renderedHexagon;
     }
 }

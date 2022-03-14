@@ -120,21 +120,12 @@ public class StatisticsViewer extends Stage
         
         title.getStyleClass().add("titlelabel"); 
         
-        
-        
-        
         xAxis.setLabel("Borough");
         yAxis.setLabel("Average Price");
-        
-        averagePriceData.setName("Average Price per Borough");
-
+        averagePriceData.setName("Average Price per Night per Borough");
         setAveragePricePerBorough();
-
         barChart.getData().add(averagePriceData);
-        
-        
-        
-        
+    
         setInfo();
         
         setTitle("Information");
