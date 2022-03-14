@@ -11,6 +11,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.StageStyle;
 import javafx.scene.text.TextAlignment;
 import javafx.geometry.*;
+import java.util.Map;
+import java.util.HashMap;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 
 /**
  * Write a description of class StatisticsViewer here.
@@ -29,6 +35,7 @@ public class StatisticsViewer extends Stage
     Label noHomeAndApartmentsInfo = new Label("default");
     Label expensiveInfo = new Label("default");
     Label priceSDInfo = new Label("default");
+    XYChart.Series averagePriceData = new XYChart.Series();
 
     /**
      * Constructor for objects of class StatisticsViewer
@@ -43,6 +50,11 @@ public class StatisticsViewer extends Stage
         VBox noHomeAndApartments = new VBox();
         VBox expensive = new VBox(); 
         VBox priceSD = new VBox(); 
+        VBox averagePrice = new VBox(); 
+        
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        BarChart barChart = new BarChart(xAxis, yAxis);
           
         
         // The "title" labels in the window
@@ -58,6 +70,7 @@ public class StatisticsViewer extends Stage
         window.setAlignment(Pos.CENTER);
         window.getChildren().add(title); 
         window.getChildren().add(statsGrid); 
+        window.getChildren().add(barChart);
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
         
@@ -88,7 +101,7 @@ public class StatisticsViewer extends Stage
         priceSD.getChildren().add(priceSDInfo);
         
         //Set the scene and add CSS
-        Scene scene = new Scene(window, 600,300);
+        Scene scene = new Scene(window, 1200,700);
         
         scene.getStylesheets().add("stylesheet.css");
         statsGrid.setId("statsgrid"); 
@@ -107,6 +120,12 @@ public class StatisticsViewer extends Stage
         
         title.getStyleClass().add("titlelabel"); 
         
+        xAxis.setLabel("Borough");
+        yAxis.setLabel("Average Price");
+        averagePriceData.setName("Average Price per Night per Borough");
+        setAveragePricePerBorough();
+        barChart.getData().add(averagePriceData);
+    
         setInfo();
         
         setTitle("Information");
@@ -169,5 +188,14 @@ public class StatisticsViewer extends Stage
     {
         String x = "" + String.format("%.2f", data.getPriceSDInfo()) + " (2 d.p)";
         priceSDInfo.setText(x); 
+    }
+    
+    private void setAveragePricePerBorough()
+    {
+        Map<String, Integer> information = data.getAveragePricePerBorough();
+        for (Map.Entry<String, Integer> set : information.entrySet())
+        {
+            averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
+        }
     }
 }
