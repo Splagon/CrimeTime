@@ -55,7 +55,49 @@ public class DataHandler
         return listings; 
     }
     
-    public String[][] getMapPositions() {
+    public String[][] getMapPositions() 
+    {
         return mapPositions;
     }
+    
+    /**
+     * Searches through every listing and returns the lowest price for one night out of every property
+     * 
+     * this is used in creating the drop box for the user to select their price range they are looking for
+     */
+    public Integer getLowestPrice()
+    {
+        Iterator i = listings.iterator();
+        int lowest = 9999999;
+        while (i.hasNext()) 
+        {
+            AirbnbListing currentProperty = (AirbnbListing) i.next();
+            int currentPrice = currentProperty.getPrice();
+            if (currentPrice < lowest) {
+                lowest = currentPrice;
+            }
+        }
+        return lowest;
+    }
+    
+    /**
+     * Searches through every listing and returns the highest price for one night out of every property
+     * 
+     * this is used in creating the drop box for the user to select their price range they are looking for
+     */
+    public Integer getHighestPrice()
+    {
+        Iterator i = listings.iterator();
+        int highest = 0;
+        while (i.hasNext()) 
+        {
+            AirbnbListing currentProperty = (AirbnbListing) i.next();
+            int currentPrice = currentProperty.getPrice();
+            if (currentPrice > highest) {
+                highest = currentPrice;
+            }
+        }
+        return highest;
+    }
+
 }
