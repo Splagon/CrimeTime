@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.net.URL;
 import java.io.File;
 import java.util.Iterator;
+import javafx.scene.layout.GridPane;
 
 import javafx.scene.paint.Color;
 
@@ -43,11 +44,11 @@ public class MainViewer extends Stage
      */
     public MainViewer() throws Exception
     {         
-        //makeWelcomeScene();
-        //setScene(welcomeScene);
+        makeWelcomeScene();
+        setScene(welcomeScene);
         
-        makeMapScene();
-        setScene(mapScene);
+        //makeMapScene();
+        //setScene(mapScene);
     }
     
 
@@ -57,9 +58,14 @@ public class MainViewer extends Stage
         //All labels in the window
         Label title = new Label("Welcome!");
         Label instructionsTitle = new Label("Instructions: ");
-        Label instructionsText = new Label("    - When you are ready click start, this will send you to the next window where you will be able to enter your price range." + "\n" +
-                                       "    - Once your price range has been selected you will then be able to view the map and see where the you be able to find " + "\n" +
-                                       "      a property");
+        Label instructions1 = new Label("- When you are ready click start, this will send you to the next window where you will be able to enter your price range.");
+        Label instructions2 = new Label("- Once your price range has been selected you will then be able to view the map and see where the you be able to find a property. ");
+            
+        // instructions1.setWrapText(true);
+        // instructions1.setPrefWidth(350);
+        
+        // instructions2.setWrapText(true);
+        // instructions2.setPrefWidth(350);
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
@@ -70,16 +76,28 @@ public class MainViewer extends Stage
         BorderPane instrcutionsAndStart = new BorderPane();
 
         //adding elements to the window
-        window.getChildren().addAll(title, instrcutionsAndStart); 
-        
-        instructions.getChildren().addAll(instructionsTitle, instructionsText); 
+        window.getChildren().addAll(title, instrcutionsAndStart);
+        instructions.getChildren().addAll(instructionsTitle, instructions1, instructions2); 
         
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
-        //creating the scene
-        root.setCenter(window);
-        welcomeScene = new Scene(root, 1000, 300);
+        //creating the scene and adding the CSS
+        welcomeScene = new Scene(window, 500, 500);
+        welcomeScene.getStylesheets().add("stylesheet.css");
+        
+        title.getStyleClass().add("welcomeTittle");
+        
+        instructionsTitle.getStyleClass().add("instructionsTittle"); 
+        
+        instructions1.getStyleClass().add("instructions"); 
+        instructions2.getStyleClass().add("instructions"); 
+        
+        window.getStyleClass().add("windowVBox");
+        
+        instrcutionsAndStart.getStyleClass().add("instrcutionsAndStart");
+        
+        startButton.getStyleClass().add("startButton");
     }
     
     private void makeMapScene() throws Exception {

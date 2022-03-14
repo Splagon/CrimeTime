@@ -35,3 +35,54 @@
     -fx-underline: true;
     -fx-font-weight: bold;
 }
+
+.welcomeTittle {
+    -fx-font: 30px "Ariel";
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-underline: true;
+    -fx-font-weight: bold;
+}
+
+.instructionsTittle {
+    -fx-font: 20px "Ariel";
+    -fx-underline: true;
+}
+
+.instructions {
+    -fx-font: 15px "Ariel";
+    -fx-max-width: 350;
+    -fx-spacing: 5;
+    -fx-wrap-text: true;
+    -fx-text-alignment: left;
+}
+
+.windowVBox {
+    -fx-padding: 10;
+    -fx-spacing: 8;
+    -fx-alignment: center;
+}
+
+.windowBox:Node {
+    -fx-alignment: center;
+}
+
+.instrcutionsAndStart {
+    -fx-padding: 10;
+    -fx-spacing: 8;
+}
+
+.startButton {
+    -fx-font: 25px "Ariel";
+    -fx-padding: 20;
+    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
+}
+
+.startButton:hover {
+    -fx-font: 28px "Ariel";
+    -fx-background-color: orange;
+}
+
+.startButton:pressed {
+    -fx-background-color: grey;
+}
