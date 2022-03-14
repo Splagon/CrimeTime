@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import javafx.stage.StageStyle;
 import javafx.scene.text.TextAlignment;
+import javafx.geometry.*;
 
 /**
  * Write a description of class StatisticsViewer here.
@@ -54,6 +55,7 @@ public class StatisticsViewer extends Stage
         
         
         // Adding components 
+        window.setAlignment(Pos.CENTER);
         window.getChildren().add(title); 
         window.getChildren().add(statsGrid); 
         
@@ -62,20 +64,25 @@ public class StatisticsViewer extends Stage
         statsGrid.add(noHomeAndApartments, 1, 0);
         statsGrid.add(expensive, 1, 1);
         statsGrid.add(priceSD, 0, 2); 
+        statsGrid.setHalignment(reviews, HPos.CENTER);
         
-        
+        reviews.setAlignment(Pos.CENTER);
         reviews.getChildren().add(reviewTitle); 
         reviews.getChildren().add(reviewInfo);
         
+        available.setAlignment(Pos.CENTER);
         available.getChildren().add(availableTitle); 
         available.getChildren().add(availableInfo);
         
+        noHomeAndApartments.setAlignment(Pos.CENTER);
         noHomeAndApartments.getChildren().add(noHomeAndApartmentsTitle); 
         noHomeAndApartments.getChildren().add(noHomeAndApartmentsInfo);
         
+        expensive.setAlignment(Pos.CENTER);
         expensive.getChildren().add(expensiveTitle); 
         expensive.getChildren().add(expensiveInfo);
         
+        priceSD.setAlignment(Pos.CENTER);
         priceSD.getChildren().add(priceSDTitle); 
         priceSD.getChildren().add(priceSDInfo);
         
