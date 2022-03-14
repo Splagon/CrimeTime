@@ -43,7 +43,7 @@ public class MainViewer extends Stage
      * Constructor for objects of class MapViewer
      */
     public MainViewer() throws Exception
-    {
+    {         
         //makeWelcomeScene();
         //setScene(welcomeScene);
         
