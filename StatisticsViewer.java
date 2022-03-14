@@ -58,13 +58,14 @@ public class StatisticsViewer extends Stage
         window.setAlignment(Pos.CENTER);
         window.getChildren().add(title); 
         window.getChildren().add(statsGrid); 
+        title.setAlignment(Pos.CENTER);
+        statsGrid.setAlignment(Pos.CENTER); 
         
         statsGrid.add(reviews, 0, 0);
         statsGrid.add(available, 0, 1);
         statsGrid.add(noHomeAndApartments, 1, 0);
         statsGrid.add(expensive, 1, 1);
         statsGrid.add(priceSD, 0, 2); 
-        statsGrid.setHalignment(reviews, HPos.CENTER);
         
         reviews.setAlignment(Pos.CENTER);
         reviews.getChildren().add(reviewTitle); 
