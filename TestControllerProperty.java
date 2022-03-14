@@ -1,5 +1,3 @@
-
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +7,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+import java.util.Random;
+import java.util.ArrayList;
 
 /**
  * Write a description of JavaFX class TestControllerProperty here.
@@ -18,6 +21,35 @@ import javafx.stage.Stage;
  */
 public class TestControllerProperty extends Application
 {
+    @FXML
+    private Label hostName;
+    @FXML
+    private Label neighbourhood;
+    @FXML
+    private Label minNights;
+    @FXML
+    private Label numReviews;
+    @FXML
+    private Label price;
+    @FXML
+    private Label roomType;
+    private DataHandler dataHandler = new DataHandler();
+    // List holding all properties of one borough
+    private ArrayList<AirbnbListing> boroughProperties = dataHandler.getData();
+    // Object to randomize
+    private Random rand = new Random();
+    private int currentPropertyIndex;
+    private String borough;
+    Stage PVGUI;
+    
+    /**
+     * Display the characteristics of the first property 
+     */
+    @FXML
+    public void initialize(){
+        update();
+    }
+    
     /**
      * The start method is the main entry point for every JavaFX application. 
      * It is called after the init() method has returned and after 
@@ -25,11 +57,72 @@ public class TestControllerProperty extends Application
      *
      * @param  stage the primary stage for this application.
      */
-    @Override
-    public void start(Stage stage)
-    {
-        // Create a Button or any control item
-        stage = new PropertyViewer();
+    public void start(Stage stage) throws Exception
+    { 
+        stage = new PropertyViewerGUI();
+        PVGUI = stage;
         stage.show();
+    }
+    
+    // ------- Implementations of the buttons -------- //
+    
+    /**
+     * Implements the action when the "next" button is clicked.
+     */
+    @FXML
+    private void nextAction(ActionEvent event) {
+        currentPropertyIndex += 1;
+        if(currentPropertyIndex > boroughProperties.size() - 1){
+            currentPropertyIndex = 0;
+        }
+        update();
+    }
+    /**
+     * Implements the action when the "previous" button is clicked.
+     */
+    @FXML
+    private void previousAction(ActionEvent event) {
+        currentPropertyIndex -= 1;
+        if(currentPropertyIndex < 0){
+            currentPropertyIndex = boroughProperties.size()-1;
+        }
+        update();
+    }
+    /**
+     * Implements the action when the image is clicked.
+     * (It may be a good idea to implement a pop up window that displays
+     * the description of the property when the mouse hovers over the image.)
+     */
+    private void imageAction(ActionEvent event) {
+        
+    }
+    /**
+     * Implements the view on map button's action 
+     */
+    private void viewOnMapAction(ActionEvent event) {
+        
+    }
+    // ------- Support Methods -------- //
+    /**
+     * Display the characteristics of a property
+     */
+    private void update(){
+        AirbnbListing property = boroughProperties.get(currentPropertyIndex);
+        hostName.setText("Host: " + property.getHost_name());
+        neighbourhood.setText(property.getNeighbourhood());
+        minNights.setText(property.getMinimumNights() + " minimum night(s)");
+        numReviews.setText(property.getNumberOfReviews() + " Review(s)");
+        price.setText("Price: £" + property.getPrice());
+        roomType.setText(property.getRoom_type());
+    }
+    /**
+     * Get the borough concerned
+     */
+    public void setBoroughConcerned(String borough){
+        this.borough = borough;
+    }
+    // ------- Main method to launch application -------- //
+    public static void main(String[] args) {
+        launch(args);
     }
 }

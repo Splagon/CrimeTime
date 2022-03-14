@@ -8,6 +8,17 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.Group;
+import javafx.scene.image.*;
+import javafx.scene.shape.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import javafx.scene.control.ComboBox;
+import java.util.ArrayList;
+import java.net.URL;
+import java.io.File;
+import java.util.Iterator;
+
+import javafx.scene.paint.Color;
 
 /**
  * Write a description of class MapViewer here.
@@ -18,20 +29,27 @@ import javafx.scene.Group;
 public class MainViewer extends Stage
 {
     // instance variables - replace the example below with your o
-    Scene welcomeScene;
-    Scene mapScene;
-
+    private Scene welcomeScene;
+    private Scene mapScene;
+    
+    private BorderPane root = new BorderPane();
+    
+    private String[][] mapPositions;
+    
+    private DataHandler dataHandler = new DataHandler();
+    
     /**
      * Constructor for objects of class MapViewer
      */
-    public MainViewer()
-    {
-        makeWelcomeScene();
-        makeMapScene();
-        
-        setScene(mapScene);
+    public MainViewer() throws Exception
+    {         
+        //makeWelcomeScene();
         //setScene(welcomeScene);
-    }
+        
+        makeMapScene();
+        setScene(mapScene);
+    }   
+    
 
     private void makeWelcomeScene() {
         setTitle("Welcome");
@@ -60,11 +78,28 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setCenter(startButton);
         
         //creating the scene
-        welcomeScene = new Scene(window, 1000, 300);
+        root.setCenter(window);
+        welcomeScene = new Scene(root, 1000, 300);
     }
     
-    private void makeMapScene() {
+    private void makeMapScene() throws Exception {
+        mapPositions = dataHandler.getMapPositions();
+        
         setTitle("Map of London");
+        
+        ComboBox<String> minBox = new ComboBox<String>();
+        minBox.getItems().addAll("No Min", "500", "600", "700", "800", "900");
+        
+        ComboBox<String> maxBox = new ComboBox<String>();
+        maxBox.getItems().addAll("500", "600", "700", "800", "900", "No Max");
+        
+        HBox minMaxBox = new HBox();
+        minMaxBox.getChildren().addAll(minBox, maxBox);
+            
+        root.setTop(minMaxBox);
+        
+        mapScene = new Scene(root, 500, 500);
+        mapScene.getStylesheets().add("stylesheet.css");
         
         Pane window = new FlowPane();
         
@@ -80,19 +115,80 @@ public class MainViewer extends Stage
             stats.add(statsLabel2, 0, 2);
             stats.add(statsLabel3, 0, 3);
             stats.add(statsLabel4, 0, 4);
-        
-        GridPane map = new GridPane();
-            Button nb0 = new Button("nb0");
-            Button nb1 = new Button("nb1");
-            Button nb2 = new Button("nb2");
-            Button nb3 = new Button("nb3");
-            Button nb4 = new Button("nb4");
             
-            map.add(nb0, 1, 0);
-            map.add(nb1, 0, 1);
-            map.add(nb2, 1, 1);
-            map.add(nb3, 2, 1);
-            map.add(nb4, 1, 2);
+        AnchorPane mapView = new AnchorPane();
+            mapView.setMinSize(708, 700);
+        
+            ArrayList<StackPane> mapRows = new ArrayList<StackPane>();
+
+            // rows
+            for (int m = 0; m < mapPositions.length; m++) {
+                
+                StackPane row = new StackPane();
+                
+                FlowPane hexagonRow = new FlowPane();
+                    hexagonRow.setMinWidth(mapView.getMinWidth());
+                
+                FlowPane buttonRow = new FlowPane();
+                    buttonRow.setMinWidth(mapView.getMinWidth());
+                
+                if (m % 2 == 0) {
+                        Rectangle HRinsetSpace = new Rectangle(47,94);
+                            HRinsetSpace.setFill(Color.TRANSPARENT);
+                        Rectangle BRinsetSpace = new Rectangle(47,94);
+                            BRinsetSpace.setFill(Color.TRANSPARENT);
+                            //BRinsetSpace.setFill(Color.GOLD);
+                        hexagonRow.getChildren().add(HRinsetSpace);
+                        buttonRow.getChildren().add(BRinsetSpace);
+                }
+                
+                //columns
+                for (int n = 0; n < mapPositions[m].length; n++) {
+                    if (mapPositions[m][n] != null) {
+                        MapButton boroughButton = new MapButton(mapPositions[m][n]);
+                        boroughButton.setShape(new Circle(94));
+                        boroughButton.getStyleClass().add("boroughButton");
+                        boroughButton.setOnAction(e ->
+                            {
+                                try { openPropertyViewer(boroughButton.getBoroughName()); }
+                                catch (Exception ex) {}
+                            });
+                            
+                        buttonRow.setMargin(boroughButton, new Insets(0,3,0,3));
+                        buttonRow.getChildren().add(boroughButton);
+                        
+                        ImageView hexagonIV = new ImageView(new Image("/hexagon.png", true));
+                            hexagonIV.setFitWidth(94);
+                            hexagonIV.setFitHeight(94);
+                    
+                        hexagonRow.getChildren().add(hexagonIV);
+                    }
+                    else {
+                        Rectangle HRemptySpace = new Rectangle(94,94);
+                        Rectangle BRemptySpace = new Rectangle(94,94);
+                            HRemptySpace.setFill(Color.TRANSPARENT);
+                            BRemptySpace.setFill(Color.TRANSPARENT);
+                            //BRemptySpace.setFill(Color.GOLD);
+                        hexagonRow.getChildren().add(HRemptySpace);
+                        buttonRow.getChildren().add(BRemptySpace);
+                    }
+                }
+                
+                if (m % 2 == 1) {
+                        Rectangle HRinsetSpace = new Rectangle(47,94);
+                            HRinsetSpace.setFill(Color.TRANSPARENT);
+                        Rectangle BRinsetSpace = new Rectangle(47,94);
+                            BRinsetSpace.setFill(Color.TRANSPARENT);
+                        hexagonRow.getChildren().add(HRinsetSpace);
+                        buttonRow.getChildren().add(BRinsetSpace);
+                }
+                
+                row.getChildren().addAll(hexagonRow, buttonRow);
+                mapRows.add(row);
+                
+                AnchorPane.setTopAnchor(row, m*72.0);
+                mapView.getChildren().add(row);
+            }
             
         GridPane key = new GridPane();
             Label keyLabel = new Label("Key");
@@ -106,9 +202,21 @@ public class MainViewer extends Stage
             key.add(keyLabel2, 0, 2);
             key.add(keyLabel3, 0, 3);
             key.add(keyLabel4, 0, 4);
+
+        window.getChildren().addAll(stats, mapView, key);
         
-        window.getChildren().addAll(stats, map, key);
+        root.setCenter(window);
+
+    }
+    
+    private void openPropertyViewer(String boroughName) throws Exception {
+        // Stage stage = new PropertyViewerGUI();
+
+        // TestControllerProperty tcp = new TestControllerProperty();
+        // tcp.setBoroughConcerned(boroughName);
+        // tcp.start(stage);
         
-        mapScene = new Scene(window, 500, 500);
+        Stage stage = new PropertyViewer(boroughName);
+        stage.show();
     }
 }
