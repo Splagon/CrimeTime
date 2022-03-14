@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Calculates the data needed for the statistics viewer
@@ -143,5 +144,32 @@ public class StatisticsData extends DataHandler
         }
         standardDeviation = Math.sqrt((x/size) - (y/size)*(y/size));
         return standardDeviation; 
+    }
+    
+    /**
+     * @return HashMap information which stores the average price per night in each borough
+     */
+    public HashMap<String, Integer> getAveragePricePerBorough()
+    {
+        HashMap<String, Integer> information = new HashMap<>();
+        for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
+        {
+            for(int columns = 0; columns < mapPositions[rows].length; columns++)
+            {   
+                if(mapPositions[rows][columns] != null)
+                {
+                    ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns]);
+                    int totalPrice = 0;
+                    for (int j = 0; j < boroughProperty.size(); j++) 
+                    {
+                        AirbnbListing property = boroughProperty.get(j);
+                        totalPrice += property.getPrice();
+                    }
+                    Integer averagePrice = new Integer(totalPrice / boroughProperty.size()); 
+                    information.put(mapPositions[rows][columns], averagePrice);
+                }
+            }
+        }
+        return information; 
     }
 }
