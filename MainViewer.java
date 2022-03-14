@@ -26,11 +26,11 @@ public class MainViewer extends Stage
      */
     public MainViewer()
     {
-        //makeWelcomeScene();
+        makeWelcomeScene();
         makeMapScene();
         
-        //setScene(mapScene);
-        setScene(welcomeScene);
+        setScene(mapScene);
+        //setScene(welcomeScene);
     }
 
     private void makeWelcomeScene() {
