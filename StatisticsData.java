@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+import javafx.scene.paint.Color;
+import java.util.Iterator;
 
 /**
  * Calculates the data needed for the statistics viewer
@@ -171,5 +174,40 @@ public class StatisticsData extends DataHandler
             }
         }
         return information; 
+    }
+    
+    public Color getBoroughMapColour(String boroughName) {
+        Random rand = new Random();
+        Color boroughColour = Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));
+        
+        HashMap<String, Integer> averagePricePerBorough = getAveragePricePerBorough();
+        
+        return boroughColour;
+        
+        //ArrayList<String> appb = new ArrayList<String>();
+        
+        // for (String borough : averagePricePerBorough.keySet()) {
+            // int boroughAVpB = averagePricePerBorough.get(borough);
+            // if (! appb.isEmpty()) {
+                // //ArrayList<String> hold = new ArrayList<String>();
+                // boolean spotFound = false;
+                // int index = 0;
+                // for (Iterator i = appb.iterator(); i.hasNext() && spotFound == false; index++) {
+                    // String boroughComparison = (String) i.next();
+                    // if (averagePricePerBorough.get(boroughComparison) > boroughAVpB) {
+                        // appb.add(index, borough);
+                        // spotFound = true;
+                    // }
+                // }
+                // if (spotFound == false) {
+                   // appb.add(borough); 
+                // }
+            // }
+            // else {
+                // appb.add(borough);
+            // }
+        // }
+        
+        
     }
 }

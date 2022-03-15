@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -20,7 +21,7 @@ import java.io.File;
 import java.util.Iterator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.effect.ColorAdjust;
-import java.util.Random;
+import javafx.concurrent.Task;
 
 /**
  * Write a description of class MapViewer here.
@@ -38,11 +39,15 @@ public class MainViewer extends Stage
     private Integer selectedMinPrice;
     private Integer selectedMaxPrice;
     
+    private Label statusLabel;
+    
     private BorderPane root = new BorderPane();
+    
+    private AnchorPane mapView;
     
     private String[][] mapPositions;
     
-    private DataHandler dataHandler = new DataHandler();
+    private StatisticsData dataHandler = new StatisticsData();
     
     /**
      * Constructor for objects of class MapViewer
@@ -51,8 +56,13 @@ public class MainViewer extends Stage
     {         
         makeWelcomeScene();
         setScene(welcomeScene);
-        makePriceSelectorScene();
-        makeMapScene();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try { makeHexagonMap(); }
+                catch (Exception e) {}
+            }
+        });
     }
 
     private void makeWelcomeScene() {
@@ -99,6 +109,7 @@ public class MainViewer extends Stage
     }
     
     private void changeToPriceSelector(ActionEvent event) {
+        makePriceSelectorScene();
         setScene(priceSelectorScene);
     }
     
@@ -108,18 +119,15 @@ public class MainViewer extends Stage
         //All labels in the window
         Label title = new Label("Price Selection!");
         Label instruction = new Label("Please select a min and max for your price range: ");
-        Label statusLabel = new Label(showStatus());
+        statusLabel = new Label(showStatus());
         
         //All buttons in the window
-        Button confirm = new Button("Confirm");
-        confirm.setOnAction(this::changeToMapScene);
         
         //Layout of the window
         BorderPane window = new BorderPane(); //root of the window
         VBox titleAndInstruction = new VBox();
-        HBox minMaxBox = new HBox();
-        ComboBox<String> minBox = new ComboBox<String>();
-        ComboBox<String> maxBox = new ComboBox<String>();
+        
+        HBox minMaxBox = createMinMaxBox();
         
         //Adding elements to the window
         window.setCenter(minMaxBox);
@@ -128,9 +136,16 @@ public class MainViewer extends Stage
 
         titleAndInstruction.getChildren().addAll(title, instruction);
         
-        minMaxBox.getChildren().addAll(minBox, maxBox, confirm);
-        
+        //Creating the scene and adding the css styling
+        priceSelectorScene = new Scene(window, 500, 500);
+    }
+    
+    private HBox createMinMaxBox() {
         //adding the options to the price selection box, as well as assigning appropriate values to the instance variables
+        HBox minMaxBox = new HBox();
+        ComboBox<String>minBox = new ComboBox<String>();
+        ComboBox<String> maxBox = new ComboBox<String>();
+        
         int low = dataHandler.getLowestPrice();
         int high = dataHandler.getHighestPrice();
         ArrayList<String> options = getPriceSelectionOptions(low, high);
@@ -139,7 +154,7 @@ public class MainViewer extends Stage
         maxBox.getItems().addAll(options);
         maxBox.getItems().add("No Max");
         
-        minBox.setOnAction((event) -> {
+        minBox.setOnAction(e -> {
             String selected = minBox.getValue();
             if ("No Min".equals(selected)) {
                 selectedMinPrice = 0;
@@ -149,7 +164,7 @@ public class MainViewer extends Stage
             }
             statusLabel.setText(showStatus());
         });
-        maxBox.setOnAction((event) -> {
+        maxBox.setOnAction(e -> {
             String selected = maxBox.getValue();
             if ("No Max".equals(selected)) {
                 selectedMaxPrice = 0;
@@ -160,8 +175,33 @@ public class MainViewer extends Stage
             statusLabel.setText(showStatus());
         });
         
-        //Creating the scene and adding the css styling
-        priceSelectorScene = new Scene(window, 500, 500);
+        Button confirm = new Button("Confirm");
+        confirm.setOnAction(e -> 
+                            {
+                                try { changeToMapScene(); }
+                                catch (Exception ex) {}
+                            });
+        
+        minMaxBox.getChildren().addAll(minBox, maxBox, confirm);
+        
+        return minMaxBox;
+    }
+    
+    private HBox setInitialMinMaxBoxSelection(HBox minMaxBox) {
+        ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
+        ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
+        
+        if (selectedMinPrice != null){
+            minBox.getSelectionModel().select(selectedMinPrice.toString());
+        }
+        if (selectedMaxPrice != null){
+            maxBox.getSelectionModel().select(selectedMaxPrice.toString());
+        }
+        
+        minMaxBox.getChildren().set(0, minBox);
+        minMaxBox.getChildren().set(1, maxBox);
+        
+        return minMaxBox;
     }
     
     /**
@@ -208,25 +248,18 @@ public class MainViewer extends Stage
         }
     }
     
-    private void changeToMapScene(ActionEvent event) {
+    private void changeToMapScene() throws Exception {
         if (selectedMinPrice != null && selectedMaxPrice != null) {
+            makeMapScene();
             setScene(mapScene);
         }
     }
     
     private void makeMapScene() throws Exception{
-        mapPositions = dataHandler.getMapPositions();
-        
         setTitle("Map of London");
         
-        ComboBox<String> minBox = new ComboBox<String>();
-        minBox.getItems().addAll("No Min", "500", "600", "700", "800", "900");
-        
-        ComboBox<String> maxBox = new ComboBox<String>();
-        maxBox.getItems().addAll("500", "600", "700", "800", "900", "No Max");
-        
-        HBox minMaxBox = new HBox();
-        minMaxBox.getChildren().addAll(minBox, maxBox);
+        HBox minMaxBox = createMinMaxBox();
+            minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             
         root.setTop(minMaxBox);
         
@@ -247,8 +280,29 @@ public class MainViewer extends Stage
             stats.add(statsLabel2, 0, 2);
             stats.add(statsLabel3, 0, 3);
             stats.add(statsLabel4, 0, 4);
+            
+        GridPane key = new GridPane();
+            Label keyLabel = new Label("Key");
+            Label keyLabel1 = new Label("Value 1");
+            Label keyLabel2 = new Label("Value 2");
+            Label keyLabel3 = new Label("Value 3");
+            Label keyLabel4 = new Label("Value 4");
+            
+            key.add(keyLabel, 0, 0);
+            key.add(keyLabel1, 0, 1);
+            key.add(keyLabel2, 0, 2);
+            key.add(keyLabel3, 0, 3);
+            key.add(keyLabel4, 0, 4);
+
+        window.getChildren().addAll(stats, mapView, key);
+        
+        root.setCenter(window);
+    }
     
-        AnchorPane mapView = new AnchorPane();
+    private void makeHexagonMap() throws Exception {
+        mapPositions = dataHandler.getMapPositions();
+        
+        mapView = new AnchorPane();
             mapView.setMinSize(720, 700);
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
@@ -286,9 +340,9 @@ public class MainViewer extends Stage
                             hexagonOutline.setFitHeight(94);
                         
                         Image hexagonFilledImage = new Image("/hexagonFilled.png");
-                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage));
-                            hexagonFilled.setFitWidth(94);
-                            hexagonFilled.setFitHeight(94);
+                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName()));
+                            hexagonFilled.setFitWidth(93);
+                            hexagonFilled.setFitHeight(93);
                     
                         rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
                     }
@@ -315,24 +369,6 @@ public class MainViewer extends Stage
                 AnchorPane.setTopAnchor(row, m*72.0);
                 mapView.getChildren().add(row);
             }
-            
-        GridPane key = new GridPane();
-            Label keyLabel = new Label("Key");
-            Label keyLabel1 = new Label("Value 1");
-            Label keyLabel2 = new Label("Value 2");
-            Label keyLabel3 = new Label("Value 3");
-            Label keyLabel4 = new Label("Value 4");
-            
-            key.add(keyLabel, 0, 0);
-            key.add(keyLabel1, 0, 1);
-            key.add(keyLabel2, 0, 2);
-            key.add(keyLabel3, 0, 3);
-            key.add(keyLabel4, 0, 4);
-
-        window.getChildren().addAll(stats, mapView, key);
-        
-        root.setCenter(window);
-
     }
     
     private void openPropertyViewer(String boroughName) throws Exception {
@@ -340,22 +376,22 @@ public class MainViewer extends Stage
         stage.show();
     }
     
-    private Image setHexagonFilledColour(Image hexagon) {
+    private Image setHexagonFilledColour(Image hexagon, String boroughName) {
         int height = (int) hexagon.getHeight();
         int width = (int) hexagon.getWidth();
         
         WritableImage renderedHexagon = new WritableImage(hexagon.getPixelReader(), width, height);
         final PixelReader pixelReader = renderedHexagon.getPixelReader();
         final PixelWriter pixelWriter = renderedHexagon.getPixelWriter();
-        Random rand = new Random();
+
         
-        Color randColour = Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));
+        Color boroughColour = dataHandler.getBoroughMapColour(boroughName);
         
         for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++) { 
                 if (! pixelReader.getColor(x, y).equals(Color.rgb(0, 0, 0, 0.0))) {
                     //pixelWriter.setColor(x, y, Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)));
-                    pixelWriter.setColor(x,y,randColour);
+                    pixelWriter.setColor(x,y,boroughColour);
                 }            
             }
         }
