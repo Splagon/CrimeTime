@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import javafx.geometry.*;
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
+import java.net.URL;
+import javax.script.*;
 
 /**
  * JavaFX version of PVGUI in code
@@ -62,14 +64,9 @@ public class PropertyViewer extends Stage {
         root.setAlignment(titleLabel, Pos.CENTER);
         root.setTop(titleLabel);
         
-        // ImageView googleMaps = new ImageView(new Image("/Michael.JPG", true));
-            // googleMaps.setFitHeight(300);
-            // googleMaps.setPreserveRatio(true);
-        // root.setCenter(googleMaps);
-        
         WebView googleMaps = new WebView();
+            BorderPane.setMargin(googleMaps, new Insets(0,10,0,10));
             webEngine = googleMaps.getEngine();
-            root.setCenter(googleMaps);
         root.setCenter(googleMaps);
         
         prevButton = new Button("Previous");
@@ -85,7 +82,6 @@ public class PropertyViewer extends Stage {
         root.setRight(nextButton);
         
         info = new GridPane();
-            info.setGridLinesVisible(true);
             info.setAlignment(Pos.CENTER);
             info.setPrefWidth(600);
             
@@ -140,7 +136,8 @@ public class PropertyViewer extends Stage {
         roomTypeLabel.setText(listing.getRoom_type());
         minNightsLabel.setText(listing.getMinimumNights() + minNightsPostfix);
         
-        String url = "https://www.openstreetmap.org/query?lat=" + listing.getLatitude() + "&lon=" + listing.getLongitude();
+        String url = "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",16,0/600x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw";
+        //URL url = getClass().getResource("googleMap.html");
         webEngine.load(url);
     }
     
