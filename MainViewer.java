@@ -265,6 +265,7 @@ public class MainViewer extends Stage
     }
     
     private String showStatus(Button confirm) {
+
         if (selectedMinPrice == null && selectedMaxPrice == null) {
             confirm.setDisable(true);
             return "Currently nothing has been selected!";
@@ -430,7 +431,7 @@ public class MainViewer extends Stage
         }
         catch (Exception e) {
             Alert alert = new Alert(AlertType.WARNING);
-                alert.setHeaderText("No Available Properties");
+                alert.setHeaderText("No Available Properties in " + boroughName);
                 alert.setContentText("Unfortunately, there are no available properties in this\nborough within your price range. Welcome to the London\nhousing market...");
             alert.show();
         };
