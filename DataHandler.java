@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Collections;
+import java.io.*;
 /**
  * Write a description of class DataHandler here.
  *
@@ -49,6 +51,15 @@ public class DataHandler
         }
         
         return listingsFromBorough;
+    }
+    
+    public ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
+        ArrayList<AirbnbListing> unsortedListing = getPropertiesFromBorough(borough, minPrice, maxPrice);
+        if (sortingElement == "Price"  || sortingElement  == "Reviews"){
+            return selectionSort(unsortedListing, sortingElement);
+        }else{
+            return nameSort(); 
+        }
     }
     
     public ArrayList<AirbnbListing> getPropertiesFromBorough(String borough)
@@ -110,5 +121,30 @@ public class DataHandler
         }
         return highest;
     }
-
+    
+    private ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
+        int position;
+        ArrayList<AirbnbListing> sortedList = unsortedList;
+        for (int i = 0; i < sortedList.size(); i++){
+            position = i;
+            for(int j = i + 1; j < sortedList.size(); j++){
+                if(sortingElement.equals("Price")) {
+                    if (sortedList.get(j).getPrice() < sortedList.get(position).getPrice()) {
+                    position = j;
+                    }
+                }
+                if(sortingElement.equals("Reviews")) {
+                    if (sortedList.get(j).getNumberOfReviews() < sortedList.get(position).getNumberOfReviews()) {
+                    position = j;
+                    }
+                }
+            }
+            Collections.swap(sortedList, position, i);
+        }
+        return sortedList;
+    }
+    
+    private ArrayList<AirbnbListing> nameSort(){
+        return null;
+    }
 }

@@ -165,4 +165,18 @@ public class AirbnbListing {
                 ", availability365=" + availability365 +
                 '}';
     }
+    
+    // public int getSortingElement(String sortingElement){
+        // int value = 0;
+        // switch(sortingElement){
+            // case "Price":
+                // value = getPrice();
+            // case "Reviews":
+                // value = getNumberOfReviews();
+            // //case "Name":
+                // //value = getHost_name();
+        // }
+        // System.out.println(value);
+        // return value;
+    // }
 }
