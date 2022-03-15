@@ -14,6 +14,9 @@ import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
 import java.net.URL;
 import javax.script.*;
+import javafx.scene.Node;
+import javafx.stage.Popup;
+import javafx.scene.layout.VBox;
 
 /**
  * JavaFX version of PVGUI in code
@@ -28,8 +31,8 @@ public class PropertyViewer extends Stage {
     private String borough;
     
     private GridPane info;
-    private Label hostLabel, priceLabel, noOfReviewsLabel, roomTypeLabel, minNightsLabel;
-    private Button prevButton, nextButton;
+    private Label hostLabel, priceLabel, noOfReviewsLabel, roomTypeLabel, minNightsLabel, descriptionLabel;
+    private Button prevButton, nextButton, infoButton;
     
     private final String hostPrefix = "Host: ";
     private final String pricePrefix = "Price: £";
@@ -37,6 +40,8 @@ public class PropertyViewer extends Stage {
     private final String minNightsPostfix = " night(s) minimum";
     
     private WebEngine webEngine;
+    
+    private Stage descriptionStage;
     
     public PropertyViewer(String borough) throws Exception {
         this.borough = borough;
@@ -64,22 +69,26 @@ public class PropertyViewer extends Stage {
         root.setAlignment(titleLabel, Pos.CENTER);
         root.setTop(titleLabel);
         
+        
         WebView googleMaps = new WebView();
-            BorderPane.setMargin(googleMaps, new Insets(0,10,0,10));
+            root.setMargin(googleMaps, new Insets(0,10,0,10));
             webEngine = googleMaps.getEngine();
         root.setCenter(googleMaps);
         
         prevButton = new Button("Previous");
             prevButton.setOnAction(e -> viewPreviousProperty());
             prevButton.setPrefSize(130, 230);
-        root.setAlignment(prevButton, Pos.CENTER);
         root.setLeft(prevButton);
+        root.setAlignment(prevButton, Pos.CENTER);
         
         nextButton = new Button("Next");
             nextButton.setOnAction(e -> viewNextProperty());
             nextButton.setPrefSize(130, 230);
-        root.setAlignment(nextButton, Pos.CENTER);
         root.setRight(nextButton);
+        root.setAlignment(nextButton, Pos.CENTER);
+        
+        infoButton = new Button("Description");
+            infoButton.setOnAction(e -> popUpAction());
         
         info = new GridPane();
             info.setAlignment(Pos.CENTER);
@@ -90,6 +99,7 @@ public class PropertyViewer extends Stage {
             noOfReviewsLabel = new Label();
             roomTypeLabel = new Label();
             minNightsLabel = new Label();
+            descriptionLabel = new Label();
             
             hostLabel.getStyleClass().add("propertyViewerInfoLabels");
             priceLabel.getStyleClass().add("propertyViewerInfoLabels");
@@ -99,13 +109,15 @@ public class PropertyViewer extends Stage {
         
             info.add(hostLabel, 0, 0);
             info.add(priceLabel, 0, 1);
-            info.add(noOfReviewsLabel, 1, 0);
+            info.add(infoButton, 1, 0);
+            info.add(noOfReviewsLabel, 1, 1);
             info.add(roomTypeLabel, 2, 0);
             info.add(minNightsLabel, 2, 1);
             
             info.setConstraints(hostLabel, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
             info.setConstraints(priceLabel, 0, 1, 1, 1, HPos.CENTER, VPos.CENTER);
-            info.setConstraints(noOfReviewsLabel, 1, 0, 1, 2, HPos.CENTER, VPos.CENTER);
+            info.setConstraints(infoButton, 1, 0, 1, 1, HPos.CENTER, VPos.CENTER);
+            info.setConstraints(noOfReviewsLabel, 1, 1, 1, 2, HPos.CENTER, VPos.CENTER);
             info.setConstraints(roomTypeLabel, 2, 0, 1, 1, HPos.CENTER, VPos.CENTER);
             info.setConstraints(minNightsLabel, 2, 1, 1, 1, HPos.CENTER, VPos.CENTER);
             
@@ -135,9 +147,14 @@ public class PropertyViewer extends Stage {
         noOfReviewsLabel.setText(listing.getNumberOfReviews() + noOfReviewsPostfix);
         roomTypeLabel.setText(listing.getRoom_type());
         minNightsLabel.setText(listing.getMinimumNights() + minNightsPostfix);
+        descriptionLabel.setText(listing.getName());
+        
+        if(descriptionStage != null){
+            descriptionStage.close();
+            descriptionStage = null;
+        }
         
         String url = "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",16,0/600x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw";
-        //URL url = getClass().getResource("googleMap.html");
         webEngine.load(url);
     }
     
@@ -159,6 +176,31 @@ public class PropertyViewer extends Stage {
         }
         
         update();
+    }
+    
+    private void popUpAction(){
+        if(descriptionStage == null){
+            createDescriptionStage();
+        }else{
+            descriptionStage.close();
+            descriptionStage = null;
+        }
+    }
+    
+    private void createDescriptionStage(){
+        descriptionStage = new Stage();
+        descriptionStage.setTitle("Description!");
+        descriptionStage.setX(200);
+        descriptionStage.setY(200);
+        
+        VBox root = new VBox();
+        root.getChildren().add(descriptionLabel);
+        root.setAlignment(Pos.CENTER);
+        
+        Scene scene = new Scene(root,300,100);
+        descriptionStage.setResizable(false);
+        descriptionStage.setScene(scene);
+        descriptionStage.showAndWait();        
     }
 }
 
