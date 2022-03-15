@@ -128,20 +128,30 @@ public class DataHandler
         for (int i = 0; i < sortedList.size(); i++){
             position = i;
             for(int j = i + 1; j < sortedList.size(); j++){
-                if(sortingElement.equals("Price")) {
-                    if (sortedList.get(j).getPrice() < sortedList.get(position).getPrice()) {
+                if (getSortByInt(sortedList.get(j), sortingElement) < getSortByInt(sortedList.get(position), sortingElement)) {
                     position = j;
-                    }
-                }
-                if(sortingElement.equals("Reviews")) {
-                    if (sortedList.get(j).getNumberOfReviews() < sortedList.get(position).getNumberOfReviews()) {
-                    position = j;
-                    }
                 }
             }
             Collections.swap(sortedList, position, i);
         }
         return sortedList;
+    }
+    
+    private int getSortByInt(AirbnbListing listing, String sortingElement) 
+    {
+        int intToReturn = 0;
+
+        switch (sortingElement) 
+        {
+            case "Price":
+                intToReturn = listing.getPrice();
+                break;
+            case "Reviews":
+                intToReturn = listing.getNumberOfReviews();
+                break;
+        }
+        
+        return intToReturn;
     }
     
     private ArrayList<AirbnbListing> nameSort(){
