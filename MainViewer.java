@@ -308,8 +308,13 @@ public class MainViewer extends Stage
             
         root.setTop(minMaxBox);
         
-        mapScene = new Scene(root, 500, 500);
-        mapScene.getStylesheets().add("stylesheet.css");
+        if (mapScene == null) {
+            mapScene = new Scene(root, 500, 500);
+        }
+        
+        //if (mapScene.getStylesheets().isEmpty()) {
+            mapScene.getStylesheets().add("stylesheet.css");
+        //}
         
         Pane window = new FlowPane();
         
@@ -426,7 +431,7 @@ public class MainViewer extends Stage
         catch (Exception e) {
             Alert alert = new Alert(AlertType.WARNING);
                 alert.setHeaderText("No Available Properties");
-                alert.setContentText("Unfortunately, there are no availiable properties in this\nborough within your price range. Welcome to the London\nhousing market...");
+                alert.setContentText("Unfortunately, there are no available properties in this\nborough within your price range. Welcome to the London\nhousing market...");
             alert.show();
         };
     }
