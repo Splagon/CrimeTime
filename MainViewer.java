@@ -39,6 +39,9 @@ public class MainViewer extends Stage
     private Integer selectedMinPrice;
     private Integer selectedMaxPrice;
     
+    private int lowestPrice;
+    private int highestPrice;
+    
     private Label statusLabel;
     
     private BorderPane root = new BorderPane();
@@ -63,6 +66,8 @@ public class MainViewer extends Stage
                 catch (Exception e) {}
             }
         });
+        lowestPrice = dataHandler.getLowestPrice();
+        highestPrice = dataHandler.getHighestPrice();
     }
 
     private void makeWelcomeScene() {
@@ -146,9 +151,9 @@ public class MainViewer extends Stage
         ComboBox<String>minBox = new ComboBox<String>();
         ComboBox<String> maxBox = new ComboBox<String>();
         
-        int low = dataHandler.getLowestPrice();
-        int high = dataHandler.getHighestPrice();
-        ArrayList<String> options = getPriceSelectionOptions(low, high);
+        // int low = dataHandler.getLowestPrice();
+        // int high = dataHandler.getHighestPrice();
+        ArrayList<String> options = getPriceSelectionOptions(lowestPrice, highestPrice);
         minBox.getItems().add("No Min");
         minBox.getItems().addAll(options);
         maxBox.getItems().addAll(options);
@@ -167,7 +172,7 @@ public class MainViewer extends Stage
         maxBox.setOnAction(e -> {
             String selected = maxBox.getValue();
             if ("No Max".equals(selected)) {
-                selectedMaxPrice = 0;
+                selectedMaxPrice = highestPrice+1;
             }
             else {
                 selectedMaxPrice = Integer.parseInt(selected);
@@ -176,6 +181,11 @@ public class MainViewer extends Stage
         });
         
         Button confirm = new Button("Confirm");
+        confirm.setDisable(true);
+        // if ("Both your min and max price have been selected".equals(showStatus())) {
+            // confirm.setDisable(false);
+        // }
+        //confirm.disableProperty().bind(!("Both your min and max price have been selected".equals(statusLabel)));
         confirm.setOnAction(e -> 
                             {
                                 try { changeToMapScene(); }
@@ -243,16 +253,24 @@ public class MainViewer extends Stage
         else if (selectedMinPrice == null && selectedMaxPrice != null) {
             return "Currently only your max price has been selected!";
         }
-        else {
+        else  {
+            if (selectedMinPrice < lowestPrice || selectedMaxPrice > highestPrice)  {
+                return "Both your min and max price have been selected";
+            }
+            else if (selectedMinPrice >= selectedMaxPrice) {
+                return "Your min price is not less than your max price!";
+            }
             return "Both your min and max price have been selected";
         }
     }
     
     private void changeToMapScene() throws Exception {
-        if (selectedMinPrice != null && selectedMaxPrice != null) {
-            makeMapScene();
-            setScene(mapScene);
-        }
+        // if (selectedMinPrice != null && selectedMaxPrice != null && ("No Min".equals(selectedMinPrice.toString()) || "No Max".equals(selectedMaxPrice.toString()))) {
+            // makeMapScene();
+            // setScene(mapScene);
+        // }
+        makeMapScene();
+        setScene(mapScene);
     }
     
     private void makeMapScene() throws Exception {
