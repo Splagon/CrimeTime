@@ -214,7 +214,7 @@ public class MainViewer extends Stage
         }
     }
     
-    private void makeMapScene() throws Exception {
+    private void makeMapScene() throws Exception{
         mapPositions = dataHandler.getMapPositions();
         
         setTitle("Map of London");
