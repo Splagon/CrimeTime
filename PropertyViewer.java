@@ -29,6 +29,8 @@ public class PropertyViewer extends Stage {
     private int currentPropertyIndex;
     
     private String borough;
+    private int minPrice;
+    private int maxPrice;
     
     private GridPane info;
     private Label hostLabel, priceLabel, noOfReviewsLabel, roomTypeLabel, minNightsLabel, descriptionLabel;
@@ -43,8 +45,10 @@ public class PropertyViewer extends Stage {
     
     private Stage descriptionStage;
     
-    public PropertyViewer(String borough) throws Exception {
+    public PropertyViewer(String borough, int minPrice, int maxPrice) throws Exception {
         this.borough = borough;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
         currentPropertyIndex = 0;
         makePropertyViewerScene();
     }
@@ -52,7 +56,7 @@ public class PropertyViewer extends Stage {
     private void makePropertyViewerScene() throws Exception {
         setTitle("Property Viewer");
         
-        properties = dataHandler.getPropertiesFromBorough(borough);
+        properties = dataHandler.getPropertiesFromBorough(borough, minPrice, maxPrice);
         
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(0, 10, 0, 10));

@@ -29,7 +29,7 @@ public class DataHandler
         listings = dataLoader.load();
     }
     
-    public ArrayList<AirbnbListing> getPropertiesFromBorough(String borough) 
+    public ArrayList<AirbnbListing> getPropertiesFromBorough(String borough, int minPrice, int maxPrice)
     {
         ArrayList<AirbnbListing> listingsFromBorough = new ArrayList<AirbnbListing>();
         Iterator i = listings.iterator();
@@ -38,11 +38,22 @@ public class DataHandler
         {
             AirbnbListing nextListing = (AirbnbListing) i.next();
             
-            if((nextListing.getNeighbourhood().toLowerCase()).equals(borough.toLowerCase())) 
+            if((nextListing.getNeighbourhood().toLowerCase()).equals(borough.toLowerCase()) || borough == null) 
             {
-                listingsFromBorough.add(nextListing);
+                if (nextListing.getPrice() >= minPrice) {
+                    if (nextListing.getPrice() <= maxPrice || maxPrice < 0) {
+                        listingsFromBorough.add(nextListing);
+                    }
+                }
             }
         }
+        
+        return listingsFromBorough;
+    }
+    
+    public ArrayList<AirbnbListing> getPropertiesFromBorough(String borough)
+    {
+        ArrayList<AirbnbListing> listingsFromBorough = getPropertiesFromBorough(borough, -1, -1);
         
         return listingsFromBorough;
     }
@@ -68,12 +79,12 @@ public class DataHandler
     public Integer getLowestPrice()
     {
         Iterator i = listings.iterator();
-        int lowest = 9999999;
+        int lowest = -1;
         while (i.hasNext()) 
         {
             AirbnbListing currentProperty = (AirbnbListing) i.next();
             int currentPrice = currentProperty.getPrice();
-            if (currentPrice < lowest) {
+            if (currentPrice < lowest || lowest < 0) {
                 lowest = currentPrice;
             }
         }
@@ -88,7 +99,7 @@ public class DataHandler
     public Integer getHighestPrice()
     {
         Iterator i = listings.iterator();
-        int highest = 0;
+        int highest = -1;
         while (i.hasNext()) 
         {
             AirbnbListing currentProperty = (AirbnbListing) i.next();

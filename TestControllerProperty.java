@@ -11,7 +11,7 @@ public class TestControllerProperty extends Application
 {
     @Override
     public void start(Stage stage) throws Exception{
-        stage = new PropertyViewer("camden");
+        stage = new PropertyViewer("camden", -1, -1);
         stage.show();
     }
 }

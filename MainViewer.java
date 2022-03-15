@@ -22,6 +22,8 @@ import java.util.Iterator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.effect.ColorAdjust;
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.*;
 
 /**
  * Write a description of class MapViewer here.
@@ -47,22 +49,17 @@ public class MainViewer extends Stage
     
     private String[][] mapPositions;
     
-    private StatisticsData dataHandler = new StatisticsData();
+    private StatisticsData dataHandler;
     
     /**
      * Constructor for objects of class MapViewer
      */
     public MainViewer() throws Exception
-    {         
+    {   
+        dataHandler = new StatisticsData();
+        
         makeWelcomeScene();
         setScene(welcomeScene);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try { makeHexagonMap(); }
-                catch (Exception e) {}
-            }
-        });
     }
 
     private void makeWelcomeScene() {
@@ -157,7 +154,7 @@ public class MainViewer extends Stage
         minBox.setOnAction(e -> {
             String selected = minBox.getValue();
             if ("No Min".equals(selected)) {
-                selectedMinPrice = 0;
+                selectedMinPrice = -1;
             }
             else {
                 selectedMinPrice = Integer.parseInt(selected);
@@ -167,7 +164,7 @@ public class MainViewer extends Stage
         maxBox.setOnAction(e -> {
             String selected = maxBox.getValue();
             if ("No Max".equals(selected)) {
-                selectedMaxPrice = 0;
+                selectedMaxPrice = -1;
             }
             else {
                 selectedMaxPrice = Integer.parseInt(selected);
@@ -178,6 +175,9 @@ public class MainViewer extends Stage
         Button confirm = new Button("Confirm");
         confirm.setOnAction(e -> 
                             {
+                                try { makeHexagonMap(); }
+                                catch (Exception ex) {}
+                                
                                 try { changeToMapScene(); }
                                 catch (Exception ex) {}
                             });
@@ -192,10 +192,20 @@ public class MainViewer extends Stage
         ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
         
         if (selectedMinPrice != null){
-            minBox.getSelectionModel().select(selectedMinPrice.toString());
+            if (selectedMinPrice >= 0) {
+                minBox.getSelectionModel().select(selectedMinPrice.toString());
+            }
+            else {
+                minBox.getSelectionModel().select("No Min");
+            }
         }
         if (selectedMaxPrice != null){
-            maxBox.getSelectionModel().select(selectedMaxPrice.toString());
+            if (selectedMaxPrice >= 0) {
+                maxBox.getSelectionModel().select(selectedMaxPrice.toString());
+            }
+            else {
+                maxBox.getSelectionModel().select("No Max");
+            }
         }
         
         minMaxBox.getChildren().set(0, minBox);
@@ -244,6 +254,13 @@ public class MainViewer extends Stage
             return "Currently only your max price has been selected!";
         }
         else {
+            // Platform.runLater(new Runnable() {
+                // @Override
+                // public void run() {
+                    // try { makeHexagonMap(); }
+                    // catch (Exception e) {}
+                // }
+            // });
             return "Both your min and max price have been selected";
         }
     }
@@ -302,6 +319,8 @@ public class MainViewer extends Stage
     private void makeHexagonMap() throws Exception {
         mapPositions = dataHandler.getMapPositions();
         
+        ArrayList<BoroughListing> sortedNumberOfPropertiesAtPrice = dataHandler.getSortedNumberOfPropertiesInBoroughs(selectedMinPrice, selectedMaxPrice);
+        
         mapView = new AnchorPane();
             mapView.setMinSize(720, 700);
             // rows
@@ -340,7 +359,7 @@ public class MainViewer extends Stage
                             hexagonOutline.setFitHeight(94);
                         
                         Image hexagonFilledImage = new Image("/hexagonFilled.png");
-                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName()));
+                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), sortedNumberOfPropertiesAtPrice));
                             hexagonFilled.setFitWidth(93);
                             hexagonFilled.setFitHeight(93);
                     
@@ -372,11 +391,19 @@ public class MainViewer extends Stage
     }
     
     private void openPropertyViewer(String boroughName) throws Exception {
-        Stage stage = new PropertyViewer(boroughName);
-        stage.show();
+        try {
+            Stage stage = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice);
+            stage.show();
+        }
+        catch (Exception e) {
+            Alert alert = new Alert(AlertType.WARNING);
+                alert.setHeaderText("No Available Properties");
+                alert.setContentText("Unfortunately, there are no availiable properties in this\nborough within your price range. Welcome to the London\nhousing market...");
+            alert.show();
+        };
     }
     
-    private Image setHexagonFilledColour(Image hexagon, String boroughName) {
+    private Image setHexagonFilledColour(Image hexagon, String boroughName, ArrayList<BoroughListing> sortedNumberOfPropertiesInBorough) {
         int height = (int) hexagon.getHeight();
         int width = (int) hexagon.getWidth();
         
@@ -384,8 +411,7 @@ public class MainViewer extends Stage
         final PixelReader pixelReader = renderedHexagon.getPixelReader();
         final PixelWriter pixelWriter = renderedHexagon.getPixelWriter();
 
-        
-        Color boroughColour = dataHandler.getBoroughMapColour(boroughName);
+        Color boroughColour = dataHandler.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, sortedNumberOfPropertiesInBorough);
         
         for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++) { 

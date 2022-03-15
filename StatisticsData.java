@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Random;
 import javafx.scene.paint.Color;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Calculates the data needed for the statistics viewer
@@ -176,38 +177,113 @@ public class StatisticsData extends DataHandler
         return information; 
     }
     
-    public Color getBoroughMapColour(String boroughName) {
+    public Color getBoroughMapColour(String boroughName, int minPrice, int maxPrice, ArrayList<BoroughListing> sortedNumberOfPropertiesInBorough) {
         Random rand = new Random();
-        Color boroughColour = Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));
         
-        HashMap<String, Integer> averagePricePerBorough = getAveragePricePerBorough();
+        //Color boroughColour = Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));
         
-        return boroughColour;
+        int noOfBoroughs = sortedNumberOfPropertiesInBorough.size();
         
-        //ArrayList<String> appb = new ArrayList<String>();
+        BoroughListing boroughWithMinNoOfProperties = sortedNumberOfPropertiesInBorough.get(0);
+        BoroughListing boroughWithMedianNoOfProperties;
+        BoroughListing boroughWithMaxNoOfProperties = sortedNumberOfPropertiesInBorough.get(sortedNumberOfPropertiesInBorough.size()-1);
         
-        // for (String borough : averagePricePerBorough.keySet()) {
-            // int boroughAVpB = averagePricePerBorough.get(borough);
-            // if (! appb.isEmpty()) {
-                // //ArrayList<String> hold = new ArrayList<String>();
-                // boolean spotFound = false;
-                // int index = 0;
-                // for (Iterator i = appb.iterator(); i.hasNext() && spotFound == false; index++) {
-                    // String boroughComparison = (String) i.next();
-                    // if (averagePricePerBorough.get(boroughComparison) > boroughAVpB) {
-                        // appb.add(index, borough);
-                        // spotFound = true;
-                    // }
-                // }
-                // if (spotFound == false) {
-                   // appb.add(borough); 
-                // }
-            // }
-            // else {
-                // appb.add(borough);
-            // }
+        int minNoOfPropertiesInBorough = boroughWithMinNoOfProperties.getNoOfPropertiesInBorough();
+        int median;
+        int maxNoOfPropertiesInBorough = boroughWithMaxNoOfProperties.getNoOfPropertiesInBorough();
+        
+        if (noOfBoroughs % 2 == 1) {
+            boroughWithMedianNoOfProperties = sortedNumberOfPropertiesInBorough.get(Math.round(noOfBoroughs/2)-1);
+            median = boroughWithMedianNoOfProperties.getNoOfPropertiesInBorough();
+        }
+        else {
+            BoroughListing boroughLowerOfMedian = sortedNumberOfPropertiesInBorough.get(Math.round(noOfBoroughs/2)-1);
+            BoroughListing boroughUpperOfMedian = sortedNumberOfPropertiesInBorough.get(Math.round(noOfBoroughs/2));
+            
+            int boroughLowerOfMedianSize = boroughLowerOfMedian.getNoOfPropertiesInBorough();
+            int boroughUpperOfMedianSize = boroughUpperOfMedian.getNoOfPropertiesInBorough();
+            
+            median = (int) ((boroughLowerOfMedianSize + boroughUpperOfMedianSize) / 2);
+        }
+        
+        int noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
+        
+        // double percentile = (double) (noOfPropertiesInBorough - minNoOfPropertiesInBorough) / (double) (maxNoOfPropertiesInBorough - minNoOfPropertiesInBorough);
+        
+        // if (percentile > 0.0 && percentile < 0.25) {
+            // percentile = 0.0;
+        // }
+        // else if (percentile < 0.50) {
+            // percentile = 0.375;
+        // }
+        // else if (percentile < 0.75) {
+            // percentile = 0.625;
+        // }
+        // else {
+            // percentile = 1.00;
         // }
         
+        //Color boroughColour = Color.rgb(0, 255 - (int)(255*percentile), 0);
         
+        double halfOfMedian = median * 0.5;
+        Color boroughColour;
+        
+        if (noOfPropertiesInBorough == 0) {
+            boroughColour = Color.rgb(255, 255, 255);
+        }
+        else if (noOfPropertiesInBorough < median - halfOfMedian) {
+            boroughColour = Color.rgb(180, 255, 180);
+        }
+        else if (noOfPropertiesInBorough < median) {
+            boroughColour = Color.rgb(80, 235, 80);
+        }
+        else if (noOfPropertiesInBorough < median + halfOfMedian) {
+            boroughColour = Color.rgb(30, 225, 30);
+        }
+        else {
+            boroughColour = Color.rgb(0, 175, 0);
+        }
+        
+        return boroughColour;
+    }
+    
+    public ArrayList<BoroughListing> getSortedNumberOfPropertiesInBoroughs(int minPrice, int maxPrice) throws Exception
+    {
+        ArrayList<BoroughListing> sortedNumberOfPropertiesAtPrice = new ArrayList<BoroughListing>();
+        
+        for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
+        {
+            for(int columns = 0; columns < mapPositions[rows].length; columns++)
+            {   
+                if(mapPositions[rows][columns] != null)
+                {
+                    String nameOfBoroughToAdd = mapPositions[rows][columns];
+                    int noOfPropertiesInBoroughToAdd = getPropertiesFromBorough(nameOfBoroughToAdd, minPrice, maxPrice).size();
+                    
+                    BoroughListing boroughToAdd = new BoroughListing(nameOfBoroughToAdd, noOfPropertiesInBoroughToAdd);
+                    
+                    if (! sortedNumberOfPropertiesAtPrice.isEmpty()) {
+                        boolean spotFound = false;
+                        int index = 0;
+                        for (Iterator i = sortedNumberOfPropertiesAtPrice.iterator(); i.hasNext() && ! spotFound; index++) {
+                            BoroughListing boroughChecking = (BoroughListing) i.next();
+                            
+                            if (boroughToAdd.getNoOfPropertiesInBorough() < boroughChecking.getNoOfPropertiesInBorough()) {
+                                sortedNumberOfPropertiesAtPrice.add(index, boroughToAdd);
+                                spotFound = true;
+                            }
+                        }
+                        if (! spotFound) {
+                            sortedNumberOfPropertiesAtPrice.add(boroughToAdd);
+                        }
+                    }
+                    else {
+                        sortedNumberOfPropertiesAtPrice.add(boroughToAdd);
+                    }
+                }
+            }
+        }
+        
+        return sortedNumberOfPropertiesAtPrice;
     }
 }
