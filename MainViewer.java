@@ -425,7 +425,7 @@ public class MainViewer extends Stage
     
     private void openPropertyViewer(String boroughName) throws Exception {
         try {
-            Stage stage = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice);
+            Stage stage = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
             stage.show();
         }
         catch (Exception e) {

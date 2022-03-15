@@ -17,6 +17,8 @@ import javax.script.*;
 import javafx.scene.Node;
 import javafx.stage.Popup;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.ComboBox;
+import javafx.collections.ObservableList;
 
 /**
  * JavaFX version of PVGUI in code
@@ -29,6 +31,7 @@ public class PropertyViewer extends Stage {
     private int currentPropertyIndex;
     
     private String borough;
+    private String sortedBy;
     private int minPrice;
     private int maxPrice;
     
@@ -45,10 +48,11 @@ public class PropertyViewer extends Stage {
     
     private Stage descriptionStage;
     
-    public PropertyViewer(String borough, int minPrice, int maxPrice) throws Exception {
+    public PropertyViewer(String borough, int minPrice, int maxPrice, String sortedBy) throws Exception {
         this.borough = borough;
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
+        this.sortedBy = sortedBy;
         currentPropertyIndex = 0;
         makePropertyViewerScene();
     }
@@ -56,7 +60,11 @@ public class PropertyViewer extends Stage {
     private void makePropertyViewerScene() throws Exception {
         setTitle("Property Viewer");
         
-        properties = dataHandler.getPropertiesFromBorough(borough, minPrice, maxPrice);
+        if(sortedBy != null){
+            properties = dataHandler.getPropertiesSortedBy(borough, minPrice, maxPrice, sortedBy);
+        }else {
+            properties = dataHandler.getPropertiesFromBorough(borough, minPrice, maxPrice);
+        }
         
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(0, 10, 0, 10));
@@ -66,12 +74,33 @@ public class PropertyViewer extends Stage {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("stylesheet.css");
         
-        Label titleLabel = new Label(borough);
-            titleLabel.getStyleClass().add("title");
-            root.setMargin(titleLabel, new Insets(20));
-            titleLabel.setAlignment(Pos.CENTER);
-        root.setAlignment(titleLabel, Pos.CENTER);
-        root.setTop(titleLabel);
+        HBox topPane = new HBox();
+        
+            Label titleLabel = new Label(borough);
+                titleLabel.getStyleClass().add("title");
+                root.setMargin(titleLabel, new Insets(20));
+            root.setAlignment(titleLabel, Pos.CENTER);
+        
+            ComboBox<String> menu = new ComboBox<>();
+                menu.getItems().add("Price");
+                menu.getItems().add("Name");
+                menu.getItems().add("Reviews");
+            menu.setOnAction(e -> { 
+                                    sortedBy = menu.getValue();
+                                    try
+                                    {
+                                        sortAction();
+                                    }
+                                    catch (Exception ev)
+                                    {
+                                        ev .printStackTrace();
+                                    }
+                                    });                                 
+        topPane.setSpacing(150);
+        topPane.setPrefHeight(60); 
+        topPane.setAlignment(Pos.CENTER);        
+        topPane.getChildren().addAll(titleLabel, menu);   
+        root.setTop(topPane);
         
         
         WebView googleMaps = new WebView();
@@ -205,6 +234,12 @@ public class PropertyViewer extends Stage {
         descriptionStage.setResizable(false);
         descriptionStage.setScene(scene);
         descriptionStage.showAndWait();        
+    }
+    
+    private void sortAction() throws Exception {
+        this.close();
+        Stage stage = new PropertyViewer(borough, minPrice, maxPrice, sortedBy);
+        stage.show();
     }
 }
 
