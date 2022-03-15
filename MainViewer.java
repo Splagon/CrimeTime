@@ -20,7 +20,6 @@ import java.io.File;
 import java.util.Iterator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.effect.ColorAdjust;
-import java.util.Random;
 
 /**
  * Write a description of class MapViewer here.
@@ -30,28 +29,30 @@ import java.util.Random;
  */
 public class MainViewer extends Stage
 {
-    // instance variables - replace the example below with your o
+    // instance variables
     private Scene welcomeScene;
     private Scene mapScene;
+    private Scene priceSelectorScene;
+    
+    private Integer selectedMinPrice;
+    private Integer selectedMaxPrice;
     
     private BorderPane root = new BorderPane();
     
     private String[][] mapPositions;
     
-    private DataHandler dataHandler = new DataHandler();
+    private StatisticsData dataHandler = new StatisticsData();
     
     /**
      * Constructor for objects of class MapViewer
      */
     public MainViewer() throws Exception
     {         
-        //makeWelcomeScene();
-        //setScene(welcomeScene);
-        
+        makeWelcomeScene();
+        setScene(welcomeScene);
+        makePriceSelectorScene();
         makeMapScene();
-        setScene(mapScene);
     }
-    
 
     private void makeWelcomeScene() {
         setTitle("Welcome");
@@ -61,15 +62,10 @@ public class MainViewer extends Stage
         Label instructionsTitle = new Label("Instructions: ");
         Label instructions1 = new Label("- When you are ready click start, this will send you to the next window where you will be able to enter your price range.");
         Label instructions2 = new Label("- Once your price range has been selected you will then be able to view the map and see where the you be able to find a property. ");
-            
-        // instructions1.setWrapText(true);
-        // instructions1.setPrefWidth(350);
-        
-        // instructions2.setWrapText(true);
-        // instructions2.setPrefWidth(350);
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
+        startButton.setOnAction(this::changeToPriceSelector);
         
         //layout of the whole window
         VBox window = new VBox(); //root of the scene
@@ -99,6 +95,122 @@ public class MainViewer extends Stage
         instrcutionsAndStart.getStyleClass().add("instrcutionsAndStart");
         
         startButton.getStyleClass().add("startButton");
+    }
+    
+    private void changeToPriceSelector(ActionEvent event) {
+        setScene(priceSelectorScene);
+    }
+    
+    private void makePriceSelectorScene() {
+        setTitle("Price Selection Window");
+        
+        //All labels in the window
+        Label title = new Label("Price Selection!");
+        Label instruction = new Label("Please select a min and max for your price range: ");
+        Label statusLabel = new Label(showStatus());
+        
+        //All buttons in the window
+        Button confirm = new Button("Confirm");
+        confirm.setOnAction(this::changeToMapScene);
+        
+        //Layout of the window
+        BorderPane window = new BorderPane(); //root of the window
+        VBox titleAndInstruction = new VBox();
+        HBox minMaxBox = new HBox();
+        ComboBox<String> minBox = new ComboBox<String>();
+        ComboBox<String> maxBox = new ComboBox<String>();
+        
+        //Adding elements to the window
+        window.setCenter(minMaxBox);
+        window.setTop(titleAndInstruction);
+        window.setBottom(statusLabel); 
+
+        titleAndInstruction.getChildren().addAll(title, instruction);
+        
+        minMaxBox.getChildren().addAll(minBox, maxBox, confirm);
+        
+        //adding the options to the price selection box, as well as assigning appropriate values to the instance variables
+        int low = dataHandler.getLowestPrice();
+        int high = dataHandler.getHighestPrice();
+        ArrayList<String> options = getPriceSelectionOptions(low, high);
+        minBox.getItems().add("No Min");
+        minBox.getItems().addAll(options);
+        maxBox.getItems().addAll(options);
+        maxBox.getItems().add("No Max");
+        
+        minBox.setOnAction((event) -> {
+            String selected = minBox.getValue();
+            if ("No Min".equals(selected)) {
+                selectedMinPrice = 0;
+            }
+            else {
+                selectedMinPrice = Integer.parseInt(selected);
+            }
+            statusLabel.setText(showStatus());
+        });
+        maxBox.setOnAction((event) -> {
+            String selected = maxBox.getValue();
+            if ("No Max".equals(selected)) {
+                selectedMaxPrice = 0;
+            }
+            else {
+                selectedMaxPrice = Integer.parseInt(selected);
+            }
+            statusLabel.setText(showStatus());
+        });
+        
+        //Creating the scene and adding the css styling
+        priceSelectorScene = new Scene(window, 500, 500);
+    }
+    
+    /**
+     * creating the list of all possibel prices which can be selected
+     */
+    private ArrayList<String> getPriceSelectionOptions(int low, int high) {
+        ArrayList options = new ArrayList <> ();
+        
+        for (int i = low; i <= 100; i+=10) {
+            Integer num = i;
+            options.add(num.toString());
+        }
+        for (int i = 100; i < 200; i+=25) {
+            Integer num = i;
+            options.add(num.toString());
+        }
+        for (int i = 200; i < 500; i+=50) {
+            Integer num = i;
+            options.add(num.toString());
+        }
+        for (int i = 500; i < 1000; i+=100) {
+            Integer num = i;
+            options.add(num.toString());
+        }
+        for (int i = 1000; i <= high; i+=1000) {
+            Integer num = i;
+            options.add(num.toString());
+        }
+        return options;
+    }
+    
+    private String showStatus() {
+        if (selectedMinPrice == null && selectedMaxPrice == null) {
+            return "Currently nothing has been selected!";
+        }
+        else if (selectedMinPrice != null && selectedMaxPrice == null) {
+            return "Currently only your min price has been selected!";
+        }
+        else if (selectedMinPrice == null && selectedMaxPrice != null) {
+            return "Currently only your max price has been selected!";
+        }
+        else {
+            return "Both your min and max price have been selected";
+        }
+    }
+    
+    private void changeToMapScene(ActionEvent event) {
+        if (selectedMinPrice != null && selectedMaxPrice != null) {
+            setScene(mapScene);
+        }
     }
     
     private void makeMapScene() throws Exception {
@@ -173,7 +285,7 @@ public class MainViewer extends Stage
                             hexagonOutline.setFitHeight(94);
                         
                         Image hexagonFilledImage = new Image("/hexagonFilled.png");
-                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage));
+                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName()));
                             hexagonFilled.setFitWidth(94);
                             hexagonFilled.setFitHeight(94);
                     
@@ -227,22 +339,22 @@ public class MainViewer extends Stage
         stage.show();
     }
     
-    private Image setHexagonFilledColour(Image hexagon) {
+    private Image setHexagonFilledColour(Image hexagon, String boroughName) {
         int height = (int) hexagon.getHeight();
         int width = (int) hexagon.getWidth();
         
         WritableImage renderedHexagon = new WritableImage(hexagon.getPixelReader(), width, height);
         final PixelReader pixelReader = renderedHexagon.getPixelReader();
         final PixelWriter pixelWriter = renderedHexagon.getPixelWriter();
-        Random rand = new Random();
+
         
-        Color randColour = Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));
+        Color boroughColour = dataHandler.getBoroughMapColour(boroughName);
         
         for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++) { 
                 if (! pixelReader.getColor(x, y).equals(Color.rgb(0, 0, 0, 0.0))) {
                     //pixelWriter.setColor(x, y, Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)));
-                    pixelWriter.setColor(x,y,randColour);
+                    pixelWriter.setColor(x,y,boroughColour);
                 }            
             }
         }
