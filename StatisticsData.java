@@ -4,6 +4,7 @@ import java.util.Random;
 import javafx.scene.paint.Color;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Collections;
 
 /**
  * Calculates the data needed for the statistics viewer
@@ -250,39 +251,14 @@ public class StatisticsData extends DataHandler
     public ArrayList<BoroughListing> getSortedNumberOfPropertiesInBoroughs(int minPrice, int maxPrice) throws Exception
     {
         ArrayList<BoroughListing> sortedNumberOfPropertiesAtPrice = new ArrayList<BoroughListing>();
-        
-        for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
-        {
-            for(int columns = 0; columns < mapPositions[rows].length; columns++)
-            {   
-                if(mapPositions[rows][columns] != null)
-                {
-                    String nameOfBoroughToAdd = mapPositions[rows][columns];
-                    int noOfPropertiesInBoroughToAdd = getPropertiesFromBorough(nameOfBoroughToAdd, minPrice, maxPrice).size();
-                    
-                    BoroughListing boroughToAdd = new BoroughListing(nameOfBoroughToAdd, noOfPropertiesInBoroughToAdd);
-                    
-                    if (! sortedNumberOfPropertiesAtPrice.isEmpty()) {
-                        boolean spotFound = false;
-                        int index = 0;
-                        for (Iterator i = sortedNumberOfPropertiesAtPrice.iterator(); i.hasNext() && ! spotFound; index++) {
-                            BoroughListing boroughChecking = (BoroughListing) i.next();
-                            
-                            if (boroughToAdd.getNoOfPropertiesInBorough() < boroughChecking.getNoOfPropertiesInBorough()) {
-                                sortedNumberOfPropertiesAtPrice.add(index, boroughToAdd);
-                                spotFound = true;
-                            }
-                        }
-                        if (! spotFound) {
-                            sortedNumberOfPropertiesAtPrice.add(boroughToAdd);
-                        }
-                    }
-                    else {
-                        sortedNumberOfPropertiesAtPrice.add(boroughToAdd);
-                    }
-                }
-            }
+
+        for (String boroughName : boroughs) {
+            int noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
+            BoroughListing boroughToAdd = new BoroughListing(boroughName, noOfPropertiesInBorough);
+            sortedNumberOfPropertiesAtPrice.add(boroughToAdd);
         }
+        
+        Collections.sort(sortedNumberOfPropertiesAtPrice, BoroughListing.sortByNoOfPropertiesInBorough);
         
         return sortedNumberOfPropertiesAtPrice;
     }

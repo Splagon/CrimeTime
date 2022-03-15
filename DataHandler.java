@@ -123,18 +123,28 @@ public class DataHandler
     }
     
     private ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
-        int position;
-        ArrayList<AirbnbListing> sortedList = unsortedList;
-        for (int i = 0; i < sortedList.size(); i++){
-            position = i;
-            for(int j = i + 1; j < sortedList.size(); j++){
-                if (getSortByInt(sortedList.get(j), sortingElement) < getSortByInt(sortedList.get(position), sortingElement)) {
-                    position = j;
-                }
+        //int position;
+        //ArrayList<AirbnbListing> sortedList = unsortedList;
+        // for (int i = 0; i < sortedList.size(); i++){
+            // position = i;
+            // for(int j = i + 1; j < sortedList.size(); j++){
+                // if (getSortByInt(sortedList.get(j), sortingElement) < getSortByInt(sortedList.get(position), sortingElement)) {
+                    // position = j;
+                // }
+            // }
+            // Collections.swap(sortedList, position, i);
+        // }
+        switch (sortingElement) 
+        {
+            case "Price":
+                Collections.sort(unsortedList, AirbnbListing.sortByListingPrice);
+                break;
+            case "Reviews":
+                Collections.sort(unsortedList, AirbnbListing.sortByListingReviews);
+                break;
             }
-            Collections.swap(sortedList, position, i);
-        }
-        return sortedList;
+        
+        return unsortedList;
     }
     
     private int getSortByInt(AirbnbListing listing, String sortingElement) 

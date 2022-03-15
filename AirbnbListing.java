@@ -1,3 +1,4 @@
+import java.util.Comparator;
  
 
 /**
@@ -179,4 +180,40 @@ public class AirbnbListing {
         // System.out.println(value);
         // return value;
     // }
+    
+    public static Comparator<AirbnbListing> sortByListingName = new Comparator<AirbnbListing>() 
+    {
+        @Override
+        public int compare(AirbnbListing listingOne, AirbnbListing listingTwo)
+        {
+            String listingOneName = listingOne.getName().toLowerCase();
+            String listingTwoName = listingTwo.getName().toLowerCase();
+            
+            return listingOneName.compareTo(listingTwoName);
+        }
+    };
+    
+    public static Comparator<AirbnbListing> sortByListingPrice = new Comparator<AirbnbListing>() 
+    {
+        @Override
+        public int compare(AirbnbListing listingOne, AirbnbListing listingTwo)
+        {
+            int listingOnePrice = listingOne.getPrice();
+            int listingTwoPrice = listingTwo.getPrice();
+            
+            return listingOnePrice - listingTwoPrice;
+        }
+    };
+    
+    public static Comparator<AirbnbListing> sortByListingReviews = new Comparator<AirbnbListing>() 
+    {
+        @Override
+        public int compare(AirbnbListing listingOne, AirbnbListing listingTwo)
+        {
+            int listingOneReviews = listingOne.getNumberOfReviews();
+            int listingTwoReviews = listingTwo.getNumberOfReviews();
+            
+            return listingOneReviews - listingTwoReviews;
+        }
+    };
 }
