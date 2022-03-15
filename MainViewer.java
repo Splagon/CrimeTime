@@ -228,7 +228,7 @@ public class MainViewer extends Stage
     }
     
     /**
-     * creating the list of all possibel prices which can be selected
+     * creating the list of all possible prices which can be selected
      */
     private ArrayList<String> getPriceSelectionOptions(int low, int high) {
         ArrayList options = new ArrayList <> ();

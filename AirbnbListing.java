@@ -181,13 +181,13 @@ public class AirbnbListing {
         // return value;
     // }
     
-    public static Comparator<AirbnbListing> sortByListingName = new Comparator<AirbnbListing>() 
+    public static Comparator<AirbnbListing> sortByListingHostName = new Comparator<AirbnbListing>() 
     {
         @Override
         public int compare(AirbnbListing listingOne, AirbnbListing listingTwo)
         {
-            String listingOneName = listingOne.getName().toLowerCase();
-            String listingTwoName = listingTwo.getName().toLowerCase();
+            String listingOneName = listingOne.getHost_name().toLowerCase();
+            String listingTwoName = listingTwo.getHost_name().toLowerCase();
             
             return listingOneName.compareTo(listingTwoName);
         }
@@ -198,10 +198,10 @@ public class AirbnbListing {
         @Override
         public int compare(AirbnbListing listingOne, AirbnbListing listingTwo)
         {
-            int listingOnePrice = listingOne.getPrice();
-            int listingTwoPrice = listingTwo.getPrice();
+            Integer listingOnePrice = listingOne.getPrice();
+            Integer listingTwoPrice = listingTwo.getPrice();
             
-            return listingOnePrice - listingTwoPrice;
+            return listingOnePrice.compareTo(listingTwoPrice);
         }
     };
     

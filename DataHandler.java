@@ -55,11 +55,23 @@ public class DataHandler
     
     public ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
         ArrayList<AirbnbListing> unsortedListing = getPropertiesFromBorough(borough, minPrice, maxPrice);
-        if (sortingElement == "Price"  || sortingElement  == "Reviews"){
-            return selectionSort(unsortedListing, sortingElement);
-        }else{
-            return nameSort(); 
-        }
+        return selectionSort(unsortedListing, sortingElement);
+    }
+    
+    private ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
+        switch (sortingElement) 
+        {
+            case "Price":
+                Collections.sort(unsortedList, AirbnbListing.sortByListingPrice);
+                break;
+            case "Reviews":
+                Collections.sort(unsortedList, AirbnbListing.sortByListingReviews);
+                break;
+            case "Name":
+                Collections.sort(unsortedList, AirbnbListing.sortByListingHostName);
+                break;
+            } 
+        return unsortedList;
     }
     
     public ArrayList<AirbnbListing> getPropertiesFromBorough(String borough)
@@ -122,31 +134,6 @@ public class DataHandler
         return highest;
     }
     
-    private ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
-        //int position;
-        //ArrayList<AirbnbListing> sortedList = unsortedList;
-        // for (int i = 0; i < sortedList.size(); i++){
-            // position = i;
-            // for(int j = i + 1; j < sortedList.size(); j++){
-                // if (getSortByInt(sortedList.get(j), sortingElement) < getSortByInt(sortedList.get(position), sortingElement)) {
-                    // position = j;
-                // }
-            // }
-            // Collections.swap(sortedList, position, i);
-        // }
-        switch (sortingElement) 
-        {
-            case "Price":
-                Collections.sort(unsortedList, AirbnbListing.sortByListingPrice);
-                break;
-            case "Reviews":
-                Collections.sort(unsortedList, AirbnbListing.sortByListingReviews);
-                break;
-            }
-        
-        return unsortedList;
-    }
-    
     private int getSortByInt(AirbnbListing listing, String sortingElement) 
     {
         int intToReturn = 0;
@@ -162,9 +149,5 @@ public class DataHandler
         }
         
         return intToReturn;
-    }
-    
-    private ArrayList<AirbnbListing> nameSort(){
-        return null;
     }
 }
