@@ -75,6 +75,7 @@ public class MainViewer extends Stage
         Label instructionsTitle = new Label("Instructions: ");
         Label instructions1 = new Label("- When you are ready click start, this will send you to the next window where you will be able to enter your price range.");
         Label instructions2 = new Label("- Once your price range has been selected you will then be able to view the map and see where the you be able to find a property. ");
+        Label instructions3 = new Label("- In order to view the map you will need to click the confirm button once both your min and max price have been slected.");
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
@@ -87,7 +88,7 @@ public class MainViewer extends Stage
 
         //adding elements to the window
         window.getChildren().addAll(title, instrcutionsAndStart);
-        instructions.getChildren().addAll(instructionsTitle, instructions1, instructions2); 
+        instructions.getChildren().addAll(instructionsTitle, instructions1, instructions2, instructions3); 
         
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
@@ -102,8 +103,12 @@ public class MainViewer extends Stage
         
         instructions1.getStyleClass().add("instructions"); 
         instructions2.getStyleClass().add("instructions"); 
+        instructions3.getStyleClass().add("instructions"); 
+        instructions1.setPrefWidth(400);
+        instructions2.setPrefWidth(400);
+        instructions3.setPrefWidth(400);
         
-        window.getStyleClass().add("windowVBox");
+        window.getStyleClass().add("welcomeWindow");
         
         instrcutionsAndStart.getStyleClass().add("instrcutionsAndStart");
         
@@ -125,6 +130,10 @@ public class MainViewer extends Stage
         HBox minMaxBox = createMinMaxBox();
         
         Button confirm = (Button) minMaxBox.getChildren().get(2);
+        
+        ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
+        ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
+        
         statusLabel = new Label(showStatus(confirm));
         
         //All buttons in the window
@@ -132,7 +141,6 @@ public class MainViewer extends Stage
         //Layout of the window
         BorderPane window = new BorderPane(); //root of the window
         VBox titleAndInstruction = new VBox();
-        
         
         //Adding elements to the window
         window.setCenter(minMaxBox);
@@ -143,6 +151,24 @@ public class MainViewer extends Stage
         
         //Creating the scene and adding the css styling
         priceSelectorScene = new Scene(window, 600, 400);
+        priceSelectorScene.getStylesheets().add("stylesheet.css");
+        
+        window.getStyleClass().add("priceWindow");
+        
+        title.getStyleClass().add("priceTitle");
+        
+        instruction.getStyleClass().add("priceInstruction");
+        
+        titleAndInstruction.getStyleClass().add("priceTitleAndTitle");
+        
+        confirm.getStyleClass().add("priceConfirm");
+        
+        minBox.getStyleClass().add("priceMinMaxBoxes");
+        maxBox.getStyleClass().add("priceMinMaxBoxes");
+        
+        minMaxBox.getStyleClass().add("priceMinMaxBox");
+        
+        statusLabel.getStyleClass().add("priceStatusLabel");
     }
     
     private HBox createMinMaxBox() {
@@ -161,10 +187,6 @@ public class MainViewer extends Stage
         
         Button confirm = new Button("Confirm");
         confirm.setDisable(true);
-        // if ("Both your min and max price have been selected".equals(showStatus())) {
-            // confirm.setDisable(false);
-        // }
-        //confirm.disableProperty().bind(!("Both your min and max price have been selected".equals(statusLabel)));
         confirm.setOnAction(e -> 
                             {
                                 try { makeHexagonMap(); }
@@ -271,7 +293,7 @@ public class MainViewer extends Stage
             return "Currently only your max price has been selected!";
         }
         else  {
-            if (selectedMinPrice < lowestPrice || selectedMaxPrice > highestPrice)  {
+            if (selectedMinPrice == -1 || selectedMaxPrice == -1)  {
                 confirm.setDisable(false);
                 return "Both your min and max price have been selected";
             }
@@ -285,10 +307,6 @@ public class MainViewer extends Stage
     }
     
     private void changeToMapScene() throws Exception {
-        // if (selectedMinPrice != null && selectedMaxPrice != null && ("No Min".equals(selectedMinPrice.toString()) || "No Max".equals(selectedMaxPrice.toString()))) {
-            // makeMapScene();
-            // setScene(mapScene);
-        // }
         makeMapScene();
         setScene(mapScene);
     }

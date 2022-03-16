@@ -39,7 +39,7 @@
     -fx-font: 12px "Verdana";
     -fx-font-weight: bold;
 }
-
+// ------------ welcome scene -------------------
 .welcomeTittle {
     -fx-font: 30px "Ariel";
     -fx-alignment: center;
@@ -55,41 +55,99 @@
 
 .instructions {
     -fx-font: 15px "Ariel";
-    -fx-max-width: 350;
     -fx-spacing: 5;
     -fx-wrap-text: true;
-    -fx-text-alignment: left;
+    -fx-text-alignment: justify;
 }
 
-.windowVBox {
-    -fx-padding: 10;
-    -fx-spacing: 8;
+.welcomeWindow {
+    -fx-padding: 20;
+    -fx-spacing: 20;
     -fx-alignment: center;
+    -fx-background-color: beige;
 }
 
-.windowBox:Node {
+.welcomeWindow:Node {
     -fx-alignment: center;
 }
 
 .instrcutionsAndStart {
     -fx-padding: 10;
     -fx-spacing: 8;
+    -fx-alignment: center
 }
 
 .startButton {
     -fx-font: 25px "Ariel";
     -fx-padding: 20;
     -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
+    -fx-background-color: indigo;
+    -fx-text-fill: white;
 }
 
 .startButton:hover {
-    -fx-font: 28px "Ariel";
+    -fx-font: 30px "Ariel";
     -fx-background-color: orange;
 }
 
 .startButton:pressed {
-    -fx-background-color: grey;
+    -fx-background-color: black;
 }
+// ------------ welcome scene -------------------
+
+// ------------- price scene --------------------
+.priceWindow {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-background-color: beige;
+}
+
+.priceWindow:Node {
+    -fx-alignment: center;
+}
+
+.priceTitle {
+    -fx-font: 30px "Ariel";
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-underline: true;
+    -fx-font-weight: bold;
+}
+
+.priceInstruction {
+    -fx-font: 20px "Ariel";
+    -fx-font-weight: bold;
+}
+
+.priceTitleAndTitle {
+    -fx-alignment: center;
+}
+
+.priceConfirm {
+    -fx-background-color: white;
+}
+
+.priceConfirm: hover {
+    -fx-background-color: indigo;
+    -fx-text-fill: white;
+    -fx-font: 28px "Ariel";
+}
+
+.priceConfirm: pressed {
+    -fx-background-color: black;
+}
+
+.priceMinMaxBoxes {
+    -fx-background-color: white;
+}
+
+.priceMinMaxBox {
+    -fx-alignment: center;
+    -fx-font: 25px "Ariel";
+}
+
+// ------------- price scene --------------------
 
 #hbox {
     -fx-spacing: 120;
