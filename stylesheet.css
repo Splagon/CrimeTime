@@ -158,3 +158,8 @@
     -fx-font: 14px "Ariel";
     -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
 }
+
+#menu  {
+    -fx-font: 12px "Verdana";
+    -fx-font-weight: bold;
+}

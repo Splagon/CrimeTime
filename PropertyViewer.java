@@ -19,6 +19,8 @@ import javafx.stage.Popup;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ComboBox;
 import javafx.collections.ObservableList;
+import javafx.stage.*;
+import javafx.event.EventHandler;
 
 /**
  * JavaFX version of PVGUI in code
@@ -55,6 +57,8 @@ public class PropertyViewer extends Stage {
         this.sortedBy = sortedBy;
         currentPropertyIndex = 0;
         makePropertyViewerScene();
+        
+        this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
     }
 
     private void makePropertyViewerScene() throws Exception {
@@ -81,34 +85,26 @@ public class PropertyViewer extends Stage {
             Label titleLabel = new Label("Welcome to the property viewer!");
             titleLabel.getStyleClass().add("title");
                 
-            VBox filterPane = new VBox();
+    
             
-                ComboBox<String> menu = new ComboBox<>();
-                
-                    // menu.getItems().add("Price ↑");
-                    // menu.getItems().add("Price ↓");
-                    // menu.getItems().add("Name ↑");
-                    // menu.getItems().add("Name ↓");
-                    // menu.getItems().add("Reviews ↑");
-                    // menu.getItems().add("Reviews ↓");
-                    menu.getItems().addAll("Price ↑", "Price ↓", "Name ↑", "Name ↓", "Reviews ↑", "Reviews ↓");
+            ComboBox<String> menu = new ComboBox<>();
+            menu.setId("menu");
+                menu.getItems().addAll("Price ↑", "Price ↓", "Name ↑", "Name ↓", "Reviews ↑", "Reviews ↓");
                 if (sortedBy != null) {
                     menu.getSelectionModel().select(sortedBy);
+                } 
+                else {
+                    menu.getSelectionModel().select("Filter by:");
                 }
-                menu.setOnAction(e -> { 
-                                            sortedBy = menu.getValue();
-                                            try { sortAction(); }
-                                            catch (Exception ev) {}
-                                      }); 
-            
-                Label filterLabel =  new Label("Filter by:");
-                filterLabel.getStyleClass().add("title");
-                
-            filterPane.setAlignment(Pos.CENTER);    
-            filterPane.getChildren().addAll(filterLabel, menu); 
-                
+                    
+            menu.setOnAction(e -> { 
+                                      sortedBy = menu.getValue();
+                                      try { sortAction(); }
+                                      catch (Exception ev) {}
+                                  }); 
+                  
         topPane.setPrefHeight(60);         
-        topPane.getChildren().addAll(titleLabel, filterPane);   
+        topPane.getChildren().addAll(titleLabel, menu);   
         root.setTop(topPane);
         
         
@@ -195,8 +191,7 @@ public class PropertyViewer extends Stage {
         descriptionLabel.setText(listing.getName());
         
         if(descriptionStage != null){
-            descriptionStage.close();
-            descriptionStage = null;
+            closeDescription();
         }
         
         String url = "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",12,0/600x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw";
@@ -224,34 +219,62 @@ public class PropertyViewer extends Stage {
     }
     
     private void popUpAction(){
-        if(descriptionStage == null){
+        if (descriptionStage == null) 
+        {
             createDescriptionStage();
-        }else{
-            descriptionStage.close();
-            descriptionStage = null;
+        }
+        else
+        {
+            closeDescription();
         }
     }
     
     private void createDescriptionStage(){
         descriptionStage = new Stage();
         descriptionStage.setTitle("Description!");
-        descriptionStage.setX(200);
-        descriptionStage.setY(200);
+        //descriptionStage.setX(200);
+        //descriptionStage.setY(200);
         
         VBox root = new VBox();
         root.getChildren().add(descriptionLabel);
         root.setAlignment(Pos.CENTER);
         
-        Scene scene = new Scene(root,300,100);
+        int width = 300;
+        int height = 100;
+        
+        Scene scene = new Scene(root,width,height);
         descriptionStage.setResizable(false);
         descriptionStage.setScene(scene);
+        
+        descriptionStage.setX((this.getWidth() - width) / 2 + this.getX());
+        descriptionStage.setY(this.getY() + this.getHeight() + 20);
+        
         descriptionStage.showAndWait();        
     }
     
     private void sortAction() throws Exception {
+        double currentStagePositionX = this.getX();
+        double currentStagePositionY = this.getY();
+        
         Stage stage = new PropertyViewer(borough, minPrice, maxPrice, sortedBy);
+        stage.setX(currentStagePositionX);
+        stage.setY(currentStagePositionY);
+        
+        closeDescription();
+        
         this.close();
         stage.show();
+    }
+    
+    public void closePropertyViewer() {
+        closeDescription();
+    }
+    
+    private void closeDescription() {
+        if (descriptionStage != null) {
+            descriptionStage.close();
+            descriptionStage = null;
+        }
     }
 }
 
