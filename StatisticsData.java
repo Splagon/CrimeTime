@@ -307,4 +307,33 @@ public class StatisticsData extends DataHandler
         
         return sortedNumberOfPropertiesAtPrice;
     }
+    
+    public String getHighAvgReview()
+    {
+        String HighAvgReviewBorough = "";
+        int lastHighAvgReview = 0; 
+        for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
+        {
+            for(int columns = 0; columns < mapPositions[rows].length; columns++)
+            {   
+                if(mapPositions[rows][columns] != null)
+                {
+                    ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns]);
+                    int averageReview = 0;
+                    for (int j = 0; j < boroughProperty.size(); j++) 
+                    {
+                        AirbnbListing property = boroughProperty.get(j);
+                        averageReview += property.getNumberOfReviews();
+                    }
+                    averageReview = averageReview / boroughProperty.size();
+                    if(averageReview > lastHighAvgReview )
+                    {
+                        lastHighAvgReview  = averageReview;
+                        HighAvgReviewBorough = mapPositions[rows][columns];
+                    }
+                }
+            }
+        }
+        return HighAvgReviewBorough;
+    }
 }

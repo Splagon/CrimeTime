@@ -35,6 +35,7 @@ public class StatisticsViewer extends Stage
     Label noHomeAndApartmentsInfo = new Label("default");
     Label expensiveInfo = new Label("default");
     Label priceSDInfo = new Label("default");
+    Label highAvgReviewInfo = new Label("default:"); 
     XYChart.Series averagePriceData = new XYChart.Series();
 
     /**
@@ -51,6 +52,7 @@ public class StatisticsViewer extends Stage
         VBox expensive = new VBox(); 
         VBox priceSD = new VBox(); 
         VBox averagePrice = new VBox(); 
+        VBox highAvgReview = new VBox();
         
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
@@ -64,6 +66,7 @@ public class StatisticsViewer extends Stage
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
         Label expensiveTitle = new Label("Most Expensive Borough:");
         Label priceSDTitle = new Label("Standard Deviation of Price (£):");
+        Label highAvgReviewTitle = new Label("Borough with the Highest \nAverage Amount of Reviews:");
         
         
         // Adding components 
@@ -79,6 +82,7 @@ public class StatisticsViewer extends Stage
         statsGrid.add(noHomeAndApartments, 1, 0);
         statsGrid.add(expensive, 1, 1);
         statsGrid.add(priceSD, 0, 2); 
+        statsGrid.add(highAvgReview, 1 , 2); 
         
         reviews.setAlignment(Pos.CENTER);
         reviews.getChildren().add(reviewTitle); 
@@ -100,23 +104,31 @@ public class StatisticsViewer extends Stage
         priceSD.getChildren().add(priceSDTitle); 
         priceSD.getChildren().add(priceSDInfo);
         
+        highAvgReview.setAlignment(Pos.CENTER);
+        highAvgReview.getChildren().add(highAvgReviewTitle); 
+        highAvgReview.getChildren().add(highAvgReviewInfo);
+        
         //Set the scene and add CSS
         Scene scene = new Scene(window, 1200,700);
         
         scene.getStylesheets().add("stylesheet.css");
+        
         statsGrid.setId("statsgrid"); 
+        window.getStyleClass().add("statsvbox");
         reviews.getStyleClass().add("statsvbox"); 
         available.getStyleClass().add("statsvbox");
         noHomeAndApartments.getStyleClass().add("statsvbox");
         expensive.getStyleClass().add("statsvbox");
         priceSD.getStyleClass().add("statsvbox");
-        window.getStyleClass().add("statsvbox");
+        highAvgReview.getStyleClass().add("statsvbox");
+        
         
         reviewInfo.getStyleClass().add("statslabels"); 
         availableInfo.getStyleClass().add("statslabels"); 
         noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
         expensiveInfo.getStyleClass().add("statslabels"); 
         priceSDInfo.getStyleClass().add("statslabels"); 
+        highAvgReviewInfo.getStyleClass().add("statslabels");
         
         title.getStyleClass().add("titlelabel"); 
         
@@ -141,8 +153,9 @@ public class StatisticsViewer extends Stage
         setReviewInfo(); 
         setNoHomeAndApartmentsInfo();
         setAvailableInfo();
-        getExpensiveInfo();
-        getPriceSDInfo();
+        setExpensiveInfo();
+        setPriceSDInfo();
+        setHighAvgReviewInfo();
     }
     
     /**
@@ -175,7 +188,7 @@ public class StatisticsViewer extends Stage
     /**
      * Get the most expensive borough and set the expensive info label to the value received
      */
-    private void getExpensiveInfo()
+    private void setExpensiveInfo()
     {
         String x = "" + data.getExpensiveInfo();
         expensiveInfo.setText(x); 
@@ -184,7 +197,7 @@ public class StatisticsViewer extends Stage
     /**
      * Get the standard deviation of price and set the pricesd info label to the value received
      */
-    private void getPriceSDInfo()
+    private void setPriceSDInfo()
     {
         String x = "" + String.format("%.2f", data.getPriceSDInfo()) + " (2 d.p)";
         priceSDInfo.setText(x); 
@@ -197,5 +210,11 @@ public class StatisticsViewer extends Stage
         {
             averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
         }
+    }
+    
+    private void setHighAvgReviewInfo()
+    {
+        String x = "" + data.getHighAvgReview();
+        highAvgReviewInfo.setText(x);
     }
 }
