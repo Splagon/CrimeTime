@@ -58,7 +58,7 @@ public class PropertyViewer extends Stage {
     }
 
     private void makePropertyViewerScene() throws Exception {
-        setTitle("Property Viewer");
+        setTitle("Property Viewer: " + borough);
         
         if(sortedBy != null){
             properties = dataHandler.getPropertiesSortedBy(borough, minPrice, maxPrice, sortedBy);
@@ -76,10 +76,8 @@ public class PropertyViewer extends Stage {
         
         HBox topPane = new HBox();
         
-            Label titleLabel = new Label(borough);
+            Label titleLabel = new Label("Welcome in the PV !");
                 titleLabel.getStyleClass().add("title");
-                root.setMargin(titleLabel, new Insets(20));
-            root.setAlignment(titleLabel, Pos.CENTER);
         
             ComboBox<String> menu = new ComboBox<>();
                 menu.getItems().add("Price");

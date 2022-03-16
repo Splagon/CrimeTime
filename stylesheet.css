@@ -36,7 +36,7 @@
 }
 
 .title {
-    -fx-underline: true;
+    -fx-font: 12px "Verdana";
     -fx-font-weight: bold;
 }
 

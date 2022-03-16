@@ -101,7 +101,7 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setCenter(startButton);
         
         //creating the scene and adding the CSS
-        welcomeScene = new Scene(window, 500, 500);
+        welcomeScene = new Scene(window, 600, 400);
         welcomeScene.getStylesheets().add("stylesheet.css");
         
         title.getStyleClass().add("welcomeTittle");
@@ -150,7 +150,7 @@ public class MainViewer extends Stage
         titleAndInstruction.getChildren().addAll(title, instruction);
         
         //Creating the scene and adding the css styling
-        priceSelectorScene = new Scene(window, 500, 500);
+        priceSelectorScene = new Scene(window, 600, 400);
     }
     
     private HBox createMinMaxBox() {
