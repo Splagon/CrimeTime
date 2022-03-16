@@ -89,7 +89,7 @@ public class PropertyViewer extends Stage {
                     menu.getItems().add("Name ↑");
                     menu.getItems().add("Name ↓");
                     menu.getItems().add("Reviews ↑");
-                    menu.getItems().add("Reveiws ↓");
+                    menu.getItems().add("Reviews ↓");
                 menu.setOnAction(e -> { 
                                         sortedBy = menu.getValue();
                                         try

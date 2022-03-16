@@ -232,10 +232,10 @@ public class AirbnbListing {
         @Override
         public int compare(AirbnbListing listingOne, AirbnbListing listingTwo)
         {
-            int listingOneReviews = listingOne.getNumberOfReviews();
-            int listingTwoReviews = listingTwo.getNumberOfReviews();
+            Integer listingOneReviews = listingOne.getNumberOfReviews();
+            Integer listingTwoReviews = listingTwo.getNumberOfReviews();
             
-            return listingTwoReviews - listingOneReviews;
+            return listingTwoReviews.compareTo(listingOneReviews);
         }
     };
 }
