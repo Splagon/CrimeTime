@@ -81,34 +81,25 @@ public class PropertyViewer extends Stage {
             Label titleLabel = new Label("Welcome to the property viewer!");
             titleLabel.getStyleClass().add("title");
                 
-            VBox filterPane = new VBox();
+    
             
-                ComboBox<String> menu = new ComboBox<>();
-                
-                    // menu.getItems().add("Price ↑");
-                    // menu.getItems().add("Price ↓");
-                    // menu.getItems().add("Name ↑");
-                    // menu.getItems().add("Name ↓");
-                    // menu.getItems().add("Reviews ↑");
-                    // menu.getItems().add("Reviews ↓");
-                    menu.getItems().addAll("Price ↑", "Price ↓", "Name ↑", "Name ↓", "Reviews ↑", "Reviews ↓");
+            ComboBox<String> menu = new ComboBox<>();
+            menu.setId("menu");
+                menu.getItems().addAll("Price ↑", "Price ↓", "Name ↑", "Name ↓", "Reviews ↑", "Reviews ↓");
                 if (sortedBy != null) {
                     menu.getSelectionModel().select(sortedBy);
+                } else {
+                    menu.getSelectionModel().select("Filter by:");
                 }
-                menu.setOnAction(e -> { 
-                                            sortedBy = menu.getValue();
-                                            try { sortAction(); }
-                                            catch (Exception ev) {}
-                                      }); 
-            
-                Label filterLabel =  new Label("Filter by:");
-                filterLabel.getStyleClass().add("title");
-                
-            filterPane.setAlignment(Pos.CENTER);    
-            filterPane.getChildren().addAll(filterLabel, menu); 
-                
+                    
+            menu.setOnAction(e -> { 
+                                    sortedBy = menu.getValue();
+                                    try { sortAction(); }
+                                    catch (Exception ev) {}
+                                    }); 
+                  
         topPane.setPrefHeight(60);         
-        topPane.getChildren().addAll(titleLabel, filterPane);   
+        topPane.getChildren().addAll(titleLabel, menu);   
         root.setTop(topPane);
         
         
