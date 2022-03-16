@@ -167,20 +167,6 @@ public class AirbnbListing {
                 '}';
     }
     
-    // public int getSortingElement(String sortingElement){
-        // int value = 0;
-        // switch(sortingElement){
-            // case "Price":
-                // value = getPrice();
-            // case "Reviews":
-                // value = getNumberOfReviews();
-            // //case "Name":
-                // //value = getHost_name();
-        // }
-        // System.out.println(value);
-        // return value;
-    // }
-    
     public static Comparator<AirbnbListing> sortByListingHostName = new Comparator<AirbnbListing>() 
     {
         @Override
@@ -214,6 +200,42 @@ public class AirbnbListing {
             int listingTwoReviews = listingTwo.getNumberOfReviews();
             
             return listingOneReviews - listingTwoReviews;
+        }
+    };
+    
+    public static Comparator<AirbnbListing> reverseSortByListingHostName = new Comparator<AirbnbListing>() 
+    {
+        @Override
+        public int compare(AirbnbListing listingOne, AirbnbListing listingTwo)
+        {
+            String listingOneName = listingOne.getHost_name().toLowerCase();
+            String listingTwoName = listingTwo.getHost_name().toLowerCase();
+            
+            return listingTwoName.compareTo(listingOneName);
+        }
+    };
+    
+    public static Comparator<AirbnbListing> reverseSortByListingPrice = new Comparator<AirbnbListing>() 
+    {
+        @Override
+        public int compare(AirbnbListing listingOne, AirbnbListing listingTwo)
+        {
+            Integer listingOnePrice = listingOne.getPrice();
+            Integer listingTwoPrice = listingTwo.getPrice();
+            
+            return listingTwoPrice.compareTo(listingOnePrice);
+        }
+    };
+    
+    public static Comparator<AirbnbListing> reverseSortByListingReviews = new Comparator<AirbnbListing>() 
+    {
+        @Override
+        public int compare(AirbnbListing listingOne, AirbnbListing listingTwo)
+        {
+            int listingOneReviews = listingOne.getNumberOfReviews();
+            int listingTwoReviews = listingTwo.getNumberOfReviews();
+            
+            return listingTwoReviews - listingOneReviews;
         }
     };
 }

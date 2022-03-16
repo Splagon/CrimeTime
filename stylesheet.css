@@ -90,3 +90,13 @@
 .startButton:pressed {
     -fx-background-color: grey;
 }
+
+#hbox {
+    -fx-spacing: 120;
+    -fx-alignment: center;
+}
+
+.buttonsPV:hover {
+    -fx-font: 14px "Ariel";
+    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
+}

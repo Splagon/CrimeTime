@@ -302,7 +302,7 @@ public class MainViewer extends Stage
         root.setTop(minMaxBox);
         
         if (mapScene == null) {
-            mapScene = new Scene(root, 500, 500);
+            mapScene = new Scene(root, 850, 600);
         }
         
         //if (mapScene.getStylesheets().isEmpty()) {

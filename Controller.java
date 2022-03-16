@@ -32,32 +32,31 @@ public class Controller extends Application
 
     public void start(Stage stage) throws Exception
     {
-        MainViewer mainViewer = new MainViewer();
-        StatisticsViewer statsViewer = new StatisticsViewer();
-        //PropertyViewer propertyViewer = new PropertyViewer();
+        stage = new MainViewer();
+        // StatisticsViewer statsViewer = new StatisticsViewer();
         
-        // Create a Button or any control item
-        Button myButton = new Button("Count");
+        // // Create a Button or any control item
+        // Button myButton = new Button("Count");
 
-        // Create a new grid pane
-        GridPane pane = new GridPane();
-        pane.setPadding(new Insets(10, 10, 10, 10));
-        pane.setMinSize(300, 300);
-        pane.setVgap(10);
-        pane.setHgap(10);
+        // // Create a new grid pane
+        // GridPane pane = new GridPane();
+        // pane.setPadding(new Insets(10, 10, 10, 10));
+        // pane.setMinSize(300, 300);
+        // pane.setVgap(10);
+        // pane.setHgap(10);
 
-        //set an action on the button using method reference
-        myButton.setOnAction(this::buttonClick);
+        // //set an action on the button using method reference
+        // myButton.setOnAction(this::buttonClick);
 
-        // Add the button and label into the pane
-        pane.add(myLabel, 1, 0);
-        pane.add(myButton, 0, 0);
+        // // Add the button and label into the pane
+        // pane.add(myLabel, 1, 0);
+        // pane.add(myButton, 0, 0);
 
-        // JavaFX must have a Scene (window content) inside a Stage (window)
-        Scene scene = new Scene(pane, 300,100);
-        stage.setTitle("JavaFX Example");
-        stage.setScene(scene);
-
+        // // JavaFX must have a Scene (window content) inside a Stage (window)
+        // Scene scene = new Scene(pane, 300,100);
+        // stage.setTitle("JavaFX Example");
+        // stage.setScene(scene);
+        
         // Show the Stage (window)
         stage.show();
     }

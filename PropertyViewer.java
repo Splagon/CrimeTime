@@ -58,7 +58,7 @@ public class PropertyViewer extends Stage {
     }
 
     private void makePropertyViewerScene() throws Exception {
-        setTitle("Property Viewer: " + borough);
+        setTitle("Neighbourhood: " + borough);
         
         if(sortedBy != null){
             properties = dataHandler.getPropertiesSortedBy(borough, minPrice, maxPrice, sortedBy);
@@ -67,6 +67,7 @@ public class PropertyViewer extends Stage {
         }
         
         BorderPane root = new BorderPane();
+        root.setId("rootPV");
         root.setPadding(new Insets(0, 10, 0, 10));
         root.setPrefSize(600, 400);
         
@@ -75,29 +76,40 @@ public class PropertyViewer extends Stage {
         scene.getStylesheets().add("stylesheet.css");
         
         HBox topPane = new HBox();
+        topPane.setId("hbox");
         
-            Label titleLabel = new Label("Welcome in the PV !");
-                titleLabel.getStyleClass().add("title");
-        
-            ComboBox<String> menu = new ComboBox<>();
-                menu.getItems().add("Price");
-                menu.getItems().add("Name");
-                menu.getItems().add("Reviews");
-            menu.setOnAction(e -> { 
-                                    sortedBy = menu.getValue();
-                                    try
-                                    {
-                                        sortAction();
-                                    }
-                                    catch (Exception ev)
-                                    {
-                                        ev .printStackTrace();
-                                    }
-                                    });                                 
-        topPane.setSpacing(150);
-        topPane.setPrefHeight(60); 
-        topPane.setAlignment(Pos.CENTER);        
-        topPane.getChildren().addAll(titleLabel, menu);   
+            Label titleLabel = new Label("Welcome to the property viewer!");
+            titleLabel.getStyleClass().add("title");
+                
+            VBox filterPane = new VBox();
+            
+                ComboBox<String> menu = new ComboBox<>();
+                    menu.getItems().add("Price ↑");
+                    menu.getItems().add("Price ↓");
+                    menu.getItems().add("Name ↑");
+                    menu.getItems().add("Name ↓");
+                    menu.getItems().add("Reviews ↑");
+                    menu.getItems().add("Reveiws ↓");
+                menu.setOnAction(e -> { 
+                                        sortedBy = menu.getValue();
+                                        try
+                                        {
+                                            sortAction();
+                                        }
+                                        catch (Exception ev)
+                                        {
+                                            ev .printStackTrace();
+                                        }
+                                        }); 
+            
+                Label filterLabel =  new Label("Filter by:");
+                filterLabel.getStyleClass().add("title");
+                
+            filterPane.setAlignment(Pos.CENTER);    
+            filterPane.getChildren().addAll(filterLabel, menu); 
+                
+        topPane.setPrefHeight(60);         
+        topPane.getChildren().addAll(titleLabel, filterPane);   
         root.setTop(topPane);
         
         
@@ -109,17 +121,20 @@ public class PropertyViewer extends Stage {
         prevButton = new Button("Previous");
             prevButton.setOnAction(e -> viewPreviousProperty());
             prevButton.setPrefSize(130, 230);
+        prevButton.getStyleClass().add("buttonsPV");
         root.setLeft(prevButton);
         root.setAlignment(prevButton, Pos.CENTER);
         
         nextButton = new Button("Next");
             nextButton.setOnAction(e -> viewNextProperty());
             nextButton.setPrefSize(130, 230);
+        nextButton.getStyleClass().add("buttonsPV");
         root.setRight(nextButton);
         root.setAlignment(nextButton, Pos.CENTER);
         
         infoButton = new Button("Description");
             infoButton.setOnAction(e -> popUpAction());
+        infoButton.getStyleClass().add("buttonsPV");
         
         info = new GridPane();
             info.setAlignment(Pos.CENTER);

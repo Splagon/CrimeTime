@@ -61,14 +61,23 @@ public class DataHandler
     private ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
         switch (sortingElement) 
         {
-            case "Price":
+            case "Price ↑":
                 Collections.sort(unsortedList, AirbnbListing.sortByListingPrice);
                 break;
-            case "Reviews":
+            case "Reviews ↑":
                 Collections.sort(unsortedList, AirbnbListing.sortByListingReviews);
                 break;
-            case "Name":
+            case "Name ↑":
                 Collections.sort(unsortedList, AirbnbListing.sortByListingHostName);
+                break;
+            case "Name ↓":
+                Collections.sort(unsortedList, AirbnbListing.reverseSortByListingHostName);
+                break;
+            case "Price ↓":
+                Collections.sort(unsortedList, AirbnbListing.reverseSortByListingPrice);
+                break;
+            case "Reviews ↓":
+                Collections.sort(unsortedList, AirbnbListing.reverseSortByListingReviews);
                 break;
             } 
         return unsortedList;
