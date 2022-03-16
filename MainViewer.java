@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.geometry.Insets;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -24,6 +26,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.*;
+import javafx.scene.Node;
 
 /**
  * Write a description of class MapViewer here.
@@ -319,25 +322,36 @@ public class MainViewer extends Stage
         HBox minMaxBox = createMinMaxBox();
             minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             
-        root.setTop(minMaxBox);
+        //root.setTop(minMaxBox);
         
         if (mapScene == null) {
-            mapScene = new Scene(root, 850, 600);
+            mapScene = new Scene(root, 1020, 580);
+            setResizable(false);
         }
         
         //if (mapScene.getStylesheets().isEmpty()) {
             mapScene.getStylesheets().add("stylesheet.css");
         //}
         
-        Pane window = new FlowPane();
+        //Pane window = new FlowPane();
         
-        VBox stats = createStatsPanel();
+        VBox infoPane = new VBox();
+            Label titleLabel = new Label("Boroughs of London");
+            titleLabel.getStyleClass().add("welcomeTittle");
+            VBox stats = createStatsPanel();
+            GridPane key = createKey();
             
-        GridPane key = createKey();
+        infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
+        infoPane.setPadding(new Insets(20));
+        infoPane.setSpacing(30);
 
-        window.getChildren().addAll(stats, mapView, key);
+        //window.getChildren().addAll(stats, mapView, key);
+        //root.setCenter(window);
         
-        root.setCenter(window);
+        mapView.setPadding(new Insets(20));
+        
+        root.setLeft(infoPane);
+        root.setCenter(mapView);
     }
     
     private void makeHexagonMap() throws Exception {
@@ -358,8 +372,7 @@ public class MainViewer extends Stage
                 
                 if (m % 2 == 0) {
                         rowSpace = new StackPane();
-                        Rectangle insetSpace = new Rectangle(47,94);
-                            insetSpace.setFill(Color.TRANSPARENT);
+                        Rectangle insetSpace = createSpacerRectangle(47);
                         rowSpace.getChildren().add(insetSpace);
                         row.getChildren().add(rowSpace);
                 }
@@ -387,9 +400,7 @@ public class MainViewer extends Stage
                         rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
                     }
                     else {
-                        Rectangle emptySpace = new Rectangle(94,94);
-                            emptySpace.setFill(Color.TRANSPARENT);
-                            //emptySpace.setFill(Color.GOLD);
+                        Rectangle emptySpace = createSpacerRectangle(94);
                         rowSpace.getChildren().add(emptySpace);
                     }
                     row.getChildren().add(rowSpace);
@@ -397,18 +408,19 @@ public class MainViewer extends Stage
                 
                 if (m % 2 == 1) {
                     rowSpace = new StackPane();
-                    Rectangle insetSpace = new Rectangle(47,94);
-                        insetSpace.setFill(Color.TRANSPARENT);
-                        //insetSpace.setFill(Color.GOLD);
+                    Rectangle insetSpace = createSpacerRectangle(47);
                     rowSpace.getChildren().add(insetSpace);
                     row.getChildren().add(rowSpace);
-                }
-                
-                //mapRows.add(row);
-                
+                }                
                 AnchorPane.setTopAnchor(row, m*72.0);
                 mapView.getChildren().add(row);
             }
+    }
+    
+    private Rectangle createSpacerRectangle(int widthHeight) {
+        Rectangle spacerRectangle = new Rectangle(widthHeight, widthHeight);
+        spacerRectangle.setFill(Color.TRANSPARENT);
+        return spacerRectangle;
     }
     
     private void openPropertyViewer(String boroughName) throws Exception {
@@ -450,11 +462,13 @@ public class MainViewer extends Stage
     
     private GridPane createKey() throws Exception {
         GridPane key = new GridPane();
+        key.getStyleClass().add("infoGrid");
         
         int hexagonKeyHeightWidth = 20;
         
         Label keyTitleLabel = new Label("Key");
         Label keyDescriptionLabel = new Label("(Sorted by number of\nProperties in Borough)");
+            keyDescriptionLabel.getStyleClass().add("labelSmall");
         Label keyLabelEmpty = new Label("No Properties in Borough");
         Label keyLabelPercentile25 = new Label("Below Lower Quartile");
         Label keyLabelPercentile50 = new Label("Between Lower Quartile\n and Median");
@@ -487,16 +501,21 @@ public class MainViewer extends Stage
         key.add(keyLabelPercentile75, 1, 4);
         key.add(keyLabelPercentile100, 1, 5);
         
+        key = alignItemsInGridPane(key);
+        
         return key;
     }
     
     private VBox createStatsPanel() {
         VBox statsBox = new VBox();
+        statsBox.setSpacing(20);
         
         GridPane statsPanel = new GridPane();
+        statsPanel.getStyleClass().add("infoGrid");
         
         Label statsTitleLabel = new Label("Statistics");
         Label statsDescriptionLabel = new Label("(number of\nproperties in borough)");
+            statsDescriptionLabel.getStyleClass().add("labelSmall");
         Label statsLabel1 = new Label("Minimum");
         Label statsLabel2 = new Label("Lower Quartile");
         Label statsLabel3 = new Label("Median");
@@ -505,17 +524,20 @@ public class MainViewer extends Stage
         
         statsPanel.add(statsTitleLabel, 0, 0);
         statsPanel.add(statsDescriptionLabel, 1, 0);
-        statsPanel.add(statsLabel1, 0, 1);
-        statsPanel.add(statsLabel2, 0, 2);
-        statsPanel.add(statsLabel3, 0, 3);
-        statsPanel.add(statsLabel4, 0, 4);
-        statsPanel.add(statsLabel5, 0, 5);
         
         statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getMinNoOfPropertiesInBorough())), 1, 1);
         statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getFirstQuartile())), 1, 2);
         statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getMedian())), 1, 3);
         statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getThirdQuartile())), 1, 4);
         statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getMaxNoOfPropertiesInBorough())), 1, 5);
+        
+        statsPanel = alignItemsInGridPane(statsPanel);
+        
+        statsPanel.add(statsLabel1, 0, 1);
+        statsPanel.add(statsLabel2, 0, 2);
+        statsPanel.add(statsLabel3, 0, 3);
+        statsPanel.add(statsLabel4, 0, 4);
+        statsPanel.add(statsLabel5, 0, 5);
         
         Button moreStatsButton = new Button("Show more stats!");
         moreStatsButton.setOnAction(e -> showMoreStats());
@@ -528,5 +550,15 @@ public class MainViewer extends Stage
     private void showMoreStats() {
         Stage stage = new StatisticsViewer();
         stage.show();
+    }
+    
+    private GridPane alignItemsInGridPane(GridPane grid) {
+        for (Node node : grid.getChildren()) {
+            grid.setHalignment(node, HPos.CENTER);
+            grid.setValignment(node, VPos.CENTER);
+            node.maxWidth(Double.MAX_VALUE);
+            node.maxHeight(Double.MAX_VALUE);
+        }
+        return grid;
     }
 }
