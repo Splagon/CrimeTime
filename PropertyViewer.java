@@ -84,6 +84,7 @@ public class PropertyViewer extends Stage {
             VBox filterPane = new VBox();
             
                 ComboBox<String> menu = new ComboBox<>();
+                
                     // menu.getItems().add("Price ↑");
                     // menu.getItems().add("Price ↓");
                     // menu.getItems().add("Name ↑");
@@ -91,6 +92,9 @@ public class PropertyViewer extends Stage {
                     // menu.getItems().add("Reviews ↑");
                     // menu.getItems().add("Reviews ↓");
                     menu.getItems().addAll("Price ↑", "Price ↓", "Name ↑", "Name ↓", "Reviews ↑", "Reviews ↓");
+                if (sortedBy != null) {
+                    menu.getSelectionModel().select(sortedBy);
+                }
                 menu.setOnAction(e -> { 
                                             sortedBy = menu.getValue();
                                             try { sortAction(); }
