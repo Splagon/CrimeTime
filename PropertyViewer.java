@@ -19,6 +19,8 @@ import javafx.stage.Popup;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ComboBox;
 import javafx.collections.ObservableList;
+import javafx.stage.*;
+import javafx.event.EventHandler;
 
 /**
  * JavaFX version of PVGUI in code
@@ -55,6 +57,8 @@ public class PropertyViewer extends Stage {
         this.sortedBy = sortedBy;
         currentPropertyIndex = 0;
         makePropertyViewerScene();
+        
+        this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
     }
 
     private void makePropertyViewerScene() throws Exception {

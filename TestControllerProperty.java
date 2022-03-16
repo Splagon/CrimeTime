@@ -13,9 +13,5 @@ public class TestControllerProperty extends Application
     public void start(Stage stage) throws Exception{
         PropertyViewer propertyViewer = new PropertyViewer("Camden", -1, -1, null);
         propertyViewer.show();
-        
-        propertyViewer.setOnCloseRequest(e -> {
-            propertyViewer.closePropertyViewer();
-        });
     }
 }
