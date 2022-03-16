@@ -14,6 +14,16 @@
         -fx-text-alignment: center;
 }
 
+.labelSmall {
+        -fx-font: 9px "Verdana";
+        -fx-text-alignment: center;
+}
+
+.infoGrid {
+        -fx-vgap: 5;
+        -fx-hgap: 10;
+}
+
 .statslabels {
     -fx-font-weight: bold; 
 }
@@ -28,6 +38,10 @@
         -fx-background-color: rgba(00,00,00,0.0);
         -fx-font-size: 18px;
         -fx-text-fill: black;
+}
+
+.boroughButton:hover {
+        -fx-text-fill: white;
 }
 
 .propertyViewerInfoLabels {
