@@ -23,6 +23,12 @@ public class NoOfPropertiesStats
         calculateStats();
     }
     
+    public NoOfPropertiesStats(int firstQuartile, int median, int thirdQuartile) throws Exception {
+        this.firstQuartile = firstQuartile;
+        this.median = median;
+        this.thirdQuartile = thirdQuartile;
+    }
+    
     private void calculateStats() {
         noOfBoroughs = sortedNumberOfPropertiesInBorough.size();
         

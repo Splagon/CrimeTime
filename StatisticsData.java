@@ -256,12 +256,10 @@ public class StatisticsData extends DataHandler
         return brightness;
     }
     
-    public double getBoroughMapColour(double percentile, NoOfPropertiesStats noOfPropertiesStats) {
-        int median = noOfPropertiesStats.getMedian();
+    public double getBoroughMapColour(int percentile) throws Exception {
+        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(25, 50, 75);
         
-        int calculatedNoOfPropertiesInBorough = (int)((median * 2) * percentile);
-        
-        double brightness = getBrightness(calculatedNoOfPropertiesInBorough, noOfPropertiesStats);
+        double brightness = getBrightness(percentile, noOfPropertiesStats);
         
         return brightness;
     }

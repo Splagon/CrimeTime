@@ -324,18 +324,7 @@ public class MainViewer extends Stage
             stats.add(statsLabel3, 0, 3);
             stats.add(statsLabel4, 0, 4);
             
-        GridPane key = new GridPane();
-            Label keyLabel = new Label("Key");
-            Label keyLabel1 = new Label("Value 1");
-            Label keyLabel2 = new Label("Value 2");
-            Label keyLabel3 = new Label("Value 3");
-            Label keyLabel4 = new Label("Value 4");
-            
-            key.add(keyLabel, 0, 0);
-            key.add(keyLabel1, 0, 1);
-            key.add(keyLabel2, 0, 2);
-            key.add(keyLabel3, 0, 3);
-            key.add(keyLabel4, 0, 4);
+        GridPane key = createKey();
 
         window.getChildren().addAll(stats, mapView, key);
         
@@ -389,9 +378,7 @@ public class MainViewer extends Stage
                         //Image hexagonFilledImage = new Image("/hexagonFilled.png");
                         //ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), sortedNumberOfPropertiesAtPrice));
                         ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
-                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), noOfPropertiesStats);
-                            hexagonFilled.setFitWidth(93);
-                            hexagonFilled.setFitHeight(93);
+                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), 93, noOfPropertiesStats);
                     
                         rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
                     }
@@ -455,12 +442,67 @@ public class MainViewer extends Stage
         // return (Image) renderedHexagon;
     // }
     
-    private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, NoOfPropertiesStats noOfPropertiesStats) {
+    private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) {
         ColorAdjust shader = new ColorAdjust();
             shader.setBrightness(dataHandler.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, noOfPropertiesStats));
+            
+        hexagon.setFitWidth(heightWidth);
+        hexagon.setFitHeight(heightWidth);
             
         hexagon.setEffect(shader);
         
         return hexagon;
+    }
+    
+    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) throws Exception {
+        ColorAdjust shader = new ColorAdjust();
+            shader.setBrightness(dataHandler.getBoroughMapColour(percentile));
+            
+        hexagon.setFitWidth(heightWidth);
+        hexagon.setFitHeight(heightWidth);
+            
+        hexagon.setEffect(shader);
+        
+        return hexagon;
+    }
+    
+    private GridPane createKey() throws Exception {
+        GridPane key = new GridPane();
+        
+        int hexagonKeyHeightWidth = 20;
+        
+        Label keyTitleLabel = new Label("Key");
+        Label keyLabelEmpty = new Label("No Properties\nin Borough");
+        Label keyLabelPercentile25 = new Label("Properties within\n0-24th Percentile");
+        Label keyLabelPercentile50 = new Label("Properties within\n25-49th Percentile");
+        Label keyLabelPercentile75 = new Label("Properties within\n50-74th Percentile");
+        Label keyLabelPercentile100 = new Label("Properties within\n74-100th Percentile");
+        
+
+        for (int i = 0; i < 5; i++) {
+            StackPane completeHexagon = new StackPane();
+            
+            ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
+            ImageView hexagonOutline = new ImageView(new Image("/hexagonOutlineThick.png"));
+            
+            ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, hexagonKeyHeightWidth, i*20);
+            
+            hexagonOutline.setFitHeight(hexagonKeyHeightWidth);
+            hexagonOutline.setFitWidth(hexagonKeyHeightWidth);
+            
+            completeHexagon.getChildren().addAll(hexagonFilled, hexagonOutline);
+            
+            key.add(completeHexagon, 0, i+1);
+        }
+        
+        key.add(keyTitleLabel, 0, 0);
+            
+        key.add(keyLabelEmpty, 1, 1);
+        key.add(keyLabelPercentile25, 1, 2);
+        key.add(keyLabelPercentile50, 1, 3);
+        key.add(keyLabelPercentile75, 1, 4);
+        key.add(keyLabelPercentile100, 1, 5);
+        
+        return key;
     }
 }
