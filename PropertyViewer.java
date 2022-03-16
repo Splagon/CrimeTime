@@ -90,17 +90,14 @@ public class PropertyViewer extends Stage {
                     menu.getItems().add("Name ↓");
                     menu.getItems().add("Reviews ↑");
                     menu.getItems().add("Reviews ↓");
+                if (sortedBy != null) {
+                    menu.getSelectionModel().select(sortedBy);
+                }
                 menu.setOnAction(e -> { 
-                                        sortedBy = menu.getValue();
-                                        try
-                                        {
-                                            sortAction();
-                                        }
-                                        catch (Exception ev)
-                                        {
-                                            ev .printStackTrace();
-                                        }
-                                        }); 
+                                            sortedBy = menu.getValue();
+                                            try { sortAction(); }
+                                            catch (Exception ev) {}
+                                      }); 
             
                 Label filterLabel =  new Label("Filter by:");
                 filterLabel.getStyleClass().add("title");
@@ -250,8 +247,8 @@ public class PropertyViewer extends Stage {
     }
     
     private void sortAction() throws Exception {
-        this.close();
         Stage stage = new PropertyViewer(borough, minPrice, maxPrice, sortedBy);
+        this.close();
         stage.show();
     }
 }
