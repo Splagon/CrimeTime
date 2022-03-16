@@ -63,14 +63,6 @@ public class MainViewer extends Stage
         
         makeWelcomeScene();
         setScene(welcomeScene);
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try { makeHexagonMap(); }
-                catch (Exception e) {}
-            }
-        });
         lowestPrice = dataHandler.getLowestPrice();
         highestPrice = dataHandler.getHighestPrice();
     }
@@ -353,7 +345,9 @@ public class MainViewer extends Stage
     private void makeHexagonMap() throws Exception {
         mapPositions = dataHandler.getMapPositions();
         
-        ArrayList<BoroughListing> sortedNumberOfPropertiesAtPrice = dataHandler.getSortedNumberOfPropertiesInBoroughs(selectedMinPrice, selectedMaxPrice);
+        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(dataHandler, selectedMinPrice, selectedMaxPrice);
+        
+        //ArrayList<BoroughListing> sortedNumberOfPropertiesAtPrice = dataHandler.getSortedNumberOfPropertiesInBoroughs(selectedMinPrice, selectedMaxPrice);
         
         mapView = new AnchorPane();
             mapView.setMinSize(720, 700);
@@ -392,8 +386,10 @@ public class MainViewer extends Stage
                             hexagonOutline.setFitWidth(94);
                             hexagonOutline.setFitHeight(94);
                         
-                        Image hexagonFilledImage = new Image("/hexagonFilled.png");
-                        ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), sortedNumberOfPropertiesAtPrice));
+                        //Image hexagonFilledImage = new Image("/hexagonFilled.png");
+                        //ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), sortedNumberOfPropertiesAtPrice));
+                        ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
+                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), noOfPropertiesStats);
                             hexagonFilled.setFitWidth(93);
                             hexagonFilled.setFitHeight(93);
                     
@@ -437,25 +433,34 @@ public class MainViewer extends Stage
         };
     }
     
-    private Image setHexagonFilledColour(Image hexagon, String boroughName, ArrayList<BoroughListing> sortedNumberOfPropertiesInBorough) {
-        int height = (int) hexagon.getHeight();
-        int width = (int) hexagon.getWidth();
+    // private Image setHexagonFilledColour(Image hexagon, String boroughName, ArrayList<BoroughListing> sortedNumberOfPropertiesInBorough) {
+        // int height = (int) hexagon.getHeight();
+        // int width = (int) hexagon.getWidth();
         
-        WritableImage renderedHexagon = new WritableImage(hexagon.getPixelReader(), width, height);
-        final PixelReader pixelReader = renderedHexagon.getPixelReader();
-        final PixelWriter pixelWriter = renderedHexagon.getPixelWriter();
+        // WritableImage renderedHexagon = new WritableImage(hexagon.getPixelReader(), width, height);
+        // final PixelReader pixelReader = renderedHexagon.getPixelReader();
+        // final PixelWriter pixelWriter = renderedHexagon.getPixelWriter();
 
-        Color boroughColour = dataHandler.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, sortedNumberOfPropertiesInBorough);
+        // Color boroughColour = dataHandler.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, sortedNumberOfPropertiesInBorough);
         
-        for(int y = 0; y < height; y++) {
-            for(int x = 0; x < width; x++) { 
-                if (! pixelReader.getColor(x, y).equals(Color.rgb(0, 0, 0, 0.0))) {
-                    //pixelWriter.setColor(x, y, Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)));
-                    pixelWriter.setColor(x,y,boroughColour);
-                }            
-            }
-        }
+        // for(int y = 0; y < height; y++) {
+            // for(int x = 0; x < width; x++) { 
+                // if (! pixelReader.getColor(x, y).equals(Color.rgb(0, 0, 0, 0.0))) {
+                    // //pixelWriter.setColor(x, y, Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)));
+                    // pixelWriter.setColor(x,y,boroughColour);
+                // }            
+            // }
+        // }
         
-        return (Image) renderedHexagon;
+        // return (Image) renderedHexagon;
+    // }
+    
+    private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, NoOfPropertiesStats noOfPropertiesStats) {
+        ColorAdjust shader = new ColorAdjust();
+            shader.setBrightness(dataHandler.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, noOfPropertiesStats));
+            
+        hexagon.setEffect(shader);
+        
+        return hexagon;
     }
 }
