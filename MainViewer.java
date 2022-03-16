@@ -54,6 +54,8 @@ public class MainViewer extends Stage
     
     private StatisticsData dataHandler;
     
+    private NoOfPropertiesStats noOfPropertiesStats;
+    
     /**
      * Constructor for objects of class MapViewer
      */
@@ -329,18 +331,7 @@ public class MainViewer extends Stage
         
         Pane window = new FlowPane();
         
-        GridPane stats = new GridPane();
-            Label statsLabel = new Label("Stats");
-            Label statsLabel1 = new Label("Stat 1");
-            Label statsLabel2 = new Label("Stat 2");
-            Label statsLabel3 = new Label("Stat 3");
-            Label statsLabel4 = new Label("Stat 4");
-            
-            stats.add(statsLabel, 0, 0);
-            stats.add(statsLabel1, 0, 1);
-            stats.add(statsLabel2, 0, 2);
-            stats.add(statsLabel3, 0, 3);
-            stats.add(statsLabel4, 0, 4);
+        VBox stats = createStatsPanel();
             
         GridPane key = createKey();
 
@@ -352,10 +343,8 @@ public class MainViewer extends Stage
     private void makeHexagonMap() throws Exception {
         mapPositions = dataHandler.getMapPositions();
         
-        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(dataHandler, selectedMinPrice, selectedMaxPrice);
-        
-        //ArrayList<BoroughListing> sortedNumberOfPropertiesAtPrice = dataHandler.getSortedNumberOfPropertiesInBoroughs(selectedMinPrice, selectedMaxPrice);
-        
+        noOfPropertiesStats = new NoOfPropertiesStats(dataHandler, selectedMinPrice, selectedMaxPrice);
+            
         mapView = new AnchorPane();
             mapView.setMinSize(720, 700);
             // rows
@@ -371,7 +360,6 @@ public class MainViewer extends Stage
                         rowSpace = new StackPane();
                         Rectangle insetSpace = new Rectangle(47,94);
                             insetSpace.setFill(Color.TRANSPARENT);
-                            //insetSpace.setFill(Color.GOLD);
                         rowSpace.getChildren().add(insetSpace);
                         row.getChildren().add(rowSpace);
                 }
@@ -393,8 +381,6 @@ public class MainViewer extends Stage
                             hexagonOutline.setFitWidth(94);
                             hexagonOutline.setFitHeight(94);
                         
-                        //Image hexagonFilledImage = new Image("/hexagonFilled.png");
-                        //ImageView hexagonFilled = new ImageView(setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), sortedNumberOfPropertiesAtPrice));
                         ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
                         ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), 93, noOfPropertiesStats);
                     
@@ -438,28 +424,6 @@ public class MainViewer extends Stage
         };
     }
     
-    // private Image setHexagonFilledColour(Image hexagon, String boroughName, ArrayList<BoroughListing> sortedNumberOfPropertiesInBorough) {
-        // int height = (int) hexagon.getHeight();
-        // int width = (int) hexagon.getWidth();
-        
-        // WritableImage renderedHexagon = new WritableImage(hexagon.getPixelReader(), width, height);
-        // final PixelReader pixelReader = renderedHexagon.getPixelReader();
-        // final PixelWriter pixelWriter = renderedHexagon.getPixelWriter();
-
-        // Color boroughColour = dataHandler.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, sortedNumberOfPropertiesInBorough);
-        
-        // for(int y = 0; y < height; y++) {
-            // for(int x = 0; x < width; x++) { 
-                // if (! pixelReader.getColor(x, y).equals(Color.rgb(0, 0, 0, 0.0))) {
-                    // //pixelWriter.setColor(x, y, Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)));
-                    // pixelWriter.setColor(x,y,boroughColour);
-                // }            
-            // }
-        // }
-        
-        // return (Image) renderedHexagon;
-    // }
-    
     private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) {
         ColorAdjust shader = new ColorAdjust();
             shader.setBrightness(dataHandler.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, noOfPropertiesStats));
@@ -490,11 +454,12 @@ public class MainViewer extends Stage
         int hexagonKeyHeightWidth = 20;
         
         Label keyTitleLabel = new Label("Key");
-        Label keyLabelEmpty = new Label("No Properties\nin Borough");
-        Label keyLabelPercentile25 = new Label("Properties within\n0-24th Percentile");
-        Label keyLabelPercentile50 = new Label("Properties within\n25-49th Percentile");
-        Label keyLabelPercentile75 = new Label("Properties within\n50-74th Percentile");
-        Label keyLabelPercentile100 = new Label("Properties within\n74-100th Percentile");
+        Label keyDescriptionLabel = new Label("(Sorted by number of\nProperties in Borough)");
+        Label keyLabelEmpty = new Label("No Properties in Borough");
+        Label keyLabelPercentile25 = new Label("Below Lower Quartile");
+        Label keyLabelPercentile50 = new Label("Between Lower Quartile\n and Median");
+        Label keyLabelPercentile75 = new Label("Between Median\n and Lower Quartile");
+        Label keyLabelPercentile100 = new Label("Above Upper Quartile");
         
 
         for (int i = 0; i < 5; i++) {
@@ -514,6 +479,7 @@ public class MainViewer extends Stage
         }
         
         key.add(keyTitleLabel, 0, 0);
+        key.add(keyDescriptionLabel, 1, 0);
             
         key.add(keyLabelEmpty, 1, 1);
         key.add(keyLabelPercentile25, 1, 2);
@@ -522,5 +488,45 @@ public class MainViewer extends Stage
         key.add(keyLabelPercentile100, 1, 5);
         
         return key;
+    }
+    
+    private VBox createStatsPanel() {
+        VBox statsBox = new VBox();
+        
+        GridPane statsPanel = new GridPane();
+        
+        Label statsTitleLabel = new Label("Statistics");
+        Label statsDescriptionLabel = new Label("(number of\nproperties in borough)");
+        Label statsLabel1 = new Label("Minimum");
+        Label statsLabel2 = new Label("Lower Quartile");
+        Label statsLabel3 = new Label("Median");
+        Label statsLabel4 = new Label("Upper Quartile");
+        Label statsLabel5 = new Label("Maximum");
+        
+        statsPanel.add(statsTitleLabel, 0, 0);
+        statsPanel.add(statsDescriptionLabel, 1, 0);
+        statsPanel.add(statsLabel1, 0, 1);
+        statsPanel.add(statsLabel2, 0, 2);
+        statsPanel.add(statsLabel3, 0, 3);
+        statsPanel.add(statsLabel4, 0, 4);
+        statsPanel.add(statsLabel5, 0, 5);
+        
+        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getMinNoOfPropertiesInBorough())), 1, 1);
+        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getFirstQuartile())), 1, 2);
+        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getMedian())), 1, 3);
+        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getThirdQuartile())), 1, 4);
+        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getMaxNoOfPropertiesInBorough())), 1, 5);
+        
+        Button moreStatsButton = new Button("Show more stats!");
+        moreStatsButton.setOnAction(e -> showMoreStats());
+        
+        statsBox.getChildren().addAll(statsPanel, moreStatsButton);
+            
+        return statsBox;
+    }
+    
+    private void showMoreStats() {
+        Stage stage = new StatisticsViewer();
+        stage.show();
     }
 }

@@ -78,4 +78,12 @@ public class NoOfPropertiesStats
     public int getThirdQuartile() {
         return thirdQuartile;
     }
+    
+    public int getMinNoOfPropertiesInBorough() {
+        return minNoOfPropertiesInBorough;
+    }
+    
+    public int getMaxNoOfPropertiesInBorough() {
+        return maxNoOfPropertiesInBorough;
+    }
 }
