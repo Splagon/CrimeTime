@@ -21,6 +21,10 @@ import javafx.scene.control.ComboBox;
 import javafx.collections.ObservableList;
 import javafx.stage.*;
 import javafx.event.EventHandler;
+import java.net.URL;
+import java.net.URLConnection;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Property viewer is the class that is responsible 
@@ -54,6 +58,9 @@ public class PropertyViewer extends Stage {
     private WebEngine webEngine;
     // Stage object for managing properties' description window
     private Stage descriptionStage;
+    // Holds applcation's internet connectivity status
+    private boolean applicationConnected;
+    
     /**
      * Constructor of property viewer stage.
      * 
@@ -69,6 +76,7 @@ public class PropertyViewer extends Stage {
         this.maxPrice = maxPrice;
         this.sortedBy = sortedBy;
         currentPropertyIndex = 0;
+        applicationConnected = true;
         
         makePropertyViewerScene();
         
@@ -200,29 +208,43 @@ public class PropertyViewer extends Stage {
         
         setResizable(false);
         setScene(scene);
-        show();
+        if (applicationConnected) {
+            show();
+        }
     }
     
     /**
      * Updates the variables of the property displayed.  
      */
     private void update() {
-        // first, we retrieve the pproperty at the current index
+        // first, we retrieve the property at the current index
         AirbnbListing listing = properties.get(currentPropertyIndex);
         // then, we update the variables
-        hostLabel.setText(hostPrefix + listing.getHost_name());
+        if(listing.getHost_name() != null){
+            hostLabel.setText(hostPrefix + listing.getHost_name());
+        }else{
+            hostLabel.setText("No data");
+        }
         priceLabel.setText(pricePrefix + listing.getPrice());
         noOfReviewsLabel.setText(listing.getNumberOfReviews() + noOfReviewsPostfix);
         roomTypeLabel.setText(listing.getRoom_type());
         minNightsLabel.setText(listing.getMinimumNights() + minNightsPostfix);
         descriptionLabel.setText(listing.getName());
         // if the user didn't close the description window of the previous property, we close it.
-        if(descriptionStage != null){
+        if(descriptionStage != null) {
             closeDescription();
         }
         // Used MapBox api to load a map pointing the location of current property displayed.
-        String url = "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",12,0/600x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw";
-        webEngine.load(url);
+        try  {
+            URL url = new URL("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",12,0/600x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw");
+            URLConnection connection = url.openConnection();
+            connection.connect(); // test internet connectivity, if no connection: throws an exception
+            webEngine.load(url.toString());
+        } catch(Exception e) {
+            noConnectionAlert();
+            this.close();
+            applicationConnected = false;
+        }
     }
     
     /**
@@ -286,7 +308,7 @@ public class PropertyViewer extends Stage {
         descriptionStage.setX((this.getWidth() - width) / 2 + this.getX());
         descriptionStage.setY(this.getY() + this.getHeight() + 20);
         
-        descriptionStage.showAndWait();        
+        descriptionStage.show();        
     }
     
     /**
@@ -324,6 +346,20 @@ public class PropertyViewer extends Stage {
             descriptionStage.close();
             descriptionStage = null;
         }
+    }
+    
+    /**
+     * Displays an alert if the user isn't connected to internet.
+     */
+    public void noConnectionAlert(){
+        Alert alert = new Alert(AlertType.WARNING);
+            alert.setHeaderText("No internet Connection");
+            alert.setContentText("Unfortunately you will need a stable internet connection \n to run the property viewer correctly, we apologise \n for the inconvenience caused. \n Come back !");
+        alert.show();
+    }
+    
+    public boolean getInternetConnection(){
+        return applicationConnected;
     }
 }
 

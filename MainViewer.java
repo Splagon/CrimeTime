@@ -425,8 +425,12 @@ public class MainViewer extends Stage
     
     private void openPropertyViewer(String boroughName) throws Exception {
         try {
-            Stage stage = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
-            stage.show();
+            PropertyViewer stage = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
+            if(stage.getInternetConnection() == true){
+                stage.show();
+            } else {
+                stage.noConnectionAlert();
+            }  
         }
         catch (Exception e) {
             Alert alert = new Alert(AlertType.WARNING);
