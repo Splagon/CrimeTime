@@ -1,7 +1,23 @@
+// -------------- universal ---------------------
 .root {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-alignment: center;
     -fx-background-color : aliceblue;
 }
 
+.root:Node {
+    -fx-alignment: center;
+}
+
+.mainTitles {
+    -fx-font: 30px "Ariel";
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-underline: true;
+    -fx-font-weight: bold;
+}
+// -------------- universal ---------------------
 
 #statsgrid{
     -fx-hgap: 0px;
@@ -33,10 +49,6 @@
     -fx-font-weight: bold; 
 }
 
-.titlelabel {
-    -fx-font: 20px "Comic Sans MS";
-}
-
 .boroughButton {
         -fx-min-width: 88px;
         -fx-min-height: 80px;
@@ -54,10 +66,6 @@
     -fx-font: 12px "Verdana";
 }
 
-.title {
-    -fx-font: 12px "Verdana";
-    -fx-font-weight: bold;
-}
 // ------------ welcome scene -------------------
 .welcomeTittle {
     -fx-font: 30px "Ariel";
@@ -77,17 +85,6 @@
     -fx-spacing: 5;
     -fx-wrap-text: true;
     -fx-text-alignment: justify;
-}
-
-.welcomeWindow {
-    -fx-padding: 20;
-    -fx-spacing: 20;
-    -fx-alignment: center;
-    -fx-background-color: beige;
-}
-
-.welcomeWindow:Node {
-    -fx-alignment: center;
 }
 
 .instrcutionsAndStart {
@@ -115,17 +112,6 @@
 // ------------ welcome scene -------------------
 
 // ------------- price scene --------------------
-.priceWindow {
-    -fx-padding: 20;
-    -fx-spacing: 20;
-    -fx-alignment: center;
-    -fx-background-color: beige;
-}
-
-.priceWindow:Node {
-    -fx-alignment: center;
-}
-
 .priceTitle {
     -fx-font: 30px "Ariel";
     -fx-alignment: center;
