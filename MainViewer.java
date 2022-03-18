@@ -33,6 +33,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.geometry.*;
+import java.util.*;
 
 /**
  * Write a description of class MapViewer here.
@@ -688,7 +689,7 @@ public class MainViewer extends Stage
         window.setAlignment(Pos.CENTER);
         window.getChildren().add(title); 
         window.getChildren().add(statsGrid); 
-        window.getChildren().add(barChart);
+        //window.getChildren().add(barChart);
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
         
@@ -724,9 +725,9 @@ public class MainViewer extends Stage
         highAvgReview.getChildren().add(highAvgReviewInfo);
         
         //Set the scene and add CSS
-        Scene scene = new Scene(window, 1200,700);
+        //Scene scene = new Scene(window, 1200,700);
         
-        scene.getStylesheets().add("stylesheet.css");
+        //scene.getStylesheets().add("stylesheet.css");
         
         statsGrid.setId("statsgrid"); 
         window.getStyleClass().add("statsvbox");
@@ -753,10 +754,18 @@ public class MainViewer extends Stage
         setAveragePricePerBorough();
         barChart.getData().add(averagePriceData);
     
-        setInfo();
+        setText(reviewInfo, dataHandler.getAverageNoReviews());
+        setText(noHomeAndApartmentsInfo, dataHandler.getNoHomeAndApartments());
+        setText(availableInfo, dataHandler.getAvailableInfo());
+        setText(expensiveInfo, dataHandler.getExpensiveInfo());
+        setText(priceSDInfo, dataHandler.getPriceSDInfo());
+        setText(highAvgReviewInfo, dataHandler.getHighAvgReview());
+        
+        
         
         setTitle("Information");
-        setScene(scene);
+        //setScene(scene);
+        root.setCenter(window);
     }
     
     /**
@@ -764,6 +773,13 @@ public class MainViewer extends Stage
      */
     private void setInfo()
     {
+        
+        
+        
+        
+        
+        
+        
         // setReviewInfo(); 
         // setNoHomeAndApartmentsInfo();
         // setAvailableInfo();
@@ -787,10 +803,10 @@ public class MainViewer extends Stage
     
     private void setAveragePricePerBorough()
     {
-        // Map<String, Integer> information = data.getAveragePricePerBorough();
-        // for (Map.Entry<String, Integer> set : information.entrySet())
-        // {
+        Map<String, Integer> information = dataHandler.getAveragePricePerBorough();
+        for (Map.Entry<String, Integer> set : information.entrySet())
+        {
             // averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
-        // }
+        }
     }
 }
