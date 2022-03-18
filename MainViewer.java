@@ -83,6 +83,7 @@ public class MainViewer extends Stage
     private StatisticsData dataHandler;
     
     private NoOfPropertiesStats noOfPropertiesStats;
+    private Scene mainScene;
     
     /**
      * Constructor for objects of class MapViewer
@@ -94,12 +95,13 @@ public class MainViewer extends Stage
         sceneWidth = 1200;
         sceneHeight = 600;
         
-        Scene scene = new Scene(root, sceneWidth, sceneHeight);
-        scene.getStylesheets().add("stylesheet.css");
+        mainScene = new Scene(root, sceneWidth, sceneHeight);
+        setResizable(false);
+        mainScene.getStylesheets().add("stylesheet.css");
         
         makeWelcomePane();
         //setScene(welcomeScene);
-        root.setCenter(welcomePane);
+        setPane(0);
         
         //makeStatsScene();
         //setScene(statsScene);
@@ -148,6 +150,8 @@ public class MainViewer extends Stage
         //if ();
         
         root.setCenter(paneToChangeTo);
+        //mainScene = new Scene(root, sceneWidth, sceneHeight);
+        setScene(mainScene);
         //setScene(paneToChangeTo);
     }
 
@@ -181,10 +185,10 @@ public class MainViewer extends Stage
         
         //creating the scene and adding the CSS
         welcomePane = window;
-        setResizable(false);
+        //setResizable(false);
         //welcomePane.getStylesheets().add("stylesheet.css");
         
-        root.getStyleClass().add("root");
+        //root.getStyleClass().add("root");
         
         title.getStyleClass().add("welcomeTittle");
         
@@ -240,7 +244,7 @@ public class MainViewer extends Stage
         
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
-        setResizable(false);
+        //
         //priceSelectorScene.getStylesheets().add("stylesheet.css");
         
         window.getStyleClass().add("priceWindow");
@@ -284,7 +288,7 @@ public class MainViewer extends Stage
                                 try { makeHexagonMap(); }
                                 catch (Exception ex) {}
                                 
-                                try { changeToMapScene(); }
+                                try { changeToMapPane(); }
                                 catch (Exception ex) {}
                             });
         
