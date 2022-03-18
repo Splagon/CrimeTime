@@ -52,9 +52,6 @@ public class MainViewer extends Stage
     private int sceneWidth;
     private int sceneHeight;
     
-    private int sceneWidth;
-    private int sceneHeight;
-    
     private Integer selectedMinPrice;
     private Integer selectedMaxPrice;
     
