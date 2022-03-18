@@ -71,7 +71,7 @@ public class MainViewer extends Stage
     private Button prevPanelButton;
     private Button nextPanelButton;
     
-    private Pane[] sceneOrder = { welcomePane, priceSelectorPane, mapPane, statsPane, favouritesPane };
+    private String[] sceneOrder = new String[] { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "favouritesPane" };
     private int currentSceneIndex;
     
     private BorderPane root = new BorderPane();
@@ -95,14 +95,6 @@ public class MainViewer extends Stage
         sceneWidth = 1200;
         sceneHeight = 600;
         
-        mainScene = new Scene(root, sceneWidth, sceneHeight);
-        setResizable(false);
-        mainScene.getStylesheets().add("stylesheet.css");
-        
-        makeWelcomePane();
-        //setScene(welcomeScene);
-        setPane(0);
-        
         //makeStatsScene();
         //setScene(statsScene);
         
@@ -111,6 +103,15 @@ public class MainViewer extends Stage
         
         makePanelSwitcherPane();
         root.setBottom(panelSwitcherPane);
+        
+        mainScene = new Scene(root, sceneWidth, sceneHeight);
+        
+        //makeWelcomePane();
+        //setScene(welcomeScene);
+        setPane(0);
+        
+        setResizable(false);
+        mainScene.getStylesheets().add("stylesheet.css");
     }
     
     private void makePanelSwitcherPane() {
@@ -145,7 +146,34 @@ public class MainViewer extends Stage
     
     private void setPane(int currentSceneIndex) {
         
-        Pane paneToChangeTo = sceneOrder[currentSceneIndex];
+        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+        Pane paneToChangeTo = new Pane();
+        
+        switch (nameOfPaneToChangeTo) {
+            case ("welcomePane") :
+                makeWelcomePane();
+                paneToChangeTo = welcomePane;
+                break;
+            case ("priceSelectorPane") :
+                makePriceSelectorPane();
+                paneToChangeTo = priceSelectorPane;
+                break;
+            case ("mapPane") :
+                try {
+                    makeMapPane();
+                    paneToChangeTo = mapPane;
+                }
+                catch (Exception ex) {};
+                break;
+            case ("statsPane") :
+                makeStatsPane();
+                paneToChangeTo = statsPane;
+                break;
+            case ("favouritesPane") :
+                //makeFavouritesPane();
+                //paneToChangeTo = paneToChangeTo;
+                break;
+        }
         
         //if ();
         
@@ -167,7 +195,7 @@ public class MainViewer extends Stage
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
-        startButton.setOnAction(this::changeToPriceSelector);
+        startButton.setOnAction(e -> changeToPriceSelector());
         
         //layout of the whole window
         VBox window = new VBox(); //root of the scene
@@ -205,9 +233,8 @@ public class MainViewer extends Stage
         startButton.getStyleClass().add("startButton");
     }
     
-    private void changeToPriceSelector(ActionEvent event) {
-        makePriceSelectorPane();
-        //setScene(priceSelectorPane);
+    private void changeToPriceSelector() {
+        setPane(1);
     }
     
     private void makePriceSelectorPane() {
@@ -403,7 +430,7 @@ public class MainViewer extends Stage
     }
     
     private void changeToMapPane() throws Exception {
-        makeMapPane();
+        setPane(2);
         //setScene(mapScene);
     }
     
