@@ -43,11 +43,17 @@ import javafx.geometry.*;
 public class MainViewer extends Stage
 {
     // instance variables
-    private Scene welcomeScene;
-    private Scene priceSelectorScene;
-    private Scene mapScene;
-    private Scene statsScene;
-    private Scene favouritesScene;
+    // private Scene welcomeScene;
+    // private Scene priceSelectorScene;
+    // private Scene mapScene;
+    // private Scene statsScene;
+    // private Scene favouritesScene;
+    
+    private Pane welcomePane;
+    private Pane priceSelectorPane;
+    private Pane mapPane;
+    private Pane statsPane;
+    private Pane favouritesPane; 
     
     private int sceneWidth;
     private int sceneHeight;
@@ -64,7 +70,7 @@ public class MainViewer extends Stage
     private Button prevPanelButton;
     private Button nextPanelButton;
     
-    private Scene[] sceneOrder = { welcomeScene, priceSelectorScene, mapScene, statsScene, favouritesScene };
+    private Pane[] sceneOrder = { welcomePane, priceSelectorPane, mapPane, statsPane, favouritesPane };
     private int currentSceneIndex;
     
     private BorderPane root = new BorderPane();
@@ -87,8 +93,11 @@ public class MainViewer extends Stage
         sceneWidth = 1200;
         sceneHeight = 600;
         
+        Scene scene = new Scene(root, sceneWidth, sceneHeight);
+        
         makeWelcomeScene();
-        setScene(welcomeScene);
+        //setScene(welcomeScene);
+        root.setCenter(welcomePane);
         
         //makeStatsScene();
         //setScene(statsScene);
@@ -117,7 +126,7 @@ public class MainViewer extends Stage
             currentSceneIndex = sceneOrder.length - 1;
         }
         
-        makeScene(currentSceneIndex);
+        setPane(currentSceneIndex);
     }
     
     private void goToNextPanel() {
@@ -127,16 +136,16 @@ public class MainViewer extends Stage
             currentSceneIndex = 0;
         }
         
-        makeScene(currentSceneIndex);
+        setPane(currentSceneIndex);
     }
     
-    private void makeScene(int currentSceneIndex) {
+    private void setPane(int currentSceneIndex) {
         
-        Scene sceneToChangeTo = sceneOrder[currentSceneIndex];
+        Pane paneToChangeTo = sceneOrder[currentSceneIndex];
         
         //if ();
         
-        setScene(sceneToChangeTo);
+        //setScene(paneToChangeTo);
     }
 
     private void makeWelcomeScene() {
@@ -168,7 +177,7 @@ public class MainViewer extends Stage
         root.setCenter(window);
         
         //creating the scene and adding the CSS
-        welcomeScene = new Scene(window, sceneWidth, sceneHeight);
+        welcomeScene = new Scene(root, sceneWidth, sceneHeight);
         setResizable(false);
         welcomeScene.getStylesheets().add("stylesheet.css");
         
@@ -223,10 +232,11 @@ public class MainViewer extends Stage
 
         titleAndInstruction.getChildren().addAll(title, instruction);
         
+        root.setCenter(null);
         root.setCenter(window);
         
         //Creating the scene and adding the css styling
-        priceSelectorScene = new Scene(window, sceneWidth, sceneHeight);
+        //priceSelectorScene = new Scene(root, sceneWidth, sceneHeight);
         setResizable(false);
         priceSelectorScene.getStylesheets().add("stylesheet.css");
         
