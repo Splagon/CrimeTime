@@ -244,12 +244,14 @@ public class MainViewer extends Stage
         Label title = new Label("Price Selection!");
         Label instruction = new Label("Please select a min and max for your price range: ");
         
-        FlowPane minMaxBox = createMinMaxBox();
+        HBox minMaxBox = createMinMaxBox();
+        minMaxBox.setSpacing(5);
         
         Button confirm = (Button) minMaxBox.getChildren().get(2);
         
         ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
         ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
+        
         
         statusLabel = new Label(showStatus(confirm));
         
@@ -292,9 +294,9 @@ public class MainViewer extends Stage
         statusLabel.getStyleClass().add("priceStatusLabel");
     }
     
-    private FlowPane createMinMaxBox() {
+    private HBox createMinMaxBox() {
         //adding the options to the price selection box, as well as assigning appropriate values to the instance variables
-        FlowPane minMaxBox = new FlowPane();
+        HBox minMaxBox = new HBox();
         ComboBox<String> minBox = new ComboBox<String>();
         ComboBox<String> maxBox = new ComboBox<String>();
         minBox.setValue("Min Price:");
@@ -345,7 +347,7 @@ public class MainViewer extends Stage
         return minMaxBox;
     }
     
-    private FlowPane setInitialMinMaxBoxSelection(FlowPane minMaxBox) {
+    private HBox setInitialMinMaxBoxSelection(HBox minMaxBox) {
         ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
         ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
         
@@ -437,7 +439,7 @@ public class MainViewer extends Stage
     private void makeMapPane() throws Exception {
         setTitle("Map of London");
         
-        FlowPane minMaxBox = createMinMaxBox();
+        HBox minMaxBox = createMinMaxBox();
             minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             
         BorderPane window = new BorderPane();
