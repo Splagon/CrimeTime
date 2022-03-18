@@ -21,49 +21,78 @@ import javafx.scene.control.ComboBox;
 import javafx.collections.ObservableList;
 import javafx.stage.*;
 import javafx.event.EventHandler;
+import java.net.URL;
+import java.net.URLConnection;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
- * JavaFX version of PVGUI in code
+ * Property viewer is the class that is responsible 
+ * for building the property viewer stage in the application. 
+ * 
+ * @author AppMakers
+ * @version 1.0
  */
 public class PropertyViewer extends Stage {
-    
     private DataHandler dataHandler = new DataHandler();
+    // List that will hold all the properties displayed
     private ArrayList<AirbnbListing> properties;
-    
+    // The index of the current property displayed in "properties"
     private int currentPropertyIndex;
-    
+    // The borough to which the properties displayed belong
     private String borough;
+    // The element by which the "properties" list is sorted
     private String sortedBy;
+    // The minimum porperty price
     private int minPrice;
+    // The maximum porperty price
     private int maxPrice;
-    
-    private GridPane info;
+    // Labels needed to display a property's characteristics  
     private Label hostLabel, priceLabel, noOfReviewsLabel, roomTypeLabel, minNightsLabel, descriptionLabel;
-    private Button prevButton, nextButton, infoButton;
-    
+    //Prefixes displayed on scene
     private final String hostPrefix = "Host: ";
     private final String pricePrefix = "Price: £";
     private final String noOfReviewsPostfix = " review(s)";
     private final String minNightsPostfix = " night(s) minimum";
-    
+    // WebEngine object capable of managing one web page
     private WebEngine webEngine;
-    
+    // Stage object for managing properties' description window
     private Stage descriptionStage;
+    // Holds applcation's internet connectivity status
+    private boolean applicationConnected;
     
+    /**
+     * Constructor of property viewer stage.
+     * 
+     * @param borough The borough whose properties are displayed
+     * @param minPrice The minimum price of the properties displayed
+     * @param maxprice The maximum price of the properties displayed
+     * @param sortedBy The element by which the "properties" list is sorted
+     */
     public PropertyViewer(String borough, int minPrice, int maxPrice, String sortedBy) throws Exception {
+        // Initialize the Property Viewer fields
         this.borough = borough;
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         this.sortedBy = sortedBy;
         currentPropertyIndex = 0;
+        applicationConnected = true;
+        
         makePropertyViewerScene();
         
         this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
     }
-
+    
+    /**
+     * The property viewer architecture is as follows. The root of the stage 
+     * is a border pane that contains contains 5 nodes: at the top there is a 
+     * Hbox, at the center a map, at the right and left buttons and finally 
+     * at the bottom a grid pane.
+     */
     private void makePropertyViewerScene() throws Exception {
         setTitle("Neighbourhood: " + borough);
-        
+        // Generates the list of properties that will be displayed depending 
+        // on the borough, price range and sorting parameter selected by the user.
         if(sortedBy != null){
             properties = dataHandler.getPropertiesSortedBy(borough, minPrice, maxPrice, sortedBy);
         }else {
@@ -72,33 +101,30 @@ public class PropertyViewer extends Stage {
         
         BorderPane root = new BorderPane();
         root.setId("rootPV");
-        root.setPadding(new Insets(0, 10, 0, 10));
-        root.setPrefSize(600, 400);
+        root.setPadding(new Insets(0, 10, 0, 10)); // Sets the right and left padding of the pane
         
-        // Create scene for the Vbox
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("stylesheet.css");
+        // Create scene for the border pane with width = 600 and height = 400.
+        Scene scene = new Scene(root, 600, 400);
+        scene.getStylesheets().add("stylesheet.css"); // Set the scene's stylesheet
         
         HBox topPane = new HBox();
         topPane.setId("hbox");
         
             Label titleLabel = new Label("Welcome to the property viewer!");
-            titleLabel.getStyleClass().add("title");
-                
-    
+            titleLabel.getStyleClass().add("title"); // add a ".title" class in scene's stylesheet
             
             ComboBox<String> menu = new ComboBox<>();
             menu.setId("menu");
                 menu.getItems().addAll("Price ↑", "Price ↓", "Name ↑", "Name ↓", "Reviews ↑", "Reviews ↓");
+                // Makes the sorting element chosen written in the box
                 if (sortedBy != null) {
                     menu.getSelectionModel().select(sortedBy);
                 } 
                 else {
                     menu.getSelectionModel().select("Filter by:");
                 }
-                    
             menu.setOnAction(e -> { 
-                                      sortedBy = menu.getValue();
+                                      sortedBy = menu.getValue(); // Initialize sortedby variable
                                       try { sortAction(); }
                                       catch (Exception ev) {}
                                   }); 
@@ -108,30 +134,30 @@ public class PropertyViewer extends Stage {
         root.setTop(topPane);
         
         
-        WebView googleMaps = new WebView();
-            root.setMargin(googleMaps, new Insets(0,10,0,10));
-            webEngine = googleMaps.getEngine();
-        root.setCenter(googleMaps);
+        WebView map = new WebView();
+            root.setMargin(map, new Insets(0,10,0,10));
+            webEngine = map.getEngine();
+        root.setCenter(map);
+    
         
-        prevButton = new Button("Previous");
+        Button prevButton = new Button("Previous");
             prevButton.setOnAction(e -> viewPreviousProperty());
             prevButton.setPrefSize(130, 230);
         prevButton.getStyleClass().add("buttonsPV");
-        root.setLeft(prevButton);
         root.setAlignment(prevButton, Pos.CENTER);
+        root.setLeft(prevButton);
+      
         
-        nextButton = new Button("Next");
+        Button nextButton = new Button("Next");
             nextButton.setOnAction(e -> viewNextProperty());
             nextButton.setPrefSize(130, 230);
         nextButton.getStyleClass().add("buttonsPV");
-        root.setRight(nextButton);
         root.setAlignment(nextButton, Pos.CENTER);
+        root.setRight(nextButton);
         
-        infoButton = new Button("Description");
-            infoButton.setOnAction(e -> popUpAction());
-        infoButton.getStyleClass().add("buttonsPV");
         
-        info = new GridPane();
+        GridPane info = new GridPane();
+        
             info.setAlignment(Pos.CENTER);
             info.setPrefWidth(600);
             
@@ -147,6 +173,10 @@ public class PropertyViewer extends Stage {
             noOfReviewsLabel.getStyleClass().add("propertyViewerInfoLabels");
             roomTypeLabel.getStyleClass().add("propertyViewerInfoLabels");
             minNightsLabel.getStyleClass().add("propertyViewerInfoLabels");
+            
+            Button infoButton = new Button("Description");
+                infoButton.setOnAction(e -> popUpAction());
+            infoButton.getStyleClass().add("buttonsPV");
         
             info.add(hostLabel, 0, 0);
             info.add(priceLabel, 0, 1);
@@ -171,33 +201,55 @@ public class PropertyViewer extends Stage {
             info.getColumnConstraints().addAll(column1, column2, column3);
             
             info.setPadding(new Insets(20));
+
         root.setBottom(info);
         
         update();
         
         setResizable(false);
         setScene(scene);
-        show();
+        if (applicationConnected) {
+            show();
+        }
     }
     
+    /**
+     * Updates the variables of the property displayed.  
+     */
     private void update() {
+        // first, we retrieve the property at the current index
         AirbnbListing listing = properties.get(currentPropertyIndex);
-        
-        hostLabel.setText(hostPrefix + listing.getHost_name());
+        // then, we update the variables
+        if(listing.getHost_name() != null){
+            hostLabel.setText(hostPrefix + listing.getHost_name());
+        }else{
+            hostLabel.setText("No data");
+        }
         priceLabel.setText(pricePrefix + listing.getPrice());
         noOfReviewsLabel.setText(listing.getNumberOfReviews() + noOfReviewsPostfix);
         roomTypeLabel.setText(listing.getRoom_type());
         minNightsLabel.setText(listing.getMinimumNights() + minNightsPostfix);
         descriptionLabel.setText(listing.getName());
-        
-        if(descriptionStage != null){
+        // if the user didn't close the description window of the previous property, we close it.
+        if(descriptionStage != null) {
             closeDescription();
         }
-        
-        String url = "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",12,0/600x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw";
-        webEngine.load(url);
+        // Used MapBox api to load a map pointing the location of current property displayed.
+        try  {
+            URL url = new URL("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",12,0/600x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw");
+            URLConnection connection = url.openConnection();
+            connection.connect(); // test internet connectivity, if no connection: throws an exception
+            webEngine.load(url.toString());
+        } catch(Exception e) {
+            noConnectionAlert();
+            this.close();
+            applicationConnected = false;
+        }
     }
     
+    /**
+     * Displays the next property. 
+     */
     private void viewNextProperty() {
         currentPropertyIndex++;
         
@@ -208,6 +260,9 @@ public class PropertyViewer extends Stage {
         update();
     }
     
+    /**
+     * Displays the previous property.
+     */
     private void viewPreviousProperty() {
         currentPropertyIndex--;
         
@@ -218,6 +273,9 @@ public class PropertyViewer extends Stage {
         update();
     }
     
+    /**
+     *  Open or close the description window of the property displayed.
+     */
     private void popUpAction(){
         if (descriptionStage == null) 
         {
@@ -225,56 +283,83 @@ public class PropertyViewer extends Stage {
         }
         else
         {
+            // the description window is already opened, we close it.
             closeDescription();
         }
     }
     
-    private void createDescriptionStage(){
+    /**
+     * Creates the stage of the description window.
+     */
+    private void createDescriptionStage() {
         descriptionStage = new Stage();
         descriptionStage.setTitle("Description!");
-        //descriptionStage.setX(200);
-        //descriptionStage.setY(200);
         
         VBox root = new VBox();
-        root.getChildren().add(descriptionLabel);
+            root.getChildren().add(descriptionLabel);
         root.setAlignment(Pos.CENTER);
         
         int width = 300;
         int height = 100;
         
         Scene scene = new Scene(root,width,height);
-        descriptionStage.setResizable(false);
         descriptionStage.setScene(scene);
         
         descriptionStage.setX((this.getWidth() - width) / 2 + this.getX());
         descriptionStage.setY(this.getY() + this.getHeight() + 20);
         
-        descriptionStage.showAndWait();        
+        descriptionStage.show();        
     }
     
+    /**
+     * On sorting request, a new property wiewer stage is 
+     * created with the sorting condition taken into account.
+     */
     private void sortAction() throws Exception {
+        // We open the stage at the saame positions of the initial one, for better UX.
         double currentStagePositionX = this.getX();
         double currentStagePositionY = this.getY();
-        
+        // New property viewer stage is created.
         Stage stage = new PropertyViewer(borough, minPrice, maxPrice, sortedBy);
         stage.setX(currentStagePositionX);
         stage.setY(currentStagePositionY);
-        
+        // if description window is opened, we close it for better UX.
         closeDescription();
         
         this.close();
         stage.show();
     }
     
+    /**
+     * Method executed when the user closes the PV window.
+     */
     public void closePropertyViewer() {
+        // We close description window whenever PV is closed for better UX.
         closeDescription();
     }
     
+    /**
+     * Close the description window.
+     */
     private void closeDescription() {
         if (descriptionStage != null) {
             descriptionStage.close();
             descriptionStage = null;
         }
+    }
+    
+    /**
+     * Displays an alert if the user isn't connected to internet.
+     */
+    public void noConnectionAlert(){
+        Alert alert = new Alert(AlertType.WARNING);
+            alert.setHeaderText("No internet Connection");
+            alert.setContentText("Unfortunately you will need a stable internet connection \n to run the property viewer correctly, we apologise \n for the inconvenience caused. \n Come back !");
+        alert.show();
+    }
+    
+    public boolean getInternetConnection(){
+        return applicationConnected;
     }
 }
 
