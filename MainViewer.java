@@ -49,6 +49,9 @@ public class MainViewer extends Stage
     private Scene statsScene;
     private Scene favouritesScene;
     
+    private int sceneWidth;
+    private int sceneHeight;
+    
     private Integer selectedMinPrice;
     private Integer selectedMaxPrice;
     
@@ -81,10 +84,12 @@ public class MainViewer extends Stage
     {   
         dataHandler = new StatisticsData();
         
-        currentSceneIndex = 0;
+        sceneWidth = 1200;
+        sceneHeight = 600;
         
-        //makeWelcomeScene();
-        //setScene(welcomeScene);
+        makeWelcomeScene();
+        setScene(welcomeScene);
+
         
         makeStatsScene();
         setScene(statsScene);
@@ -164,6 +169,7 @@ public class MainViewer extends Stage
         root.setCenter(window);
         
         //creating the scene and adding the CSS
+
         welcomeScene = new Scene(root, 600, 400);
         welcomeScene.getStylesheets().add("stylesheet.css");
         
@@ -223,6 +229,7 @@ public class MainViewer extends Stage
         
         //Creating the scene and adding the css styling
         priceSelectorScene = new Scene(root, 600, 400);
+
         priceSelectorScene.getStylesheets().add("stylesheet.css");
         
         window.getStyleClass().add("priceWindow");
@@ -246,8 +253,10 @@ public class MainViewer extends Stage
     private HBox createMinMaxBox() {
         //adding the options to the price selection box, as well as assigning appropriate values to the instance variables
         HBox minMaxBox = new HBox();
-        ComboBox<String>minBox = new ComboBox<String>();
+        ComboBox<String> minBox = new ComboBox<String>();
         ComboBox<String> maxBox = new ComboBox<String>();
+        minBox.setValue("Min Price:");
+        maxBox.setValue("Max Price:");
         
         // int low = dataHandler.getLowestPrice();
         // int high = dataHandler.getHighestPrice();
@@ -392,13 +401,11 @@ public class MainViewer extends Stage
         //root.setTop(minMaxBox);
         
         if (mapScene == null) {
-            mapScene = new Scene(root, 1020, 580);
+            mapScene = new Scene(root, sceneWidth, sceneHeight);
             setResizable(false);
         }
         
-        //if (mapScene.getStylesheets().isEmpty()) {
-            mapScene.getStylesheets().add("stylesheet.css");
-        //}
+        mapScene.getStylesheets().add("stylesheet.css");
         
         //Pane window = new FlowPane();
         
