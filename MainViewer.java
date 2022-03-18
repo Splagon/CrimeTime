@@ -311,13 +311,13 @@ public class MainViewer extends Stage
         Button confirm = new Button("Confirm");
         confirm.setDisable(true);
         confirm.setOnAction(e -> 
-                            {
-                                try { makeHexagonMap(); }
-                                catch (Exception ex) {}
-                                
-                                try { changeToMapPane(); }
-                                catch (Exception ex) {}
-                            });
+                                 {
+                                    try { makeHexagonMap(); }
+                                    catch (Exception ex) {}
+                                    
+                                    try { changeToMapPane(); }
+                                    catch (Exception ex) {}
+                                 });
         
         minBox.setOnAction(e -> {
             String selected = minBox.getValue();
@@ -471,6 +471,8 @@ public class MainViewer extends Stage
         
         window.setLeft(infoPane);
         window.setCenter(mapView);
+        
+        mapPane = window;
     }
     
     private void makeHexagonMap() throws Exception {
