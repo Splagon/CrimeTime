@@ -213,7 +213,7 @@ public class MainViewer extends Stage
         Label title = new Label("Price Selection!");
         Label instruction = new Label("Please select a min and max for your price range: ");
         
-        HBox minMaxBox = createMinMaxBox();
+        FlowPane minMaxBox = createMinMaxBox();
         
         Button confirm = (Button) minMaxBox.getChildren().get(2);
         
@@ -261,9 +261,9 @@ public class MainViewer extends Stage
         statusLabel.getStyleClass().add("priceStatusLabel");
     }
     
-    private HBox createMinMaxBox() {
+    private FlowPane createMinMaxBox() {
         //adding the options to the price selection box, as well as assigning appropriate values to the instance variables
-        HBox minMaxBox = new HBox();
+        FlowPane minMaxBox = new FlowPane();
         ComboBox<String> minBox = new ComboBox<String>();
         ComboBox<String> maxBox = new ComboBox<String>();
         minBox.setValue("Min Price:");
@@ -314,7 +314,7 @@ public class MainViewer extends Stage
         return minMaxBox;
     }
     
-    private HBox setInitialMinMaxBoxSelection(HBox minMaxBox) {
+    private FlowPane setInitialMinMaxBoxSelection(FlowPane minMaxBox) {
         ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
         ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
         
@@ -406,7 +406,7 @@ public class MainViewer extends Stage
     private void makeMapPane() throws Exception {
         setTitle("Map of London");
         
-        HBox minMaxBox = createMinMaxBox();
+        FlowPane minMaxBox = createMinMaxBox();
             minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             
         BorderPane window = new BorderPane();
