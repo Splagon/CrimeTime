@@ -398,8 +398,8 @@ public class MainViewer extends Stage
         }
     }
     
-    private void changeToMapScene() throws Exception {
-        makeMapScene();
+    private void changeToMapPane() throws Exception {
+        makeMapPane();
         //setScene(mapScene);
     }
     
