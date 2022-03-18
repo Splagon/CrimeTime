@@ -41,7 +41,7 @@ public class StatisticsViewer extends Stage
     /**
      * Constructor for objects of class StatisticsViewer
      */
-    public StatisticsViewer()
+    public StatisticsViewer(int selectedMinPrice, int selectedMaxPrice)
     {
         // The layout of the window
         VBox window = new VBox();

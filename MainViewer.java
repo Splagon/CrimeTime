@@ -27,6 +27,12 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.*;
 import javafx.scene.Node;
+import java.util.HashMap;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.geometry.*;
 
 /**
  * Write a description of class MapViewer here.
@@ -38,8 +44,9 @@ public class MainViewer extends Stage
 {
     // instance variables
     private Scene welcomeScene;
-    private Scene mapScene;
     private Scene priceSelectorScene;
+    private Scene mapScene;
+    private Scene statsScene;
     
     private Integer selectedMinPrice;
     private Integer selectedMaxPrice;
@@ -66,8 +73,12 @@ public class MainViewer extends Stage
     {   
         dataHandler = new StatisticsData();
         
-        makeWelcomeScene();
-        setScene(welcomeScene);
+        //makeWelcomeScene();
+        //setScene(welcomeScene);
+        
+        makeStatsScene();
+        setScene(statsScene);
+        
         lowestPrice = dataHandler.getLowestPrice();
         highestPrice = dataHandler.getHighestPrice();
     }
@@ -554,7 +565,7 @@ public class MainViewer extends Stage
     }
     
     private void showMoreStats() {
-        Stage stage = new StatisticsViewer();
+        Stage stage = new StatisticsViewer(selectedMinPrice, selectedMaxPrice);
         stage.show();
     }
     
@@ -566,5 +577,150 @@ public class MainViewer extends Stage
             node.maxHeight(Double.MAX_VALUE);
         }
         return grid;
+    }
+    
+    private void makeStatsScene() {
+        Label reviewInfo = new Label("default");
+        Label availableInfo = new Label("default");
+        Label noHomeAndApartmentsInfo = new Label("default");
+        Label expensiveInfo = new Label("default");
+        Label priceSDInfo = new Label("default");
+        Label highAvgReviewInfo = new Label("default:"); 
+        XYChart.Series averagePriceData = new XYChart.Series();
+    
+        // The layout of the window
+        VBox window = new VBox();
+        GridPane statsGrid = new GridPane(); 
+        VBox reviews = new VBox();
+        VBox available = new VBox(); 
+        VBox noHomeAndApartments = new VBox();
+        VBox expensive = new VBox(); 
+        VBox priceSD = new VBox(); 
+        VBox averagePrice = new VBox(); 
+        VBox highAvgReview = new VBox();
+        
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        BarChart barChart = new BarChart(xAxis, yAxis);
+          
+        
+        // The "title" labels in the window
+        Label title = new Label("Statistics");
+        Label reviewTitle = new Label("Average Reviews Per Property:");
+        Label availableTitle = new Label("Total Available Properties:");
+        Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
+        Label expensiveTitle = new Label("Most Expensive Borough:");
+        Label priceSDTitle = new Label("Standard Deviation of Price (£):");
+        Label highAvgReviewTitle = new Label("Borough with the Highest \nAverage Amount of Reviews:");
+        
+        
+        // Adding components 
+        window.setAlignment(Pos.CENTER);
+        window.getChildren().add(title); 
+        window.getChildren().add(statsGrid); 
+        window.getChildren().add(barChart);
+        title.setAlignment(Pos.CENTER);
+        statsGrid.setAlignment(Pos.CENTER); 
+        
+        statsGrid.add(reviews, 0, 0);
+        statsGrid.add(available, 0, 1);
+        statsGrid.add(noHomeAndApartments, 1, 0);
+        statsGrid.add(expensive, 1, 1);
+        statsGrid.add(priceSD, 0, 2); 
+        statsGrid.add(highAvgReview, 1 , 2); 
+        
+        reviews.setAlignment(Pos.CENTER);
+        reviews.getChildren().add(reviewTitle); 
+        reviews.getChildren().add(reviewInfo);
+        
+        available.setAlignment(Pos.CENTER);
+        available.getChildren().add(availableTitle); 
+        available.getChildren().add(availableInfo);
+        
+        noHomeAndApartments.setAlignment(Pos.CENTER);
+        noHomeAndApartments.getChildren().add(noHomeAndApartmentsTitle); 
+        noHomeAndApartments.getChildren().add(noHomeAndApartmentsInfo);
+        
+        expensive.setAlignment(Pos.CENTER);
+        expensive.getChildren().add(expensiveTitle); 
+        expensive.getChildren().add(expensiveInfo);
+        
+        priceSD.setAlignment(Pos.CENTER);
+        priceSD.getChildren().add(priceSDTitle); 
+        priceSD.getChildren().add(priceSDInfo);
+        
+        highAvgReview.setAlignment(Pos.CENTER);
+        highAvgReview.getChildren().add(highAvgReviewTitle); 
+        highAvgReview.getChildren().add(highAvgReviewInfo);
+        
+        //Set the scene and add CSS
+        Scene scene = new Scene(window, 1200,700);
+        
+        scene.getStylesheets().add("stylesheet.css");
+        
+        statsGrid.setId("statsgrid"); 
+        window.getStyleClass().add("statsvbox");
+        reviews.getStyleClass().add("statsvbox"); 
+        available.getStyleClass().add("statsvbox");
+        noHomeAndApartments.getStyleClass().add("statsvbox");
+        expensive.getStyleClass().add("statsvbox");
+        priceSD.getStyleClass().add("statsvbox");
+        highAvgReview.getStyleClass().add("statsvbox");
+        
+        
+        reviewInfo.getStyleClass().add("statslabels"); 
+        availableInfo.getStyleClass().add("statslabels"); 
+        noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
+        expensiveInfo.getStyleClass().add("statslabels"); 
+        priceSDInfo.getStyleClass().add("statslabels"); 
+        highAvgReviewInfo.getStyleClass().add("statslabels");
+        
+        title.getStyleClass().add("titlelabel"); 
+        
+        xAxis.setLabel("Borough");
+        yAxis.setLabel("Average Price");
+        averagePriceData.setName("Average Price per Night per Borough");
+        setAveragePricePerBorough();
+        barChart.getData().add(averagePriceData);
+    
+        setInfo();
+        
+        setTitle("Information");
+        setScene(scene);
+    }
+    
+    /**
+     * Update all of the info labels
+     */
+    private void setInfo()
+    {
+        // setReviewInfo(); 
+        // setNoHomeAndApartmentsInfo();
+        // setAvailableInfo();
+        // setExpensiveInfo();
+        // setPriceSDInfo();
+        // setHighAvgReviewInfo();
+    }
+    
+    private void setText(Label label, double dataToFormat) {
+        String x = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
+        label.setText(x);
+    }
+    
+    private void setText(Label label, int dataToFormat) {
+        label.setText(String.valueOf(dataToFormat));
+    }
+    
+    private void setText(Label label, String dataToFormat) {
+        label.setText(dataToFormat);
+    }
+    
+    private void setAveragePricePerBorough()
+    {
+        // Map<String, Integer> information = data.getAveragePricePerBorough();
+        // for (Map.Entry<String, Integer> set : information.entrySet())
+        // {
+            // averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
+        // }
     }
 }
