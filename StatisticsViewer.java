@@ -144,7 +144,7 @@ public class StatisticsViewer extends Stage
         
         StatBox test = new StatBox(); 
         
-        window.getChildren().add(test);
+        statsGrid.add(test, 2, 2);
         test.addInfo("title test", "stat test");
         test.addInfo("2", "2");
         test.addInfo("3", "3");
