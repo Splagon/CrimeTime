@@ -95,6 +95,7 @@ public class MainViewer extends Stage
         sceneHeight = 600;
         
         Scene scene = new Scene(root, sceneWidth, sceneHeight);
+        setResizable(false);
         scene.getStylesheets().add("stylesheet.css");
         
         makeWelcomePane();
@@ -181,10 +182,10 @@ public class MainViewer extends Stage
         
         //creating the scene and adding the CSS
         welcomePane = window;
-        setResizable(false);
+        //setResizable(false);
         //welcomePane.getStylesheets().add("stylesheet.css");
         
-        root.getStyleClass().add("root");
+        //root.getStyleClass().add("root");
         
         title.getStyleClass().add("welcomeTittle");
         
@@ -240,7 +241,7 @@ public class MainViewer extends Stage
         
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
-        setResizable(false);
+        //
         //priceSelectorScene.getStylesheets().add("stylesheet.css");
         
         window.getStyleClass().add("priceWindow");
@@ -284,7 +285,7 @@ public class MainViewer extends Stage
                                 try { makeHexagonMap(); }
                                 catch (Exception ex) {}
                                 
-                                try { changeToMapScene(); }
+                                try { changeToMapPane(); }
                                 catch (Exception ex) {}
                             });
         
