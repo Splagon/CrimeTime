@@ -137,8 +137,6 @@ public class PropertyViewer extends Stage {
         WebView map = new WebView();
             root.setMargin(map, new Insets(0,10,0,10));
             webEngine = map.getEngine();
-            map.setPrefHeight(400);
-            map.setPrefWidth(600);
         root.setCenter(map);
     
         
@@ -364,4 +362,3 @@ public class PropertyViewer extends Stage {
         return applicationConnected;
     }
 }
-
