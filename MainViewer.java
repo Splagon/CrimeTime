@@ -95,6 +95,7 @@ public class MainViewer extends Stage
         sceneHeight = 600;
         
         Scene scene = new Scene(root, sceneWidth, sceneHeight);
+        scene.getStylesheets().add("stylesheet.css");
         
         makeWelcomeScene();
         //setScene(welcomeScene);
@@ -146,6 +147,7 @@ public class MainViewer extends Stage
         
         //if ();
         
+        root.setCenter(paneToChangeTo);
         //setScene(paneToChangeTo);
     }
 
@@ -396,27 +398,29 @@ public class MainViewer extends Stage
         }
     }
     
-    private void changeToMapScene() throws Exception {
-        makeMapScene();
-        setScene(mapScene);
+    private void changeToMapPane() throws Exception {
+        makeMapPane();
+        //setScene(mapScene);
     }
     
-    private void makeMapScene() throws Exception {
+    private void makeMapPane() throws Exception {
         setTitle("Map of London");
         
         HBox minMaxBox = createMinMaxBox();
             minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             
+        BorderPane window = new BorderPane();
+            
         //root.setTop(minMaxBox);
         
-        if (mapScene == null) {
-            mapScene = new Scene(root, sceneWidth, sceneHeight);
-            setResizable(false);
-        }
+        // if (mapPane == null) {
+            // mapScene = new Scene(root, sceneWidth, sceneHeight);
+            // setResizable(false);
+        // }
         
         //styling
-        mapScene.getStylesheets().add("stylesheet.css");
-        root.getStyleClass().add("root");
+        //mapScene.getStylesheets().add("stylesheet.css");
+        //root.getStyleClass().add("root");
         //Pane window = new FlowPane();
         
         VBox infoPane = new VBox();
@@ -434,8 +438,8 @@ public class MainViewer extends Stage
         
         mapView.setPadding(new Insets(20));
         
-        root.setLeft(infoPane);
-        root.setCenter(mapView);
+        window.setLeft(infoPane);
+        window.setCenter(mapView);
     }
     
     private void makeHexagonMap() throws Exception {
@@ -650,7 +654,7 @@ public class MainViewer extends Stage
         return grid;
     }
     
-    private void makeStatsScene() {
+    private void makeStatsPane() {
         Label reviewInfo = new Label("default");
         Label availableInfo = new Label("default");
         Label noHomeAndApartmentsInfo = new Label("default");
@@ -765,7 +769,9 @@ public class MainViewer extends Stage
         
         setTitle("Information");
         //setScene(scene);
-        root.setCenter(window);
+        //root.setCenter(window);
+        
+        statsPane = window;
     }
     
     /**
