@@ -302,7 +302,7 @@ public class MainViewer extends Stage
                 confirm.setDisable(false);
                 return "Both your min and max price have been selected";
             }
-            else if (selectedMinPrice >= selectedMaxPrice) {
+            else if (selectedMinPrice > selectedMaxPrice) {
                 confirm.setDisable(true);
                 return "Your min price is not less than your max price!";
             }
