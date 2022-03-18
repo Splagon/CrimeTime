@@ -96,7 +96,7 @@ public class MainViewer extends Stage
         
         Scene scene = new Scene(root, sceneWidth, sceneHeight);
         
-        makeWelcomeScene();
+        makeWelcomePane();
         //setScene(welcomeScene);
         root.setCenter(welcomePane);
         
@@ -149,7 +149,7 @@ public class MainViewer extends Stage
         //setScene(paneToChangeTo);
     }
 
-    private void makeWelcomeScene() {
+    private void makeWelcomePane() {
         setTitle("Welcome");
         
         //All labels in the window
@@ -175,12 +175,12 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
-        root.setCenter(window);
+        //root.setCenter(window);
         
         //creating the scene and adding the CSS
-        welcomeScene = new Scene(root, sceneWidth, sceneHeight);
+        welcomePane = window;
         setResizable(false);
-        welcomeScene.getStylesheets().add("stylesheet.css");
+        //welcomePane.getStylesheets().add("stylesheet.css");
         
         root.getStyleClass().add("root");
         
@@ -200,11 +200,11 @@ public class MainViewer extends Stage
     }
     
     private void changeToPriceSelector(ActionEvent event) {
-        makePriceSelectorScene();
-        setScene(priceSelectorScene);
+        makePriceSelectorPane();
+        //setScene(priceSelectorPane);
     }
     
-    private void makePriceSelectorScene() {
+    private void makePriceSelectorPane() {
         setTitle("Price Selection Window");
         
         //All labels in the window
@@ -233,13 +233,13 @@ public class MainViewer extends Stage
 
         titleAndInstruction.getChildren().addAll(title, instruction);
         
-        root.setCenter(null);
-        root.setCenter(window);
+        // root.setCenter(null);
+        // root.setCenter(window);
         
         //Creating the scene and adding the css styling
-        //priceSelectorScene = new Scene(root, sceneWidth, sceneHeight);
+        priceSelectorPane = window;
         setResizable(false);
-        priceSelectorScene.getStylesheets().add("stylesheet.css");
+        //priceSelectorScene.getStylesheets().add("stylesheet.css");
         
         window.getStyleClass().add("priceWindow");
         
@@ -398,7 +398,7 @@ public class MainViewer extends Stage
     
     private void changeToMapScene() throws Exception {
         makeMapScene();
-        setScene(mapScene);
+        //setScene(mapScene);
     }
     
     private void makeMapScene() throws Exception {
