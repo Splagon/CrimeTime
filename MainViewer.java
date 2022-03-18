@@ -92,11 +92,11 @@ public class MainViewer extends Stage
     {   
         dataHandler = new StatisticsData();
         
-        sceneWidth = 1200;
+        sceneWidth = 1100;
         sceneHeight = 600;
         
-        //makeStatsScene();
-        //setScene(statsScene);
+        makePriceSelectorPane();
+        makeStatsPane();
         
         lowestPrice = dataHandler.getLowestPrice();
         highestPrice = dataHandler.getHighestPrice();
@@ -107,7 +107,7 @@ public class MainViewer extends Stage
         mainScene = new Scene(root, sceneWidth, sceneHeight);
         setPane(0);
         
-        setResizable(true);
+        setResizable(false);
         mainScene.getStylesheets().add("stylesheet.css");
     }
     
@@ -149,6 +149,7 @@ public class MainViewer extends Stage
     }
     
     private void setPane(int currentSceneIndex) {
+        this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         Pane paneToChangeTo = new Pane();
         
@@ -158,7 +159,7 @@ public class MainViewer extends Stage
                 paneToChangeTo = welcomePane;
                 break;
             case ("priceSelectorPane") :
-                makePriceSelectorPane();
+                setTitle("Information");
                 paneToChangeTo = priceSelectorPane;
                 break;
             case ("mapPane") :
@@ -169,17 +170,46 @@ public class MainViewer extends Stage
                 catch (Exception ex) {};
                 break;
             case ("statsPane") :
-                makeStatsPane();
+                setTitle("Price Selection Screen");
                 paneToChangeTo = statsPane;
                 break;
             case ("favouritesPane") :
+                setTitle("Favourites");
                 //makeFavouritesPane();
                 //paneToChangeTo = paneToChangeTo;
                 break;
         }
         
+        setButtonsDisabled(currentSceneIndex);
         root.setCenter(paneToChangeTo);
         setScene(mainScene);
+    }
+    
+    private void setButtonsDisabled(int currentSceneIndex) {
+        
+        if (selectedMinPrice == null && selectedMaxPrice == null) {    
+            if (currentSceneIndex <= 0 || currentSceneIndex >= 4) {
+                prevPanelButton.setDisable(false);
+                nextPanelButton.setDisable(false);
+            }
+            else if (currentSceneIndex == 1) {
+                prevPanelButton.setDisable(false);
+                nextPanelButton.setDisable(true);
+            }
+            else if (currentSceneIndex == 3) {
+                prevPanelButton.setDisable(true);
+                nextPanelButton.setDisable(false);
+            }
+        }
+        else {
+            prevPanelButton.setDisable(false);
+            nextPanelButton.setDisable(false);
+        }
+    }
+    
+    private void setButtonsDisabled(boolean isPrevButtonsDisabled, boolean isNextButtonsDisabled) {
+        prevPanelButton.setDisable(isPrevButtonsDisabled);
+        nextPanelButton.setDisable(isNextButtonsDisabled);
     }
 
     private void makeWelcomePane() {
@@ -235,7 +265,7 @@ public class MainViewer extends Stage
     }
     
     private void makePriceSelectorPane() {
-        setTitle("Price Selection Window");
+        //setTitle("Price Selection Screen");
         
         //All labels in the window
         Label title = new Label("Price Selection!");
@@ -791,12 +821,6 @@ public class MainViewer extends Stage
         setText(expensiveInfo, dataHandler.getExpensiveInfo());
         setText(priceSDInfo, dataHandler.getPriceSDInfo());
         setText(highAvgReviewInfo, dataHandler.getHighAvgReview());
-        
-        
-        
-        setTitle("Information");
-        //setScene(scene);
-        //root.setCenter(window);
         
         statsPane = window;
     }
