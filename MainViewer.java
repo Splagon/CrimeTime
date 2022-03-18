@@ -44,11 +44,17 @@ import java.util.*;
 public class MainViewer extends Stage
 {
     // instance variables
-    private Scene welcomeScene;
-    private Scene priceSelectorScene;
-    private Scene mapScene;
-    private Scene statsScene;
-    private Scene favouritesScene;
+    // private Scene welcomeScene;
+    // private Scene priceSelectorScene;
+    // private Scene mapScene;
+    // private Scene statsScene;
+    // private Scene favouritesScene;
+    
+    private Pane welcomePane;
+    private Pane priceSelectorPane;
+    private Pane mapPane;
+    private Pane statsPane;
+    private Pane favouritesPane; 
     
     private int sceneWidth;
     private int sceneHeight;
@@ -65,7 +71,7 @@ public class MainViewer extends Stage
     private Button prevPanelButton;
     private Button nextPanelButton;
     
-    private Scene[] sceneOrder = { welcomeScene, priceSelectorScene, mapScene, statsScene, favouritesScene };
+    private String[] sceneOrder = new String[] { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "favouritesPane" };
     private int currentSceneIndex;
     
     private BorderPane root = new BorderPane();
@@ -77,6 +83,7 @@ public class MainViewer extends Stage
     private StatisticsData dataHandler;
     
     private NoOfPropertiesStats noOfPropertiesStats;
+    private Scene mainScene;
     
     /**
      * Constructor for objects of class MapViewer
@@ -88,27 +95,37 @@ public class MainViewer extends Stage
         sceneWidth = 1200;
         sceneHeight = 600;
         
-        makeWelcomeScene();
-        setScene(welcomeScene);
-        
         //makeStatsScene();
         //setScene(statsScene);
         
         lowestPrice = dataHandler.getLowestPrice();
         highestPrice = dataHandler.getHighestPrice();
         
+        root = new BorderPane();
         makePanelSwitcherPane();
-        root.setBottom(panelSwitcherPane);
+        
+        mainScene = new Scene(root, sceneWidth, sceneHeight);
+        setPane(0);
+        
+        setResizable(false);
+        mainScene.getStylesheets().add("stylesheet.css");
     }
     
     private void makePanelSwitcherPane() {
+        panelSwitcherPane = new AnchorPane();
+        
         prevPanelButton = new Button("<");
             prevPanelButton.setOnAction(e -> goToPrevPanel());
         nextPanelButton = new Button(">");
             nextPanelButton.setOnAction(e -> goToNextPanel());
         
-        panelSwitcherPane.setLeftAnchor(prevPanelButton, 5.0);
-        panelSwitcherPane.setRightAnchor(nextPanelButton, 5.0);
+        AnchorPane.setLeftAnchor(prevPanelButton, 5.0);
+        AnchorPane.setRightAnchor(nextPanelButton, 5.0);
+        
+        panelSwitcherPane.getChildren().add(prevPanelButton);
+        panelSwitcherPane.getChildren().add(nextPanelButton);
+        
+        root.setBottom(panelSwitcherPane);
     }
     
     private void goToPrevPanel() {
@@ -118,7 +135,7 @@ public class MainViewer extends Stage
             currentSceneIndex = sceneOrder.length - 1;
         }
         
-        makeScene(currentSceneIndex);
+        setPane(currentSceneIndex);
     }
     
     private void goToNextPanel() {
@@ -128,19 +145,45 @@ public class MainViewer extends Stage
             currentSceneIndex = 0;
         }
         
-        makeScene(currentSceneIndex);
+        setPane(currentSceneIndex);
     }
     
-    private void makeScene(int currentSceneIndex) {
+    private void setPane(int currentSceneIndex) {
         
-        Scene sceneToChangeTo = sceneOrder[currentSceneIndex];
+        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+        Pane paneToChangeTo = new Pane();
         
-        //if ();
+        switch (nameOfPaneToChangeTo) {
+            case ("welcomePane") :
+                makeWelcomePane();
+                paneToChangeTo = welcomePane;
+                break;
+            case ("priceSelectorPane") :
+                makePriceSelectorPane();
+                paneToChangeTo = priceSelectorPane;
+                break;
+            case ("mapPane") :
+                try {
+                    makeMapPane();
+                    paneToChangeTo = mapPane;
+                }
+                catch (Exception ex) {};
+                break;
+            case ("statsPane") :
+                makeStatsPane();
+                paneToChangeTo = statsPane;
+                break;
+            case ("favouritesPane") :
+                //makeFavouritesPane();
+                //paneToChangeTo = paneToChangeTo;
+                break;
+        }
         
-        setScene(sceneToChangeTo);
+        root.setCenter(paneToChangeTo);
+        setScene(mainScene);
     }
 
-    private void makeWelcomeScene() {
+    private void makeWelcomePane() {
         setTitle("Welcome");
         
         //All labels in the window
@@ -152,7 +195,7 @@ public class MainViewer extends Stage
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
-        startButton.setOnAction(this::changeToPriceSelector);
+        startButton.setOnAction(e -> changeToPriceSelector());
         
         //layout of the whole window
         VBox window = new VBox(); //root of the scene
@@ -166,36 +209,33 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
-        root.setCenter(window);
+        //root.setCenter(window);
         
         //creating the scene and adding the CSS
-        welcomeScene = new Scene(window, sceneWidth, sceneHeight);
-        setResizable(false);
-        welcomeScene.getStylesheets().add("stylesheet.css");
+        welcomePane = window;
+        //setResizable(false);
+        //welcomePane.getStylesheets().add("stylesheet.css");
         
-        root.getStyleClass().add("root");
+        window.getStyleClass().add("root");
         
-        title.getStyleClass().add("welcomeTittle");
+        title.getStyleClass().add("mainTitles");
         
-        instructionsTitle.getStyleClass().add("instructionsTittle"); 
+        instructions.getStyleClass().add("instructionsTittle"); 
         
         instructions1.getStyleClass().add("instructions"); 
         instructions2.getStyleClass().add("instructions"); 
         instructions3.getStyleClass().add("instructions");
-        
-        window.getStyleClass().add("welcomeWindow");
         
         instrcutionsAndStart.getStyleClass().add("instrcutionsAndStart");
         
         startButton.getStyleClass().add("startButton");
     }
     
-    private void changeToPriceSelector(ActionEvent event) {
-        makePriceSelectorScene();
-        setScene(priceSelectorScene);
+    private void changeToPriceSelector() {
+        setPane(1);
     }
     
-    private void makePriceSelectorScene() {
+    private void makePriceSelectorPane() {
         setTitle("Price Selection Window");
         
         //All labels in the window
@@ -203,6 +243,7 @@ public class MainViewer extends Stage
         Label instruction = new Label("Please select a min and max for your price range: ");
         
         HBox minMaxBox = createMinMaxBox();
+        minMaxBox.setSpacing(5);
         
         Button confirm = (Button) minMaxBox.getChildren().get(2);
         
@@ -224,16 +265,12 @@ public class MainViewer extends Stage
 
         titleAndInstruction.getChildren().addAll(title, instruction);
         
-        root.setCenter(window);
-        
         //Creating the scene and adding the css styling
-        priceSelectorScene = new Scene(window, sceneWidth, sceneHeight);
-        setResizable(false);
-        priceSelectorScene.getStylesheets().add("stylesheet.css");
+        priceSelectorPane = window;
         
-        window.getStyleClass().add("priceWindow");
+        window.getStyleClass().add("root");
         
-        title.getStyleClass().add("priceTitle");
+        title.getStyleClass().add("mainTitles");
         
         instruction.getStyleClass().add("priceInstruction");
         
@@ -268,13 +305,13 @@ public class MainViewer extends Stage
         Button confirm = new Button("Confirm");
         confirm.setDisable(true);
         confirm.setOnAction(e -> 
-                            {
-                                try { makeHexagonMap(); }
-                                catch (Exception ex) {}
-                                
-                                try { changeToMapScene(); }
-                                catch (Exception ex) {}
-                            });
+                                 {
+                                    try { makeHexagonMap(); }
+                                    catch (Exception ex) {}
+                                    
+                                    try { changeToMapPane(); }
+                                    catch (Exception ex) {}
+                                 });
         
         minBox.setOnAction(e -> {
             String selected = minBox.getValue();
@@ -386,32 +423,35 @@ public class MainViewer extends Stage
         }
     }
     
-    private void changeToMapScene() throws Exception {
-        makeMapScene();
-        setScene(mapScene);
+    private void changeToMapPane() throws Exception {
+        setPane(2);
+        //setScene(mapScene);
     }
     
-    private void makeMapScene() throws Exception {
+    private void makeMapPane() throws Exception {
         setTitle("Map of London");
         
         HBox minMaxBox = createMinMaxBox();
             minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             
+            
+        BorderPane window = new BorderPane();
+            
         //root.setTop(minMaxBox);
         
-        if (mapScene == null) {
-            mapScene = new Scene(root, sceneWidth, sceneHeight);
-            setResizable(false);
-        }
+        // if (mapPane == null) {
+            // mapScene = new Scene(root, sceneWidth, sceneHeight);
+            // setResizable(false);
+        // }
         
         //styling
-        mapScene.getStylesheets().add("stylesheet.css");
-        root.getStyleClass().add("root");
+        //mapScene.getStylesheets().add("stylesheet.css");
+        //root.getStyleClass().add("root");
         //Pane window = new FlowPane();
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-            titleLabel.getStyleClass().add("welcomeTittle");
+            titleLabel.getStyleClass().add("mainTitles");
             VBox stats = createStatsPanel();
             GridPane key = createKey();
             
@@ -424,8 +464,10 @@ public class MainViewer extends Stage
         
         mapView.setPadding(new Insets(20));
         
-        root.setLeft(infoPane);
-        root.setCenter(mapView);
+        window.setLeft(infoPane);
+        window.setCenter(mapView);
+        
+        mapPane = window;
     }
     
     private void makeHexagonMap() throws Exception {
@@ -640,7 +682,7 @@ public class MainViewer extends Stage
         return grid;
     }
     
-    private void makeStatsScene() {
+    private void makeStatsPane() {
         Label reviewInfo = new Label("default");
         Label availableInfo = new Label("default");
         Label noHomeAndApartmentsInfo = new Label("default");
@@ -736,7 +778,7 @@ public class MainViewer extends Stage
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        title.getStyleClass().add("titlelabel"); 
+        title.getStyleClass().add("mainTitles"); 
         
         xAxis.setLabel("Borough");
         yAxis.setLabel("Average Price");
@@ -755,7 +797,9 @@ public class MainViewer extends Stage
         
         setTitle("Information");
         //setScene(scene);
-        root.setCenter(window);
+        //root.setCenter(window);
+        
+        statsPane = window;
     }
     
     /**
