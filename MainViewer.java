@@ -169,7 +169,6 @@ public class MainViewer extends Stage
         
         //creating the scene and adding the CSS
         welcomeScene = new Scene(window, sceneWidth, sceneHeight);
-
         welcomeScene.getStylesheets().add("stylesheet.css");
         
         title.getStyleClass().add("welcomeTittle");
@@ -228,7 +227,6 @@ public class MainViewer extends Stage
         
         //Creating the scene and adding the css styling
         priceSelectorScene = new Scene(window, sceneWidth, sceneHeight);
-
         priceSelectorScene.getStylesheets().add("stylesheet.css");
         
         window.getStyleClass().add("priceWindow");
