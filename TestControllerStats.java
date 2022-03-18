@@ -29,7 +29,7 @@ public class TestControllerStats extends Application
     public void start(Stage stage)
     {
         // Create a Button or any control item
-        stage = new StatisticsViewer();
+        stage = new StatisticsViewer(100, 200);
         stage.show();
     }
 }
