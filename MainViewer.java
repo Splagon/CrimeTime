@@ -89,7 +89,6 @@ public class MainViewer extends Stage
         
         makeWelcomeScene();
         setScene(welcomeScene);
-
         
         makeStatsScene();
         setScene(statsScene);
@@ -169,8 +168,8 @@ public class MainViewer extends Stage
         root.setCenter(window);
         
         //creating the scene and adding the CSS
+        welcomeScene = new Scene(window, sceneWidth, sceneHeight);
 
-        welcomeScene = new Scene(root, 600, 400);
         welcomeScene.getStylesheets().add("stylesheet.css");
         
         title.getStyleClass().add("welcomeTittle");
@@ -228,7 +227,7 @@ public class MainViewer extends Stage
         root.setCenter(window);
         
         //Creating the scene and adding the css styling
-        priceSelectorScene = new Scene(root, 600, 400);
+        priceSelectorScene = new Scene(window, sceneWidth, sceneHeight);
 
         priceSelectorScene.getStylesheets().add("stylesheet.css");
         
