@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * Calculates the data needed for the statistics viewer
@@ -154,7 +155,7 @@ public class StatisticsData extends DataHandler
     /**
      * @return HashMap information which stores the average price per night in each borough
      */
-    public HashMap<String, Integer> getAveragePricePerBorough()
+    public HashMap<String, Integer> getAveragePricePerBoroughTest()
     {
         HashMap<String, Integer> information = new HashMap<>();
         for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
@@ -176,6 +177,39 @@ public class StatisticsData extends DataHandler
             }
         }
         return information; 
+    }
+    
+    /**
+     * @return HashMap information which stores the average price per night in each borough
+     */
+    public HashMap<String, Integer> getAveragePricePerBorough()
+    {
+        HashMap<String, Integer> information = new HashMap<>();
+        Map<String, ArrayList<AirbnbListing>> data = sortBoroughs();
+        for(Map.Entry<String, ArrayList<AirbnbListing>> set : data.entrySet()) {
+            String boroughName = set.getKey(); 
+            ArrayList<AirbnbListing> properties = set.getValue();
+            int totalPrice = 0; 
+            for(int i = 0; i < properties.size(); i++)
+            {
+                totalPrice += properties.get(i).getPrice(); 
+            }
+            Integer averagePrice = new Integer(totalPrice / properties.size());
+            information.put(boroughName, averagePrice);
+        }
+        return information;
+    }
+    
+    public int getAveragePrice()
+    {
+        int totalPrice = 0;
+        int average = 0;
+        for(int i = 0; i > listings.size(); i++)
+        {
+            totalPrice += listings.get(i).getPrice();
+        }
+        average = totalPrice / listings.size(); 
+        return average;
     }
     
     public double getBoroughMapColour(String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats) {     

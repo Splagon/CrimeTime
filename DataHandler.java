@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Write a description of class DataHandler here.
  *
@@ -51,6 +54,42 @@ public class DataHandler
         }
         
         return listingsFromBorough;
+    }
+    
+    public static Map<String, ArrayList<AirbnbListing>> sortBoroughs()
+    {
+        Map<String, ArrayList<AirbnbListing>> data = new HashMap<>(); 
+        for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
+        {
+            for(int columns = 0; columns < mapPositions[rows].length; columns++)
+            {   
+                if(mapPositions[rows][columns] != null)
+                {
+                    ArrayList<AirbnbListing> properties = new ArrayList<>();
+                    data.put(mapPositions[rows][columns], properties);
+                }
+            }
+        }
+        
+        Iterator i = listings.iterator();
+        while(i.hasNext())
+        {
+            AirbnbListing nextListing = (AirbnbListing) i.next();
+            for(Map.Entry<String, ArrayList<AirbnbListing>> set : data.entrySet()) {
+                String key = set.getKey();
+                
+                if (key != null) {
+                    if(set.getKey().toLowerCase().equals(nextListing.getNeighbourhood().toLowerCase()))
+                    {
+                        ArrayList<AirbnbListing> list = set.getValue();
+                        list.add(nextListing);
+                        data.put(key, list);
+                    }
+                }
+            }
+        }
+        
+        return data; 
     }
     
     public ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
