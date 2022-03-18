@@ -200,7 +200,17 @@ public class StatisticsData extends DataHandler
         return information;
     }
     
-    
+    public int getAveragePrice()
+    {
+        int totalPrice = 0;
+        int average = 0;
+        for(int i = 0; i > listings.size(); i++)
+        {
+            totalPrice += listings.get(i).getPrice();
+        }
+        average = totalPrice / listings.size(); 
+        return average;
+    }
     
     public double getBoroughMapColour(String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats) {     
         int noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
