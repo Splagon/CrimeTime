@@ -48,6 +48,9 @@ public class MainViewer extends Stage
     private Scene mapScene;
     private Scene statsScene;
     
+    private int sceneWidth;
+    private int sceneHeight;
+    
     private Integer selectedMinPrice;
     private Integer selectedMaxPrice;
     
@@ -73,8 +76,11 @@ public class MainViewer extends Stage
     {   
         dataHandler = new StatisticsData();
         
-        //makeWelcomeScene();
-        //setScene(welcomeScene);
+        sceneWidth = 1200;
+        sceneHeight = 600;
+        
+        makeWelcomeScene();
+        setScene(welcomeScene);
         
         makeStatsScene();
         setScene(statsScene);
@@ -110,7 +116,7 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setCenter(startButton);
         
         //creating the scene and adding the CSS
-        welcomeScene = new Scene(window, 600, 400);
+        welcomeScene = new Scene(window, sceneWidth, sceneHeight);
         welcomeScene.getStylesheets().add("stylesheet.css");
         
         title.getStyleClass().add("welcomeTittle");
@@ -166,7 +172,7 @@ public class MainViewer extends Stage
         titleAndInstruction.getChildren().addAll(title, instruction);
         
         //Creating the scene and adding the css styling
-        priceSelectorScene = new Scene(window, 600, 400);
+        priceSelectorScene = new Scene(window, sceneWidth, sceneHeight);
         priceSelectorScene.getStylesheets().add("stylesheet.css");
         
         window.getStyleClass().add("priceWindow");
@@ -338,13 +344,11 @@ public class MainViewer extends Stage
         //root.setTop(minMaxBox);
         
         if (mapScene == null) {
-            mapScene = new Scene(root, 1020, 580);
+            mapScene = new Scene(root, sceneWidth, sceneHeight);
             setResizable(false);
         }
         
-        //if (mapScene.getStylesheets().isEmpty()) {
-            mapScene.getStylesheets().add("stylesheet.css");
-        //}
+        mapScene.getStylesheets().add("stylesheet.css");
         
         //Pane window = new FlowPane();
         
