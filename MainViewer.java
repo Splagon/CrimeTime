@@ -172,6 +172,8 @@ public class MainViewer extends Stage
         setResizable(false);
         welcomeScene.getStylesheets().add("stylesheet.css");
         
+        root.getStyleClass().add("root");
+        
         title.getStyleClass().add("welcomeTittle");
         
         instructionsTitle.getStyleClass().add("instructionsTittle"); 
