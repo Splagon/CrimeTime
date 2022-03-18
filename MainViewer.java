@@ -82,8 +82,8 @@ public class MainViewer extends Stage
         makeWelcomeScene();
         setScene(welcomeScene);
         
-        makeStatsScene();
-        setScene(statsScene);
+        //makeStatsScene();
+        //setScene(statsScene);
         
         lowestPrice = dataHandler.getLowestPrice();
         highestPrice = dataHandler.getHighestPrice();
@@ -117,6 +117,7 @@ public class MainViewer extends Stage
         
         //creating the scene and adding the CSS
         welcomeScene = new Scene(window, sceneWidth, sceneHeight);
+        setResizable(false);
         welcomeScene.getStylesheets().add("stylesheet.css");
         
         title.getStyleClass().add("welcomeTittle");
@@ -125,10 +126,7 @@ public class MainViewer extends Stage
         
         instructions1.getStyleClass().add("instructions"); 
         instructions2.getStyleClass().add("instructions"); 
-        instructions3.getStyleClass().add("instructions"); 
-        instructions1.setPrefWidth(400);
-        instructions2.setPrefWidth(400);
-        instructions3.setPrefWidth(400);
+        instructions3.getStyleClass().add("instructions");
         
         window.getStyleClass().add("welcomeWindow");
         
@@ -173,6 +171,7 @@ public class MainViewer extends Stage
         
         //Creating the scene and adding the css styling
         priceSelectorScene = new Scene(window, sceneWidth, sceneHeight);
+        setResizable(false);
         priceSelectorScene.getStylesheets().add("stylesheet.css");
         
         window.getStyleClass().add("priceWindow");
@@ -348,8 +347,9 @@ public class MainViewer extends Stage
             setResizable(false);
         }
         
+        //styling
         mapScene.getStylesheets().add("stylesheet.css");
-        
+        root.getStyleClass().add("root");
         //Pane window = new FlowPane();
         
         VBox infoPane = new VBox();
