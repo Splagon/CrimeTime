@@ -1,12 +1,12 @@
 // -------------- universal ---------------------
-.root {
+.mainRoot {
     -fx-padding: 20;
     -fx-spacing: 20;
     -fx-alignment: center;
     -fx-background-color : aliceblue;
 }
 
-.root:Node {
+.mainRoot:Node {
     -fx-alignment: center;
 }
 // -------------- universal ---------------------
@@ -147,7 +147,10 @@
 // ------------- price scene --------------------
 
 // -------------- map scene ---------------------
-
+.tooltip {
+    -fx-font: 12px "Ariel";
+    
+}
 // -------------- map scene ---------------------
 
 // ------------- property viewer --------------------
