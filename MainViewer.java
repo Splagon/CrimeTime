@@ -781,4 +781,8 @@ public class MainViewer extends Stage
             // averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
         // }
     }
+    
+    private void makeBookingScene() {
+        
+    }
 }

@@ -25,6 +25,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.control.DatePicker;
+import java.time.LocalDate;
+import javafx.util.Callback;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.Tooltip;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Property viewer is the class that is responsible 
@@ -48,7 +55,7 @@ public class PropertyViewer extends Stage {
     // The maximum porperty price
     private int maxPrice;
     // Labels needed to display a property's characteristics  
-    private Label hostLabel, priceLabel, noOfReviewsLabel, roomTypeLabel, minNightsLabel, descriptionLabel;
+    private Label hostLabel, priceLabel, noOfReviewsLabel, roomTypeLabel, minNightsLabel, descriptionLabel, propertyID;
     //Prefixes displayed on scene
     private final String hostPrefix = "Host: ";
     private final String pricePrefix = "Price: £";
@@ -56,8 +63,8 @@ public class PropertyViewer extends Stage {
     private final String minNightsPostfix = " night(s) minimum";
     // WebEngine object capable of managing one web page
     private WebEngine webEngine;
-    // Stage object for managing properties' description window
-    private Stage descriptionStage;
+    // Stage object for managing properties' description and booking windows
+    private Stage descriptionStage, bookingStage;
     // Holds applcation's internet connectivity status
     private boolean applicationConnected;
     
@@ -69,7 +76,7 @@ public class PropertyViewer extends Stage {
      * @param maxprice The maximum price of the properties displayed
      * @param sortedBy The element by which the "properties" list is sorted
      */
-    public PropertyViewer(String borough, int minPrice, int maxPrice, String sortedBy) throws Exception {
+    public PropertyViewer(String borough, int minPrice, int maxPrice, String sortedBy) {
         // Initialize the Property Viewer fields
         this.borough = borough;
         this.minPrice = minPrice;
@@ -89,7 +96,7 @@ public class PropertyViewer extends Stage {
      * Hbox, at the center a map, at the right and left buttons and finally 
      * at the bottom a grid pane.
      */
-    private void makePropertyViewerScene() throws Exception {
+    private void makePropertyViewerScene() {
         setTitle("Neighbourhood: " + borough);
         // Generates the list of properties that will be displayed depending 
         // on the borough, price range and sorting parameter selected by the user.
@@ -176,19 +183,27 @@ public class PropertyViewer extends Stage {
             
             Button infoButton = new Button("Description");
                 infoButton.setOnAction(e -> popUpAction());
-            infoButton.getStyleClass().add("buttonsPV");
-        
+            
+            
+            Button bookingButton = new Button("Book property");
+                bookingButton.setOnAction(e -> openBookingWindow());
+    
+            
+            HBox hbox = new HBox();
+                hbox.setSpacing(5);
+            hbox.getChildren().addAll(infoButton, noOfReviewsLabel, bookingButton);
+            
             info.add(hostLabel, 0, 0);
             info.add(priceLabel, 0, 1);
-            info.add(infoButton, 1, 0);
-            info.add(noOfReviewsLabel, 1, 1);
+            info.add(noOfReviewsLabel, 1, 0);
+            info.add(hbox, 1, 1);
             info.add(roomTypeLabel, 2, 0);
             info.add(minNightsLabel, 2, 1);
             
             info.setConstraints(hostLabel, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
             info.setConstraints(priceLabel, 0, 1, 1, 1, HPos.CENTER, VPos.CENTER);
-            info.setConstraints(infoButton, 1, 0, 1, 1, HPos.CENTER, VPos.CENTER);
-            info.setConstraints(noOfReviewsLabel, 1, 1, 1, 2, HPos.CENTER, VPos.CENTER);
+            info.setConstraints(noOfReviewsLabel, 1, 0, 1, 1, HPos.CENTER, VPos.CENTER);
+            info.setConstraints(hbox, 1, 1, 1, 1, HPos.CENTER, VPos.CENTER);
             info.setConstraints(roomTypeLabel, 2, 0, 1, 1, HPos.CENTER, VPos.CENTER);
             info.setConstraints(minNightsLabel, 2, 1, 1, 1, HPos.CENTER, VPos.CENTER);
             
@@ -296,7 +311,7 @@ public class PropertyViewer extends Stage {
         descriptionStage.setTitle("Description!");
         
         VBox root = new VBox();
-            root.getChildren().add(descriptionLabel);
+            root.getChildren().addAll(descriptionLabel, propertyID);
         root.setAlignment(Pos.CENTER);
         
         int width = 300;
@@ -315,7 +330,7 @@ public class PropertyViewer extends Stage {
      * On sorting request, a new property wiewer stage is 
      * created with the sorting condition taken into account.
      */
-    private void sortAction() throws Exception {
+    private void sortAction() {
         // We open the stage at the saame positions of the initial one, for better UX.
         double currentStagePositionX = this.getX();
         double currentStagePositionY = this.getY();
@@ -360,6 +375,65 @@ public class PropertyViewer extends Stage {
     
     public boolean getInternetConnection(){
         return applicationConnected;
+    }
+    
+    private void openBookingWindow() {
+        bookingStage = new Stage();
+        bookingStage.setTitle("Booking Window");
+        
+        BorderPane root = new BorderPane();
+        
+            Label instructionLabel  = new Label("The property you are currently booking is: " + properties.get(currentPropertyIndex).getName() + " Please select below the dates to process.");
+            
+        root.setTop(instructionLabel);
+        
+            GridPane gridPane = new GridPane();
+             gridPane.setAlignment(Pos.CENTER);
+             gridPane.setHgap(10);
+             gridPane.setVgap(10);
+                
+                Label checkInlabel = new Label("Check-In Date:");
+                    gridPane.add(checkInlabel, 0, 0);
+                DatePicker checkIn =  new DatePicker();
+                    checkIn.setValue(LocalDate.now());
+                    gridPane.add(checkIn, 0, 1);
+                
+                Label checkOutlabel = new Label("Check-Out Date:");
+                    gridPane.add(checkOutlabel, 1, 0);
+                DatePicker checkOut = new DatePicker();
+                    checkOut.setValue(checkIn.getValue().plusDays(1));
+                    gridPane.add(checkOut, 1, 1);
+                    
+                    final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+                        @Override
+                        public DateCell call(final DatePicker datePicker) {
+                            return new DateCell() {
+                                @Override
+                                public void updateItem(LocalDate item, boolean empty) {
+                                    super.updateItem(item, empty);
+                                    if (item.isBefore(checkIn.getValue().plusDays(1))) {
+                                        setDisable(true);
+                                        setStyle("-fx-background-color: #ffc0cb;");
+                                    }
+                                }      
+                            };
+                        }
+                    };
+                    
+                    checkOut.setDayCellFactory(dayCellFactory);
+                                    
+            
+        root.setCenter(gridPane);
+        
+            Button bookButton = new Button("Confirm Booking");
+        
+        root.setBottom(bookButton);
+        
+        
+        Scene scene = new Scene(root, 600, 400);
+        bookingStage.setScene(scene);
+        bookingStage.show();
+            
     }
 }
 
