@@ -107,7 +107,7 @@ public class MainViewer extends Stage
         mainScene = new Scene(root, sceneWidth, sceneHeight);
         setPane(0);
         
-        setResizable(false);
+        setResizable(true);
         mainScene.getStylesheets().add("stylesheet.css");
     }
     
@@ -149,7 +149,6 @@ public class MainViewer extends Stage
     }
     
     private void setPane(int currentSceneIndex) {
-        
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         Pane paneToChangeTo = new Pane();
         
@@ -476,7 +475,7 @@ public class MainViewer extends Stage
         noOfPropertiesStats = new NoOfPropertiesStats(dataHandler, selectedMinPrice, selectedMaxPrice);
             
         mapView = new AnchorPane();
-            mapView.setMinSize(720, 700);
+            mapView.setMinSize(720, 510);
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
                 
