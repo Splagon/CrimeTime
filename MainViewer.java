@@ -83,6 +83,7 @@ public class MainViewer extends Stage
     private StatisticsData dataHandler;
     
     private NoOfPropertiesStats noOfPropertiesStats;
+    private Scene mainScene;
     
     /**
      * Constructor for objects of class MapViewer
@@ -94,13 +95,13 @@ public class MainViewer extends Stage
         sceneWidth = 1200;
         sceneHeight = 600;
         
-        Scene scene = new Scene(root, sceneWidth, sceneHeight);
+        mainScene = new Scene(root, sceneWidth, sceneHeight);
         setResizable(false);
-        scene.getStylesheets().add("stylesheet.css");
+        mainScene.getStylesheets().add("stylesheet.css");
         
         makeWelcomePane();
         //setScene(welcomeScene);
-        root.setCenter(welcomePane);
+        setPane(0);
         
         //makeStatsScene();
         //setScene(statsScene);
@@ -149,6 +150,8 @@ public class MainViewer extends Stage
         //if ();
         
         root.setCenter(paneToChangeTo);
+        //mainScene = new Scene(root, sceneWidth, sceneHeight);
+        setScene(mainScene);
         //setScene(paneToChangeTo);
     }
 
