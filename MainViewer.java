@@ -179,8 +179,10 @@ public class MainViewer extends Stage
     private HBox createMinMaxBox() {
         //adding the options to the price selection box, as well as assigning appropriate values to the instance variables
         HBox minMaxBox = new HBox();
-        ComboBox<String>minBox = new ComboBox<String>();
+        ComboBox<String> minBox = new ComboBox<String>();
         ComboBox<String> maxBox = new ComboBox<String>();
+        minBox.setValue("Min Price:");
+        maxBox.setValue("Max Price:");
         
         // int low = dataHandler.getLowestPrice();
         // int high = dataHandler.getHighestPrice();
