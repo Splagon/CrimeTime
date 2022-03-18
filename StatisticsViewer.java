@@ -27,8 +27,8 @@ import javafx.scene.chart.XYChart;
 public class StatisticsViewer extends Stage
 {
     // instance variables - replace the example below with your own
-    private StatisticsData data = new StatisticsData(); 
-    
+    private StatisticsData dataHandler = new StatisticsData(); 
+
     // The information labels in the window
     Label reviewInfo = new Label("default");
     Label availableInfo = new Label("default");
@@ -53,12 +53,11 @@ public class StatisticsViewer extends Stage
         VBox priceSD = new VBox(); 
         VBox averagePrice = new VBox(); 
         VBox highAvgReview = new VBox();
-        
+
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
         BarChart barChart = new BarChart(xAxis, yAxis);
-          
-        
+
         // The "title" labels in the window
         Label title = new Label("Statistics");
         Label reviewTitle = new Label("Average Reviews Per Property:");
@@ -67,8 +66,7 @@ public class StatisticsViewer extends Stage
         Label expensiveTitle = new Label("Most Expensive Borough:");
         Label priceSDTitle = new Label("Standard Deviation of Price (£):");
         Label highAvgReviewTitle = new Label("Borough with the Highest \nAverage Amount of Reviews:");
-        
-        
+
         // Adding components 
         window.setAlignment(Pos.CENTER);
         window.getChildren().add(title); 
@@ -76,43 +74,43 @@ public class StatisticsViewer extends Stage
         window.getChildren().add(barChart);
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
-        
+
         statsGrid.add(reviews, 0, 0);
         statsGrid.add(available, 0, 1);
         statsGrid.add(noHomeAndApartments, 1, 0);
         statsGrid.add(expensive, 1, 1);
         statsGrid.add(priceSD, 0, 2); 
         statsGrid.add(highAvgReview, 1 , 2); 
-        
+
         reviews.setAlignment(Pos.CENTER);
         reviews.getChildren().add(reviewTitle); 
         reviews.getChildren().add(reviewInfo);
-        
+
         available.setAlignment(Pos.CENTER);
         available.getChildren().add(availableTitle); 
         available.getChildren().add(availableInfo);
-        
+
         noHomeAndApartments.setAlignment(Pos.CENTER);
         noHomeAndApartments.getChildren().add(noHomeAndApartmentsTitle); 
         noHomeAndApartments.getChildren().add(noHomeAndApartmentsInfo);
-        
+
         expensive.setAlignment(Pos.CENTER);
         expensive.getChildren().add(expensiveTitle); 
         expensive.getChildren().add(expensiveInfo);
-        
+
         priceSD.setAlignment(Pos.CENTER);
         priceSD.getChildren().add(priceSDTitle); 
         priceSD.getChildren().add(priceSDInfo);
-        
+
         highAvgReview.setAlignment(Pos.CENTER);
         highAvgReview.getChildren().add(highAvgReviewTitle); 
         highAvgReview.getChildren().add(highAvgReviewInfo);
-        
+
         //Set the scene and add CSS
         Scene scene = new Scene(window, 1200,700);
-        
+
         scene.getStylesheets().add("stylesheet.css");
-        
+
         statsGrid.setId("statsgrid"); 
         window.getStyleClass().add("statsvbox");
         reviews.getStyleClass().add("statsvbox"); 
@@ -121,100 +119,64 @@ public class StatisticsViewer extends Stage
         expensive.getStyleClass().add("statsvbox");
         priceSD.getStyleClass().add("statsvbox");
         highAvgReview.getStyleClass().add("statsvbox");
-        
-        
+
         reviewInfo.getStyleClass().add("statslabels"); 
         availableInfo.getStyleClass().add("statslabels"); 
         noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
         expensiveInfo.getStyleClass().add("statslabels"); 
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
-        
+
         title.getStyleClass().add("titlelabel"); 
-        
+
         xAxis.setLabel("Borough");
         yAxis.setLabel("Average Price");
         averagePriceData.setName("Average Price per Night per Borough");
         setAveragePricePerBorough();
         barChart.getData().add(averagePriceData);
-    
-        setInfo();
+
+        setText(reviewInfo, dataHandler.getAverageNoReviews());
+        setText(noHomeAndApartmentsInfo, dataHandler.getNoHomeAndApartments());
+        setText(availableInfo, dataHandler.getAvailableInfo());
+        setText(expensiveInfo, dataHandler.getExpensiveInfo());
+        setText(priceSDInfo, dataHandler.getPriceSDInfo());
+        setText(highAvgReviewInfo, dataHandler.getHighAvgReview());
+        
+        StatBox test = new StatBox(); 
+        
+        window.getChildren().add(test);
+        test.addInfo("title test", "stat test");
+        test.addInfo("2", "2");
+        test.addInfo("3", "3");
+        test.setFirst();
         
         setTitle("Information");
         setScene(scene);
-        
+
     }
-    
-    /**
-     * Update all of the info labels
-     */
-    private void setInfo()
-    {
-        setReviewInfo(); 
-        setNoHomeAndApartmentsInfo();
-        setAvailableInfo();
-        setExpensiveInfo();
-        setPriceSDInfo();
-        setHighAvgReviewInfo();
+
+
+
+    private void setText(Label label, double dataToFormat) {
+        String x = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
+        label.setText(x);
     }
-    
-    /**
-     * Get the review info data, round it to 2 d.p and set the label to the data
-     */
-    private void setReviewInfo()
-    {
-        String x = "" + String.format("%.2f", data.getAverageNoReviews()) + " (2 d.p)"; 
-        reviewInfo.setText(x);
+
+    private void setText(Label label, int dataToFormat) {
+        label.setText(String.valueOf(dataToFormat));
     }
-    
-    /**
-     * Get the number of homes and apartments properties and set the info label to the value received
-     */
-    private void setNoHomeAndApartmentsInfo()
-    {
-        String x = "" + data.getNoHomeAndApartments();
-        noHomeAndApartmentsInfo.setText(x); 
+
+    private void setText(Label label, String dataToFormat) {
+        label.setText(dataToFormat);
     }
-    
-    /**
-     * Get the number of available properties and set the available info label to the value received
-     */
-    private void setAvailableInfo()
-    {
-        String x = "" + data.getAvailableInfo();
-        availableInfo.setText(x); 
-    }
-    
-    /**
-     * Get the most expensive borough and set the expensive info label to the value received
-     */
-    private void setExpensiveInfo()
-    {
-        String x = "" + data.getExpensiveInfo();
-        expensiveInfo.setText(x); 
-    }
-    
-    /**
-     * Get the standard deviation of price and set the pricesd info label to the value received
-     */
-    private void setPriceSDInfo()
-    {
-        String x = "" + String.format("%.2f", data.getPriceSDInfo()) + " (2 d.p)";
-        priceSDInfo.setText(x); 
-    }
-    
+
     private void setAveragePricePerBorough()
     {
-        Map<String, Integer> information = data.getAveragePricePerBorough();
+        Map<String, Integer> information = dataHandler.getAveragePricePerBorough();
         for (Map.Entry<String, Integer> set : information.entrySet())
         {
             averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
         }
     }
-    
-    private void setHighAvgReviewInfo()
-    {
-        String x = "" + data.getHighAvgReview();
-        highAvgReviewInfo.setText(x);
-    }
+
 }
