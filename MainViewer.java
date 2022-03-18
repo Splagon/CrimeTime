@@ -101,13 +101,10 @@ public class MainViewer extends Stage
         lowestPrice = dataHandler.getLowestPrice();
         highestPrice = dataHandler.getHighestPrice();
         
+        root = new BorderPane();
         makePanelSwitcherPane();
-        root.setBottom(panelSwitcherPane);
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
-        
-        //makeWelcomePane();
-        //setScene(welcomeScene);
         setPane(0);
         
         setResizable(false);
@@ -115,13 +112,20 @@ public class MainViewer extends Stage
     }
     
     private void makePanelSwitcherPane() {
+        panelSwitcherPane = new AnchorPane();
+        
         prevPanelButton = new Button("<");
             prevPanelButton.setOnAction(e -> goToPrevPanel());
         nextPanelButton = new Button(">");
             nextPanelButton.setOnAction(e -> goToNextPanel());
         
-        panelSwitcherPane.setLeftAnchor(prevPanelButton, 5.0);
-        panelSwitcherPane.setRightAnchor(nextPanelButton, 5.0);
+        AnchorPane.setLeftAnchor(prevPanelButton, 5.0);
+        AnchorPane.setRightAnchor(nextPanelButton, 5.0);
+        
+        panelSwitcherPane.getChildren().add(prevPanelButton);
+        panelSwitcherPane.getChildren().add(nextPanelButton);
+        
+        root.setBottom(panelSwitcherPane);
     }
     
     private void goToPrevPanel() {
@@ -175,12 +179,8 @@ public class MainViewer extends Stage
                 break;
         }
         
-        //if ();
-        
         root.setCenter(paneToChangeTo);
-        //mainScene = new Scene(root, sceneWidth, sceneHeight);
         setScene(mainScene);
-        //setScene(paneToChangeTo);
     }
 
     private void makeWelcomePane() {
@@ -439,6 +439,7 @@ public class MainViewer extends Stage
         
         FlowPane minMaxBox = createMinMaxBox();
             minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
+            
             
         BorderPane window = new BorderPane();
             
