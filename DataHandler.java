@@ -14,7 +14,7 @@ import java.util.Map;
 public class DataHandler
 {
     // instance variables - replace the example below with your own
-    private static AirbnbDataLoader dataLoader = new AirbnbDataLoader();
+    private static AirbnbDataLoader dataLoader;
     protected static ArrayList<AirbnbListing> listings;
     protected static String[][] mapPositions = {{ null, null, null, "Enfield", null, null, null },
                                                 { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
@@ -31,6 +31,10 @@ public class DataHandler
     public DataHandler()
     {
         // initialise instance variables
+    }
+    
+    public static void initialiseHandler() {
+        dataLoader = new AirbnbDataLoader();
         listings = dataLoader.load();
     }
     
@@ -92,12 +96,12 @@ public class DataHandler
         return data; 
     }
     
-    public ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
+    public static ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
         ArrayList<AirbnbListing> unsortedListing = getPropertiesFromBorough(borough, minPrice, maxPrice);
         return selectionSort(unsortedListing, sortingElement);
     }
     
-    private ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
+    private static ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
         switch (sortingElement) 
         {
             case "Price ↑":
@@ -122,7 +126,7 @@ public class DataHandler
         return unsortedList;
     }
     
-    public ArrayList<AirbnbListing> getPropertiesFromBorough(String borough)
+    public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough)
     {
         ArrayList<AirbnbListing> listingsFromBorough = getPropertiesFromBorough(borough, -1, -1);
         
@@ -132,12 +136,12 @@ public class DataHandler
     /**
      * @return the Arraylist of Airbnb Listings 
      */
-    public ArrayList<AirbnbListing> getData()
+    public static ArrayList<AirbnbListing> getData()
     {
         return listings; 
     }
     
-    public String[][] getMapPositions() 
+    public static String[][] getMapPositions() 
     {
         return mapPositions;
     }
@@ -147,7 +151,7 @@ public class DataHandler
      * 
      * this is used in creating the drop box for the user to select their price range they are looking for
      */
-    public Integer getLowestPrice()
+    public static Integer getLowestPrice()
     {
         Iterator i = listings.iterator();
         int lowest = -1;
@@ -167,7 +171,7 @@ public class DataHandler
      * 
      * this is used in creating the drop box for the user to select their price range they are looking for
      */
-    public Integer getHighestPrice()
+    public static Integer getHighestPrice()
     {
         Iterator i = listings.iterator();
         int highest = -1;

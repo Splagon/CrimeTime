@@ -80,7 +80,7 @@ public class MainViewer extends Stage
     
     private String[][] mapPositions;
     
-    private StatisticsData dataHandler;
+    //private StatisticsData dataHandler;
     
     private NoOfPropertiesStats noOfPropertiesStats;
     private Scene mainScene;
@@ -90,13 +90,15 @@ public class MainViewer extends Stage
      */
     public MainViewer() throws Exception
     {   
-        dataHandler = new StatisticsData();
+        //dataHandler = new StatisticsData();
+        
+        DataHandler.initialiseHandler();
         
         sceneWidth = 1100;
         sceneHeight = 635;
         
-        lowestPrice = dataHandler.getLowestPrice();
-        highestPrice = dataHandler.getHighestPrice();
+        lowestPrice = StatisticsData.getLowestPrice();
+        highestPrice = StatisticsData.getHighestPrice();
         
         makePriceSelectorPane();
         makeStatsPane();
@@ -496,9 +498,9 @@ public class MainViewer extends Stage
     }
     
     private void makeHexagonMap() throws Exception {
-        mapPositions = dataHandler.getMapPositions();
+        mapPositions = StatisticsData.getMapPositions();
         
-        noOfPropertiesStats = new NoOfPropertiesStats(dataHandler, selectedMinPrice, selectedMaxPrice);
+        noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
             
         mapView = new AnchorPane();
             mapView.setMinSize(720, 510);
@@ -590,7 +592,7 @@ public class MainViewer extends Stage
     
     private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) {
         ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(dataHandler.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, noOfPropertiesStats));
+            shader.setBrightness(StatisticsData.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, noOfPropertiesStats));
             
         hexagon.setFitWidth(heightWidth);
         hexagon.setFitHeight(heightWidth);
@@ -602,7 +604,7 @@ public class MainViewer extends Stage
     
     private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) throws Exception {
         ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(dataHandler.getBoroughMapColour(percentile));
+            shader.setBrightness(StatisticsData.getBoroughMapColour(percentile));
             
         hexagon.setFitWidth(heightWidth);
         hexagon.setFitHeight(heightWidth);
@@ -818,12 +820,12 @@ public class MainViewer extends Stage
         setAveragePricePerBorough();
         barChart.getData().add(averagePriceData);
     
-        setText(reviewInfo, dataHandler.getAverageNoReviews());
-        setText(noHomeAndApartmentsInfo, dataHandler.getNoHomeAndApartments());
-        setText(availableInfo, dataHandler.getAvailableInfo());
-        setText(expensiveInfo, dataHandler.getExpensiveInfo());
-        setText(priceSDInfo, dataHandler.getPriceSDInfo());
-        setText(highAvgReviewInfo, dataHandler.getHighAvgReview());
+        setText(reviewInfo, StatisticsData.getAverageNoReviews());
+        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments());
+        setText(availableInfo, StatisticsData.getAvailableInfo());
+        setText(expensiveInfo, StatisticsData.getExpensiveInfo());
+        setText(priceSDInfo, StatisticsData.getPriceSDInfo());
+        setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
         
         statsPane = window;
     }
@@ -863,7 +865,7 @@ public class MainViewer extends Stage
     
     private void setAveragePricePerBorough()
     {
-        Map<String, Integer> information = dataHandler.getAveragePricePerBorough();
+        Map<String, Integer> information = StatisticsData.getAveragePricePerBorough();
         for (Map.Entry<String, Integer> set : information.entrySet())
         {
             // averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
