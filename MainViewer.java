@@ -216,17 +216,15 @@ public class MainViewer extends Stage
         //setResizable(false);
         //welcomePane.getStylesheets().add("stylesheet.css");
         
-        //root.getStyleClass().add("root");
+        window.getStyleClass().add("root");
         
-        title.getStyleClass().add("welcomeTittle");
+        title.getStyleClass().add("mainTitles");
         
-        instructionsTitle.getStyleClass().add("instructionsTittle"); 
+        instructions.getStyleClass().add("instructionsTittle"); 
         
         instructions1.getStyleClass().add("instructions"); 
         instructions2.getStyleClass().add("instructions"); 
         instructions3.getStyleClass().add("instructions");
-        
-        window.getStyleClass().add("welcomeWindow");
         
         instrcutionsAndStart.getStyleClass().add("instrcutionsAndStart");
         
@@ -244,7 +242,8 @@ public class MainViewer extends Stage
         Label title = new Label("Price Selection!");
         Label instruction = new Label("Please select a min and max for your price range: ");
         
-        FlowPane minMaxBox = createMinMaxBox();
+        HBox minMaxBox = createMinMaxBox();
+        minMaxBox.setSpacing(5);
         
         Button confirm = (Button) minMaxBox.getChildren().get(2);
         
@@ -266,17 +265,12 @@ public class MainViewer extends Stage
 
         titleAndInstruction.getChildren().addAll(title, instruction);
         
-        // root.setCenter(null);
-        // root.setCenter(window);
-        
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
-        //
-        //priceSelectorScene.getStylesheets().add("stylesheet.css");
         
-        window.getStyleClass().add("priceWindow");
+        window.getStyleClass().add("root");
         
-        title.getStyleClass().add("priceTitle");
+        title.getStyleClass().add("mainTitles");
         
         instruction.getStyleClass().add("priceInstruction");
         
@@ -292,9 +286,9 @@ public class MainViewer extends Stage
         statusLabel.getStyleClass().add("priceStatusLabel");
     }
     
-    private FlowPane createMinMaxBox() {
+    private HBox createMinMaxBox() {
         //adding the options to the price selection box, as well as assigning appropriate values to the instance variables
-        FlowPane minMaxBox = new FlowPane();
+        HBox minMaxBox = new HBox();
         ComboBox<String> minBox = new ComboBox<String>();
         ComboBox<String> maxBox = new ComboBox<String>();
         minBox.setValue("Min Price:");
@@ -345,7 +339,7 @@ public class MainViewer extends Stage
         return minMaxBox;
     }
     
-    private FlowPane setInitialMinMaxBoxSelection(FlowPane minMaxBox) {
+    private HBox setInitialMinMaxBoxSelection(HBox minMaxBox) {
         ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
         ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
         
@@ -437,7 +431,7 @@ public class MainViewer extends Stage
     private void makeMapPane() throws Exception {
         setTitle("Map of London");
         
-        FlowPane minMaxBox = createMinMaxBox();
+        HBox minMaxBox = createMinMaxBox();
             minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             
             
@@ -457,7 +451,7 @@ public class MainViewer extends Stage
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-            titleLabel.getStyleClass().add("welcomeTittle");
+            titleLabel.getStyleClass().add("mainTitles");
             VBox stats = createStatsPanel();
             GridPane key = createKey();
             
@@ -784,7 +778,7 @@ public class MainViewer extends Stage
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        title.getStyleClass().add("titlelabel"); 
+        title.getStyleClass().add("mainTitles"); 
         
         xAxis.setLabel("Borough");
         yAxis.setLabel("Average Price");
