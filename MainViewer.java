@@ -217,7 +217,7 @@ public class MainViewer extends Stage
         
         window.getStyleClass().add("root");
         
-        title.getStyleClass().add("mainTitles");
+        title.getStyleClass().add("welcomeTittle");
         
         instructions.getStyleClass().add("instructionsTittle"); 
         
@@ -269,7 +269,7 @@ public class MainViewer extends Stage
         
         window.getStyleClass().add("root");
         
-        title.getStyleClass().add("mainTitles");
+        title.getStyleClass().add("welcomeTittle");
         
         instruction.getStyleClass().add("priceInstruction");
         
@@ -450,7 +450,7 @@ public class MainViewer extends Stage
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-            titleLabel.getStyleClass().add("mainTitles");
+            titleLabel.getStyleClass().add("welcomeTittle");
             VBox stats = createStatsPanel();
             GridPane key = createKey();
             
@@ -777,7 +777,7 @@ public class MainViewer extends Stage
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        title.getStyleClass().add("mainTitles"); 
+        title.getStyleClass().add("welcomeTittle"); 
         
         xAxis.setLabel("Borough");
         yAxis.setLabel("Average Price");

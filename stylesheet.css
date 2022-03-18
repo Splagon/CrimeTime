@@ -13,7 +13,6 @@
 .mainTitles {
     -fx-font: 30px "Ariel";
     -fx-alignment: center;
-    -fx-text-alignment: center;
     -fx-underline: true;
     -fx-font-weight: bold;
 }
