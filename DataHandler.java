@@ -11,16 +11,16 @@ import java.io.*;
 public class DataHandler
 {
     // instance variables - replace the example below with your own
-    private AirbnbDataLoader dataLoader = new AirbnbDataLoader();
-    protected ArrayList<AirbnbListing> listings;
-    protected String[][] mapPositions = {{ null, null, null, "Enfield", null, null, null },
-                                         { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
-                                         { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
-                                         { "Hillingdon", "Ealing", "Kensington and Chelsea", "Westminster", "Tower Hamlets", "Newham", "Barking and Dagenham" },
-                                         { "Hounslow", "Hammersmith and Fulham", "Wandsworth", "City of London", "Greenwich", "Bexley", null },
-                                         { null, "Richmond upon Thames", "Merton", "Lambeth", "Southwark", "Lewisham", null },
-                                         { null, "Kingston upon Thames", "Sutton", "Croydon", "Bromley", null, null },
-                                        };
+    private static AirbnbDataLoader dataLoader = new AirbnbDataLoader();
+    protected static ArrayList<AirbnbListing> listings;
+    protected static String[][] mapPositions = {{ null, null, null, "Enfield", null, null, null },
+                                                { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
+                                                { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
+                                                { "Hillingdon", "Ealing", "Kensington and Chelsea", "Westminster", "Tower Hamlets", "Newham", "Barking and Dagenham" },
+                                                { "Hounslow", "Hammersmith and Fulham", "Wandsworth", "City of London", "Greenwich", "Bexley", null },
+                                                { null, "Richmond upon Thames", "Merton", "Lambeth", "Southwark", "Lewisham", null },
+                                                { null, "Kingston upon Thames", "Sutton", "Croydon", "Bromley", null, null },
+                                               };
 
     /**
      * Constructor for objects of class DataHandler
@@ -31,7 +31,7 @@ public class DataHandler
         listings = dataLoader.load();
     }
     
-    public ArrayList<AirbnbListing> getPropertiesFromBorough(String borough, int minPrice, int maxPrice)
+    public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough, int minPrice, int maxPrice)
     {
         ArrayList<AirbnbListing> listingsFromBorough = new ArrayList<AirbnbListing>();
         Iterator i = listings.iterator();
@@ -141,22 +141,5 @@ public class DataHandler
             }
         }
         return highest;
-    }
-    
-    private int getSortByInt(AirbnbListing listing, String sortingElement) 
-    {
-        int intToReturn = 0;
-
-        switch (sortingElement) 
-        {
-            case "Price":
-                intToReturn = listing.getPrice();
-                break;
-            case "Reviews":
-                intToReturn = listing.getNumberOfReviews();
-                break;
-        }
-        
-        return intToReturn;
     }
 }
