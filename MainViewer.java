@@ -48,6 +48,10 @@ public class MainViewer extends Stage
     private Scene priceSelectorScene;
     private Scene mapScene;
     private Scene statsScene;
+    private Scene favouritesScene;
+    
+    private int sceneWidth;
+    private int sceneHeight;
     
     private Integer selectedMinPrice;
     private Integer selectedMaxPrice;
@@ -56,6 +60,13 @@ public class MainViewer extends Stage
     private int highestPrice;
     
     private Label statusLabel;
+    
+    private AnchorPane panelSwitcherPane;
+    private Button prevPanelButton;
+    private Button nextPanelButton;
+    
+    private Scene[] sceneOrder = { welcomeScene, priceSelectorScene, mapScene, statsScene, favouritesScene };
+    private int currentSceneIndex;
     
     private BorderPane root = new BorderPane();
     
@@ -74,14 +85,59 @@ public class MainViewer extends Stage
     {   
         dataHandler = new StatisticsData();
         
-        //makeWelcomeScene();
-        //setScene(welcomeScene);
+        sceneWidth = 1200;
+        sceneHeight = 600;
         
-        makeStatsScene();
-        setScene(statsScene);
+        makeWelcomeScene();
+        setScene(welcomeScene);
+        
+        //makeStatsScene();
+        //setScene(statsScene);
         
         lowestPrice = dataHandler.getLowestPrice();
         highestPrice = dataHandler.getHighestPrice();
+        
+        makePanelSwitcherPane();
+        root.setBottom(panelSwitcherPane);
+    }
+    
+    private void makePanelSwitcherPane() {
+        prevPanelButton = new Button("<");
+            prevPanelButton.setOnAction(e -> goToPrevPanel());
+        nextPanelButton = new Button(">");
+            nextPanelButton.setOnAction(e -> goToNextPanel());
+        
+        panelSwitcherPane.setLeftAnchor(prevPanelButton, 5.0);
+        panelSwitcherPane.setRightAnchor(nextPanelButton, 5.0);
+    }
+    
+    private void goToPrevPanel() {
+        currentSceneIndex--;
+        
+        if (currentSceneIndex < 0) {
+            currentSceneIndex = sceneOrder.length - 1;
+        }
+        
+        makeScene(currentSceneIndex);
+    }
+    
+    private void goToNextPanel() {
+        currentSceneIndex++;
+        
+        if (currentSceneIndex >= sceneOrder.length) {
+            currentSceneIndex = 0;
+        }
+        
+        makeScene(currentSceneIndex);
+    }
+    
+    private void makeScene(int currentSceneIndex) {
+        
+        Scene sceneToChangeTo = sceneOrder[currentSceneIndex];
+        
+        //if ();
+        
+        setScene(sceneToChangeTo);
     }
 
     private void makeWelcomeScene() {
@@ -110,9 +166,14 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
+        root.setCenter(window);
+        
         //creating the scene and adding the CSS
-        welcomeScene = new Scene(window, 600, 400);
+        welcomeScene = new Scene(window, sceneWidth, sceneHeight);
+        setResizable(false);
         welcomeScene.getStylesheets().add("stylesheet.css");
+        
+        root.getStyleClass().add("root");
         
         title.getStyleClass().add("welcomeTittle");
         
@@ -120,10 +181,7 @@ public class MainViewer extends Stage
         
         instructions1.getStyleClass().add("instructions"); 
         instructions2.getStyleClass().add("instructions"); 
-        instructions3.getStyleClass().add("instructions"); 
-        instructions1.setPrefWidth(400);
-        instructions2.setPrefWidth(400);
-        instructions3.setPrefWidth(400);
+        instructions3.getStyleClass().add("instructions");
         
         window.getStyleClass().add("welcomeWindow");
         
@@ -166,8 +224,11 @@ public class MainViewer extends Stage
 
         titleAndInstruction.getChildren().addAll(title, instruction);
         
+        root.setCenter(window);
+        
         //Creating the scene and adding the css styling
-        priceSelectorScene = new Scene(window, 600, 400);
+        priceSelectorScene = new Scene(window, sceneWidth, sceneHeight);
+        setResizable(false);
         priceSelectorScene.getStylesheets().add("stylesheet.css");
         
         window.getStyleClass().add("priceWindow");
@@ -191,8 +252,10 @@ public class MainViewer extends Stage
     private HBox createMinMaxBox() {
         //adding the options to the price selection box, as well as assigning appropriate values to the instance variables
         HBox minMaxBox = new HBox();
-        ComboBox<String>minBox = new ComboBox<String>();
+        ComboBox<String> minBox = new ComboBox<String>();
         ComboBox<String> maxBox = new ComboBox<String>();
+        minBox.setValue("Min Price:");
+        maxBox.setValue("Max Price:");
         
         // int low = dataHandler.getLowestPrice();
         // int high = dataHandler.getHighestPrice();
@@ -337,14 +400,13 @@ public class MainViewer extends Stage
         //root.setTop(minMaxBox);
         
         if (mapScene == null) {
-            mapScene = new Scene(root, 1020, 580);
+            mapScene = new Scene(root, sceneWidth, sceneHeight);
             setResizable(false);
         }
         
-        //if (mapScene.getStylesheets().isEmpty()) {
-            mapScene.getStylesheets().add("stylesheet.css");
-        //}
-        
+        //styling
+        mapScene.getStylesheets().add("stylesheet.css");
+        root.getStyleClass().add("root");
         //Pane window = new FlowPane();
         
         VBox infoPane = new VBox();
