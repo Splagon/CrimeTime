@@ -154,7 +154,7 @@
 // -------------- map scene ---------------------
 
 // ------------- property viewer --------------------
-#rootPV {
+.rootPV {
     -fx-background-color : aliceblue;
 }
 .title {
@@ -183,5 +183,9 @@
 }
 #propertyLabel {
     -fx-font: 20px "Times New Roman";
+    -fx-font-weight: bold;
+}
+.subLabels  {
+    -fx-font: 15px "Times New Roman";
     -fx-font-weight: bold;
 }

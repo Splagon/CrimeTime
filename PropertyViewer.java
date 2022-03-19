@@ -109,7 +109,7 @@ public class PropertyViewer extends Stage {
         }
         
         BorderPane root = new BorderPane();
-        root.setId("rootPV");
+        root.getStyleClass().add("rootPV");
         root.setPadding(new Insets(0, 10, 0, 10)); // Sets the right and left padding of the pane
         
         // Create scene for the border pane with width = 600 and height = 400.
@@ -313,13 +313,16 @@ public class PropertyViewer extends Stage {
         descriptionStage.setTitle("Description!");
         
         VBox root = new VBox();
-            root.getChildren().addAll(descriptionLabel, propertyID);
+            descriptionLabel.getStyleClass().add("subLabels");
+            root.getChildren().add(descriptionLabel);
         root.setAlignment(Pos.CENTER);
+        root.getStyleClass().add("rootPV");
         
         int width = 300;
         int height = 100;
         
         Scene scene = new Scene(root,width,height);
+        scene.getStylesheets().add("stylesheet.css");
         descriptionStage.setScene(scene);
         
         descriptionStage.setX((this.getWidth() - width) / 2 + this.getX());
@@ -333,13 +336,10 @@ public class PropertyViewer extends Stage {
      * created with the sorting condition taken into account.
      */
     private void sortAction() {
-        // We open the stage at the saame positions of the initial one, for better UX.
-        double currentStagePositionX = this.getX();
-        double currentStagePositionY = this.getY();
         // New property viewer stage is created.
         Stage stage = new PropertyViewer(borough, minPrice, maxPrice, sortedBy);
-        stage.setX(currentStagePositionX);
-        stage.setY(currentStagePositionY);
+        // We open the stage at the same positions of the initial one, for better UX.
+        setStagePosititon(stage, this);
         // if description window is opened, we close it for better UX.
         closeDescription();
         
@@ -380,6 +380,9 @@ public class PropertyViewer extends Stage {
     }
     
     public void openBookingWindow() {
+        this.close();
+        closeDescription();
+        
         bookingStage = new Stage();
         bookingStage.setTitle("Booking Window");
         
@@ -460,17 +463,72 @@ public class PropertyViewer extends Stage {
               vbox.setSpacing(80);
             
         root.setCenter(vbox);
-        
-            Button bookButton = new Button("Confirm Booking");
-            root.setAlignment(bookButton, Pos.BOTTOM_RIGHT);
             
-        root.setBottom(bookButton);
+            AnchorPane bottomPane = new AnchorPane();
+        
+                Button bookButton = new Button("Confirm Booking");
+                    bookButton.setOnAction(e -> confirmationAction());
+                bottomPane.setRightAnchor(bookButton, 0.0);
+            
+                Button goBackButton = new Button("Go Back");
+                    goBackButton.setOnAction(e -> goBackAction());
+                bottomPane.setLeftAnchor(goBackButton, 0.0);
+            
+            bottomPane.getChildren().addAll(bookButton, goBackButton);
+            
+        root.setBottom(bottomPane);
         
         
         Scene scene = new Scene(root, 600, 400);
         scene.getStylesheets().add("stylesheet.css");
+        
         bookingStage.setScene(scene);
-        bookingStage.show();
+        setStagePosititon(bookingStage, this);
+        bookingStage.show();    
+    }
+    
+    private void goBackAction() {
+        setStagePosititon(this, bookingStage);
+        this.show();
+        bookingStage.close();
+    }
+    
+    private void confirmationAction() {
+        bookingStage.close();
+        showConfirmationStage();
+    }
+    
+    private void showConfirmationStage() {
+        Stage confirmationStage = new Stage();
+        confirmationStage.setTitle("Description!");
+        
+        VBox root = new VBox();
+        
+            Label confirmationLabel = new  Label("Thank you for booking with us !");
+            confirmationLabel.getStyleClass().add("subLabels");
             
+            Button closeButton = new Button("Close");
+                closeButton.setOnAction(e -> confirmationStage.close());
+                
+        root.getChildren().addAll(confirmationLabel, closeButton);
+        root.setSpacing(15);
+        root.setAlignment(Pos.CENTER);
+        root.getStyleClass().add("rootPV");
+        
+        Scene scene = new Scene(root,300,100);
+        scene.getStylesheets().add("stylesheet.css");
+        confirmationStage.setScene(scene);
+        setStagePosititon(confirmationStage, bookingStage);
+        confirmationStage.show(); 
+    }
+    
+    /**
+     * 
+     */
+    private void setStagePosititon(Stage openingStage, Stage closingStage) {
+        double currentStagePositionX = closingStage.getX();
+        double currentStagePositionY = closingStage.getY();
+        openingStage.setX(currentStagePositionX);
+        openingStage.setY(currentStagePositionY);
     }
 }
