@@ -172,3 +172,10 @@
     -fx-font: 12px "Verdana";
     -fx-font-weight: bold;
 }
+
+// ------------- Booking Window --------------------
+
+#propertyLabel {
+    -fx-font: 20px "Times New Roman";
+    -fx-font-weight: bold;
+}
