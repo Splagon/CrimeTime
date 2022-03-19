@@ -85,6 +85,8 @@ public class PropertyViewer extends Stage {
         currentPropertyIndex = 0;
         applicationConnected = true;
         
+        DataHandler.initialiseHandler();
+        
         makePropertyViewerScene();
         
         this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
@@ -186,7 +188,7 @@ public class PropertyViewer extends Stage {
             
             
             Button bookingButton = new Button("Book property");
-                //bookingButton.setOnAction(e -> openBookingWindow());
+                bookingButton.setOnAction(e -> openBookingWindow());
     
             
             HBox hbox = new HBox();
@@ -375,5 +377,100 @@ public class PropertyViewer extends Stage {
     
     public boolean getInternetConnection(){
         return applicationConnected;
+    }
+    
+    public void openBookingWindow() {
+        bookingStage = new Stage();
+        bookingStage.setTitle("Booking Window");
+        
+        BorderPane root = new BorderPane();
+        root.setId("rootBooking");
+        
+            Label propertyLabel  = new Label(properties.get(currentPropertyIndex).getName());
+            root.setAlignment(propertyLabel, Pos.CENTER);
+            propertyLabel.setId("propertyLabel");
+            
+        root.setTop(propertyLabel);
+            
+            VBox vbox = new VBox();
+            
+            GridPane gridPane = new GridPane();
+             gridPane.setAlignment(Pos.CENTER);
+             gridPane.setHgap(10);
+             gridPane.setVgap(10);
+                
+                Label checkInlabel = new Label("Check-In Date:");
+                    gridPane.add(checkInlabel, 0, 0);
+                DatePicker checkIn =  new DatePicker();
+                    checkIn.setValue(LocalDate.now());
+                    gridPane.add(checkIn, 0, 1);
+                
+                Label checkOutlabel = new Label("Check-Out Date:");
+                    gridPane.add(checkOutlabel, 1, 0);
+                DatePicker checkOut = new DatePicker();
+                    checkOut.setValue(checkIn.getValue().plusDays(1));
+                    gridPane.add(checkOut, 1, 1);
+                
+                Label grandTotal = new Label("The price for your stay is: £" + properties.get(currentPropertyIndex).getPrice());
+                    checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights())));
+                    checkOut.setOnAction(e -> grandTotal.setText("The price for your stay is: £" + properties.get(currentPropertyIndex).getPrice()*(checkOut.getValue().compareTo(checkIn.getValue()))));
+                    
+                    final Callback<DatePicker, DateCell> dayCellFactoryOut = new Callback<DatePicker, DateCell>() {
+                        @Override
+                        public DateCell call(final DatePicker datePicker) {
+                            return new DateCell() {
+                                @Override
+                                public void updateItem(LocalDate item, boolean empty) {
+                                    super.updateItem(item, empty);
+                                    if (item.isBefore(checkIn.getValue())) {
+                                        setDisable(true);
+                                        setStyle("-fx-background-color: #ffc0cb;");
+                                    } else if(item.isAfter(checkIn.getValue().minusDays(1)) && item.isBefore(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights()))){
+                                        setDisable(true);
+                                        setStyle("-fx-background-color: #ffa07a;");
+                                    } else if (item.isAfter(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights()).minusDays(1)) && item.isBefore(checkOut.getValue())){
+                                        setStyle("-fx-background-color: #90ee90;");
+                                    }
+                                }      
+                            };
+                        }
+                    };
+                    
+                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() {
+                        @Override
+                        public DateCell call(final DatePicker datePicker) {
+                            return new DateCell() {
+                                @Override
+                                public void updateItem(LocalDate item, boolean empty) {
+                                    super.updateItem(item, empty);
+                                    if (item.isBefore(LocalDate.now())) {
+                                        setDisable(true);
+                                        setStyle("-fx-background-color: #ffc0cb;");
+                                    }  
+                                }      
+                            };
+                        }
+                    };
+                    
+                    checkOut.setDayCellFactory(dayCellFactoryOut);
+                    checkIn.setDayCellFactory(dayCellFactoryIn);
+                    
+              vbox.setAlignment(Pos.CENTER);
+              vbox.getChildren().addAll(gridPane, grandTotal);
+              vbox.setSpacing(80);
+            
+        root.setCenter(vbox);
+        
+            Button bookButton = new Button("Confirm Booking");
+            root.setAlignment(bookButton, Pos.BOTTOM_RIGHT);
+            
+        root.setBottom(bookButton);
+        
+        
+        Scene scene = new Scene(root, 600, 400);
+        scene.getStylesheets().add("stylesheet.css");
+        bookingStage.setScene(scene);
+        bookingStage.show();
+            
     }
 }
