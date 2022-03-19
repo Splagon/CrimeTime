@@ -47,13 +47,6 @@ public class StatisticsViewer extends Stage
         // The layout of the window
         VBox window = new VBox();
         GridPane statsGrid = new GridPane(); 
-        VBox reviews = new VBox();
-        VBox available = new VBox(); 
-        VBox noHomeAndApartments = new VBox();
-        VBox expensive = new VBox(); 
-        VBox priceSD = new VBox(); 
-        VBox averagePrice = new VBox(); 
-        VBox highAvgReview = new VBox();
         
         StatBox stat1 = new StatBox();
         stat1.addInfo("Average Reviews Per Property:", formatData(StatisticsData.getAverageNoReviews()));
@@ -105,43 +98,12 @@ public class StatisticsViewer extends Stage
         statsGrid.add(stat3, 1, 0);
         statsGrid.add(stat4, 1, 1);
 
-        reviews.setAlignment(Pos.CENTER);
-        reviews.getChildren().add(reviewTitle); 
-        reviews.getChildren().add(reviewInfo);
-
-        available.setAlignment(Pos.CENTER);
-        available.getChildren().add(availableTitle); 
-        available.getChildren().add(availableInfo);
-
-        noHomeAndApartments.setAlignment(Pos.CENTER);
-        noHomeAndApartments.getChildren().add(noHomeAndApartmentsTitle); 
-        noHomeAndApartments.getChildren().add(noHomeAndApartmentsInfo);
-
-        expensive.setAlignment(Pos.CENTER);
-        expensive.getChildren().add(expensiveTitle); 
-        expensive.getChildren().add(expensiveInfo);
-
-        priceSD.setAlignment(Pos.CENTER);
-        priceSD.getChildren().add(priceSDTitle); 
-        priceSD.getChildren().add(priceSDInfo);
-
-        highAvgReview.setAlignment(Pos.CENTER);
-        highAvgReview.getChildren().add(highAvgReviewTitle); 
-        highAvgReview.getChildren().add(highAvgReviewInfo);
-
         //Set the scene and add CSS
         Scene scene = new Scene(window, 1200,700);
 
         scene.getStylesheets().add("stylesheet.css");
 
         statsGrid.setId("statsgrid"); 
-        window.getStyleClass().add("statsvbox");
-        reviews.getStyleClass().add("statsvbox"); 
-        available.getStyleClass().add("statsvbox");
-        noHomeAndApartments.getStyleClass().add("statsvbox");
-        expensive.getStyleClass().add("statsvbox");
-        priceSD.getStyleClass().add("statsvbox");
-        highAvgReview.getStyleClass().add("statsvbox");
 
         reviewInfo.getStyleClass().add("statslabels"); 
         availableInfo.getStyleClass().add("statslabels"); 

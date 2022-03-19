@@ -66,7 +66,7 @@ public class StatBox extends Pane
         pane.setCenter(content);
         pane.setLeft(leftButton);
         pane.setRight(rightButton); 
-        pane.setMinSize(250, 100);
+        pane.setMinSize(400, 100);
         pane.setPadding(new Insets(20));
         
         
