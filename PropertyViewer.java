@@ -85,8 +85,6 @@ public class PropertyViewer extends Stage {
         currentPropertyIndex = 0;
         applicationConnected = true;
         
-        DataHandler.initialiseHandler();
-        
         makePropertyViewerScene();
         
         this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());

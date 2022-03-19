@@ -14,7 +14,7 @@
 #statsgrid{
     -fx-hgap: 0px;
     -fx-vgap: 0px;
-    -fx-grid-lines-visible: true; 
+    -fx-grid-lines-visible: true;
 }
 
 .statsvbox {
@@ -35,6 +35,7 @@
 .infoGrid {
         -fx-vgap: 5;
         -fx-hgap: 10;
+        -fx-grid-lines-visible: true;
 }
 
 .statslabels {

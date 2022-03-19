@@ -27,7 +27,6 @@ import javafx.scene.chart.XYChart;
 public class StatisticsViewer extends Stage
 {
     // instance variables - replace the example below with your own
-    private StatisticsData dataHandler = new StatisticsData(); 
 
     // The information labels in the window
     Label reviewInfo = new Label("default");
@@ -43,6 +42,8 @@ public class StatisticsViewer extends Stage
      */
     public StatisticsViewer(int selectedMinPrice, int selectedMaxPrice)
     {
+        
+        
         // The layout of the window
         VBox window = new VBox();
         GridPane statsGrid = new GridPane(); 
@@ -135,12 +136,12 @@ public class StatisticsViewer extends Stage
         setAveragePricePerBorough();
         barChart.getData().add(averagePriceData);
 
-        setText(reviewInfo, dataHandler.getAverageNoReviews());
-        setText(noHomeAndApartmentsInfo, dataHandler.getNoHomeAndApartments());
-        setText(availableInfo, dataHandler.getAvailableInfo());
-        setText(expensiveInfo, dataHandler.getExpensiveInfo());
-        setText(priceSDInfo, dataHandler.getPriceSDInfo());
-        setText(highAvgReviewInfo, dataHandler.getHighAvgReview());
+        setText(reviewInfo, StatisticsData.getAverageNoReviews());
+        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments());
+        setText(availableInfo, StatisticsData.getAvailableInfo());
+        setText(expensiveInfo, StatisticsData.getExpensiveInfo());
+        setText(priceSDInfo, StatisticsData.getPriceSDInfo());
+        setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
         
         StatBox test = new StatBox(); 
         
@@ -172,7 +173,7 @@ public class StatisticsViewer extends Stage
 
     private void setAveragePricePerBorough()
     {
-        Map<String, Integer> information = dataHandler.getAveragePricePerBorough();
+        Map<String, Integer> information = StatisticsData.getAveragePricePerBorough();
         for (Map.Entry<String, Integer> set : information.entrySet())
         {
             averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));

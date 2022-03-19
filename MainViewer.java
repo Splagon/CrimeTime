@@ -54,7 +54,7 @@ public class MainViewer extends Stage
     private Pane priceSelectorPane;
     private Pane mapPane;
     private Pane statsPane;
-    private Pane favouritesPane; 
+    private Pane favouritesPane;
     
     private int sceneWidth;
     private int sceneHeight;
@@ -71,7 +71,9 @@ public class MainViewer extends Stage
     private Button prevPanelButton;
     private Button nextPanelButton;
     
-    private String[] sceneOrder = new String[] { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "favouritesPane" };
+    private String[] sceneOrder = { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "favouritesPane" };
+    //private PaneListing[] paneOrder = { welcomePane, priceSelectorPane, mapPane, statsPane, favouritesPane };
+
     private int currentSceneIndex;
     
     private BorderPane root = new BorderPane();
@@ -89,9 +91,7 @@ public class MainViewer extends Stage
      * Constructor for objects of class MapViewer
      */
     public MainViewer() throws Exception
-    {   
-        //dataHandler = new StatisticsData();
-        
+    {         
         DataHandler.initialiseHandler();
         
         sceneWidth = 1100;
@@ -152,7 +152,7 @@ public class MainViewer extends Stage
         setPane(currentSceneIndex);
     }
     
-    private void setPane(int currentSceneIndex) {
+    private void setPane(int currentSceneIndex) {      
         this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         Pane paneToChangeTo = new Pane();
@@ -163,7 +163,7 @@ public class MainViewer extends Stage
                 paneToChangeTo = welcomePane;
                 break;
             case ("priceSelectorPane") :
-                setTitle("Information");
+                setTitle("Price Selection Screen");
                 paneToChangeTo = priceSelectorPane;
                 break;
             case ("mapPane") :
@@ -174,7 +174,7 @@ public class MainViewer extends Stage
                 catch (Exception ex) {};
                 break;
             case ("statsPane") :
-                setTitle("Price Selection Screen");
+                setTitle("Information");
                 paneToChangeTo = statsPane;
                 break;
             case ("favouritesPane") :
@@ -268,7 +268,7 @@ public class MainViewer extends Stage
     }
     
     private void makePriceSelectorPane() {
-        //setTitle("Price Selection Screen");
+        setTitle("Price Selection Screen");
         
         //All labels in the window
         Label title = new Label("Price Selection!");
@@ -661,6 +661,8 @@ public class MainViewer extends Stage
     }
     
     private VBox createStatsPanel() {
+        //setTitle("Information");
+        
         VBox statsBox = new VBox();
         statsBox.setSpacing(20);
         
