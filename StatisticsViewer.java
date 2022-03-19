@@ -29,12 +29,6 @@ public class StatisticsViewer extends Stage
     // instance variables - replace the example below with your own
 
     // The information labels in the window
-    Label reviewInfo = new Label("default");
-    Label availableInfo = new Label("default");
-    Label noHomeAndApartmentsInfo = new Label("default");
-    Label expensiveInfo = new Label("default");
-    Label priceSDInfo = new Label("default");
-    Label highAvgReviewInfo = new Label("default:"); 
     XYChart.Series averagePriceData = new XYChart.Series();
 
     /**
@@ -42,8 +36,6 @@ public class StatisticsViewer extends Stage
      */
     public StatisticsViewer(int selectedMinPrice, int selectedMaxPrice)
     {
-        
-        
         // The layout of the window
         VBox window = new VBox();
         GridPane statsGrid = new GridPane(); 
@@ -85,13 +77,6 @@ public class StatisticsViewer extends Stage
         window.getChildren().add(barChart);
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
-
-        // statsGrid.add(reviews, 0, 0);
-        // statsGrid.add(available, 0, 1);
-        // statsGrid.add(noHomeAndApartments, 1, 0);
-        // statsGrid.add(expensive, 1, 1);
-        // statsGrid.add(priceSD, 0, 2); 
-        // statsGrid.add(highAvgReview, 1 , 2); 
         
         statsGrid.add(stat1, 0, 0);
         statsGrid.add(stat2, 0, 1);
@@ -105,12 +90,6 @@ public class StatisticsViewer extends Stage
 
         statsGrid.setId("statsgrid"); 
 
-        reviewInfo.getStyleClass().add("statslabels"); 
-        availableInfo.getStyleClass().add("statslabels"); 
-        noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
-        expensiveInfo.getStyleClass().add("statslabels"); 
-        priceSDInfo.getStyleClass().add("statslabels"); 
-        highAvgReviewInfo.getStyleClass().add("statslabels");
 
         title.getStyleClass().add("titlelabel"); 
 
@@ -120,37 +99,10 @@ public class StatisticsViewer extends Stage
         setAveragePricePerBorough();
         barChart.getData().add(averagePriceData);
 
-        setText(reviewInfo, StatisticsData.getAverageNoReviews());
-        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments());
-        setText(availableInfo, StatisticsData.getAvailableInfo());
-        setText(expensiveInfo, StatisticsData.getExpensiveInfo());
-        setText(priceSDInfo, StatisticsData.getPriceSDInfo());
-        setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
-        
-        StatBox test = new StatBox(); 
-        
-        //statsGrid.add(test, 2, 2);
-        test.addInfo("title test", "stat test");
-        test.addInfo("2", "2");
-        test.addInfo("3", "3");
-        test.setFirst();
         
         setTitle("Information");
         setScene(scene);
 
-    }
-
-    private void setText(Label label, double dataToFormat) {
-        String x = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
-        label.setText(x);
-    }
-
-    private void setText(Label label, int dataToFormat) {
-        label.setText(String.valueOf(dataToFormat));
-    }
-
-    private void setText(Label label, String dataToFormat) {
-        label.setText(dataToFormat);
     }
     
     private String formatData(double dataToFormat) {
