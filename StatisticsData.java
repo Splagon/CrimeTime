@@ -17,6 +17,7 @@ public class StatisticsData extends DataHandler
 {
     // instance variables - replace the example below with your own
     //private ArrayList<AirbnbListing> listings; 
+    private static ArrayList<AirbnbListing> boroughListings = new ArrayList<>();
     private static String[] boroughs = {"Kingston upon Thames", "Croydon", "Bromley", "Hounslow", "Ealing", "Havering", "Hillingdon", 
             "Harrow", "Brent", "Barnet", "Enfield", "Waltham Forest", "Redbridge", "Sutton", "Lambeth", "Southwark",
             "Lewisham", "Greenwich", "Bexley", "Richmond upon Thames", "Merton", "Wandsworth", "Hammersmith and Fulham", 
@@ -34,8 +35,14 @@ public class StatisticsData extends DataHandler
     public static void initialiseHandler() {
         DataHandler.initialiseHandler();
         listings = getData();
+        boroughListings = listings;
     }
 
+    public static void setPropertyList(String borough)
+    {
+        boroughListings = sortBoroughs().get(borough);
+    }
+    
     /**
      * @return Boolean average number of reviews per property. 
      */

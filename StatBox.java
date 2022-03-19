@@ -151,5 +151,15 @@ public class StatBox extends Pane
         }
     }
     
+    public void updateInfo(String title, String newStat)
+    {
+        for(int i=0;i < titleList.size(); i++)
+        {
+            if(titleList.get(i).equals(title))
+            {
+                statList.set(i, newStat);
+            }
+        }
+    }
     
 }
