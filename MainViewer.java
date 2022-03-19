@@ -80,7 +80,7 @@ public class MainViewer extends Stage
     
     private String[][] mapPositions;
     
-    private StatisticsData dataHandler;
+    //private StatisticsData dataHandler;
     
     private NoOfPropertiesStats noOfPropertiesStats;
     private Scene mainScene;
@@ -90,25 +90,29 @@ public class MainViewer extends Stage
      */
     public MainViewer() throws Exception
     {   
-        dataHandler = new StatisticsData();
+        //dataHandler = new StatisticsData();
         
-        sceneWidth = 1200;
-        sceneHeight = 600;
+        DataHandler.initialiseHandler();
         
-        //makeStatsScene();
-        //setScene(statsScene);
+        sceneWidth = 1100;
+        sceneHeight = 635;
         
-        lowestPrice = dataHandler.getLowestPrice();
-        highestPrice = dataHandler.getHighestPrice();
+        lowestPrice = StatisticsData.getLowestPrice();
+        highestPrice = StatisticsData.getHighestPrice();
+        
+        makePriceSelectorPane();
+        makeStatsPane();
         
         root = new BorderPane();
         makePanelSwitcherPane();
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
+        setResizable(false);
+        
         setPane(0);
         
-        setResizable(true);
         mainScene.getStylesheets().add("stylesheet.css");
+        root.getStyleClass().add("mainRoot");
     }
     
     private void makePanelSwitcherPane() {
@@ -149,6 +153,7 @@ public class MainViewer extends Stage
     }
     
     private void setPane(int currentSceneIndex) {
+        this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         Pane paneToChangeTo = new Pane();
         
@@ -158,7 +163,7 @@ public class MainViewer extends Stage
                 paneToChangeTo = welcomePane;
                 break;
             case ("priceSelectorPane") :
-                makePriceSelectorPane();
+                setTitle("Information");
                 paneToChangeTo = priceSelectorPane;
                 break;
             case ("mapPane") :
@@ -169,17 +174,45 @@ public class MainViewer extends Stage
                 catch (Exception ex) {};
                 break;
             case ("statsPane") :
-                makeStatsPane();
+                setTitle("Price Selection Screen");
                 paneToChangeTo = statsPane;
                 break;
             case ("favouritesPane") :
+                setTitle("Favourites");
                 //makeFavouritesPane();
                 //paneToChangeTo = paneToChangeTo;
                 break;
         }
         
+        setButtonsDisabled(currentSceneIndex);
         root.setCenter(paneToChangeTo);
         setScene(mainScene);
+    }
+    
+    private void setButtonsDisabled(int currentSceneIndex) {
+        if (selectedMinPrice == null && selectedMaxPrice == null) {    
+            if (currentSceneIndex <= 0 || currentSceneIndex >= 4) {
+                prevPanelButton.setDisable(false);
+                nextPanelButton.setDisable(false);
+            }
+            else if (currentSceneIndex == 1) {
+                prevPanelButton.setDisable(false);
+                nextPanelButton.setDisable(true);
+            }
+            else if (currentSceneIndex == 3) {
+                prevPanelButton.setDisable(true);
+                nextPanelButton.setDisable(false);
+            }
+        }
+        else {
+            prevPanelButton.setDisable(false);
+            nextPanelButton.setDisable(false);
+        }
+    }
+    
+    private void setButtonsDisabled(boolean isPrevButtonsDisabled, boolean isNextButtonsDisabled) {
+        prevPanelButton.setDisable(isPrevButtonsDisabled);
+        nextPanelButton.setDisable(isNextButtonsDisabled);
     }
 
     private void makeWelcomePane() {
@@ -215,7 +248,7 @@ public class MainViewer extends Stage
         //setResizable(false);
         //welcomePane.getStylesheets().add("stylesheet.css");
         
-        window.getStyleClass().add("root");
+        window.getStyleClass().add("mainRoot");
         
         title.getStyleClass().add("welcomeTittle");
         
@@ -235,7 +268,7 @@ public class MainViewer extends Stage
     }
     
     private void makePriceSelectorPane() {
-        setTitle("Price Selection Window");
+        //setTitle("Price Selection Screen");
         
         //All labels in the window
         Label title = new Label("Price Selection!");
@@ -267,7 +300,7 @@ public class MainViewer extends Stage
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
         
-        window.getStyleClass().add("root");
+        //window.getStyleClass().add("mainRoot");
         
         title.getStyleClass().add("welcomeTittle");
         
@@ -295,7 +328,7 @@ public class MainViewer extends Stage
         
         // int low = dataHandler.getLowestPrice();
         // int high = dataHandler.getHighestPrice();
-        ArrayList<String> options = getPriceSelectionOptions(lowestPrice, highestPrice);
+        ArrayList<String> options = getPriceSelectionOptions(0, highestPrice);
         minBox.getItems().add("No Min");
         minBox.getItems().addAll(options);
         maxBox.getItems().addAll(options);
@@ -424,15 +457,10 @@ public class MainViewer extends Stage
     
     private void changeToMapPane() throws Exception {
         setPane(2);
-        //setScene(mapScene);
     }
     
     private void makeMapPane() throws Exception {
         setTitle("Map of London");
-        
-        HBox minMaxBox = createMinMaxBox();
-            minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
-            
             
         BorderPane window = new BorderPane();
             
@@ -450,11 +478,11 @@ public class MainViewer extends Stage
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-            titleLabel.getStyleClass().add("welcomeTittle");
+                titleLabel.getStyleClass().add("welcomeTittle");
             VBox stats = createStatsPanel();
             GridPane key = createKey();
             
-        infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
+        infoPane.getChildren().addAll(titleLabel, key, stats);
         infoPane.setPadding(new Insets(20));
         infoPane.setSpacing(30);
 
@@ -470,9 +498,9 @@ public class MainViewer extends Stage
     }
     
     private void makeHexagonMap() throws Exception {
-        mapPositions = dataHandler.getMapPositions();
+        mapPositions = StatisticsData.getMapPositions();
         
-        noOfPropertiesStats = new NoOfPropertiesStats(dataHandler, selectedMinPrice, selectedMaxPrice);
+        noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
             
         mapView = new AnchorPane();
             mapView.setMinSize(720, 510);
@@ -500,10 +528,10 @@ public class MainViewer extends Stage
                         boroughButton.setShape(new Circle(94));
                         boroughButton.getStyleClass().add("boroughButton");
                         boroughButton.setOnAction(e ->
-                            {
-                                try { openPropertyViewer(boroughButton.getBoroughName()); }
-                                catch (Exception ex) {}
-                            });
+                                                       {
+                                                          try { openPropertyViewer(boroughButton.getBoroughName()); }
+                                                          catch (Exception ex) {}
+                                                       });
                         
                         ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
                             hexagonOutline.setFitWidth(94);
@@ -530,6 +558,13 @@ public class MainViewer extends Stage
                 AnchorPane.setTopAnchor(row, m*72.0);
                 mapView.getChildren().add(row);
             }
+            
+            HBox minMaxBox = createMinMaxBox();
+                minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
+                AnchorPane.setTopAnchor(minMaxBox, 11.0);
+                AnchorPane.setRightAnchor(minMaxBox, 0.0);
+                
+            mapView.getChildren().add(minMaxBox);
     }
     
     private Rectangle createSpacerRectangle(int widthHeight) {
@@ -557,7 +592,7 @@ public class MainViewer extends Stage
     
     private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) {
         ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(dataHandler.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, noOfPropertiesStats));
+            shader.setBrightness(StatisticsData.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, noOfPropertiesStats));
             
         hexagon.setFitWidth(heightWidth);
         hexagon.setFitHeight(heightWidth);
@@ -569,7 +604,7 @@ public class MainViewer extends Stage
     
     private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) throws Exception {
         ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(dataHandler.getBoroughMapColour(percentile));
+            shader.setBrightness(StatisticsData.getBoroughMapColour(percentile));
             
         hexagon.setFitWidth(heightWidth);
         hexagon.setFitHeight(heightWidth);
@@ -785,18 +820,12 @@ public class MainViewer extends Stage
         setAveragePricePerBorough();
         barChart.getData().add(averagePriceData);
     
-        setText(reviewInfo, dataHandler.getAverageNoReviews());
-        setText(noHomeAndApartmentsInfo, dataHandler.getNoHomeAndApartments());
-        setText(availableInfo, dataHandler.getAvailableInfo());
-        setText(expensiveInfo, dataHandler.getExpensiveInfo());
-        setText(priceSDInfo, dataHandler.getPriceSDInfo());
-        setText(highAvgReviewInfo, dataHandler.getHighAvgReview());
-        
-        
-        
-        setTitle("Information");
-        //setScene(scene);
-        //root.setCenter(window);
+        setText(reviewInfo, StatisticsData.getAverageNoReviews());
+        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments());
+        setText(availableInfo, StatisticsData.getAvailableInfo());
+        setText(expensiveInfo, StatisticsData.getExpensiveInfo());
+        setText(priceSDInfo, StatisticsData.getPriceSDInfo());
+        setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
         
         statsPane = window;
     }
@@ -836,7 +865,7 @@ public class MainViewer extends Stage
     
     private void setAveragePricePerBorough()
     {
-        Map<String, Integer> information = dataHandler.getAveragePricePerBorough();
+        Map<String, Integer> information = StatisticsData.getAveragePricePerBorough();
         for (Map.Entry<String, Integer> set : information.entrySet())
         {
             // averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));

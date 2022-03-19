@@ -1,20 +1,13 @@
 // -------------- universal ---------------------
-.root {
+.mainRoot {
     -fx-padding: 20;
     -fx-spacing: 20;
     -fx-alignment: center;
     -fx-background-color : aliceblue;
 }
 
-.root:Node {
+.mainRoot:Node {
     -fx-alignment: center;
-}
-
-.mainTitles {
-    -fx-font: 30px "Ariel";
-    -fx-alignment: center;
-    -fx-underline: true;
-    -fx-font-weight: bold;
 }
 // -------------- universal ---------------------
 
@@ -154,10 +147,17 @@
 // ------------- price scene --------------------
 
 // -------------- map scene ---------------------
-
+.tooltip {
+    -fx-font: 12px "Ariel";
+    
+}
 // -------------- map scene ---------------------
 
 // ------------- property viewer --------------------
+.title {
+     -fx-font: 12px "Verdana";
+     -fx-font-weight: bold;
+}
 
 #hbox {
     -fx-spacing: 120;

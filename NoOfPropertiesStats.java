@@ -16,10 +16,10 @@ public class NoOfPropertiesStats
     
     private int noOfBoroughs;
     
-    public NoOfPropertiesStats(StatisticsData dataHandler, int minPrice, int maxPrice) throws Exception {
+    public NoOfPropertiesStats(int minPrice, int maxPrice) throws Exception {
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
-        sortedNumberOfPropertiesInBorough = dataHandler.getSortedNumberOfPropertiesInBoroughs(minPrice, maxPrice);
+        sortedNumberOfPropertiesInBorough = StatisticsData.getSortedNumberOfPropertiesInBoroughs(minPrice, maxPrice);
         calculateStats();
     }
     

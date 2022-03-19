@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import java.util.ArrayList;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import java.awt.Font;
 
 /**
  * Write a description of class StatBox here.
@@ -38,26 +39,35 @@ public class StatBox extends Pane
     {
         titleList = new ArrayList<>();
         statList = new ArrayList<>();
-        
-        
+        statLabel.getStyleClass().add("statslabels");
         
         VBox content = new VBox();
         content.getChildren().addAll(titleLabel, statLabel);
+        //content.setPadding(new Insets(20));
+        //content.setMinSize(150, 150);
+        content.setSpacing(10);
+        content.setAlignment(Pos.CENTER);
         
         
         Button leftButton = new Button();
         leftButton.setText("<");
         leftButton.setOnAction(this::leftButtonAction);
+        leftButton.setMinSize(10, 70);
+        leftButton.setAlignment(Pos.CENTER);
         
         Button rightButton = new Button();
         rightButton.setText(">");
         rightButton.setOnAction(this::rightButtonAction);
+        rightButton.setMinSize(10, 70);
+        rightButton.setAlignment(Pos.CENTER);
         
         
         BorderPane pane = new BorderPane(); 
         pane.setCenter(content);
         pane.setLeft(leftButton);
         pane.setRight(rightButton); 
+        pane.setMinSize(250, 100);
+        pane.setPadding(new Insets(20));
         
         
         this.getChildren().add(pane);

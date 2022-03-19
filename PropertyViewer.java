@@ -470,5 +470,3 @@ public class PropertyViewer extends Stage {
             
     }
 }
-
-

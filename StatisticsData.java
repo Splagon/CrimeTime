@@ -17,7 +17,7 @@ public class StatisticsData extends DataHandler
 {
     // instance variables - replace the example below with your own
     //private ArrayList<AirbnbListing> listings; 
-    String[] boroughs = {"Kingston upon Thames", "Croydon", "Bromley", "Hounslow", "Ealing", "Havering", "Hillingdon", 
+    private static String[] boroughs = {"Kingston upon Thames", "Croydon", "Bromley", "Hounslow", "Ealing", "Havering", "Hillingdon", 
             "Harrow", "Brent", "Barnet", "Enfield", "Waltham Forest", "Redbridge", "Sutton", "Lambeth", "Southwark",
             "Lewisham", "Greenwich", "Bexley", "Richmond upon Thames", "Merton", "Wandsworth", "Hammersmith and Fulham", 
             "Kensington and Chelsea", "City of London", "Westminster", "Camden", "Tower Hamlets", "Islington", "Hackney",
@@ -28,13 +28,18 @@ public class StatisticsData extends DataHandler
      */
     public StatisticsData()
     {
-        listings = getData(); 
+        //listings = getData(); 
+    }
+    
+    public static void initialiseHandler() {
+        DataHandler.initialiseHandler();
+        listings = getData();
     }
 
     /**
      * @return Boolean average number of reviews per property. 
      */
-    public double getAverageNoReviews()
+    public static double getAverageNoReviews()
     {
         double scoreCounter = 0; 
         for (int i = 0; i < listings.size(); i++) {
@@ -47,7 +52,7 @@ public class StatisticsData extends DataHandler
     /**
      * @return int the number of home and apartment airbnb properties 
      */
-    public int getNoHomeAndApartments()
+    public static int getNoHomeAndApartments()
     {
         int counter = 0;
         for (int i = 0; i < listings.size(); i++) {
@@ -63,7 +68,7 @@ public class StatisticsData extends DataHandler
     /**
      * @return int the number of available properties
      */
-    public int getAvailableInfo()
+    public static int getAvailableInfo()
     {
         int counter = 0; 
         for (int i = 0; i < listings.size(); i++) {
@@ -78,7 +83,7 @@ public class StatisticsData extends DataHandler
     /**
      * @return String the most expensive borough
      */
-    public String getExpensiveInfoTest()
+    public static String getExpensiveInfoTest()
     {
         String expensiveBorough = "";
         int lastTotalPrice = 0;
@@ -105,7 +110,7 @@ public class StatisticsData extends DataHandler
     /**
      * @return String the most expensive borough
      */
-    public String getExpensiveInfo()
+    public static String getExpensiveInfo()
     {
         String expensiveBorough = "";
         int lastTotalPrice = 0; 
@@ -137,7 +142,7 @@ public class StatisticsData extends DataHandler
     /**
      * @return double The standard deviation of price from all of the airbnb properties
      */
-    public double getPriceSDInfo()
+    public static double getPriceSDInfo()
     {
         double standardDeviation = 0; 
         int x = 0;
@@ -155,7 +160,7 @@ public class StatisticsData extends DataHandler
     /**
      * @return HashMap information which stores the average price per night in each borough
      */
-    public HashMap<String, Integer> getAveragePricePerBoroughTest()
+    public static HashMap<String, Integer> getAveragePricePerBoroughTest()
     {
         HashMap<String, Integer> information = new HashMap<>();
         for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
@@ -182,7 +187,7 @@ public class StatisticsData extends DataHandler
     /**
      * @return HashMap information which stores the average price per night in each borough
      */
-    public HashMap<String, Integer> getAveragePricePerBorough()
+    public static HashMap<String, Integer> getAveragePricePerBorough()
     {
         HashMap<String, Integer> information = new HashMap<>();
         Map<String, ArrayList<AirbnbListing>> data = sortBoroughs();
@@ -200,7 +205,7 @@ public class StatisticsData extends DataHandler
         return information;
     }
     
-    public int getAveragePrice()
+    public static int getAveragePrice()
     {
         int totalPrice = 0;
         int average = 0;
@@ -212,7 +217,7 @@ public class StatisticsData extends DataHandler
         return average;
     }
     
-    public double getBoroughMapColour(String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats) {     
+    public static double getBoroughMapColour(String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats) {     
         int noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
         
         double brightness = getBrightness(noOfPropertiesInBorough, noOfPropertiesStats);
@@ -220,7 +225,7 @@ public class StatisticsData extends DataHandler
         return brightness;
     }
     
-    public double getBoroughMapColour(int percentile) throws Exception {
+    public static double getBoroughMapColour(int percentile) throws Exception {
         NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(25, 50, 75);
         
         double brightness = getBrightness(percentile, noOfPropertiesStats);
@@ -228,7 +233,7 @@ public class StatisticsData extends DataHandler
         return brightness;
     }
     
-    private double getBrightness(int noOfPropertiesInBorough, NoOfPropertiesStats noOfPropertiesStats) 
+    private static double getBrightness(int noOfPropertiesInBorough, NoOfPropertiesStats noOfPropertiesStats) 
     {
         int median = noOfPropertiesStats.getMedian();
         int firstQuartile = noOfPropertiesStats.getFirstQuartile();
@@ -257,7 +262,7 @@ public class StatisticsData extends DataHandler
         return brightness;
     }
     
-    public ArrayList<BoroughListing> getSortedNumberOfPropertiesInBoroughs(int minPrice, int maxPrice) throws Exception
+    public static ArrayList<BoroughListing> getSortedNumberOfPropertiesInBoroughs(int minPrice, int maxPrice) throws Exception
     {
         ArrayList<BoroughListing> sortedNumberOfPropertiesAtPrice = new ArrayList<BoroughListing>();
 
@@ -272,7 +277,7 @@ public class StatisticsData extends DataHandler
         return sortedNumberOfPropertiesAtPrice;
     }
     
-    public String getHighAvgReview()
+    public static String getHighAvgReview()
     {
         String HighAvgReviewBorough = "";
         int lastHighAvgReview = 0; 
