@@ -29,7 +29,8 @@ public class StatisticsViewer extends Stage
     // instance variables - replace the example below with your own
 
     // The information labels in the window
-    XYChart.Series averagePriceData = new XYChart.Series();
+    private XYChart.Series averagePriceData = new XYChart.Series();
+    private NoOfPropertiesStats noOfPropertiesStats;
 
     /**
      * Constructor for objects of class StatisticsViewer
@@ -37,6 +38,9 @@ public class StatisticsViewer extends Stage
     public StatisticsViewer(int selectedMinPrice, int selectedMaxPrice)
     {
         // The layout of the window
+        try{ noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice); }
+        catch (Exception ex) {};
+        
         VBox window = new VBox();
         GridPane statsGrid = new GridPane(); 
         
@@ -56,7 +60,14 @@ public class StatisticsViewer extends Stage
         stat3.setFirst();
         
         StatBox stat4 = new StatBox();
-
+        stat4.addInfo("No. of Properties in Borough\nMinimum:", String.valueOf(noOfPropertiesStats.getMinNoOfPropertiesInBorough()));
+        stat4.addInfo("No. of Properties in Borough\nLower Quartile:", String.valueOf(noOfPropertiesStats.getFirstQuartile()));
+        stat4.addInfo("No. of Properties in Borough\nMedian:", String.valueOf(noOfPropertiesStats.getMedian()));
+        stat4.addInfo("No. of Properties in Borough\nUpper Quartile:", String.valueOf(noOfPropertiesStats.getThirdQuartile()));
+        stat4.addInfo("No. of Properties in Borough\nMaximum:", String.valueOf(noOfPropertiesStats.getMaxNoOfPropertiesInBorough()));
+        stat4.setFirst();
+        
+        
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
         BarChart barChart = new BarChart(xAxis, yAxis);
