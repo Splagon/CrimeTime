@@ -34,6 +34,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.geometry.*;
 import java.util.*;
+import javafx.scene.layout.VBox;
 
 /**
  * Write a description of class MapViewer here.
@@ -872,7 +873,12 @@ public class MainViewer extends Stage
         }
     }
     
-    private void makeBookingScene() {
-        
-    }
+    // private void makeBookingPane(PropertyViewer stage) {
+        // BorderPane pane = new BorderPane();
+        // Label windowTitle = new Label("Your bookings: ");
+        // VBox centerPane = new VBox();
+        // for(Booking booking : bookingList) {
+            
+        // }
+    // }
 }

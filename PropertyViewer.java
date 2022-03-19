@@ -68,6 +68,8 @@ public class PropertyViewer extends Stage {
     // Holds applcation's internet connectivity status
     private boolean applicationConnected;
     
+    private ArrayList<Booking> bookingList;
+    
     /**
      * Constructor of property viewer stage.
      * 
@@ -413,10 +415,11 @@ public class PropertyViewer extends Stage {
                 DatePicker checkOut = new DatePicker();
                     checkOut.setValue(checkIn.getValue().plusDays(1));
                     gridPane.add(checkOut, 1, 1);
-                
+                    
+                int grandtotal = properties.get(currentPropertyIndex).getPrice()*(checkOut.getValue().compareTo(checkIn.getValue()));
                 Label grandTotal = new Label("The price for your stay is: £" + properties.get(currentPropertyIndex).getPrice());
                     checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights())));
-                    checkOut.setOnAction(e -> grandTotal.setText("The price for your stay is: £" + properties.get(currentPropertyIndex).getPrice()*(checkOut.getValue().compareTo(checkIn.getValue()))));
+                    checkOut.setOnAction(e -> grandTotal.setText("The price for your stay is: £" + grandTotal));
                     
                     final Callback<DatePicker, DateCell> dayCellFactoryOut = new Callback<DatePicker, DateCell>() {
                         @Override
@@ -467,7 +470,7 @@ public class PropertyViewer extends Stage {
             AnchorPane bottomPane = new AnchorPane();
         
                 Button bookButton = new Button("Confirm Booking");
-                    bookButton.setOnAction(e -> confirmationAction());
+                    bookButton.setOnAction(e -> confirmationAction(grandTotal.toString(), checkIn.getValue(), checkOut.getValue()));
                 bottomPane.setRightAnchor(bookButton, 0.0);
             
                 Button goBackButton = new Button("Go Back");
@@ -493,8 +496,9 @@ public class PropertyViewer extends Stage {
         bookingStage.close();
     }
     
-    private void confirmationAction() {
+    private void confirmationAction(String grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
         bookingStage.close();
+        bookingList.add(new Booking(properties.get(currentPropertyIndex), grandTotal, checkinDate.toString(), checkoutDate.toString()));
         showConfirmationStage();
     }
     
