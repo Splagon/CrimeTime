@@ -376,6 +376,7 @@ public class PropertyViewer extends Stage {
     public boolean getInternetConnection(){
         return applicationConnected;
     }
+
     
     public void openBookingWindow() {
         bookingStage = new Stage();
@@ -470,3 +471,6 @@ public class PropertyViewer extends Stage {
             
     }
 }
+
+
+
