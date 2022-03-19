@@ -54,6 +54,23 @@ public class StatisticsViewer extends Stage
         VBox priceSD = new VBox(); 
         VBox averagePrice = new VBox(); 
         VBox highAvgReview = new VBox();
+        
+        StatBox stat1 = new StatBox();
+        stat1.addInfo("Average Reviews Per Property:", formatData(StatisticsData.getAverageNoReviews()));
+        stat1.addInfo("Total Available Properties:", formatData(StatisticsData.getAvailableInfo()));
+        stat1.setFirst();
+        
+        StatBox stat2 = new StatBox();
+        stat2.addInfo("Entire Home and Apartments:", formatData(StatisticsData.getNoHomeAndApartments()));
+        stat2.addInfo("Most Expensive Borough:", formatData(StatisticsData.getExpensiveInfo()));
+        stat2.setFirst();
+        
+        StatBox stat3 = new StatBox();
+        stat3.addInfo("Standard Deviation of Price (£):", formatData(StatisticsData.getPriceSDInfo()));
+        stat3.addInfo("Borough with the Highest \nAverage Amount of Reviews:", formatData(StatisticsData.getHighAvgReview()));
+        stat3.setFirst();
+        
+        StatBox stat4 = new StatBox();
 
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
@@ -76,12 +93,17 @@ public class StatisticsViewer extends Stage
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
 
-        statsGrid.add(reviews, 0, 0);
-        statsGrid.add(available, 0, 1);
-        statsGrid.add(noHomeAndApartments, 1, 0);
-        statsGrid.add(expensive, 1, 1);
-        statsGrid.add(priceSD, 0, 2); 
-        statsGrid.add(highAvgReview, 1 , 2); 
+        // statsGrid.add(reviews, 0, 0);
+        // statsGrid.add(available, 0, 1);
+        // statsGrid.add(noHomeAndApartments, 1, 0);
+        // statsGrid.add(expensive, 1, 1);
+        // statsGrid.add(priceSD, 0, 2); 
+        // statsGrid.add(highAvgReview, 1 , 2); 
+        
+        statsGrid.add(stat1, 0, 0);
+        statsGrid.add(stat2, 0, 1);
+        statsGrid.add(stat3, 1, 0);
+        statsGrid.add(stat4, 1, 1);
 
         reviews.setAlignment(Pos.CENTER);
         reviews.getChildren().add(reviewTitle); 
@@ -145,7 +167,7 @@ public class StatisticsViewer extends Stage
         
         StatBox test = new StatBox(); 
         
-        statsGrid.add(test, 2, 2);
+        //statsGrid.add(test, 2, 2);
         test.addInfo("title test", "stat test");
         test.addInfo("2", "2");
         test.addInfo("3", "3");
@@ -155,8 +177,6 @@ public class StatisticsViewer extends Stage
         setScene(scene);
 
     }
-
-
 
     private void setText(Label label, double dataToFormat) {
         String x = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
@@ -169,6 +189,20 @@ public class StatisticsViewer extends Stage
 
     private void setText(Label label, String dataToFormat) {
         label.setText(dataToFormat);
+    }
+    
+    private String formatData(double dataToFormat) {
+        String x = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
+        return x;
+    }
+
+    private String formatData(int dataToFormat) {
+        String x = String.valueOf(dataToFormat);
+        return x;
+    }
+
+    private String formatData(String dataToFormat) {
+        return dataToFormat;
     }
 
     private void setAveragePricePerBorough()
