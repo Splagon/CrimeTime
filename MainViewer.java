@@ -108,7 +108,7 @@ public class MainViewer extends Stage
         makePanelSwitcherPane();
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
-        setResizable(false);
+        //setResizable(false);
         
         setPane(0);
         
@@ -249,17 +249,17 @@ public class MainViewer extends Stage
         //setResizable(false);
         //welcomePane.getStylesheets().add("stylesheet.css");
         
-        window.getStyleClass().add("mainRoot");
+        //root.getStyleClass().add("mainRoot");
         
-        title.getStyleClass().add("welcomeTittle");
+        title.getStyleClass().add("welcomeTitle");
         
-        instructions.getStyleClass().add("instructionsTittle"); 
+        instructions.getStyleClass().add("instructionsTitle"); 
         
         instructions1.getStyleClass().add("instructions"); 
         instructions2.getStyleClass().add("instructions"); 
         instructions3.getStyleClass().add("instructions");
         
-        instrcutionsAndStart.getStyleClass().add("instrcutionsAndStart");
+        instrcutionsAndStart.getStyleClass().add("instructionsAndStart");
         
         startButton.getStyleClass().add("startButton");
     }
@@ -501,10 +501,16 @@ public class MainViewer extends Stage
     private void makeHexagonMap() throws Exception {
         mapPositions = StatisticsData.getMapPositions();
         
+        double sceneWidth = getScene().getWidth();
+        double sceneHeight = getScene().getHeight();
+        
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
             
         mapView = new AnchorPane();
-            mapView.setMinSize(720, 510);
+            mapView.setMinSize((int) (sceneWidth * 0.655), (int) (sceneHeight * 0.804));
+            
+            //double hexagonWidth = 94.0;
+            double hexagonWidth = sceneWidth * 0.655 / 7.66;
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
                 
@@ -516,7 +522,7 @@ public class MainViewer extends Stage
                 
                 if (m % 2 == 0) {
                         rowSpace = new StackPane();
-                        Rectangle insetSpace = createSpacerRectangle(47);
+                        Rectangle insetSpace = createSpacerRectangle((int) (hexagonWidth / 2));
                         rowSpace.getChildren().add(insetSpace);
                         row.getChildren().add(rowSpace);
                 }
@@ -535,16 +541,16 @@ public class MainViewer extends Stage
                                                        });
                         
                         ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
-                            hexagonOutline.setFitWidth(94);
-                            hexagonOutline.setFitHeight(94);
+                            hexagonOutline.setFitWidth(hexagonWidth);
+                            hexagonOutline.setFitHeight(hexagonWidth);
                         
                         ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
-                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), 93, noOfPropertiesStats);
+                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), (int) hexagonWidth - 1, noOfPropertiesStats);
                     
                         rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
                     }
                     else {
-                        Rectangle emptySpace = createSpacerRectangle(94);
+                        Rectangle emptySpace = createSpacerRectangle((int) hexagonWidth);
                         rowSpace.getChildren().add(emptySpace);
                     }
                     row.getChildren().add(rowSpace);
@@ -552,11 +558,11 @@ public class MainViewer extends Stage
                 
                 if (m % 2 == 1) {
                     rowSpace = new StackPane();
-                    Rectangle insetSpace = createSpacerRectangle(47);
+                    Rectangle insetSpace = createSpacerRectangle((int) (hexagonWidth / 2));
                     rowSpace.getChildren().add(insetSpace);
                     row.getChildren().add(rowSpace);
                 }                
-                AnchorPane.setTopAnchor(row, m*72.0);
+                AnchorPane.setTopAnchor(row, m*sceneHeight * 0.804 / 7); //72.0
                 mapView.getChildren().add(row);
             }
             

@@ -60,7 +60,7 @@
 }
 
 // ------------ welcome scene -------------------
-.welcomeTittle {
+.welcomeTitle {
     -fx-font: 30px "Ariel";
     -fx-alignment: center;
     -fx-text-alignment: center;
@@ -68,7 +68,7 @@
     -fx-font-weight: bold;
 }
 
-.instructionsTittle {
+.instructionsTitle {
     -fx-font: 20px "Ariel";
     -fx-underline: true;
 }
@@ -80,7 +80,7 @@
     -fx-text-alignment: justify;
 }
 
-.instrcutionsAndStart {
+.instructionsAndStart {
     -fx-padding: 10;
     -fx-spacing: 8;
     -fx-alignment: center
