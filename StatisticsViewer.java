@@ -31,6 +31,10 @@ public class StatisticsViewer extends Stage
     // The information labels in the window
     private XYChart.Series averagePriceData = new XYChart.Series();
     private NoOfPropertiesStats noOfPropertiesStats;
+    StatBox stat1 = new StatBox();
+    StatBox stat2 = new StatBox();
+    StatBox stat3 = new StatBox();
+    StatBox stat4 = new StatBox();
 
     /**
      * Constructor for objects of class StatisticsViewer
@@ -40,26 +44,23 @@ public class StatisticsViewer extends Stage
         // The layout of the window
         try{ noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice); }
         catch (Exception ex) {};
-        
+        StatisticsData.initialiseHandler();
+        StatisticsData.setBoroughListings(selectedMinPrice, selectedMaxPrice);
         VBox window = new VBox();
         GridPane statsGrid = new GridPane(); 
         
-        StatBox stat1 = new StatBox();
-        stat1.addInfo("Average Reviews Per Property:", formatData(StatisticsData.getAverageNoReviews()));
-        stat1.addInfo("Total Available Properties:", formatData(StatisticsData.getAvailableInfo()));
+        stat1.addInfo("Average Reviews Per Property:", formatData(StatisticsData.getAverageNoReviews(true)));
+        stat1.addInfo("Total Available Properties:", formatData(StatisticsData.getAvailableInfo(true)));
         stat1.setFirst();
         
-        StatBox stat2 = new StatBox();
-        stat2.addInfo("Entire Home and Apartments:", formatData(StatisticsData.getNoHomeAndApartments()));
+        stat2.addInfo("Entire Home and Apartments:", formatData(StatisticsData.getNoHomeAndApartments(true)));
         stat2.addInfo("Most Expensive Borough:", formatData(StatisticsData.getExpensiveInfo()));
         stat2.setFirst();
         
-        StatBox stat3 = new StatBox();
-        stat3.addInfo("Standard Deviation of Price (£):", formatData(StatisticsData.getPriceSDInfo()));
+        stat3.addInfo("Standard Deviation of Price (£):", formatData(StatisticsData.getPriceSDInfo(true)));
         stat3.addInfo("Borough with the Highest \nAverage Amount of Reviews:", formatData(StatisticsData.getHighAvgReview()));
         stat3.setFirst();
         
-        StatBox stat4 = new StatBox();
         stat4.addInfo("No. of Properties in Borough\nMinimum:", String.valueOf(noOfPropertiesStats.getMinNoOfPropertiesInBorough()));
         stat4.addInfo("No. of Properties in Borough\nLower Quartile:", String.valueOf(noOfPropertiesStats.getFirstQuartile()));
         stat4.addInfo("No. of Properties in Borough\nMedian:", String.valueOf(noOfPropertiesStats.getMedian()));
@@ -139,4 +140,11 @@ public class StatisticsViewer extends Stage
         }
     }
 
+    public void updateInfo()
+    {
+        stat1.updateInfo("Average Reviews Per Property:", formatData(StatisticsData.getAverageNoReviews(true)));
+        stat1.updateInfo("Total Available Properties:", formatData(StatisticsData.getAvailableInfo(true)));
+        stat2.updateInfo("Entire Home and Apartments:", formatData(StatisticsData.getNoHomeAndApartments(true)));
+        stat3.updateInfo("Standard Deviation of Price (£):", formatData(StatisticsData.getPriceSDInfo(true)));
+    }
 }

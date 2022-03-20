@@ -829,11 +829,11 @@ public class MainViewer extends Stage
         setAveragePricePerBorough();
         barChart.getData().add(averagePriceData);
     
-        setText(reviewInfo, StatisticsData.getAverageNoReviews());
-        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments());
-        setText(availableInfo, StatisticsData.getAvailableInfo());
+        setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
+        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments(false));
+        setText(availableInfo, StatisticsData.getAvailableInfo(false));
         setText(expensiveInfo, StatisticsData.getExpensiveInfo());
-        setText(priceSDInfo, StatisticsData.getPriceSDInfo());
+        setText(priceSDInfo, StatisticsData.getPriceSDInfo(false));
         setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
         
         statsPane = window;

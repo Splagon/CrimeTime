@@ -17,13 +17,13 @@ public class DataHandler
     private static AirbnbDataLoader dataLoader;
     protected static ArrayList<AirbnbListing> listings;
     protected static String[][] mapPositions = {{ null, null, null, "Enfield", null, null, null },
-                                                { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
-                                                { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
-                                                { "Hillingdon", "Ealing", "Kensington and Chelsea", "Westminster", "Tower Hamlets", "Newham", "Barking and Dagenham" },
-                                                { "Hounslow", "Hammersmith and Fulham", "Wandsworth", "City of London", "Greenwich", "Bexley", null },
-                                                { null, "Richmond upon Thames", "Merton", "Lambeth", "Southwark", "Lewisham", null },
-                                                { null, "Kingston upon Thames", "Sutton", "Croydon", "Bromley", null, null },
-                                               };
+            { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
+            { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
+            { "Hillingdon", "Ealing", "Kensington and Chelsea", "Westminster", "Tower Hamlets", "Newham", "Barking and Dagenham" },
+            { "Hounslow", "Hammersmith and Fulham", "Wandsworth", "City of London", "Greenwich", "Bexley", null },
+            { null, "Richmond upon Thames", "Merton", "Lambeth", "Southwark", "Lewisham", null },
+            { null, "Kingston upon Thames", "Sutton", "Croydon", "Bromley", null, null },
+        };
 
     /**
      * Constructor for objects of class DataHandler
@@ -32,21 +32,21 @@ public class DataHandler
     {
         // initialise instance variables
     }
-    
+
     public static void initialiseHandler() {
         dataLoader = new AirbnbDataLoader();
         listings = dataLoader.load();
     }
-    
+
     public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough, int minPrice, int maxPrice)
     {
         ArrayList<AirbnbListing> listingsFromBorough = new ArrayList<AirbnbListing>();
         Iterator i = listings.iterator();
-        
+
         while (i.hasNext()) 
         {
             AirbnbListing nextListing = (AirbnbListing) i.next();
-            
+
             if((nextListing.getNeighbourhood().toLowerCase()).equals(borough.toLowerCase()) || borough == null) 
             {
                 if (nextListing.getPrice() >= minPrice) {
@@ -56,9 +56,29 @@ public class DataHandler
                 }
             }
         }
-        
+
         return listingsFromBorough;
     }
+
+    public static ArrayList<AirbnbListing> getPropertiesMinMax(int minPrice, int maxPrice)
+    {
+        ArrayList<AirbnbListing> listingsFromBorough = new ArrayList<AirbnbListing>();
+        Iterator i = listings.iterator();
+
+        while (i.hasNext()) 
+        {
+            AirbnbListing nextListing = (AirbnbListing) i.next();
+
+            if (nextListing.getPrice() >= minPrice) {
+                if (nextListing.getPrice() <= maxPrice || maxPrice < 0) {
+                    listingsFromBorough.add(nextListing);
+                }
+            }
+
+        }
+        return listingsFromBorough;
+    }
+
     
     public static Map<String, ArrayList<AirbnbListing>> sortBoroughs()
     {
@@ -74,14 +94,14 @@ public class DataHandler
                 }
             }
         }
-        
+
         Iterator i = listings.iterator();
         while(i.hasNext())
         {
             AirbnbListing nextListing = (AirbnbListing) i.next();
             for(Map.Entry<String, ArrayList<AirbnbListing>> set : data.entrySet()) {
                 String key = set.getKey();
-                
+
                 if (key != null) {
                     if(set.getKey().toLowerCase().equals(nextListing.getNeighbourhood().toLowerCase()))
                     {
@@ -92,15 +112,15 @@ public class DataHandler
                 }
             }
         }
-        
+
         return data; 
     }
-    
+
     public static ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
         ArrayList<AirbnbListing> unsortedListing = getPropertiesFromBorough(borough, minPrice, maxPrice);
         return selectionSort(unsortedListing, sortingElement);
     }
-    
+
     private static ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
         switch (sortingElement) 
         {
@@ -122,17 +142,17 @@ public class DataHandler
             case "Reviews ↓":
                 Collections.sort(unsortedList, AirbnbListing.reverseSortByListingReviews);
                 break;
-            } 
+        } 
         return unsortedList;
     }
-    
+
     public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough)
     {
         ArrayList<AirbnbListing> listingsFromBorough = getPropertiesFromBorough(borough, -1, -1);
-        
+
         return listingsFromBorough;
     }
-    
+
     /**
      * @return the Arraylist of Airbnb Listings 
      */
@@ -140,12 +160,12 @@ public class DataHandler
     {
         return listings; 
     }
-    
+
     public static String[][] getMapPositions() 
     {
         return mapPositions;
     }
-    
+
     /**
      * Searches through every listing and returns the lowest price for one night out of every property
      * 
@@ -165,7 +185,7 @@ public class DataHandler
         }
         return lowest;
     }
-    
+
     /**
      * Searches through every listing and returns the highest price for one night out of every property
      * 

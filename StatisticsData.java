@@ -38,6 +38,11 @@ public class StatisticsData extends DataHandler
         boroughListings = listings;
     }
 
+    public static void setBoroughListings(int selectedMinPrice, int selectedMaxPrice)
+    {
+        boroughListings = DataHandler.getPropertiesMinMax(selectedMinPrice, selectedMaxPrice);
+    }
+    
     public static void setPropertyList(String borough)
     {
         boroughListings = sortBoroughs().get(borough);
@@ -46,11 +51,12 @@ public class StatisticsData extends DataHandler
     /**
      * @return Boolean average number of reviews per property. 
      */
-    public static double getAverageNoReviews()
+    public static double getAverageNoReviews(boolean value)
     {
+        ArrayList<AirbnbListing> data = determineList(value);
         double scoreCounter = 0; 
-        for (int i = 0; i < listings.size(); i++) {
-            scoreCounter += listings.get(i).getNumberOfReviews();
+        for (int i = 0; i < data.size(); i++) {
+            scoreCounter += data.get(i).getNumberOfReviews();
         }
         double average = scoreCounter / listings.size(); 
         return average; 
@@ -59,11 +65,12 @@ public class StatisticsData extends DataHandler
     /**
      * @return int the number of home and apartment airbnb properties 
      */
-    public static int getNoHomeAndApartments()
+    public static int getNoHomeAndApartments(boolean value)
     {
+        ArrayList<AirbnbListing> data = determineList(value);
         int counter = 0;
-        for (int i = 0; i < listings.size(); i++) {
-            AirbnbListing property = listings.get(i);
+        for (int i = 0; i < data.size(); i++) {
+            AirbnbListing property = data.get(i);
             if(property.getRoom_type().equals("Entire home/apt"))
             {
                 counter++; 
@@ -75,11 +82,12 @@ public class StatisticsData extends DataHandler
     /**
      * @return int the number of available properties
      */
-    public static int getAvailableInfo()
+    public static int getAvailableInfo(boolean value)
     {
+        ArrayList<AirbnbListing> data = determineList(value);
         int counter = 0; 
-        for (int i = 0; i < listings.size(); i++) {
-            if(listings.get(i).getAvailability365() != 0)
+        for (int i = 0; i < data.size(); i++) {
+            if(data.get(i).getAvailability365() != 0)
             {
                 counter += 1; 
             }
@@ -149,18 +157,22 @@ public class StatisticsData extends DataHandler
     /**
      * @return double The standard deviation of price from all of the airbnb properties
      */
-    public static double getPriceSDInfo()
+    public static double getPriceSDInfo(boolean value)
     {
+        ArrayList<AirbnbListing> data = determineList(value);
         double standardDeviation = 0; 
         int x = 0;
         int y = 0; 
-        int size = listings.size(); 
+        int size = data.size(); 
         for (int i = 0; i < size; i++) {
-            int price = listings.get(i).getPrice();
+            int price = data.get(i).getPrice();
             x += (price)*(price);
             y += price;
         }
-        standardDeviation = Math.sqrt((x/size) - (y/size)*(y/size));
+        if(size >= 1)
+        {
+            standardDeviation = Math.sqrt((x/size) - (y/size)*(y/size));
+        }
         return standardDeviation; 
     }
     
@@ -206,21 +218,25 @@ public class StatisticsData extends DataHandler
             {
                 totalPrice += properties.get(i).getPrice(); 
             }
-            Integer averagePrice = new Integer(totalPrice / properties.size());
-            information.put(boroughName, averagePrice);
+            if(properties.size() >= 1)
+            {
+                Integer averagePrice = new Integer(totalPrice / properties.size());
+                information.put(boroughName, averagePrice);
+            }
         }
         return information;
     }
     
-    public static int getAveragePrice()
+    public static int getAveragePrice(boolean value)
     {
+        ArrayList<AirbnbListing> data = determineList(value);
         int totalPrice = 0;
         int average = 0;
-        for(int i = 0; i > listings.size(); i++)
+        for(int i = 0; i > data.size(); i++)
         {
-            totalPrice += listings.get(i).getPrice();
+            totalPrice += data.get(i).getPrice();
         }
-        average = totalPrice / listings.size(); 
+        average = totalPrice / data.size(); 
         return average;
     }
     
@@ -301,7 +317,11 @@ public class StatisticsData extends DataHandler
                         AirbnbListing property = boroughProperty.get(j);
                         averageReview += property.getNumberOfReviews();
                     }
-                    averageReview = averageReview / boroughProperty.size();
+                    
+                    if(boroughProperty.size() >= 1){
+                        averageReview = averageReview / boroughProperty.size();
+                    }
+
                     if(averageReview > lastHighAvgReview )
                     {
                         lastHighAvgReview  = averageReview;
@@ -311,5 +331,17 @@ public class StatisticsData extends DataHandler
             }
         }
         return HighAvgReviewBorough;
+    }
+    
+    private static ArrayList<AirbnbListing> determineList(boolean value)
+    {
+        if(value)
+        {
+            return boroughListings;
+        }
+        else
+        {
+            return listings;
+        }
     }
 }
