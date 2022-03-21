@@ -48,11 +48,6 @@ import javafx.beans.value.ObservableValue;
 public class MainViewer extends Stage
 {
     // instance variables
-    // private Scene welcomeScene;
-    // private Scene priceSelectorScene;
-    // private Scene mapScene;
-    // private Scene statsScene;
-    // private Scene favouritesScene;
     
     private Pane welcomePane;
     private Pane priceSelectorPane;
@@ -171,6 +166,24 @@ public class MainViewer extends Stage
         setPane(currentSceneIndex);
     }
     
+    private void setNextPaneButtonLabel() {
+        this.currentSceneIndex = currentSceneIndex;
+        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+        
+        switch (nameOfPaneToChangeTo) {
+            case ("welcomePane") :
+                break;
+            case ("priceSelectorPane") :
+                break;
+            case ("mapPane") :
+                break;
+            case ("statsPane") :
+                break;
+            case ("favouritesPane") :
+                break;
+        }
+    }
+    
     private void setPane(int currentSceneIndex) {      
         this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
@@ -260,14 +273,10 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
-        //root.setCenter(window);
-        
         //creating the scene and adding the CSS
         welcomePane = window;
-        //setResizable(false);
-        //welcomePane.getStylesheets().add("stylesheet.css");
         
-        //root.getStyleClass().add("mainRoot");
+        //window.getStyleClass().add("welcomeVBox");
         
         title.getStyleClass().add("welcomeTitle");
         
@@ -319,9 +328,7 @@ public class MainViewer extends Stage
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
         
-        //window.getStyleClass().add("mainRoot");
-        
-        title.getStyleClass().add("welcomeTittle");
+        title.getStyleClass().add("welcomeTitle");
         
         instruction.getStyleClass().add("priceInstruction");
         
@@ -345,9 +352,7 @@ public class MainViewer extends Stage
         minBox.setValue("Min Price:");
         maxBox.setValue("Max Price:");
         
-        // int low = dataHandler.getLowestPrice();
-        // int high = dataHandler.getHighestPrice();
-        ArrayList<String> options = getPriceSelectionOptions(0, highestPrice);
+        ArrayList<String> options = getPriceSelectionOptions(lowestPrice, highestPrice);
         minBox.getItems().add("No Min");
         minBox.getItems().addAll(options);
         maxBox.getItems().addAll(options);
@@ -484,33 +489,31 @@ public class MainViewer extends Stage
         setTitle("Map of London");
             
         BorderPane window = new BorderPane();
-            
-        //root.setTop(minMaxBox);
-        
-        // if (mapPane == null) {
-            // mapScene = new Scene(root, sceneWidth, sceneHeight);
-            // setResizable(false);
-        // }
-        
-        //styling
-        //mapScene.getStylesheets().add("stylesheet.css");
-        //root.getStyleClass().add("root");
-        //Pane window = new FlowPane();
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("welcomeTittle");
+                titleLabel.getStyleClass().add("welcomeTitle");
             HBox minMaxBox = createMinMaxBox();
                 minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             VBox stats = createStatsPanel();
             GridPane key = createKey();
             
+        Button confirm = (Button) minMaxBox.getChildren().get(2);
+        
+        ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
+        ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
+        
+        //styling the min and max box as well as the confirm button for the map panel
+        confirm.getStyleClass().add("confirmForMap");
+        
+        minBox.getStyleClass().add("mapMinMaxBoxes");
+        maxBox.getStyleClass().add("mapMinMaxBoxes");
+        
+        minMaxBox.getStyleClass().add("mapMinMaxBox");
+            
         infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
         infoPane.setPadding(new Insets(20));
         infoPane.setSpacing(30);
-
-        //window.getChildren().addAll(stats, mapView, key);
-        //root.setCenter(window);
         
         mapView.setPadding(new Insets(20));
         
@@ -887,7 +890,7 @@ public class MainViewer extends Stage
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        title.getStyleClass().add("welcomeTittle"); 
+        title.getStyleClass().add("welcomeTitle"); 
         
         xAxis.setLabel("Borough");
         yAxis.setLabel("Average Price");
