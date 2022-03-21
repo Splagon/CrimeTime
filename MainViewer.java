@@ -495,10 +495,12 @@ public class MainViewer extends Stage
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
                 titleLabel.getStyleClass().add("welcomeTittle");
+            HBox minMaxBox = createMinMaxBox();
+                minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             VBox stats = createStatsPanel();
             GridPane key = createKey();
             
-        infoPane.getChildren().addAll(titleLabel, key, stats);
+        infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
         infoPane.setPadding(new Insets(20));
         infoPane.setSpacing(30);
 
@@ -549,21 +551,18 @@ public class MainViewer extends Stage
             setMinHeight(620);
             
             //double hexagonWidth = 94.0;
-            double hexagonWidth = newWidth / 7.66;
+            double hexagonWidth = (int) (newWidth / 7.5);
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
-                
+                final double gapSize = 5.0;
                 FlowPane row = new FlowPane();
-                row.setHgap(1.0);
+                    row.setHgap(gapSize);
+                    row.setMinWidth(Double.MAX_VALUE);
+                    
                 StackPane rowSpace;
                 
-                row.setMinWidth(newWidth);
-                
                 if (m % 2 == 0) {
-                        rowSpace = new StackPane();
-                        Rectangle insetSpace = createSpacerRectangle((int) (hexagonWidth / 2));
-                        rowSpace.getChildren().add(insetSpace);
-                        row.getChildren().add(rowSpace);
+                        createInsetRectangle(hexagonWidth, row, gapSize);
                 }
                 
                 //columns
@@ -572,8 +571,8 @@ public class MainViewer extends Stage
                     if (mapPositions[m][n] != null) {
                         MapButton boroughButton = new MapButton(mapPositions[m][n]);
                         boroughButton.setShape(new Circle(hexagonWidth));
-                        boroughButton.setMinSize(hexagonWidth * 0.936, hexagonWidth * 0.851);
-                        boroughButton.setFont(new Font(boroughButton.getFont().getName(), 20.0/94.0 * hexagonWidth));
+                        boroughButton.setMinSize(hexagonWidth*0.97, hexagonWidth*0.85);
+                        boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
                         //boroughButton.setStyle("-fx-font-size: " + String.valueOf(20.0/94.0 * hexagonWidth) + ";");
                         boroughButton.getStyleClass().add("boroughButton");
                         boroughButton.setOnAction(e ->
@@ -587,9 +586,12 @@ public class MainViewer extends Stage
                             hexagonOutline.setFitHeight(hexagonWidth);
                         
                         ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
-                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), (int) hexagonWidth - 1, noOfPropertiesStats);
-                    
-                        rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
+                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), (int) hexagonWidth, noOfPropertiesStats);
+                        
+                        // Rectangle bgTest = new Rectangle(hexagonWidth,hexagonWidth);
+                            // bgTest.setFill(Color.FUCHSIA);
+                        
+                        rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);                        
                     }
                     else {
                         Rectangle emptySpace = createSpacerRectangle((int) hexagonWidth);
@@ -599,21 +601,25 @@ public class MainViewer extends Stage
                 }
                 
                 if (m % 2 == 1) {
-                    rowSpace = new StackPane();
-                    Rectangle insetSpace = createSpacerRectangle((int) (hexagonWidth / 2));
-                    rowSpace.getChildren().add(insetSpace);
-                    row.getChildren().add(rowSpace);
-                }                
-                AnchorPane.setTopAnchor(row, m * (newHeight/7.08)); //72.0
+                    createInsetRectangle(hexagonWidth, row, gapSize);
+                }
+                AnchorPane.setTopAnchor(row, m * (newHeight/mapPositions.length + gapSize));
                 mapView.getChildren().add(row);
             }
             
-            HBox minMaxBox = createMinMaxBox();
-                minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
-                AnchorPane.setTopAnchor(minMaxBox, 11.0);
-                AnchorPane.setRightAnchor(minMaxBox, 0.0);
+            // HBox minMaxBox = createMinMaxBox();
+                // minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
+                // AnchorPane.setTopAnchor(minMaxBox, 11.0);
+                // AnchorPane.setRightAnchor(minMaxBox, 0.0);
                 
-            mapView.getChildren().add(minMaxBox);
+            // mapView.getChildren().add(minMaxBox);
+    }
+    
+    private void createInsetRectangle(double hexagonWidth, FlowPane row, double gapSize) {
+        StackPane rowSpace = new StackPane();
+        Rectangle insetSpace = createSpacerRectangle((int) ((hexagonWidth - gapSize) / 2.0));
+        rowSpace.getChildren().add(insetSpace);
+        row.getChildren().add(rowSpace);
     }
     
     private Rectangle createSpacerRectangle(int widthHeight) {
