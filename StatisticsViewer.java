@@ -44,6 +44,7 @@ public class StatisticsViewer extends Stage
         // The layout of the window
         try{ noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice); }
         catch (Exception ex) {};
+        
         StatisticsData.initialiseHandler();
         StatisticsData.setBoroughListings(selectedMinPrice, selectedMaxPrice);
         VBox window = new VBox();
@@ -118,13 +119,13 @@ public class StatisticsViewer extends Stage
     }
     
     private String formatData(double dataToFormat) {
-        String x = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
-        return x;
+        String formatedData = String.format("%.2f", dataToFormat) + " (2 d.p)"; 
+        return formatedData;
     }
 
     private String formatData(int dataToFormat) {
-        String x = String.valueOf(dataToFormat);
-        return x;
+        String formatedData = String.valueOf(dataToFormat);
+        return formatedData;
     }
 
     private String formatData(String dataToFormat) {

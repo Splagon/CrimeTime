@@ -16,6 +16,11 @@ public class DataHandler
     // instance variables - replace the example below with your own
     private static AirbnbDataLoader dataLoader;
     protected static ArrayList<AirbnbListing> listings;
+    
+    protected static ArrayList<String> boroughs = new ArrayList<String>();
+    
+    protected static HashMap<String, Borough> sortedBoroughs;
+    
     protected static String[][] mapPositions = {{ null, null, null, "Enfield", null, null, null },
             { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
             { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
@@ -36,33 +41,51 @@ public class DataHandler
     public static void initialiseHandler() {
         dataLoader = new AirbnbDataLoader();
         listings = dataLoader.load();
+        
+        sortedBoroughs = sortBoroughs();
     }
 
     public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough, int minPrice, int maxPrice)
     {
-        ArrayList<AirbnbListing> listingsFromBorough = new ArrayList<AirbnbListing>();
-        Iterator i = listings.iterator();
+        ArrayList<AirbnbListing> listingsFromBorough = sortedBoroughs.get(borough).getBoroughListings();
+        ArrayList<AirbnbListing> listingsFromBoroughWithinParameters = new ArrayList<>();
+        
+        Iterator i = listingsFromBorough.iterator();
 
-        while (i.hasNext()) 
-        {
-            AirbnbListing nextListing = (AirbnbListing) i.next();
+        // while (i.hasNext()) 
+        // {
+            // AirbnbListing nextListing = (AirbnbListing) i.next();
 
-            if((nextListing.getNeighbourhood().toLowerCase()).equals(borough.toLowerCase()) || borough == null) 
-            {
+            // if((nextListing.getNeighbourhood().toLowerCase()).equals(borough.toLowerCase()) || borough == null) 
+            // {
+                // if (nextListing.getPrice() >= minPrice) {
+                    // if (nextListing.getPrice() <= maxPrice || maxPrice < 0) {
+                        // listingsFromBorough.add(nextListing);
+                    // }
+                // }
+            // }
+        // }
+        if (! (minPrice < 0 && maxPrice < 0)) {        
+            while (i.hasNext()) {
+                AirbnbListing nextListing = (AirbnbListing) i.next();
+                
                 if (nextListing.getPrice() >= minPrice) {
                     if (nextListing.getPrice() <= maxPrice || maxPrice < 0) {
-                        listingsFromBorough.add(nextListing);
+                        listingsFromBoroughWithinParameters.add(nextListing);
                     }
                 }
             }
         }
-
-        return listingsFromBorough;
+        else {
+            listingsFromBoroughWithinParameters = listingsFromBorough;
+        }
+        
+        return listingsFromBoroughWithinParameters;
     }
 
-    public static ArrayList<AirbnbListing> getPropertiesMinMax(int minPrice, int maxPrice)
+    public static ArrayList<AirbnbListing> getPropertiesAtPrice(int minPrice, int maxPrice)
     {
-        ArrayList<AirbnbListing> listingsFromBorough = new ArrayList<AirbnbListing>();
+        ArrayList<AirbnbListing> listingsAtPrice = new ArrayList<AirbnbListing>();
         Iterator i = listings.iterator();
 
         while (i.hasNext()) 
@@ -71,50 +94,91 @@ public class DataHandler
 
             if (nextListing.getPrice() >= minPrice) {
                 if (nextListing.getPrice() <= maxPrice || maxPrice < 0) {
-                    listingsFromBorough.add(nextListing);
+                    listingsAtPrice.add(nextListing);
                 }
             }
 
         }
-        return listingsFromBorough;
+        return listingsAtPrice;
     }
 
-    
-    public static Map<String, ArrayList<AirbnbListing>> sortBoroughs()
+    private static HashMap<String, Borough> sortBoroughs() 
     {
-        Map<String, ArrayList<AirbnbListing>> data = new HashMap<>(); 
-        for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
-        {
-            for(int columns = 0; columns < mapPositions[rows].length; columns++)
-            {   
-                if(mapPositions[rows][columns] != null)
-                {
-                    ArrayList<AirbnbListing> properties = new ArrayList<>();
-                    data.put(mapPositions[rows][columns], properties);
-                }
-            }
-        }
-
+        HashMap<String, Borough> data = new HashMap<>(); 
+        ArrayList<AirbnbListing> currentRunOfListingsFromSameBorough = new ArrayList<AirbnbListing>();
+        String boroughOfCurrentRunOfListings = null;
+        
         Iterator i = listings.iterator();
         while(i.hasNext())
         {
             AirbnbListing nextListing = (AirbnbListing) i.next();
-            for(Map.Entry<String, ArrayList<AirbnbListing>> set : data.entrySet()) {
-                String key = set.getKey();
-
-                if (key != null) {
-                    if(set.getKey().toLowerCase().equals(nextListing.getNeighbourhood().toLowerCase()))
-                    {
-                        ArrayList<AirbnbListing> list = set.getValue();
-                        list.add(nextListing);
-                        data.put(key, list);
-                    }
+        
+            if (currentRunOfListingsFromSameBorough.isEmpty() || nextListing.getNeighbourhood().equals(boroughOfCurrentRunOfListings))
+            {
+                currentRunOfListingsFromSameBorough.add(nextListing);
+                boroughOfCurrentRunOfListings = currentRunOfListingsFromSameBorough.get(0).getNeighbourhood();
+            }
+            else 
+            {
+                boolean boroughFound = false;
+                String boroughName = boroughOfCurrentRunOfListings;
+                
+                if (data.keySet().contains(boroughName)) 
+                {
+                    Borough borough = data.get(boroughName);
+                    borough.addListingToBorough(currentRunOfListingsFromSameBorough);
+                    boroughFound = true;
+                }                
+                else 
+                {
+                    Borough borough = new Borough(boroughName, currentRunOfListingsFromSameBorough);
+                    data.put(boroughName, borough);
+                    boroughs.add(boroughName);
                 }
+                
+                currentRunOfListingsFromSameBorough = new ArrayList<AirbnbListing>();
+                currentRunOfListingsFromSameBorough.add(nextListing);
+                boroughOfCurrentRunOfListings = currentRunOfListingsFromSameBorough.get(0).getNeighbourhood();
             }
         }
-
-        return data; 
+        
+        return data;
     }
+    // public static Map<String, ArrayList<AirbnbListing>> sortBoroughs()
+    // {
+        // Map<String, ArrayList<AirbnbListing>> data = new HashMap<>(); 
+        // for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
+        // {
+            // for(int columns = 0; columns < mapPositions[rows].length; columns++)
+            // {   
+                // if(mapPositions[rows][columns] != null)
+                // {
+                    // ArrayList<AirbnbListing> properties = new ArrayList<>();
+                    // data.put(mapPositions[rows][columns], properties);
+                // }
+            // }
+        // }
+
+        // Iterator i = listings.iterator();
+        // while(i.hasNext())
+        // {
+            // AirbnbListing nextListing = (AirbnbListing) i.next();
+            // for(Map.Entry<String, ArrayList<AirbnbListing>> set : data.entrySet()) {
+                // String key = set.getKey();
+
+                // if (key != null) {
+                    // if(set.getKey().toLowerCase().equals(nextListing.getNeighbourhood().toLowerCase()))
+                    // {
+                        // ArrayList<AirbnbListing> list = set.getValue();
+                        // list.add(nextListing);
+                        // data.put(key, list);
+                    // }
+                // }
+            // }
+        // }
+
+        // return data; 
+    // }
 
     public static ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
         ArrayList<AirbnbListing> unsortedListing = getPropertiesFromBorough(borough, minPrice, maxPrice);

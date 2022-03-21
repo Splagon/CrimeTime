@@ -35,6 +35,9 @@ import javafx.scene.chart.XYChart;
 import javafx.geometry.*;
 import java.util.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 /**
  * Write a description of class MapViewer here.
@@ -108,6 +111,18 @@ public class MainViewer extends Stage
         makePanelSwitcherPane();
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
+        // widthProperty().addListener(new ChangeListener<Number>() {
+            // @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                // if (currentSceneIndex == 2){
+                    // try {
+                        // makeHexagonMap();
+                        // setPane(2);
+                    // }
+                    // catch (Exception e) {}
+                // }
+            // }
+        // });
+
         //setResizable(false);
         
         setPane(0);
@@ -501,16 +516,40 @@ public class MainViewer extends Stage
     private void makeHexagonMap() throws Exception {
         mapPositions = StatisticsData.getMapPositions();
         
+        noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
+        
         double sceneWidth = getScene().getWidth();
         double sceneHeight = getScene().getHeight();
         
-        noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
+        final double WIDTH_TO_HEIGHT_RATIO = 725.0 / 510.0;
+        final double HEIGHT_TO_WIDTH_RATIO = 1 / WIDTH_TO_HEIGHT_RATIO;
+        
+        double newWidth = sceneWidth * 0.655;
+        double newHeight = sceneHeight * 0.804;
+        
+        double newWidthToHeightRatio = newWidth/newHeight;
+
+        // pane is too narrow
+        if (newWidthToHeightRatio < WIDTH_TO_HEIGHT_RATIO) {
+            newHeight = newWidth * HEIGHT_TO_WIDTH_RATIO;
+        }
+        // pane is too wide
+        else if (newWidthToHeightRatio > WIDTH_TO_HEIGHT_RATIO) {
+            newWidth = newHeight * WIDTH_TO_HEIGHT_RATIO;
+        }
+        
+        //newHeight = 510;
+        //newWidth = 720;
             
         mapView = new AnchorPane();
-            mapView.setMinSize((int) (sceneWidth * 0.655), (int) (sceneHeight * 0.804));
+            mapView.setPrefSize(newWidth, newHeight);
+            mapView.setMinSize(670, 310);
+            
+            setMinWidth(1050);
+            setMinHeight(620);
             
             //double hexagonWidth = 94.0;
-            double hexagonWidth = sceneWidth * 0.655 / 7.66;
+            double hexagonWidth = newWidth / 7.66;
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
                 
@@ -518,7 +557,7 @@ public class MainViewer extends Stage
                 row.setHgap(1.0);
                 StackPane rowSpace;
                 
-                row.setMinWidth(mapView.getMinWidth());
+                row.setMinWidth(newWidth);
                 
                 if (m % 2 == 0) {
                         rowSpace = new StackPane();
@@ -532,7 +571,10 @@ public class MainViewer extends Stage
                     rowSpace = new StackPane();
                     if (mapPositions[m][n] != null) {
                         MapButton boroughButton = new MapButton(mapPositions[m][n]);
-                        boroughButton.setShape(new Circle(94));
+                        boroughButton.setShape(new Circle(hexagonWidth));
+                        boroughButton.setMinSize(hexagonWidth * 0.936, hexagonWidth * 0.851);
+                        boroughButton.setFont(new Font(boroughButton.getFont().getName(), 20.0/94.0 * hexagonWidth));
+                        //boroughButton.setStyle("-fx-font-size: " + String.valueOf(20.0/94.0 * hexagonWidth) + ";");
                         boroughButton.getStyleClass().add("boroughButton");
                         boroughButton.setOnAction(e ->
                                                        {
@@ -562,7 +604,7 @@ public class MainViewer extends Stage
                     rowSpace.getChildren().add(insetSpace);
                     row.getChildren().add(rowSpace);
                 }                
-                AnchorPane.setTopAnchor(row, m*sceneHeight * 0.804 / 7); //72.0
+                AnchorPane.setTopAnchor(row, m * (newHeight/7.08)); //72.0
                 mapView.getChildren().add(row);
             }
             
