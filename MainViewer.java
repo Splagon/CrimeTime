@@ -48,11 +48,6 @@ import javafx.beans.value.ObservableValue;
 public class MainViewer extends Stage
 {
     // instance variables
-    // private Scene welcomeScene;
-    // private Scene priceSelectorScene;
-    // private Scene mapScene;
-    // private Scene statsScene;
-    // private Scene favouritesScene;
     
     private Pane welcomePane;
     private Pane priceSelectorPane;
@@ -257,14 +252,10 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
-        //root.setCenter(window);
-        
         //creating the scene and adding the CSS
         welcomePane = window;
-        //setResizable(false);
-        //welcomePane.getStylesheets().add("stylesheet.css");
         
-        //root.getStyleClass().add("mainRoot");
+        //window.getStyleClass().add("welcomeVBox");
         
         title.getStyleClass().add("welcomeTitle");
         
@@ -316,9 +307,7 @@ public class MainViewer extends Stage
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
         
-        //window.getStyleClass().add("mainRoot");
-        
-        title.getStyleClass().add("welcomeTittle");
+        title.getStyleClass().add("welcomeTitle");
         
         instruction.getStyleClass().add("priceInstruction");
         
@@ -342,9 +331,7 @@ public class MainViewer extends Stage
         minBox.setValue("Min Price:");
         maxBox.setValue("Max Price:");
         
-        // int low = dataHandler.getLowestPrice();
-        // int high = dataHandler.getHighestPrice();
-        ArrayList<String> options = getPriceSelectionOptions(0, highestPrice);
+        ArrayList<String> options = getPriceSelectionOptions(lowestPrice, highestPrice);
         minBox.getItems().add("No Min");
         minBox.getItems().addAll(options);
         maxBox.getItems().addAll(options);
@@ -494,7 +481,7 @@ public class MainViewer extends Stage
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("welcomeTittle");
+                titleLabel.getStyleClass().add("welcomeTitle");
             VBox stats = createStatsPanel();
             GridPane key = createKey();
             
@@ -863,7 +850,7 @@ public class MainViewer extends Stage
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        title.getStyleClass().add("welcomeTittle"); 
+        title.getStyleClass().add("welcomeTitle"); 
         
         xAxis.setLabel("Borough");
         yAxis.setLabel("Average Price");
