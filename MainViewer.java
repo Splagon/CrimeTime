@@ -163,6 +163,24 @@ public class MainViewer extends Stage
         setPane(currentSceneIndex);
     }
     
+    private void setNextPaneButtonLabel() {
+        this.currentSceneIndex = currentSceneIndex;
+        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+        
+        switch (nameOfPaneToChangeTo) {
+            case ("welcomePane") :
+                break;
+            case ("priceSelectorPane") :
+                break;
+            case ("mapPane") :
+                break;
+            case ("statsPane") :
+                break;
+            case ("favouritesPane") :
+                break;
+        }
+    }
+    
     private void setPane(int currentSceneIndex) {      
         this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
@@ -466,33 +484,31 @@ public class MainViewer extends Stage
         setTitle("Map of London");
             
         BorderPane window = new BorderPane();
-            
-        //root.setTop(minMaxBox);
-        
-        // if (mapPane == null) {
-            // mapScene = new Scene(root, sceneWidth, sceneHeight);
-            // setResizable(false);
-        // }
-        
-        //styling
-        //mapScene.getStylesheets().add("stylesheet.css");
-        //root.getStyleClass().add("root");
-        //Pane window = new FlowPane();
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("welcomeTittle");
+                titleLabel.getStyleClass().add("welcomeTitle");
             HBox minMaxBox = createMinMaxBox();
                 minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             VBox stats = createStatsPanel();
             GridPane key = createKey();
             
+        Button confirm = (Button) minMaxBox.getChildren().get(2);
+        
+        ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
+        ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
+        
+        //styling the min and max box as well as the confirm button for the map panel
+        confirm.getStyleClass().add("confirmForMap");
+        
+        minBox.getStyleClass().add("mapMinMaxBoxes");
+        maxBox.getStyleClass().add("mapMinMaxBoxes");
+        
+        minMaxBox.getStyleClass().add("mapMinMaxBox");
+            
         infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
         infoPane.setPadding(new Insets(20));
         infoPane.setSpacing(30);
-
-        //window.getChildren().addAll(stats, mapView, key);
-        //root.setCenter(window);
         
         mapView.setPadding(new Insets(20));
         

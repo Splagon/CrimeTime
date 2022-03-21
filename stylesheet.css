@@ -171,6 +171,30 @@
     -fx-font: 12px "Ariel";
     
 }
+
+.confirmForMap {
+    -fx-background-color: white;
+    -fx-border-color: black;
+}
+
+.confirmForMap: hover {
+    -fx-background-color: indigo;
+    -fx-text-fill: white;
+}
+
+.confirmForMap: pressed {
+    -fx-background-color: black;
+}
+
+.mapMinMaxBoxes {
+    -fx-background-color: white;
+    -fx-border-color: black;
+}
+
+.mapMinMaxBox {
+    -fx-alignment: center;
+    -fx-font: 16px "Ariel";
+}
 // -------------- map scene ---------------------
 
 // ------------- property viewer --------------------
