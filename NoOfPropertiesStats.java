@@ -86,4 +86,12 @@ public class NoOfPropertiesStats
     public int getMaxNoOfPropertiesInBorough() {
         return maxNoOfPropertiesInBorough;
     }
+    
+    public int getMinPrice() {
+        return minPrice;
+    }
+    
+    public int getMaxPrice() {
+        return maxPrice;
+    }
 }

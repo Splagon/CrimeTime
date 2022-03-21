@@ -89,7 +89,10 @@ public class MainViewer extends Stage
     //private StatisticsData dataHandler;
     
     private NoOfPropertiesStats noOfPropertiesStats;
+    
     private Scene mainScene;
+    
+    private StatisticsViewer statisticsViewer;
     
     /**
      * Constructor for objects of class MapViewer
@@ -359,6 +362,8 @@ public class MainViewer extends Stage
                                     
                                     try { changeToMapPane(); }
                                     catch (Exception ex) {}
+                                    
+                                    updateStats();
                                  });
         
         minBox.setOnAction(e -> {
@@ -759,8 +764,21 @@ public class MainViewer extends Stage
     }
     
     private void showMoreStats() {
-        Stage stage = new StatisticsViewer(selectedMinPrice, selectedMaxPrice);
-        stage.show();
+        if (statisticsViewer == null) {
+            statisticsViewer = new StatisticsViewer(selectedMinPrice, selectedMaxPrice);
+            statisticsViewer.show();
+        }
+        updateStats();
+    }
+    
+    private void updateStats() {
+        if (statisticsViewer == null) {
+            return;
+        }
+        
+        if (statisticsViewer.getCurrentMinPrice() != selectedMinPrice || statisticsViewer.getCurrentMaxPrice() != selectedMaxPrice) {
+            statisticsViewer.update(selectedMinPrice, selectedMaxPrice);
+        }
     }
     
     private GridPane alignItemsInGridPane(GridPane grid) {
