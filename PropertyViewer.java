@@ -68,7 +68,7 @@ public class PropertyViewer extends Stage {
     // Holds applcation's internet connectivity status
     private boolean applicationConnected;
     
-    private ArrayList<Booking> bookingList;
+    private static ArrayList<Booking> bookingList;
     
     /**
      * Constructor of property viewer stage.
@@ -90,6 +90,10 @@ public class PropertyViewer extends Stage {
         makePropertyViewerScene();
         
         this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
+    }
+    
+    public static ArrayList<Booking> getBookingList() {
+        return bookingList;
     }
     
     /**
@@ -237,9 +241,8 @@ public class PropertyViewer extends Stage {
         // first, we retrieve the property at the current index
         AirbnbListing listing = properties.get(currentPropertyIndex);
         // then, we update the variables
-        if(listing.getHost_name() != null){
-            hostLabel.setText(hostPrefix + listing.getHost_name());
-        }else{
+        hostLabel.setText(hostPrefix + listing.getHost_name());
+        if (listing.getHost_name().equals("")){
             hostLabel.setText("No data");
         }
         priceLabel.setText(pricePrefix + listing.getPrice());
@@ -414,10 +417,9 @@ public class PropertyViewer extends Stage {
                     checkOut.setValue(checkIn.getValue().plusDays(1));
                     gridPane.add(checkOut, 1, 1);
                     
-                int grandtotal = properties.get(currentPropertyIndex).getPrice()*(checkOut.getValue().compareTo(checkIn.getValue()));
                 Label grandTotal = new Label("The price for your stay is: £" + properties.get(currentPropertyIndex).getPrice());
                     checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights())));
-                    checkOut.setOnAction(e -> grandTotal.setText("The price for your stay is: £" + grandTotal));
+                    checkOut.setOnAction(e -> grandTotal.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
                     
                     final Callback<DatePicker, DateCell> dayCellFactoryOut = new Callback<DatePicker, DateCell>() {
                         @Override
@@ -495,9 +497,9 @@ public class PropertyViewer extends Stage {
     }
     
     private void confirmationAction(String grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
-        bookingStage.close();
-        bookingList.add(new Booking(properties.get(currentPropertyIndex), grandTotal, checkinDate.toString(), checkoutDate.toString()));
         showConfirmationStage();
+        bookingStage.close();
+        bookingList.add(new Booking(properties.get(currentPropertyIndex), grandTotal, checkinDate, checkoutDate));
     }
     
     private void showConfirmationStage() {
@@ -513,7 +515,7 @@ public class PropertyViewer extends Stage {
                 closeButton.setOnAction(e -> confirmationStage.close());
                 
         root.getChildren().addAll(confirmationLabel, closeButton);
-        root.setSpacing(15);
+        root.setSpacing(30);
         root.setAlignment(Pos.CENTER);
         root.getStyleClass().add("rootPV");
         
@@ -532,5 +534,9 @@ public class PropertyViewer extends Stage {
         double currentStagePositionY = closingStage.getY();
         openingStage.setX(currentStagePositionX);
         openingStage.setY(currentStagePositionY);
+    }
+    
+    private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) {
+        return properties.get(currentPropertyIndex).getPrice()*(checkOut.compareTo(checkIn));
     }
 }

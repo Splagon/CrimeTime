@@ -35,6 +35,7 @@ import javafx.scene.chart.XYChart;
 import javafx.geometry.*;
 import java.util.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.ScrollBar;
 
 /**
  * Write a description of class MapViewer here.
@@ -45,17 +46,12 @@ import javafx.scene.layout.VBox;
 public class MainViewer extends Stage
 {
     // instance variables
-    // private Scene welcomeScene;
-    // private Scene priceSelectorScene;
-    // private Scene mapScene;
-    // private Scene statsScene;
-    // private Scene favouritesScene;
     
     private Pane welcomePane;
     private Pane priceSelectorPane;
     private Pane mapPane;
     private Pane statsPane;
-    private Pane favouritesPane;
+    private Pane bookingsPane;
     
     private int sceneWidth;
     private int sceneHeight;
@@ -72,7 +68,7 @@ public class MainViewer extends Stage
     private Button prevPanelButton;
     private Button nextPanelButton;
     
-    private String[] sceneOrder = { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "favouritesPane" };
+    private String[] sceneOrder = { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "bookingsPane" };
     //private PaneListing[] paneOrder = { welcomePane, priceSelectorPane, mapPane, statsPane, favouritesPane };
 
     private int currentSceneIndex;
@@ -178,10 +174,10 @@ public class MainViewer extends Stage
                 setTitle("Information");
                 paneToChangeTo = statsPane;
                 break;
-            case ("favouritesPane") :
-                setTitle("Favourites");
-                //makeFavouritesPane();
-                //paneToChangeTo = paneToChangeTo;
+            case ("bookingsPane") :
+                setTitle("Bookings");
+                makeBookingsPane();
+                paneToChangeTo = bookingsPane;
                 break;
         }
         
@@ -875,12 +871,18 @@ public class MainViewer extends Stage
         }
     }
     
-    // private void makeBookingPane(PropertyViewer stage) {
-        // BorderPane pane = new BorderPane();
-        // Label windowTitle = new Label("Your bookings: ");
-        // VBox centerPane = new VBox();
-        // for(Booking booking : bookingList) {
+    private void makeBookingsPane() {
+        BorderPane pane = new BorderPane();
+        Label windowTitle = new Label("Your bookings: ");
+        VBox centerPane = new VBox();
+        ScrollBar scrollBar = new ScrollBar();
+        pane.setCenter(centerPane);
+        pane.setRight(scrollBar);
+        ArrayList<Booking> bookingList = PropertyViewer.getBookingList();
+        for(Booking booking : bookingList) {
             
-        // }
-    // }
+        }
+        
+        pane = window;
+    }
 }

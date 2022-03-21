@@ -17,7 +17,7 @@ public class Booking
     /**
      * Constructor for objects of class Booking
      */
-    public Booking(AirbnbListing property, String grandTotal, String checkInDate, String checkOutDate)
+    public Booking(AirbnbListing property, String grandTotal, LocalDate checkInDate, LocalDate checkOutDate)
     {
         this.property = property;
         this.grandTotal = grandTotal;
