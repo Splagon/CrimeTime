@@ -3,11 +3,20 @@
     -fx-padding: 20;
     -fx-spacing: 20;
     -fx-alignment: center;
-    -fx-background-color : aliceblue;
+    -fx-background-color : floralwhite;
 }
 
 .mainRoot:Node {
     -fx-alignment: center;
+
+}
+
+.mainHeading {
+    -fx-font: 30px "Ariel";
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-underline: true;
+    -fx-font-weight: bold;
 }
 // -------------- universal ---------------------
 
@@ -23,19 +32,21 @@
 }
 
 .label {
-        -fx-font: 16px "Verdana";
+        -fx-font: 16px "Ariel";
         -fx-text-alignment: center;
 }
 
 .labelSmall {
-        -fx-font: 9px "Verdana";
+        -fx-font: 9px "Ariel";
         -fx-text-alignment: center;
 }
 
 .infoGrid {
-        -fx-vgap: 5;
+        -fx-vgap: 10;
         -fx-hgap: 10;
-        -fx-grid-lines-visible: true;
+        -fx-border-color: black;
+        -fx-text-alignment: center;
+        -fx-alignment: center;
 }
 
 .statslabels {
@@ -43,11 +54,10 @@
 }
 
 .boroughButton {
-        -fx-min-width: 88px;
-        -fx-min-height: 80px;
         -fx-background-color: rgba(00,00,00,0.0);
-        -fx-font-size: 18px;
         -fx-text-fill: black;
+        -fx-border-width: 0;
+        -fx-alignment: center;
 }
 
 .boroughButton:hover {
@@ -60,7 +70,7 @@
 }
 
 // ------------ welcome scene -------------------
-.welcomeTittle {
+.welcomeTitle {
     -fx-font: 30px "Ariel";
     -fx-alignment: center;
     -fx-text-alignment: center;
@@ -68,7 +78,16 @@
     -fx-font-weight: bold;
 }
 
-.instructionsTittle {
+.welcomeVBox {
+    -fx-text-alignmet: center;
+    -fx-alignemt: center;
+}
+
+.welcomeVBox: Node {
+    -fx-alignemt: center;
+}
+
+.instructionsTitle {
     -fx-font: 20px "Ariel";
     -fx-underline: true;
 }
@@ -80,7 +99,7 @@
     -fx-text-alignment: justify;
 }
 
-.instrcutionsAndStart {
+.instructionsAndStart {
     -fx-padding: 10;
     -fx-spacing: 8;
     -fx-alignment: center
@@ -151,6 +170,30 @@
 .tooltip {
     -fx-font: 12px "Ariel";
     
+}
+
+.confirmForMap {
+    -fx-background-color: white;
+    -fx-border-color: black;
+}
+
+.confirmForMap: hover {
+    -fx-background-color: indigo;
+    -fx-text-fill: white;
+}
+
+.confirmForMap: pressed {
+    -fx-background-color: black;
+}
+
+.mapMinMaxBoxes {
+    -fx-background-color: white;
+    -fx-border-color: black;
+}
+
+.mapMinMaxBox {
+    -fx-alignment: center;
+    -fx-font: 16px "Ariel";
 }
 // -------------- map scene ---------------------
 

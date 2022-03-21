@@ -35,6 +35,9 @@ import javafx.scene.chart.XYChart;
 import javafx.geometry.*;
 import java.util.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ScrollBar;
 
 /**
@@ -82,7 +85,10 @@ public class MainViewer extends Stage
     //private StatisticsData dataHandler;
     
     private NoOfPropertiesStats noOfPropertiesStats;
+    
     private Scene mainScene;
+    
+    private StatisticsViewer statisticsViewer;
     
     /**
      * Constructor for objects of class MapViewer
@@ -104,7 +110,19 @@ public class MainViewer extends Stage
         makePanelSwitcherPane();
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
-        setResizable(false);
+        // widthProperty().addListener(new ChangeListener<Number>() {
+            // @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                // if (currentSceneIndex == 2){
+                    // try {
+                        // makeHexagonMap();
+                        // setPane(2);
+                    // }
+                    // catch (Exception e) {}
+                // }
+            // }
+        // });
+
+        //setResizable(false);
         
         setPane(0);
         
@@ -147,6 +165,24 @@ public class MainViewer extends Stage
         }
         
         setPane(currentSceneIndex);
+    }
+    
+    private void setNextPaneButtonLabel() {
+        this.currentSceneIndex = currentSceneIndex;
+        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+        
+        switch (nameOfPaneToChangeTo) {
+            case ("welcomePane") :
+                break;
+            case ("priceSelectorPane") :
+                break;
+            case ("mapPane") :
+                break;
+            case ("statsPane") :
+                break;
+            case ("favouritesPane") :
+                break;
+        }
     }
     
     private void setPane(int currentSceneIndex) {      
@@ -238,24 +274,20 @@ public class MainViewer extends Stage
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
-        //root.setCenter(window);
-        
         //creating the scene and adding the CSS
         welcomePane = window;
-        //setResizable(false);
-        //welcomePane.getStylesheets().add("stylesheet.css");
         
-        window.getStyleClass().add("mainRoot");
+        //window.getStyleClass().add("welcomeVBox");
         
-        title.getStyleClass().add("welcomeTittle");
+        title.getStyleClass().add("welcomeTitle");
         
-        instructions.getStyleClass().add("instructionsTittle"); 
+        instructions.getStyleClass().add("instructionsTitle"); 
         
         instructions1.getStyleClass().add("instructions"); 
         instructions2.getStyleClass().add("instructions"); 
         instructions3.getStyleClass().add("instructions");
         
-        instrcutionsAndStart.getStyleClass().add("instrcutionsAndStart");
+        instrcutionsAndStart.getStyleClass().add("instructionsAndStart");
         
         startButton.getStyleClass().add("startButton");
     }
@@ -297,9 +329,7 @@ public class MainViewer extends Stage
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
         
-        //window.getStyleClass().add("mainRoot");
-        
-        title.getStyleClass().add("welcomeTittle");
+        title.getStyleClass().add("welcomeTitle");
         
         instruction.getStyleClass().add("priceInstruction");
         
@@ -323,9 +353,7 @@ public class MainViewer extends Stage
         minBox.setValue("Min Price:");
         maxBox.setValue("Max Price:");
         
-        // int low = dataHandler.getLowestPrice();
-        // int high = dataHandler.getHighestPrice();
-        ArrayList<String> options = getPriceSelectionOptions(0, highestPrice);
+        ArrayList<String> options = getPriceSelectionOptions(lowestPrice, highestPrice);
         minBox.getItems().add("No Min");
         minBox.getItems().addAll(options);
         maxBox.getItems().addAll(options);
@@ -340,6 +368,8 @@ public class MainViewer extends Stage
                                     
                                     try { changeToMapPane(); }
                                     catch (Exception ex) {}
+                                    
+                                    updateStats();
                                  });
         
         minBox.setOnAction(e -> {
@@ -460,31 +490,31 @@ public class MainViewer extends Stage
         setTitle("Map of London");
             
         BorderPane window = new BorderPane();
-            
-        //root.setTop(minMaxBox);
-        
-        // if (mapPane == null) {
-            // mapScene = new Scene(root, sceneWidth, sceneHeight);
-            // setResizable(false);
-        // }
-        
-        //styling
-        //mapScene.getStylesheets().add("stylesheet.css");
-        //root.getStyleClass().add("root");
-        //Pane window = new FlowPane();
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("welcomeTittle");
+                titleLabel.getStyleClass().add("welcomeTitle");
+            HBox minMaxBox = createMinMaxBox();
+                minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             VBox stats = createStatsPanel();
             GridPane key = createKey();
             
-        infoPane.getChildren().addAll(titleLabel, key, stats);
+        Button confirm = (Button) minMaxBox.getChildren().get(2);
+        
+        ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
+        ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
+        
+        //styling the min and max box as well as the confirm button for the map panel
+        confirm.getStyleClass().add("confirmForMap");
+        
+        minBox.getStyleClass().add("mapMinMaxBoxes");
+        maxBox.getStyleClass().add("mapMinMaxBoxes");
+        
+        minMaxBox.getStyleClass().add("mapMinMaxBox");
+            
+        infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
         infoPane.setPadding(new Insets(20));
         infoPane.setSpacing(30);
-
-        //window.getChildren().addAll(stats, mapView, key);
-        //root.setCenter(window);
         
         mapView.setPadding(new Insets(20));
         
@@ -498,23 +528,50 @@ public class MainViewer extends Stage
         mapPositions = StatisticsData.getMapPositions();
         
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
+        
+        double sceneWidth = getScene().getWidth();
+        double sceneHeight = getScene().getHeight();
+        
+        final double WIDTH_TO_HEIGHT_RATIO = 725.0 / 510.0;
+        final double HEIGHT_TO_WIDTH_RATIO = 1 / WIDTH_TO_HEIGHT_RATIO;
+        
+        double newWidth = sceneWidth * 0.655;
+        double newHeight = sceneHeight * 0.804;
+        
+        double newWidthToHeightRatio = newWidth/newHeight;
+
+        // pane is too narrow
+        if (newWidthToHeightRatio < WIDTH_TO_HEIGHT_RATIO) {
+            newHeight = newWidth * HEIGHT_TO_WIDTH_RATIO;
+        }
+        // pane is too wide
+        else if (newWidthToHeightRatio > WIDTH_TO_HEIGHT_RATIO) {
+            newWidth = newHeight * WIDTH_TO_HEIGHT_RATIO;
+        }
+        
+        //newHeight = 510;
+        //newWidth = 720;
             
         mapView = new AnchorPane();
-            mapView.setMinSize(720, 510);
+            mapView.setPrefSize(newWidth, newHeight);
+            mapView.setMinSize(670, 310);
+            
+            setMinWidth(1050);
+            setMinHeight(620);
+            
+            //double hexagonWidth = 94.0;
+            double hexagonWidth = (int) (newWidth / 7.5);
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
-                
+                final double gapSize = 5.0;
                 FlowPane row = new FlowPane();
-                row.setHgap(1.0);
+                    row.setHgap(gapSize);
+                    row.setMinWidth(Double.MAX_VALUE);
+                    
                 StackPane rowSpace;
                 
-                row.setMinWidth(mapView.getMinWidth());
-                
                 if (m % 2 == 0) {
-                        rowSpace = new StackPane();
-                        Rectangle insetSpace = createSpacerRectangle(47);
-                        rowSpace.getChildren().add(insetSpace);
-                        row.getChildren().add(rowSpace);
+                        createInsetRectangle(hexagonWidth, row, gapSize);
                 }
                 
                 //columns
@@ -522,7 +579,10 @@ public class MainViewer extends Stage
                     rowSpace = new StackPane();
                     if (mapPositions[m][n] != null) {
                         MapButton boroughButton = new MapButton(mapPositions[m][n]);
-                        boroughButton.setShape(new Circle(94));
+                        boroughButton.setShape(new Circle(hexagonWidth));
+                        boroughButton.setMinSize(hexagonWidth*0.97, hexagonWidth*0.85);
+                        boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
+                        //boroughButton.setStyle("-fx-font-size: " + String.valueOf(20.0/94.0 * hexagonWidth) + ";");
                         boroughButton.getStyleClass().add("boroughButton");
                         boroughButton.setOnAction(e ->
                                                        {
@@ -531,37 +591,44 @@ public class MainViewer extends Stage
                                                        });
                         
                         ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
-                            hexagonOutline.setFitWidth(94);
-                            hexagonOutline.setFitHeight(94);
+                            hexagonOutline.setFitWidth(hexagonWidth);
+                            hexagonOutline.setFitHeight(hexagonWidth);
                         
                         ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
-                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), 93, noOfPropertiesStats);
-                    
-                        rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
+                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), (int) hexagonWidth, noOfPropertiesStats);
+                        
+                        // Rectangle bgTest = new Rectangle(hexagonWidth,hexagonWidth);
+                            // bgTest.setFill(Color.FUCHSIA);
+                        
+                        rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);                        
                     }
                     else {
-                        Rectangle emptySpace = createSpacerRectangle(94);
+                        Rectangle emptySpace = createSpacerRectangle((int) hexagonWidth);
                         rowSpace.getChildren().add(emptySpace);
                     }
                     row.getChildren().add(rowSpace);
                 }
                 
                 if (m % 2 == 1) {
-                    rowSpace = new StackPane();
-                    Rectangle insetSpace = createSpacerRectangle(47);
-                    rowSpace.getChildren().add(insetSpace);
-                    row.getChildren().add(rowSpace);
-                }                
-                AnchorPane.setTopAnchor(row, m*72.0);
+                    createInsetRectangle(hexagonWidth, row, gapSize);
+                }
+                AnchorPane.setTopAnchor(row, m * (newHeight/mapPositions.length + gapSize));
                 mapView.getChildren().add(row);
             }
             
-            HBox minMaxBox = createMinMaxBox();
-                minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
-                AnchorPane.setTopAnchor(minMaxBox, 11.0);
-                AnchorPane.setRightAnchor(minMaxBox, 0.0);
+            // HBox minMaxBox = createMinMaxBox();
+                // minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
+                // AnchorPane.setTopAnchor(minMaxBox, 11.0);
+                // AnchorPane.setRightAnchor(minMaxBox, 0.0);
                 
-            mapView.getChildren().add(minMaxBox);
+            // mapView.getChildren().add(minMaxBox);
+    }
+    
+    private void createInsetRectangle(double hexagonWidth, FlowPane row, double gapSize) {
+        StackPane rowSpace = new StackPane();
+        Rectangle insetSpace = createSpacerRectangle((int) ((hexagonWidth - gapSize) / 2.0));
+        rowSpace.getChildren().add(insetSpace);
+        row.getChildren().add(rowSpace);
     }
     
     private Rectangle createSpacerRectangle(int widthHeight) {
@@ -701,8 +768,21 @@ public class MainViewer extends Stage
     }
     
     private void showMoreStats() {
-        Stage stage = new StatisticsViewer(selectedMinPrice, selectedMaxPrice);
-        stage.show();
+        if (statisticsViewer == null) {
+            statisticsViewer = new StatisticsViewer(selectedMinPrice, selectedMaxPrice);
+            statisticsViewer.show();
+        }
+        updateStats();
+    }
+    
+    private void updateStats() {
+        if (statisticsViewer == null) {
+            return;
+        }
+        
+        if (statisticsViewer.getCurrentMinPrice() != selectedMinPrice || statisticsViewer.getCurrentMaxPrice() != selectedMaxPrice) {
+            statisticsViewer.update(selectedMinPrice, selectedMaxPrice);
+        }
     }
     
     private GridPane alignItemsInGridPane(GridPane grid) {
@@ -811,7 +891,7 @@ public class MainViewer extends Stage
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        title.getStyleClass().add("welcomeTittle"); 
+        title.getStyleClass().add("welcomeTitle"); 
         
         xAxis.setLabel("Borough");
         yAxis.setLabel("Average Price");
@@ -819,11 +899,11 @@ public class MainViewer extends Stage
         setAveragePricePerBorough();
         barChart.getData().add(averagePriceData);
     
-        setText(reviewInfo, StatisticsData.getAverageNoReviews());
-        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments());
-        setText(availableInfo, StatisticsData.getAvailableInfo());
+        setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
+        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments(false));
+        setText(availableInfo, StatisticsData.getAvailableInfo(false));
         setText(expensiveInfo, StatisticsData.getExpensiveInfo());
-        setText(priceSDInfo, StatisticsData.getPriceSDInfo());
+        setText(priceSDInfo, StatisticsData.getPriceSDInfo(false));
         setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
         
         statsPane = window;
@@ -883,6 +963,6 @@ public class MainViewer extends Stage
             
         }
         
-        pane = window;
+        //pane = window;
     }
 }

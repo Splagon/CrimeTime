@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class NoOfPropertiesStats
 {
-    private ArrayList<BoroughListing> sortedNumberOfPropertiesInBorough;
+    private ArrayList<Borough> sortedNumberOfPropertiesInBorough;
     
     private int minPrice;
     private int maxPrice;
@@ -32,9 +32,9 @@ public class NoOfPropertiesStats
     private void calculateStats() {
         noOfBoroughs = sortedNumberOfPropertiesInBorough.size();
         
-        BoroughListing boroughWithMinNoOfProperties = sortedNumberOfPropertiesInBorough.get(0);
+        Borough boroughWithMinNoOfProperties = sortedNumberOfPropertiesInBorough.get(0);
         //BoroughListing boroughWithMedianNoOfProperties;
-        BoroughListing boroughWithMaxNoOfProperties = sortedNumberOfPropertiesInBorough.get(sortedNumberOfPropertiesInBorough.size()-1);
+        Borough boroughWithMaxNoOfProperties = sortedNumberOfPropertiesInBorough.get(sortedNumberOfPropertiesInBorough.size()-1);
         
         minNoOfPropertiesInBorough = boroughWithMinNoOfProperties.getNoOfPropertiesInBorough();
         maxNoOfPropertiesInBorough = boroughWithMaxNoOfProperties.getNoOfPropertiesInBorough();
@@ -51,8 +51,8 @@ public class NoOfPropertiesStats
         double quartileIndex = ((double) noOfBoroughs * quartileFraction) - 1;
         
         if (quartileIndex - (int) quartileIndex != 0) {
-            BoroughListing boroughLowerOfQuartile = sortedNumberOfPropertiesInBorough.get((int) (noOfBoroughs * quartileFraction)-1);
-            BoroughListing boroughUpperOfQuartile = sortedNumberOfPropertiesInBorough.get((int) (noOfBoroughs * quartileFraction));
+            Borough boroughLowerOfQuartile = sortedNumberOfPropertiesInBorough.get((int) (noOfBoroughs * quartileFraction)-1);
+            Borough boroughUpperOfQuartile = sortedNumberOfPropertiesInBorough.get((int) (noOfBoroughs * quartileFraction));
             
             int sizeLowerOfQuartile = boroughLowerOfQuartile.getNoOfPropertiesInBorough();
             int sizeUpperOfQuartile = boroughUpperOfQuartile.getNoOfPropertiesInBorough();
@@ -60,7 +60,7 @@ public class NoOfPropertiesStats
             quartile = (int) Math.round(((sizeUpperOfQuartile - sizeLowerOfQuartile) * quartileFraction) + sizeLowerOfQuartile);
         }
         else {
-            BoroughListing boroughWithQuartileNoOfProperties = sortedNumberOfPropertiesInBorough.get((int) (noOfBoroughs * quartileFraction)-1);
+            Borough boroughWithQuartileNoOfProperties = sortedNumberOfPropertiesInBorough.get((int) (noOfBoroughs * quartileFraction)-1);
             quartile = boroughWithQuartileNoOfProperties.getNoOfPropertiesInBorough();
         }
         
@@ -85,5 +85,13 @@ public class NoOfPropertiesStats
     
     public int getMaxNoOfPropertiesInBorough() {
         return maxNoOfPropertiesInBorough;
+    }
+    
+    public int getMinPrice() {
+        return minPrice;
+    }
+    
+    public int getMaxPrice() {
+        return maxPrice;
     }
 }
