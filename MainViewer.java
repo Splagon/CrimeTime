@@ -481,7 +481,7 @@ public class MainViewer extends Stage
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("welcomeTitle");
+                titleLabel.getStyleClass().add("welcomeTittle");
             HBox minMaxBox = createMinMaxBox();
                 minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             VBox stats = createStatsPanel();
