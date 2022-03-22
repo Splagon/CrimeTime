@@ -14,7 +14,7 @@ public class Booking
     private String grandTotal;
     private LocalDate checkIn;
     private LocalDate checkOut;
-    private long durationInDays;
+    private int duration;
 
     /**
      * Constructor for objects of class Booking
@@ -25,7 +25,7 @@ public class Booking
         this.grandTotal = grandTotal;
         this.checkIn = checkIn;
         this.checkOut  = checkOut;
-        durationInDays = calculateDuration(checkInDate, checkOutDate);
+        duration = checkOutDate.compareTo(checkInDate);
     }
     
     private long calculateDuration(LocalDate checkInDate, LocalDate checkOutDate) {
@@ -49,7 +49,7 @@ public class Booking
         return checkOut;
     }
     
-    public long getDurationInDays() {
-        return durationInDays;
+    public int getDuration() {
+        return duration;
     }
 }
