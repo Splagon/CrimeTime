@@ -25,7 +25,7 @@ public class Booking
         this.grandTotal = grandTotal;
         this.checkIn = checkInDate;
         this.checkOut  = checkOutDate;
-        duration = checkOutDate.compareTo(checkInDate);
+        duration = calculateDuration(checkInDate, checkOutDate);
     }
     
     private long calculateDuration(LocalDate checkInDate, LocalDate checkOutDate) {
