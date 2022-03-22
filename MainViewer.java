@@ -993,9 +993,9 @@ public class MainViewer extends Stage
     private VBox createBookingListing(Booking booking) {
         VBox bookingListing = new VBox();
         AirbnbListing property = booking.getProperty();
-        
-        // add stuff to box
-        
+        Label hostName = new Label("Host name: " + property.getHost_name());
+        Label dates = new Label("Between: " + property.getHost_name());
+        Label 
         return bookingListing;
     }
 }

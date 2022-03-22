@@ -36,7 +36,7 @@ public class bookingStage extends Stage
             pane.setAlignment(windowTitle, Pos.CENTER);
         pane.setTop(windowTitle);
         
-        ArrayList<Booking> bookingList = PropertyViewer.getBookingList();
+        //ArrayList<Booking> bookingList = PropertyViewer.getBookingList();
         //for(Booking booking : bookingList) {
             
         //}
