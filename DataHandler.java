@@ -14,7 +14,9 @@ import java.util.Map;
 public class DataHandler
 {
     // instance variables - replace the example below with your own
-    private static AirbnbDataLoader dataLoader;
+    private static AirbnbDataLoader airbnbDataLoader;
+    private static BookingsDataLoader bookingsDataLoader;
+    
     protected static ArrayList<AirbnbListing> listings;
     
     private static ArrayList<Booking> bookingList = new ArrayList<Booking>();
@@ -41,10 +43,27 @@ public class DataHandler
     }
 
     public static void initialiseHandler() {
-        dataLoader = new AirbnbDataLoader();
-        listings = dataLoader.load();
+        airbnbDataLoader = new AirbnbDataLoader();
+        bookingsDataLoader = new BookingsDataLoader();
+        
+        listings = airbnbDataLoader.load();
+        bookingList = bookingsDataLoader.load();
         
         sortedBoroughs = sortBoroughs();
+    }
+    
+    public static AirbnbListing getProperty(String iD) {
+        try {
+            for (AirbnbListing listing : listings) {
+                if (listing.getId().equals(iD)) {
+                    return listing;
+                }
+            }
+        }
+        catch (NullPointerException e) {
+            System.out.println("DATA HANLDER NOT INITIALISED");
+        }
+        return null;
     }
 
     public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough, int minPrice, int maxPrice)
