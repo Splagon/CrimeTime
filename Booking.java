@@ -23,8 +23,8 @@ public class Booking
     {
         this.property = property;
         this.grandTotal = grandTotal;
-        this.checkIn = checkIn;
-        this.checkOut  = checkOut;
+        this.checkIn = checkInDate;
+        this.checkOut  = checkOutDate;
         duration = checkOutDate.compareTo(checkInDate);
     }
     

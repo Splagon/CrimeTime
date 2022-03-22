@@ -993,11 +993,13 @@ public class MainViewer extends Stage
     }
     
     private VBox createBookingListing(Booking booking) {
-        VBox bookingListing = new VBox();
         AirbnbListing property = booking.getProperty();
+        Label propertyName = new Label("Property: " + property.getName());  
         Label hostName = new Label("Host name: " + property.getHost_name());
-        Label dates = new Label("Between: " + property.getHost_name());
-        Label 
+        Label dates = new Label("Between: " + booking.getCheckInDate().toString()  +  " - " + booking.getCheckOutDate().toString());
+        Label durationLabel = new Label("Duration:  " + booking.getDuration() + " night(s)");
+        VBox bookingListing = new VBox(propertyName, hostName, dates, durationLabel);
+        bookingListing.setSpacing(5);
         return bookingListing;
     }
 }
