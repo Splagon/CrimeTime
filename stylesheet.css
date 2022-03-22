@@ -199,7 +199,7 @@
 
 // ------------- property viewer --------------------
 .rootPV {
-    -fx-background-color : aliceblue;
+    -fx-background-color : floralwhite;
 }
 .title {
      -fx-font: 12px "Verdana";
@@ -221,9 +221,9 @@
 }
 
 // ------------- Booking Window --------------------
-#rootBooking {
+.rootBooking {
     -fx-padding: 30;
-    -fx-background-color : aliceblue;
+    -fx-background-color : floralwhite;
 }
 #propertyLabel {
     -fx-font: 20px "Times New Roman";

@@ -155,7 +155,6 @@ public class PropertyViewer extends Stage {
         prevButton.getStyleClass().add("buttonsPV");
         root.setAlignment(prevButton, Pos.CENTER);
         root.setLeft(prevButton);
-      
         
         Button nextButton = new Button("Next");
             nextButton.setOnAction(e -> viewNextProperty());
@@ -164,6 +163,10 @@ public class PropertyViewer extends Stage {
         root.setAlignment(nextButton, Pos.CENTER);
         root.setRight(nextButton);
         
+        if(properties.size() == 1) {
+            nextButton.setDisable(true);
+            prevButton.setDisable(true);
+        }
         
         GridPane info = new GridPane();
         
@@ -410,7 +413,7 @@ public class PropertyViewer extends Stage {
                 Label checkOutlabel = new Label("Check-Out Date:");
                     gridPane.add(checkOutlabel, 1, 0);
                 DatePicker checkOut = new DatePicker();
-                    checkOut.setValue(checkIn.getValue().plusDays(1));
+                    checkOut.setValue(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights()));
                     gridPane.add(checkOut, 1, 1);
                     
                 Label grandTotal = new Label("The price for your stay is: £" + properties.get(currentPropertyIndex).getPrice());
