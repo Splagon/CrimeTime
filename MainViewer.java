@@ -549,6 +549,8 @@ public class MainViewer extends Stage
         double newHeight = sceneHeight * 0.804;
         
         double newWidthToHeightRatio = newWidth/newHeight;
+        
+        final double gapSize = 5.0;
 
         // pane is too narrow
         if (newWidthToHeightRatio < WIDTH_TO_HEIGHT_RATIO) {
@@ -573,7 +575,7 @@ public class MainViewer extends Stage
             double hexagonWidth = (int) (newWidth / 7.5);
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
-                final double gapSize = 5.0;
+                
                 FlowPane row = new FlowPane();
                     row.setHgap(gapSize);
                     row.setMinWidth(Double.MAX_VALUE);
