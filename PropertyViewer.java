@@ -32,6 +32,8 @@ import javafx.util.Callback;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.Tooltip;
 import java.time.temporal.ChronoUnit;
+import java.net.SocketTimeoutException;
+import java.net.MalformedURLException;
 
 /**
  * Property viewer is the class that is responsible 

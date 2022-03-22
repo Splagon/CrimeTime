@@ -94,7 +94,7 @@ public class MainViewer extends Stage
     /**
      * Constructor for objects of class MapViewer
      */
-    public MainViewer() throws Exception
+    public MainViewer()
     {         
         DataHandler.initialiseHandler();
         
@@ -223,18 +223,28 @@ public class MainViewer extends Stage
     }
     
     private void setButtonsDisabled(int currentSceneIndex) {
+        int nextSceneIndex = currentSceneIndex + 1;
+        int prevSceneIndex = currentSceneIndex - 1;
+        
+        if (nextSceneIndex >= sceneOrder.length) {
+            nextSceneIndex = 0;
+        }
+        if (prevSceneIndex < 0) {
+            prevSceneIndex = sceneOrder.length - 1;
+        }
+        
         if (selectedMinPrice == null && selectedMaxPrice == null) {    
-            if (currentSceneIndex <= 0 || currentSceneIndex >= 4) {
-                prevPanelButton.setDisable(false);
-                nextPanelButton.setDisable(false);
-            }
-            else if (currentSceneIndex == 1) {
-                prevPanelButton.setDisable(false);
+            if (sceneOrder[nextSceneIndex] == "mapPane") {
                 nextPanelButton.setDisable(true);
             }
-            else if (currentSceneIndex == 3) {
-                prevPanelButton.setDisable(true);
+            else {
                 nextPanelButton.setDisable(false);
+            }
+            if (sceneOrder[prevSceneIndex] == "mapPane") {
+                prevPanelButton.setDisable(true);
+            }
+            else {
+                prevPanelButton.setDisable(false);
             }
         }
         else {
@@ -482,11 +492,11 @@ public class MainViewer extends Stage
         }
     }
     
-    private void changeToMapPane() throws Exception {
+    private void changeToMapPane() {
         setPane(2);
     }
     
-    private void makeMapPane() throws Exception {
+    private void makeMapPane() {
         setTitle("Map of London");
             
         BorderPane window = new BorderPane();
@@ -513,8 +523,8 @@ public class MainViewer extends Stage
         minMaxBox.getStyleClass().add("mapMinMaxBox");
             
         infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
-        infoPane.setPadding(new Insets(20));
-        infoPane.setSpacing(30);
+        infoPane.setPadding(new Insets(10, 20, 10, 10));
+        infoPane.setSpacing(15);
         
         mapView.setPadding(new Insets(20));
         
@@ -524,7 +534,7 @@ public class MainViewer extends Stage
         mapPane = window;
     }
     
-    private void makeHexagonMap() throws Exception {
+    private void makeHexagonMap()  {
         mapPositions = StatisticsData.getMapPositions();
         
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
@@ -584,11 +594,7 @@ public class MainViewer extends Stage
                         boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
                         //boroughButton.setStyle("-fx-font-size: " + String.valueOf(20.0/94.0 * hexagonWidth) + ";");
                         boroughButton.getStyleClass().add("boroughButton");
-                        boroughButton.setOnAction(e ->
-                                                       {
-                                                          try { openPropertyViewer(boroughButton.getBoroughName()); }
-                                                          catch (Exception ex) {}
-                                                       });
+                        boroughButton.setOnAction(e -> openPropertyViewer(boroughButton.getBoroughName()));
                         
                         ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
                             hexagonOutline.setFitWidth(hexagonWidth);
@@ -637,13 +643,13 @@ public class MainViewer extends Stage
         return spacerRectangle;
     }
     
-    private void openPropertyViewer(String boroughName) throws Exception {
+    private void openPropertyViewer(String boroughName) {
         try {
-            PropertyViewer stage = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
-            if(stage.getInternetConnection() == true){
-                stage.show();
+            PropertyViewer propertyViewer = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
+            if(propertyViewer.getInternetConnection() == true){
+                propertyViewer.show();
             } else {
-                stage.noConnectionAlert();
+                propertyViewer.noConnectionAlert();
             }  
         }
         catch (Exception e) {
@@ -666,7 +672,7 @@ public class MainViewer extends Stage
         return hexagon;
     }
     
-    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) throws Exception {
+    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) {
         ColorAdjust shader = new ColorAdjust();
             shader.setBrightness(StatisticsData.getBoroughMapColour(percentile));
             
@@ -678,7 +684,7 @@ public class MainViewer extends Stage
         return hexagon;
     }
     
-    private GridPane createKey() throws Exception {
+    private GridPane createKey() {
         GridPane key = new GridPane();
         key.getStyleClass().add("infoGrid");
         

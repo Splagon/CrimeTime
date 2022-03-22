@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
  */
 public class Controller extends Application
 {
-    public void start(Stage stage) throws Exception
+    public void start(Stage stage)
     {
         stage = new MainViewer();
         stage.show();
