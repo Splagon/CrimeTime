@@ -41,7 +41,7 @@ import java.time.temporal.ChronoUnit;
  * @version 1.0
  */
 public class PropertyViewer extends Stage {
-    private DataHandler dataHandler = new DataHandler();
+    //private DataHandler dataHandler = new DataHandler();
     // List that will hold all the properties displayed
     private ArrayList<AirbnbListing> properties;
     // The index of the current property displayed in "properties"
@@ -68,8 +68,6 @@ public class PropertyViewer extends Stage {
     // Holds applcation's internet connectivity status
     private boolean applicationConnected;
     
-    private static ArrayList<Booking> bookingList;
-    
     /**
      * Constructor of property viewer stage.
      * 
@@ -92,10 +90,6 @@ public class PropertyViewer extends Stage {
         this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
     }
     
-    public static ArrayList<Booking> getBookingList() {
-        return bookingList;
-    }
-    
     /**
      * The property viewer architecture is as follows. The root of the stage 
      * is a border pane that contains contains 5 nodes: at the top there is a 
@@ -107,9 +101,9 @@ public class PropertyViewer extends Stage {
         // Generates the list of properties that will be displayed depending 
         // on the borough, price range and sorting parameter selected by the user.
         if(sortedBy != null){
-            properties = dataHandler.getPropertiesSortedBy(borough, minPrice, maxPrice, sortedBy);
+            properties = DataHandler.getPropertiesSortedBy(borough, minPrice, maxPrice, sortedBy);
         }else {
-            properties = dataHandler.getPropertiesFromBorough(borough, minPrice, maxPrice);
+            properties = DataHandler.getPropertiesFromBorough(borough, minPrice, maxPrice);
         }
         
         BorderPane root = new BorderPane();
@@ -499,7 +493,9 @@ public class PropertyViewer extends Stage {
     private void confirmationAction(String grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
         showConfirmationStage();
         bookingStage.close();
-        bookingList.add(new Booking(properties.get(currentPropertyIndex), grandTotal, checkinDate, checkoutDate));
+        AirbnbListing propertyBooked = properties.get(currentPropertyIndex);
+        Booking newBooking = new Booking(propertyBooked, grandTotal, checkinDate, checkoutDate);
+        DataHandler.addToBookingList(newBooking);
     }
     
     private void showConfirmationStage() {

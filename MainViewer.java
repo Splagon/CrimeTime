@@ -39,6 +39,7 @@ import javafx.scene.text.Font;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 
 /**
  * Write a description of class MapViewer here.
@@ -168,7 +169,6 @@ public class MainViewer extends Stage
     }
     
     private void setNextPaneButtonLabel() {
-        this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         
         switch (nameOfPaneToChangeTo) {
@@ -954,15 +954,42 @@ public class MainViewer extends Stage
     private void makeBookingsPane() {
         BorderPane pane = new BorderPane();
         Label windowTitle = new Label("Your bookings: ");
-        VBox centerPane = new VBox();
-        ScrollBar scrollBar = new ScrollBar();
-        pane.setCenter(centerPane);
-        pane.setRight(scrollBar);
-        ArrayList<Booking> bookingList = PropertyViewer.getBookingList();
-        for(Booking booking : bookingList) {
-            
+        VBox contentPane = new VBox();
+        
+        ScrollPane scrollPane = new ScrollPane();
+        VBox bookingsPanel = new VBox();
+        
+        ArrayList<Booking> bookingList = DataHandler.getBookingList();
+        if (! bookingList.isEmpty()) {
+            for(Booking booking : bookingList) {
+                VBox bookingListing = createBookingListing(booking);
+                    bookingListing.getStyleClass().add("bookingListing");
+                    bookingsPanel.setMargin(bookingListing, new Insets(10));
+                    
+                bookingsPanel.getChildren().add(bookingListing);
+            }
+        }
+        else {
+            Label noBookingsLabel = new Label("There are no bookings currently...");
+            bookingsPanel.getChildren().add(noBookingsLabel);
         }
         
-        //pane = window;
+        scrollPane.setContent(bookingsPanel);
+        
+        contentPane.getChildren().add(windowTitle);
+        contentPane.getChildren().add(scrollPane);
+        
+        pane.setCenter(contentPane);
+        
+        bookingsPane = pane;
+    }
+    
+    private VBox createBookingListing(Booking booking) {
+        VBox bookingListing = new VBox();
+        AirbnbListing property = booking.getProperty();
+        
+        // add stuff to box
+        
+        return bookingListing;
     }
 }
