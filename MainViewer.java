@@ -279,6 +279,7 @@ public class MainViewer extends Stage
 
         //adding elements to the window
         window.getChildren().addAll(title, instrcutionsAndStart);
+        window.setAlignment(Pos.CENTER);
         instructions.getChildren().addAll(instructionsTitle, instructions1, instructions2, instructions3); 
         
         instrcutionsAndStart.setLeft(instructions);
