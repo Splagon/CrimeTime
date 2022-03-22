@@ -122,8 +122,7 @@ public class StatisticsViewer extends Stage
     
     private void constructScene(int selectedMinPrice, int selectedMaxPrice)  {
         // The layout of the window
-        try{ noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice); }
-        catch (Exception ex) {};   
+        noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
         
         //StatisticsData.initialiseHandler();
         StatisticsData.setBoroughListings(selectedMinPrice, selectedMaxPrice);
@@ -234,8 +233,7 @@ public class StatisticsViewer extends Stage
     }
     
     public void update(int selectedMinPrice, int selectedMaxPrice) {
-        try{ noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice); }
-        catch (Exception ex) {};  
+        noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
         
         //updateInfo();
         

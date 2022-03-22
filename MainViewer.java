@@ -39,6 +39,7 @@ import javafx.scene.text.Font;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 
 /**
  * Write a description of class MapViewer here.
@@ -93,7 +94,7 @@ public class MainViewer extends Stage
     /**
      * Constructor for objects of class MapViewer
      */
-    public MainViewer() throws Exception
+    public MainViewer()
     {         
         DataHandler.initialiseHandler();
         
@@ -168,7 +169,6 @@ public class MainViewer extends Stage
     }
     
     private void setNextPaneButtonLabel() {
-        this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         
         switch (nameOfPaneToChangeTo) {
@@ -223,18 +223,28 @@ public class MainViewer extends Stage
     }
     
     private void setButtonsDisabled(int currentSceneIndex) {
+        int nextSceneIndex = currentSceneIndex + 1;
+        int prevSceneIndex = currentSceneIndex - 1;
+        
+        if (nextSceneIndex >= sceneOrder.length) {
+            nextSceneIndex = 0;
+        }
+        if (prevSceneIndex < 0) {
+            prevSceneIndex = sceneOrder.length - 1;
+        }
+        
         if (selectedMinPrice == null && selectedMaxPrice == null) {    
-            if (currentSceneIndex <= 0 || currentSceneIndex >= 4) {
-                prevPanelButton.setDisable(false);
-                nextPanelButton.setDisable(false);
-            }
-            else if (currentSceneIndex == 1) {
-                prevPanelButton.setDisable(false);
+            if (sceneOrder[nextSceneIndex] == "mapPane") {
                 nextPanelButton.setDisable(true);
             }
-            else if (currentSceneIndex == 3) {
-                prevPanelButton.setDisable(true);
+            else {
                 nextPanelButton.setDisable(false);
+            }
+            if (sceneOrder[prevSceneIndex] == "mapPane") {
+                prevPanelButton.setDisable(true);
+            }
+            else {
+                prevPanelButton.setDisable(false);
             }
         }
         else {
@@ -482,11 +492,11 @@ public class MainViewer extends Stage
         }
     }
     
-    private void changeToMapPane() throws Exception {
+    private void changeToMapPane() {
         setPane(2);
     }
     
-    private void makeMapPane() throws Exception {
+    private void makeMapPane() {
         setTitle("Map of London");
             
         BorderPane window = new BorderPane();
@@ -513,8 +523,8 @@ public class MainViewer extends Stage
         minMaxBox.getStyleClass().add("mapMinMaxBox");
             
         infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
-        infoPane.setPadding(new Insets(20));
-        infoPane.setSpacing(30);
+        infoPane.setPadding(new Insets(10, 20, 10, 10));
+        infoPane.setSpacing(15);
         
         mapView.setPadding(new Insets(20));
         
@@ -524,7 +534,7 @@ public class MainViewer extends Stage
         mapPane = window;
     }
     
-    private void makeHexagonMap() throws Exception {
+    private void makeHexagonMap()  {
         mapPositions = StatisticsData.getMapPositions();
         
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
@@ -584,11 +594,7 @@ public class MainViewer extends Stage
                         boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
                         //boroughButton.setStyle("-fx-font-size: " + String.valueOf(20.0/94.0 * hexagonWidth) + ";");
                         boroughButton.getStyleClass().add("boroughButton");
-                        boroughButton.setOnAction(e ->
-                                                       {
-                                                          try { openPropertyViewer(boroughButton.getBoroughName()); }
-                                                          catch (Exception ex) {}
-                                                       });
+                        boroughButton.setOnAction(e -> openPropertyViewer(boroughButton.getBoroughName()));
                         
                         ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
                             hexagonOutline.setFitWidth(hexagonWidth);
@@ -637,13 +643,13 @@ public class MainViewer extends Stage
         return spacerRectangle;
     }
     
-    private void openPropertyViewer(String boroughName) throws Exception {
+    private void openPropertyViewer(String boroughName) {
         try {
-            PropertyViewer stage = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
-            if(stage.getInternetConnection() == true){
-                stage.show();
+            PropertyViewer propertyViewer = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
+            if(propertyViewer.getInternetConnection() == true){
+                propertyViewer.show();
             } else {
-                stage.noConnectionAlert();
+                propertyViewer.noConnectionAlert();
             }  
         }
         catch (Exception e) {
@@ -666,7 +672,7 @@ public class MainViewer extends Stage
         return hexagon;
     }
     
-    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) throws Exception {
+    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) {
         ColorAdjust shader = new ColorAdjust();
             shader.setBrightness(StatisticsData.getBoroughMapColour(percentile));
             
@@ -678,7 +684,7 @@ public class MainViewer extends Stage
         return hexagon;
     }
     
-    private GridPane createKey() throws Exception {
+    private GridPane createKey() {
         GridPane key = new GridPane();
         key.getStyleClass().add("infoGrid");
         
@@ -954,15 +960,42 @@ public class MainViewer extends Stage
     private void makeBookingsPane() {
         BorderPane pane = new BorderPane();
         Label windowTitle = new Label("Your bookings: ");
-        VBox centerPane = new VBox();
-        ScrollBar scrollBar = new ScrollBar();
-        pane.setCenter(centerPane);
-        pane.setRight(scrollBar);
-        ArrayList<Booking> bookingList = PropertyViewer.getBookingList();
-        for(Booking booking : bookingList) {
-            
+        VBox contentPane = new VBox();
+        
+        ScrollPane scrollPane = new ScrollPane();
+        VBox bookingsPanel = new VBox();
+        
+        ArrayList<Booking> bookingList = DataHandler.getBookingList();
+        if (! bookingList.isEmpty()) {
+            for(Booking booking : bookingList) {
+                VBox bookingListing = createBookingListing(booking);
+                    bookingListing.getStyleClass().add("bookingListing");
+                    bookingsPanel.setMargin(bookingListing, new Insets(10));
+                    
+                bookingsPanel.getChildren().add(bookingListing);
+            }
+        }
+        else {
+            Label noBookingsLabel = new Label("There are no bookings currently...");
+            bookingsPanel.getChildren().add(noBookingsLabel);
         }
         
-        //pane = window;
+        scrollPane.setContent(bookingsPanel);
+        
+        contentPane.getChildren().add(windowTitle);
+        contentPane.getChildren().add(scrollPane);
+        
+        pane.setCenter(contentPane);
+        
+        bookingsPane = pane;
+    }
+    
+    private VBox createBookingListing(Booking booking) {
+        VBox bookingListing = new VBox();
+        AirbnbListing property = booking.getProperty();
+        
+        // add stuff to box
+        
+        return bookingListing;
     }
 }

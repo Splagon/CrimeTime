@@ -233,3 +233,12 @@
     -fx-font: 15px "Times New Roman";
     -fx-font-weight: bold;
 }
+// ------------- Booking Window --------------------
+
+// ------------- Booking Viewer --------------------
+.bookingListing {
+    -fx-background-color : lightgoldenrodyellow;
+    -fx-border-color: darkslategrey;
+    -fx-padding: 5;
+}
+// ------------- Booking Viewer --------------------

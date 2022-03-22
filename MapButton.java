@@ -12,7 +12,7 @@ public class MapButton extends Button
         setTooltip(new Tooltip(boroughName));
     }
     
-    public String getBoroughName() throws Exception {
+    public String getBoroughName() {
         return boroughName;
     }
 }

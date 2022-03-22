@@ -1,4 +1,7 @@
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+
 /**
  * Write a description of class Booking here.
  *
@@ -7,12 +10,11 @@ import java.time.LocalDate;
  */
 public class Booking
 {
-    
     private AirbnbListing property;
     private String grandTotal;
     private LocalDate checkIn;
     private LocalDate checkOut;
-    private int duration;
+    private long durationInDays;
 
     /**
      * Constructor for objects of class Booking
@@ -23,7 +25,12 @@ public class Booking
         this.grandTotal = grandTotal;
         this.checkIn = checkIn;
         this.checkOut  = checkOut;
-        duration = checkOut.compareTo(checkIn);
+        durationInDays = calculateDuration(checkInDate, checkOutDate);
+    }
+    
+    private long calculateDuration(LocalDate checkInDate, LocalDate checkOutDate) {
+        long days = Period.between(checkInDate, checkOutDate).getDays();
+        return days;
     }
 
     public String getGrandTotal() {
@@ -42,7 +49,7 @@ public class Booking
         return checkOut;
     }
     
-    public int getgrandTotalDuration() {
-        return duration;
+    public long getDurationInDays() {
+        return durationInDays;
     }
 }

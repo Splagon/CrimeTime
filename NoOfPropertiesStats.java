@@ -16,14 +16,14 @@ public class NoOfPropertiesStats
     
     private int noOfBoroughs;
     
-    public NoOfPropertiesStats(int minPrice, int maxPrice) throws Exception {
+    public NoOfPropertiesStats(int minPrice, int maxPrice) {
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         sortedNumberOfPropertiesInBorough = StatisticsData.getSortedNumberOfPropertiesInBoroughs(minPrice, maxPrice);
         calculateStats();
     }
     
-    public NoOfPropertiesStats(int firstQuartile, int median, int thirdQuartile) throws Exception {
+    public NoOfPropertiesStats(int firstQuartile, int median, int thirdQuartile) {
         this.firstQuartile = firstQuartile;
         this.median = median;
         this.thirdQuartile = thirdQuartile;

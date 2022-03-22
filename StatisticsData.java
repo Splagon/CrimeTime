@@ -247,7 +247,7 @@ public class StatisticsData extends DataHandler
         return brightness;
     }
     
-    public static double getBoroughMapColour(int percentile) throws Exception {
+    public static double getBoroughMapColour(int percentile) {
         NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(25, 50, 75);
         
         double brightness = getBrightness(percentile, noOfPropertiesStats);
@@ -284,7 +284,7 @@ public class StatisticsData extends DataHandler
         return brightness;
     }
     
-    public static ArrayList<Borough> getSortedNumberOfPropertiesInBoroughs(int minPrice, int maxPrice) throws Exception
+    public static ArrayList<Borough> getSortedNumberOfPropertiesInBoroughs(int minPrice, int maxPrice)
     {
         ArrayList<Borough> sortedNumberOfPropertiesAtPrice = new ArrayList<Borough>();
 

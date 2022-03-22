@@ -17,6 +17,8 @@ public class DataHandler
     private static AirbnbDataLoader dataLoader;
     protected static ArrayList<AirbnbListing> listings;
     
+    private static ArrayList<Booking> bookingList = new ArrayList<Booking>();
+    
     protected static ArrayList<String> boroughs = new ArrayList<String>();
     
     protected static HashMap<String, Borough> sortedBoroughs;
@@ -268,5 +270,13 @@ public class DataHandler
             }
         }
         return highest;
+    }
+    
+    public static ArrayList<Booking> getBookingList() {
+        return bookingList;
+    }
+    
+    public static void addToBookingList(Booking booking) {
+        bookingList.add(booking);
     }
 }
