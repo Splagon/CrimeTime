@@ -735,6 +735,7 @@ public class MainViewer extends Stage
     private VBox createStatsPanel() {
         //setTitle("Information");
         
+    
         VBox statsBox = new VBox();
         statsBox.setSpacing(20);
         
@@ -829,7 +830,7 @@ public class MainViewer extends Stage
           
         
         // The "title" labels in the window
-        Label title = new Label("Statistics");
+        Label title = new Label("General Statistics");
         Label reviewTitle = new Label("Average Reviews Per Property:");
         Label availableTitle = new Label("Total Available Properties:");
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
@@ -914,7 +915,37 @@ public class MainViewer extends Stage
         setText(priceSDInfo, StatisticsData.getPriceSDInfo(false));
         setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
         
-        statsPane = window;
+        Button leftStatsButton = new Button();
+        leftStatsButton.setText("<");
+        //leftStatsButton.setOnAction();
+        leftStatsButton.setMinSize(10, 100);
+        leftStatsButton.setAlignment(Pos.CENTER);
+        
+        //Create the right button
+        Button rightStatsButton = new Button();
+        rightStatsButton.setText(">");
+        //rightStatsButton.setOnAction();
+        rightStatsButton.setMinSize(10, 100);
+        rightStatsButton.setAlignment(Pos.CENTER);
+        
+        VBox rightButtonVBox = new VBox();
+        rightButtonVBox.getChildren().add(rightStatsButton);
+        rightButtonVBox.getStyleClass().add("statsvbox");
+        rightButtonVBox.setAlignment(Pos.CENTER);
+        
+        VBox leftButtonVBox = new VBox();
+        leftButtonVBox.getChildren().add(leftStatsButton);
+        leftButtonVBox.getStyleClass().add("statsvbox");
+        leftButtonVBox.setAlignment(Pos.CENTER);
+        
+        
+        BorderPane statsBorder = new BorderPane(); 
+        statsBorder.setCenter(window);
+        statsBorder.setLeft(leftButtonVBox);
+        statsBorder.setRight(rightButtonVBox);
+        
+        
+        statsPane = statsBorder;
     }
     
     /**
