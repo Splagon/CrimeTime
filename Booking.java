@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.time.Period;
 import java.util.ArrayList;
 
@@ -28,8 +29,9 @@ public class Booking
         duration = calculateDuration(checkInDate, checkOutDate);
     }
     
-    private long calculateDuration(LocalDate checkInDate, LocalDate checkOutDate) {
-        long days = Period.between(checkInDate, checkOutDate).getDays();
+    public static long calculateDuration(LocalDate checkInDate, LocalDate checkOutDate) {
+        //Period period = Period.between(checkInDate, checkOutDate);
+        long days = checkInDate.until(checkOutDate, ChronoUnit.DAYS);
         return days;
     }
 

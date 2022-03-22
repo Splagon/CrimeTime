@@ -538,6 +538,6 @@ public class PropertyViewer extends Stage {
     }
     
     private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) {
-        return properties.get(currentPropertyIndex).getPrice()*(checkOut.compareTo(checkIn));
+        return properties.get(currentPropertyIndex).getPrice()*(int)(Booking.calculateDuration(checkIn, checkOut));
     }
 }

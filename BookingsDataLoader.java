@@ -19,7 +19,7 @@ public class BookingsDataLoader
         System.out.print("Begin loading Airbnb london dataset...");
         ArrayList<Booking> bookings = new ArrayList<Booking>();
         try{
-            URL url = getClass().getResource("airbnb-london.csv");
+            URL url = getClass().getResource("bookingsData.DS_Store");
             CSVReader reader = new CSVReader(new FileReader(new File(url.toURI()).getAbsolutePath()));
             String [] line;
             //skip the first row (column headers)
@@ -33,7 +33,7 @@ public class BookingsDataLoader
                 Booking booking = new Booking(DataHandler.getProperty(propertyID), grandTotal, checkInDate, checkOutDate);
                 bookings.add(booking);
             }
-        } catch(IOException | URISyntaxException e){
+        } catch(NullPointerException | IOException | URISyntaxException e){
             System.out.println("Failure! Something went wrong with loading bookings");
             e.printStackTrace();
         }
