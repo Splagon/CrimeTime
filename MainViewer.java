@@ -119,10 +119,17 @@ public class MainViewer extends Stage
         makeStatsPane();
         
         root = new BorderPane();
+        
+        //panel switcher buttons
         prevPanelButton = new Button("<-- Bookings");
-        prevPanelButton.setPrefWidth(135);
+        prevPanelButton.setPrefSize(135, 20);
         nextPanelButton = new Button("Price Selection -->");
-        nextPanelButton.setPrefWidth(135);
+        nextPanelButton.setPrefSize(135, 20);
+        //styling for the buttons
+        prevPanelButton.getStyleClass().add("smallWindowButtons");
+        nextPanelButton.getStyleClass().add("smallWindowButtons");
+        
+        //panel switcher
         makePanelSwitcherPane();
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
@@ -337,7 +344,7 @@ public class MainViewer extends Stage
         
         //window.getStyleClass().add("welcomeVBox");
         
-        title.getStyleClass().add("welcomeTitle");
+        title.getStyleClass().add("windowTitle");
         
         instructions.getStyleClass().add("instructionsTitle"); 
         
@@ -387,7 +394,7 @@ public class MainViewer extends Stage
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
         
-        title.getStyleClass().add("welcomeTitle");
+        title.getStyleClass().add("windowTitle");
         
         instruction.getStyleClass().add("priceInstruction");
         
@@ -551,7 +558,7 @@ public class MainViewer extends Stage
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("welcomeTitle");
+                titleLabel.getStyleClass().add("windowTitle");
             HBox minMaxBox = createMinMaxBox();
                 minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             VBox stats = createStatsPanel();
@@ -942,13 +949,10 @@ public class MainViewer extends Stage
         highAvgReview.getChildren().add(highAvgReviewTitle); 
         highAvgReview.getChildren().add(highAvgReviewInfo);
         
-        //Set the scene and add CSS
-        //Scene scene = new Scene(window, 1200,700);
-        
-        //scene.getStylesheets().add("stylesheet.css");
+        //add CSS
         
         statsGrid.setId("statsgrid"); 
-        statsWindow.getStyleClass().add("statsvbox");
+        statsWindow.getStyleClass().add("statsWindowAndButtons");
         reviews.getStyleClass().add("statsvbox"); 
         available.getStyleClass().add("statsvbox");
         noHomeAndApartments.getStyleClass().add("statsvbox");
@@ -964,7 +968,7 @@ public class MainViewer extends Stage
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        title.getStyleClass().add("welcomeTitle"); 
+        title.getStyleClass().add("windowTitle"); 
         
     
         setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
@@ -989,12 +993,12 @@ public class MainViewer extends Stage
         
         VBox rightButtonVBox = new VBox();
         rightButtonVBox.getChildren().add(rightStatsButton);
-        rightButtonVBox.getStyleClass().add("statsvbox");
+        rightButtonVBox.getStyleClass().add("statsWindowAndButtons");
         rightButtonVBox.setAlignment(Pos.CENTER);
         
         VBox leftButtonVBox = new VBox();
         leftButtonVBox.getChildren().add(leftStatsButton);
-        leftButtonVBox.getStyleClass().add("statsvbox");
+        leftButtonVBox.getStyleClass().add("statsWindowAndButtons");
         leftButtonVBox.setAlignment(Pos.CENTER);
         
         
@@ -1125,12 +1129,14 @@ public class MainViewer extends Stage
     }
     
     private void makeBookingsPane() {
+        //creating the pane for the bookings and adding any styling
         BorderPane pane = new BorderPane();
         
         VBox contentPane = new VBox();
                 
                 HBox hbox = new HBox();
                     Label windowTitle = new Label("Your bookings: ");
+                    windowTitle.getStyleClass().add("windowTitle");
                 hbox.getChildren().add(windowTitle);
                 hbox.setAlignment(Pos.CENTER);
                 

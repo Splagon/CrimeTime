@@ -1,32 +1,15 @@
-// -------------- universal ---------------------
-.mainRoot {
-    -fx-padding: 20;
-    -fx-spacing: 20;
-    -fx-alignment: center;
-    -fx-background-color : floralwhite;
-}
-
-.mainRoot:Node {
-    -fx-alignment: center;
-
-}
-
-.mainHeading {
-    -fx-font: 30px "Ariel";
-    -fx-alignment: center;
-    -fx-text-alignment: center;
-    -fx-underline: true;
-    -fx-font-weight: bold;
-}
-// -------------- universal ---------------------
-
 #statsgrid{
     -fx-hgap: 0px;
     -fx-vgap: 0px;
-    -fx-grid-lines-visible: true;
 }
 
 .statsvbox {
+    -fx-padding: 10;
+    -fx-spacing: 8;
+    -fx-border-color: black;
+}
+
+.statsWindowAndButtons{
     -fx-padding: 10;
     -fx-spacing: 8;
 }
@@ -66,17 +49,42 @@
 
 .propertyViewerInfoLabels {
     -fx-padding: 10px;
-    -fx-font: 12px "Verdana";
+    -fx-font: 12px "Ariel";
 }
 
-// ------------ welcome scene -------------------
-.welcomeTitle {
+// -------------- main ---------------------
+.mainRoot {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-background-color : floralwhite;
+}
+
+.mainRoot:Node {
+    -fx-alignment: center;
+
+}
+
+.windowTitle {
     -fx-font: 30px "Ariel";
     -fx-alignment: center;
     -fx-text-alignment: center;
     -fx-underline: true;
     -fx-font-weight: bold;
 }
+
+smallWindowButtons {
+    -fx-font: 12px "Ariel";
+}
+
+.smallWindowButtons : hover{
+    -fx-font: 14px "Ariel";
+    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
+}
+
+// ----------------- main -----------------------
+
+// ------------ welcome scene -------------------
 
 .welcomeVBox {
     -fx-text-alignmet: center;
@@ -108,7 +116,6 @@
 .startButton {
     -fx-font: 25px "Ariel";
     -fx-padding: 20;
-    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
     -fx-background-color: indigo;
     -fx-text-fill: white;
 }
@@ -116,6 +123,7 @@
 .startButton:hover {
     -fx-font: 30px "Ariel";
     -fx-background-color: orange;
+    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
 }
 
 .startButton:pressed {
