@@ -34,6 +34,17 @@ public class Booking
         long days = checkInDate.until(checkOutDate, ChronoUnit.DAYS);
         return days;
     }
+    
+    public String[] convertToCSV() {
+        String[] line = new String[4];
+        
+        line[0] = property.getId();
+        line[1] = String.valueOf(grandTotal);
+        line[2] = checkIn.toString();
+        line[3] = checkOut.toString();
+        
+        return line;
+    }
 
     public int getGrandTotal() {
         return grandTotal;
