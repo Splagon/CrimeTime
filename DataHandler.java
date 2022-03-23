@@ -298,4 +298,8 @@ public class DataHandler
     public static void addToBookingList(Booking booking) {
         bookingList.add(booking);
     }
+    
+    public static void removeToBookingList(Booking booking) {
+        bookingList.remove(booking);
+    };
 }

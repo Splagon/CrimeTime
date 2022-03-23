@@ -389,7 +389,7 @@ public class PropertyViewer extends Stage {
         bookingStage.setTitle("Booking Window");
         
         BorderPane root = new BorderPane();
-        root.setId("rootBooking");
+        root.getStyleClass().add("rootBooking");
         
             Label propertyLabel  = new Label(properties.get(currentPropertyIndex).getName());
             root.setAlignment(propertyLabel, Pos.CENTER);
