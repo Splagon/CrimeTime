@@ -70,6 +70,7 @@ public class MainViewer extends Stage
     
     private Label statusLabel;
     
+    //the buttons at the bottom of screen
     private AnchorPane panelSwitcherPane;
     private Button prevPanelButton;
     private Button nextPanelButton;
@@ -116,6 +117,10 @@ public class MainViewer extends Stage
         makeStatsPane();
         
         root = new BorderPane();
+        prevPanelButton = new Button("<-- Bookings");
+        prevPanelButton.setPrefWidth(135);
+        nextPanelButton = new Button("Price Selection -->");
+        nextPanelButton.setPrefWidth(135);
         makePanelSwitcherPane();
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
@@ -141,25 +146,16 @@ public class MainViewer extends Stage
     
     private void makePanelSwitcherPane() {
         panelSwitcherPane = new AnchorPane();
-        Label prevPanelButtonLabel = new Label("prev");
-        Label nextPanelButtonLabel = new Label("next");
         
-        prevPanelButton = new Button("<");
-            prevPanelButton.setOnAction(e -> goToPrevPanel());
-        nextPanelButton = new Button(">");
-            nextPanelButton.setOnAction(e -> goToNextPanel());
+        //switches panel once the button is clicked
+        prevPanelButton.setOnAction(e -> goToPrevPanel());
+        nextPanelButton.setOnAction(e -> goToNextPanel());
         
-        HBox prevButtonHBox = new HBox();
-        prevButtonHBox.getChildren().addAll(prevPanelButton, prevPanelButtonLabel);
+        AnchorPane.setLeftAnchor(prevPanelButton, 5.0);
+        AnchorPane.setRightAnchor(nextPanelButton, 5.0);
         
-        HBox nextButtonHBox = new HBox();
-        nextButtonHBox.getChildren().addAll(nextPanelButtonLabel, nextPanelButton);
-        
-        AnchorPane.setLeftAnchor(prevButtonHBox, 5.0);
-        AnchorPane.setRightAnchor(nextButtonHBox, 5.0);
-        
-        panelSwitcherPane.getChildren().add(prevButtonHBox);
-        panelSwitcherPane.getChildren().add(nextButtonHBox);
+        panelSwitcherPane.getChildren().add(prevPanelButton);
+        panelSwitcherPane.getChildren().add(nextPanelButton);
         
         root.setBottom(panelSwitcherPane);
     }
@@ -171,6 +167,9 @@ public class MainViewer extends Stage
             currentSceneIndex = sceneOrder.length - 1;
         }
         
+        updatePrevButtonText();
+        updateNextButtonText();
+        
         setPane(currentSceneIndex);
     }
     
@@ -181,22 +180,52 @@ public class MainViewer extends Stage
             currentSceneIndex = 0;
         }
         
+        updatePrevButtonText();
+        updateNextButtonText();
+        
         setPane(currentSceneIndex);
     }
     
-    private void setNextPaneButtonLabel() {
+    private void updatePrevButtonText() {
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         
         switch (nameOfPaneToChangeTo) {
             case ("welcomePane") :
+                prevPanelButton.setText("<-- Bookings");
                 break;
             case ("priceSelectorPane") :
+                prevPanelButton.setText("<-- Welcome");
                 break;
             case ("mapPane") :
+                prevPanelButton.setText("<-- Price Selection");
                 break;
             case ("statsPane") :
+                prevPanelButton.setText("<-- Map");
                 break;
-            case ("favouritesPane") :
+            case ("bookingsPane") :
+                prevPanelButton.setText("<-- General Statistics");
+                break;
+        }
+    }
+    
+    private void updateNextButtonText() {
+        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+        
+        switch (nameOfPaneToChangeTo) {
+            case ("welcomePane") :
+                nextPanelButton.setText("Price Selection -->");
+                break;
+            case ("priceSelectorPane") :
+                nextPanelButton.setText("Map -->");
+                break;
+            case ("mapPane") :
+                nextPanelButton.setText("General Statistics -->");
+                break;
+            case ("statsPane") :
+                nextPanelButton.setText("Bookings -->");
+                break;
+            case ("bookingsPane") :
+                nextPanelButton.setText("Welcome -->");
                 break;
         }
     }
