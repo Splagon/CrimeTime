@@ -13,8 +13,8 @@ public class Booking
 {
     private AirbnbListing property;
     private int grandTotal;
-    private LocalDate checkInDate;
-    private LocalDate checkOutDate;
+    private LocalDate checkIn;
+    private LocalDate checkOut;
     private long duration;
 
     /**
@@ -24,8 +24,8 @@ public class Booking
     {
         this.property = property;
         this.grandTotal = grandTotal;
-        this.checkInDate = checkInDate;
-        this.checkOutDate  = checkOutDate;
+        this.checkIn = checkInDate;
+        this.checkOut  = checkOutDate;
         duration = calculateDuration(checkInDate, checkOutDate);
     }
     
@@ -40,8 +40,8 @@ public class Booking
         
         line[0] = property.getId();
         line[1] = String.valueOf(grandTotal);
-        line[2] = checkInDate.toString();
-        line[3] = checkOutDate.toString();
+        line[2] = checkIn.toString();
+        line[3] = checkOut.toString();
         
         return line;
     }
@@ -59,11 +59,11 @@ public class Booking
     }
     
     public LocalDate getCheckInDate() {
-        return checkInDate;
+        return checkIn;
     }
     
     public LocalDate getCheckOutDate() {
-        return checkOutDate;
+        return checkOut;
     }
     
     public long getDuration() {

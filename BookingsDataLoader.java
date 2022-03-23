@@ -29,12 +29,13 @@ public class BookingsDataLoader
             reader.readNext();
             while ((line = reader.readNext()) != null) {
                 String propertyID = line[0];
-                int grandTotal = Integer.valueOf(line[1]);
+
+                //int grandTotal = line[1];
                 LocalDate checkInDate = LocalDate.parse(line[2]);
                 LocalDate checkOutDate = LocalDate.parse(line[3]);
-    
-                Booking booking = new Booking(DataHandler.getProperty(propertyID), grandTotal, checkInDate, checkOutDate);
-                bookings.add(booking);
+
+                //Booking booking = new Booking(DataHandler.getProperty(propertyID), grandTotal, checkInDate, checkOutDate);
+                //bookings.add(booking);
             }
         } 
         catch(IOException | URISyntaxException e) 

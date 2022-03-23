@@ -416,9 +416,9 @@ public class PropertyViewer extends Stage {
                     checkOut.setValue(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights()));
                     gridPane.add(checkOut, 1, 1);
                     
-                Label grandTotal = new Label("The price for your stay is: £" + properties.get(currentPropertyIndex).getPrice());
+                Label grandTotalLabel = new Label("The price for your stay is: £" + properties.get(currentPropertyIndex).getPrice());
                     checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights())));
-                    checkOut.setOnAction(e -> grandTotal.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
+                    checkOut.setOnAction(e -> grandTotalLabel.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
                     
                     final Callback<DatePicker, DateCell> dayCellFactoryOut = new Callback<DatePicker, DateCell>() {
                         @Override
@@ -461,7 +461,7 @@ public class PropertyViewer extends Stage {
                     checkIn.setDayCellFactory(dayCellFactoryIn);
                     
               vbox.setAlignment(Pos.CENTER);
-              vbox.getChildren().addAll(gridPane, grandTotal);
+              vbox.getChildren().addAll(gridPane, grandTotalLabel);
               vbox.setSpacing(80);
             
         root.setCenter(vbox);
@@ -469,7 +469,7 @@ public class PropertyViewer extends Stage {
             AnchorPane bottomPane = new AnchorPane();
         
                 Button bookButton = new Button("Confirm Booking");
-                    bookButton.setOnAction(e -> confirmationAction(properties.get(currentPropertyIndex).getPrice(), checkIn.getValue(), checkOut.getValue()));
+                    bookButton.setOnAction(e -> confirmationAction(updateGrandTotal(checkIn.getValue(), checkOut.getValue()),checkIn.getValue(), checkOut.getValue()));
                 bottomPane.setRightAnchor(bookButton, 0.0);
             
                 Button goBackButton = new Button("Go Back");
@@ -524,7 +524,7 @@ public class PropertyViewer extends Stage {
         scene.getStylesheets().add("stylesheet.css");
         confirmationStage.setScene(scene);
         setStagePosititon(confirmationStage, bookingStage);
-        confirmationStage.show(); 
+        confirmationStage.show();
     }
     
     /**

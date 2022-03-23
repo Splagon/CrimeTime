@@ -72,12 +72,10 @@ public class StatisticsViewer extends Stage
         stat4.setFirst();
         
         
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-        BarChart barChart = new BarChart(xAxis, yAxis);
+
 
         // The "title" labels in the window
-        Label title = new Label("Statistics");
+        Label title = new Label("Statistics Based on Price Selected");
         Label reviewTitle = new Label("Average Reviews Per Property:");
         Label availableTitle = new Label("Total Available Properties:");
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
@@ -89,7 +87,6 @@ public class StatisticsViewer extends Stage
         window.setAlignment(Pos.CENTER);
         window.getChildren().add(title); 
         window.getChildren().add(statsGrid); 
-        window.getChildren().add(barChart);
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
         
@@ -99,20 +96,15 @@ public class StatisticsViewer extends Stage
         statsGrid.add(stat4, 1, 1);
 
         //Set the scene and add CSS
-        Scene scene = new Scene(window, 1200,700);
+        Scene scene = new Scene(window, 900,350);
 
         scene.getStylesheets().add("stylesheet.css");
 
         statsGrid.setId("statsgrid"); 
 
 
-        title.getStyleClass().add("titlelabel"); 
+        title.getStyleClass().add("welcomeTitle");
 
-        xAxis.setLabel("Borough");
-        yAxis.setLabel("Average Price");
-        averagePriceData.setName("Average Price per Night per Borough");
-        setAveragePricePerBorough();
-        barChart.getData().add(averagePriceData);
 
         
         setTitle("Information");
@@ -153,13 +145,9 @@ public class StatisticsViewer extends Stage
         stat4.addInfo("No. of Properties in Borough\nMaximum:", String.valueOf(noOfPropertiesStats.getMaxNoOfPropertiesInBorough()));
         stat4.setFirst();
         
-        
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-        BarChart barChart = new BarChart(xAxis, yAxis);
 
         // The "title" labels in the window
-        Label title = new Label("Statistics");
+        Label title = new Label("Statistics Based on Price Selected");
         Label reviewTitle = new Label("Average Reviews Per Property:");
         Label availableTitle = new Label("Total Available Properties:");
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
@@ -171,7 +159,6 @@ public class StatisticsViewer extends Stage
         window.setAlignment(Pos.CENTER);
         window.getChildren().add(title); 
         window.getChildren().add(statsGrid); 
-        window.getChildren().add(barChart);
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
         
@@ -181,20 +168,14 @@ public class StatisticsViewer extends Stage
         statsGrid.add(stat4, 1, 1);
 
         //Set the scene and add CSS
-        Scene scene = new Scene(window, 1200,700);
+        Scene scene = new Scene(window, 900,350);
 
         scene.getStylesheets().add("stylesheet.css");
 
         statsGrid.setId("statsgrid"); 
 
 
-        title.getStyleClass().add("titlelabel"); 
-
-        xAxis.setLabel("Borough");
-        yAxis.setLabel("Average Price");
-        averagePriceData.setName("Average Price per Night per Borough");
-        setAveragePricePerBorough();
-        barChart.getData().add(averagePriceData);
+        title.getStyleClass().add("welcomeTitle");; 
 
         
         setTitle("Information");
