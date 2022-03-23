@@ -242,3 +242,9 @@
     -fx-padding: 5;
 }
 // ------------- Booking Viewer --------------------
+
+// ------------- Booking List --------------------
+# bookingList {
+    -fx-font: 15px "Times New Roman";
+    -fx-font-weight: bold;
+}

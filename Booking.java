@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Booking
 {
     private AirbnbListing property;
-    private String grandTotal;
+    private int grandTotal;
     private LocalDate checkIn;
     private LocalDate checkOut;
     private long duration;
@@ -20,7 +20,7 @@ public class Booking
     /**
      * Constructor for objects of class Booking
      */
-    public Booking(AirbnbListing property, String grandTotal, LocalDate checkInDate, LocalDate checkOutDate)
+    public Booking(AirbnbListing property, int grandTotal, LocalDate checkInDate, LocalDate checkOutDate)
     {
         this.property = property;
         this.grandTotal = grandTotal;
@@ -35,7 +35,7 @@ public class Booking
         return days;
     }
 
-    public String getGrandTotal() {
+    public int getGrandTotal() {
         return grandTotal;
     }
     

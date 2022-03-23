@@ -40,6 +40,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
 
 /**
  * Write a description of class MapViewer here.
@@ -1085,45 +1086,68 @@ public class MainViewer extends Stage
     
     private void makeBookingsPane() {
         BorderPane pane = new BorderPane();
-        Label windowTitle = new Label("Your bookings: ");
+        
         VBox contentPane = new VBox();
+                
+                HBox hbox = new HBox();
+                    Label windowTitle = new Label("Your bookings: ");
+                hbox.getChildren().add(windowTitle);
+                hbox.setAlignment(Pos.CENTER);
+                
+                ScrollPane scrollPane = new ScrollPane();
+                    VBox bookingsPanel = new VBox();
+                        ArrayList<Booking> bookingList = DataHandler.getBookingList();
+                        if (! bookingList.isEmpty()) {
+                            for(Booking booking : bookingList) {
+                                BorderPane bookingListing = createBookingListing(booking);
+                                    bookingListing.getStyleClass().add("bookingListing");
+                                    bookingsPanel.setMargin(bookingListing, new Insets(10));
+                                    
+                                bookingsPanel.getChildren().add(bookingListing);
+                            }
+                        }
+                        else {
+                            Label noBookingsLabel = new Label("There are no bookings currently...");
+                            bookingsPanel.getChildren().add(noBookingsLabel);
+                        }       
+                scrollPane.setContent(bookingsPanel);
         
-        ScrollPane scrollPane = new ScrollPane();
-        VBox bookingsPanel = new VBox();
-        
-        ArrayList<Booking> bookingList = DataHandler.getBookingList();
-        if (! bookingList.isEmpty()) {
-            for(Booking booking : bookingList) {
-                VBox bookingListing = createBookingListing(booking);
-                    bookingListing.getStyleClass().add("bookingListing");
-                    bookingsPanel.setMargin(bookingListing, new Insets(10));
-                    
-                bookingsPanel.getChildren().add(bookingListing);
-            }
-        }
-        else {
-            Label noBookingsLabel = new Label("There are no bookings currently...");
-            bookingsPanel.getChildren().add(noBookingsLabel);
-        }
-        
-        scrollPane.setContent(bookingsPanel);
-        
-        contentPane.getChildren().add(windowTitle);
+        contentPane.getChildren().add(hbox);
         contentPane.getChildren().add(scrollPane);
-        
+        contentPane.setSpacing(20);
+
         pane.setCenter(contentPane);
         
         bookingsPane = pane;
     }
     
-    private VBox createBookingListing(Booking booking) {
+    private BorderPane createBookingListing(Booking booking) {
         AirbnbListing property = booking.getProperty();
+        
         Label propertyName = new Label("Property: " + property.getName());  
         Label hostName = new Label("Host name: " + property.getHost_name());
-        Label dates = new Label("Between: " + booking.getCheckInDate().toString()  +  " - " + booking.getCheckOutDate().toString());
+        Label dates = new Label("Between: " + booking.getCheckInDate().toString()  +  " and " + booking.getCheckOutDate().toString());
         Label durationLabel = new Label("Duration:  " + booking.getDuration() + " night(s)");
-        VBox bookingListing = new VBox(propertyName, hostName, dates, durationLabel);
-        bookingListing.setSpacing(5);
+        Label priceLabel = new Label("Price:  £" + booking.getGrandTotal());
+        
+        Button editButton = new Button("Edit Booking");
+            editButton.setPrefSize(110, 20);
+        Button contactButton = new Button("Contact Host");
+            contactButton.setPrefSize(110, 20);
+        Button cancelButton = new Button("Cancel Booking");
+            cancelButton.setPrefSize(110, 20);
+        
+        BorderPane bookingListing = new BorderPane();
+            VBox centerPane = new VBox(propertyName, hostName, dates, durationLabel, priceLabel);
+                centerPane.setSpacing(5);
+            VBox rightPane = new VBox(editButton, contactButton, cancelButton);
+                rightPane.setSpacing(20);
+                rightPane.setAlignment(Pos.CENTER);
+        bookingListing.setCenter(centerPane);
+        bookingListing.setRight(rightPane);
+        bookingListing.setPadding(new Insets(10));
+        bookingListing.setMargin(centerPane, new Insets(0,110,0,0));
+        
         return bookingListing;
     }
 }
