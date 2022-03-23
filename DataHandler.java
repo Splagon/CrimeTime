@@ -16,6 +16,7 @@ public class DataHandler
     // instance variables - replace the example below with your own
     private static AirbnbDataLoader airbnbDataLoader;
     private static BookingsDataLoader bookingsDataLoader;
+    private static String bookingsDataFileName = "bookingsData.csv";
     
     protected static ArrayList<AirbnbListing> listings;
     
@@ -47,7 +48,7 @@ public class DataHandler
         bookingsDataLoader = new BookingsDataLoader();
         
         listings = airbnbDataLoader.load();
-        bookingList = bookingsDataLoader.load();
+        bookingList = bookingsDataLoader.load(bookingsDataFileName);
         
         sortedBoroughs = sortBoroughs();
     }
@@ -297,5 +298,16 @@ public class DataHandler
     
     public static void addToBookingList(Booking booking) {
         bookingList.add(booking);
+        saveBooking(booking);
+    }
+    
+    private static void saveBooking(Booking booking) {
+        BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
+        bookingsDataWriter.write(booking, bookingsDataFileName);
+    }
+    
+    public static void saveBookingList() {
+        BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
+        bookingsDataWriter.write(bookingList, bookingsDataFileName);
     }
 }

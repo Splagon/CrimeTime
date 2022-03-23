@@ -12,20 +12,20 @@ import java.util.ArrayList;
 public class Booking
 {
     private AirbnbListing property;
-    private String grandTotal;
-    private LocalDate checkIn;
-    private LocalDate checkOut;
+    private int grandTotal;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
     private long duration;
 
     /**
      * Constructor for objects of class Booking
      */
-    public Booking(AirbnbListing property, String grandTotal, LocalDate checkInDate, LocalDate checkOutDate)
+    public Booking(AirbnbListing property, int grandTotal, LocalDate checkInDate, LocalDate checkOutDate)
     {
         this.property = property;
         this.grandTotal = grandTotal;
-        this.checkIn = checkInDate;
-        this.checkOut  = checkOutDate;
+        this.checkInDate = checkInDate;
+        this.checkOutDate  = checkOutDate;
         duration = calculateDuration(checkInDate, checkOutDate);
     }
     
@@ -34,8 +34,19 @@ public class Booking
         long days = checkInDate.until(checkOutDate, ChronoUnit.DAYS);
         return days;
     }
+    
+    public String[] convertToCSV() {
+        String[] line = new String[4];
+        
+        line[0] = property.getId();
+        line[1] = String.valueOf(grandTotal);
+        line[2] = checkInDate.toString();
+        line[3] = checkOutDate.toString();
+        
+        return line;
+    }
 
-    public String getGrandTotal() {
+    public int getGrandTotal() {
         return grandTotal;
     }
     
@@ -48,11 +59,11 @@ public class Booking
     }
     
     public LocalDate getCheckInDate() {
-        return checkIn;
+        return checkInDate;
     }
     
     public LocalDate getCheckOutDate() {
-        return checkOut;
+        return checkOutDate;
     }
     
     public long getDuration() {

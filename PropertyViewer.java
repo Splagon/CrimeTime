@@ -469,7 +469,7 @@ public class PropertyViewer extends Stage {
             AnchorPane bottomPane = new AnchorPane();
         
                 Button bookButton = new Button("Confirm Booking");
-                    bookButton.setOnAction(e -> confirmationAction(grandTotal.toString(), checkIn.getValue(), checkOut.getValue()));
+                    bookButton.setOnAction(e -> confirmationAction(properties.get(currentPropertyIndex).getPrice(), checkIn.getValue(), checkOut.getValue()));
                 bottomPane.setRightAnchor(bookButton, 0.0);
             
                 Button goBackButton = new Button("Go Back");
@@ -495,7 +495,7 @@ public class PropertyViewer extends Stage {
         bookingStage.close();
     }
     
-    private void confirmationAction(String grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
+    private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
         showConfirmationStage();
         bookingStage.close();
         AirbnbListing propertyBooked = properties.get(currentPropertyIndex);
