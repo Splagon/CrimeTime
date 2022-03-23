@@ -1200,9 +1200,6 @@ public class MainViewer extends Stage
     }
     
     private void contactAction(Booking booking)  {
-        WebEngine web = new WebEngine();
-        web.load("https://docs.oracle.com/javase/8/javafx/api/javafx/scene/web/WebEngine.html");
-        
         Desktop desktop;
         if (Desktop.isDesktopSupported() 
             && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
