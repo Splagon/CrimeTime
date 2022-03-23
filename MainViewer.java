@@ -41,6 +41,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.web.WebEngine;
 
 /**
  * Write a description of class MapViewer here.
@@ -192,7 +193,7 @@ public class MainViewer extends Stage
         }
     }
     
-    private void setPane(int currentSceneIndex) {      
+    public void setPane(int currentSceneIndex) {      
         this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         Pane paneToChangeTo = new Pane();
@@ -1132,10 +1133,13 @@ public class MainViewer extends Stage
         
         Button editButton = new Button("Edit Booking");
             editButton.setPrefSize(110, 20);
+            editButton.setOnAction(e -> editBooking());
         Button contactButton = new Button("Contact Host");
             contactButton.setPrefSize(110, 20);
+            contactButton.setOnAction(e -> contactAction(property));
         Button cancelButton = new Button("Cancel Booking");
             cancelButton.setPrefSize(110, 20);
+            cancelButton.setOnAction(e -> cancelBookingAction(booking));
         
         BorderPane bookingListing = new BorderPane();
             VBox centerPane = new VBox(propertyName, hostName, dates, durationLabel, priceLabel);
@@ -1151,15 +1155,18 @@ public class MainViewer extends Stage
         return bookingListing;
     }
     
-    private void editBooking(Booking booking) {
-        
+    private void editBooking()  {
+
+    
     }
     
-    private void contactHost(Booking booking) {
-        
+    private void contactAction(AirbnbListing property)  {
+        WebEngine web = new WebEngine();
+        web.load("https://docs.oracle.com/javase/8/javafx/api/javafx/scene/web/WebEngine.html");
     }
     
-    private void cancelBooking(Booking booking) {
-        
+    private void cancelBookingAction(Booking booking)  {
+        DataHandler.removeToBookingList(booking);
+        setPane(4);
     }
 }

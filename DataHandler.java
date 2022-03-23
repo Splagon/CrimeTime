@@ -311,7 +311,7 @@ public class DataHandler
         bookingsDataWriter.write(bookingList, bookingsDataFileName);
     }
     
-    private static void removeBooking() {
-        
+    public static void removeToBookingList(Booking booking) {
+        bookingList.remove(booking);
     }
 }
