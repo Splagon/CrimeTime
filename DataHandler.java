@@ -14,21 +14,26 @@ import java.util.Map;
 public class DataHandler
 {
     // instance variables - replace the example below with your own
-    private static AirbnbDataLoader dataLoader;
+    private static AirbnbDataLoader airbnbDataLoader;
+    private static BookingsDataLoader bookingsDataLoader;
+    private static String bookingsDataFileName = "bookingsData.csv";
+    
     protected static ArrayList<AirbnbListing> listings;
+    
+    private static ArrayList<Booking> bookingList = new ArrayList<Booking>();
     
     protected static ArrayList<String> boroughs = new ArrayList<String>();
     
     protected static HashMap<String, Borough> sortedBoroughs;
     
     protected static String[][] mapPositions = {{ null, null, null, "Enfield", null, null, null },
-            { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
-            { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
-            { "Hillingdon", "Ealing", "Kensington and Chelsea", "Westminster", "Tower Hamlets", "Newham", "Barking and Dagenham" },
-            { "Hounslow", "Hammersmith and Fulham", "Wandsworth", "City of London", "Greenwich", "Bexley", null },
-            { null, "Richmond upon Thames", "Merton", "Lambeth", "Southwark", "Lewisham", null },
-            { null, "Kingston upon Thames", "Sutton", "Croydon", "Bromley", null, null },
-        };
+                                                { null, null, "Barnet", "Haringey", "Waltham Forest", null, null },
+                                                { "Harrow", "Brent", "Camden", "Islington", "Hackney", "Redbridge", "Havering" },
+                                                { "Hillingdon", "Ealing", "Kensington and Chelsea", "Westminster", "Tower Hamlets", "Newham", "Barking and Dagenham" },
+                                                { "Hounslow", "Hammersmith and Fulham", "Wandsworth", "City of London", "Greenwich", "Bexley", null },
+                                                { null, "Richmond upon Thames", "Merton", "Lambeth", "Southwark", "Lewisham", null },
+                                                { null, "Kingston upon Thames", "Sutton", "Croydon", "Bromley", null, null },
+                                               };
 
     /**
      * Constructor for objects of class DataHandler
@@ -39,10 +44,31 @@ public class DataHandler
     }
 
     public static void initialiseHandler() {
-        dataLoader = new AirbnbDataLoader();
-        listings = dataLoader.load();
+        airbnbDataLoader = new AirbnbDataLoader();
+        listings = airbnbDataLoader.load();
+        
+        loadBookingsData();
         
         sortedBoroughs = sortBoroughs();
+    }
+    
+    private static void loadBookingsData() {
+        bookingsDataLoader = new BookingsDataLoader();
+        bookingList = bookingsDataLoader.load(bookingsDataFileName);
+    }
+    
+    public static AirbnbListing getProperty(String iD) {
+        try {
+            for (AirbnbListing listing : listings) {
+                if (listing.getId().equals(iD)) {
+                    return listing;
+                }
+            }
+        }
+        catch (NullPointerException e) {
+            System.out.println("DATA HANLDER NOT INITIALISED");
+        }
+        return null;
     }
 
     public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough, int minPrice, int maxPrice)
@@ -268,5 +294,30 @@ public class DataHandler
             }
         }
         return highest;
+    }
+    
+    public static ArrayList<Booking> getBookingList() {
+        loadBookingsData();
+        return bookingList;
+    }
+    
+    public static void addToBookingList(Booking booking) {
+        bookingList.add(booking);
+        saveBooking(booking);
+    }
+    
+    private static void saveBooking(Booking booking) {
+        BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
+        bookingsDataWriter.write(booking, bookingsDataFileName);
+    }
+    
+    public static void saveBookingList() {
+        BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
+        bookingsDataWriter.write(bookingList, bookingsDataFileName);
+    }
+    
+    public static void removeToBookingList(Booking booking) {
+        bookingList.remove(booking);
+        saveBookingList();
     }
 }

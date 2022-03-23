@@ -38,6 +38,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.web.WebEngine;
 
 /**
  * Write a description of class MapViewer here.
@@ -53,7 +57,7 @@ public class MainViewer extends Stage
     private Pane priceSelectorPane;
     private Pane mapPane;
     private Pane statsPane;
-    private Pane favouritesPane;
+    private Pane bookingsPane;
     
     private int sceneWidth;
     private int sceneHeight;
@@ -70,7 +74,7 @@ public class MainViewer extends Stage
     private Button prevPanelButton;
     private Button nextPanelButton;
     
-    private String[] sceneOrder = { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "favouritesPane" };
+    private String[] sceneOrder = { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "bookingsPane" };
     //private PaneListing[] paneOrder = { welcomePane, priceSelectorPane, mapPane, statsPane, favouritesPane };
 
     private int currentSceneIndex;
@@ -84,12 +88,21 @@ public class MainViewer extends Stage
     //private StatisticsData dataHandler;
     
     private NoOfPropertiesStats noOfPropertiesStats;
+    
     private Scene mainScene;
+    
+    private StatisticsViewer statisticsViewer;
+    
+    ArrayList<VBox> statsOrder = new ArrayList<>();
+    
+    int currentStat = 0;
+    
+    VBox statsWindow = new VBox();
     
     /**
      * Constructor for objects of class MapViewer
      */
-    public MainViewer() throws Exception
+    public MainViewer()
     {         
         DataHandler.initialiseHandler();
         
@@ -172,7 +185,6 @@ public class MainViewer extends Stage
     }
     
     private void setNextPaneButtonLabel() {
-        this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         
         switch (nameOfPaneToChangeTo) {
@@ -189,7 +201,7 @@ public class MainViewer extends Stage
         }
     }
     
-    private void setPane(int currentSceneIndex) {      
+    public void setPane(int currentSceneIndex) {      
         this.currentSceneIndex = currentSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         Pane paneToChangeTo = new Pane();
@@ -214,10 +226,10 @@ public class MainViewer extends Stage
                 setTitle("Information");
                 paneToChangeTo = statsPane;
                 break;
-            case ("favouritesPane") :
-                setTitle("Favourites");
-                //makeFavouritesPane();
-                //paneToChangeTo = paneToChangeTo;
+            case ("bookingsPane") :
+                setTitle("Bookings");
+                makeBookingsPane();
+                paneToChangeTo = bookingsPane;
                 break;
         }
         
@@ -227,18 +239,28 @@ public class MainViewer extends Stage
     }
     
     private void setButtonsDisabled(int currentSceneIndex) {
+        int nextSceneIndex = currentSceneIndex + 1;
+        int prevSceneIndex = currentSceneIndex - 1;
+        
+        if (nextSceneIndex >= sceneOrder.length) {
+            nextSceneIndex = 0;
+        }
+        if (prevSceneIndex < 0) {
+            prevSceneIndex = sceneOrder.length - 1;
+        }
+        
         if (selectedMinPrice == null && selectedMaxPrice == null) {    
-            if (currentSceneIndex <= 0 || currentSceneIndex >= 4) {
-                prevPanelButton.setDisable(false);
-                nextPanelButton.setDisable(false);
-            }
-            else if (currentSceneIndex == 1) {
-                prevPanelButton.setDisable(false);
+            if (sceneOrder[nextSceneIndex] == "mapPane") {
                 nextPanelButton.setDisable(true);
             }
-            else if (currentSceneIndex == 3) {
-                prevPanelButton.setDisable(true);
+            else {
                 nextPanelButton.setDisable(false);
+            }
+            if (sceneOrder[prevSceneIndex] == "mapPane") {
+                prevPanelButton.setDisable(true);
+            }
+            else {
+                prevPanelButton.setDisable(false);
             }
         }
         else {
@@ -273,6 +295,7 @@ public class MainViewer extends Stage
 
         //adding elements to the window
         window.getChildren().addAll(title, instrcutionsAndStart);
+        window.setAlignment(Pos.CENTER);
         instructions.getChildren().addAll(instructionsTitle, instructions1, instructions2, instructions3); 
         
         instrcutionsAndStart.setLeft(instructions);
@@ -372,6 +395,8 @@ public class MainViewer extends Stage
                                     
                                     try { changeToMapPane(); }
                                     catch (Exception ex) {}
+                                    
+                                    updateStats();
                                  });
         
         minBox.setOnAction(e -> {
@@ -484,11 +509,11 @@ public class MainViewer extends Stage
         }
     }
     
-    private void changeToMapPane() throws Exception {
+    private void changeToMapPane() {
         setPane(2);
     }
     
-    private void makeMapPane() throws Exception {
+    private void makeMapPane() {
         setTitle("Map of London");
             
         BorderPane window = new BorderPane();
@@ -515,8 +540,8 @@ public class MainViewer extends Stage
         minMaxBox.getStyleClass().add("mapMinMaxBox");
             
         infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
-        infoPane.setPadding(new Insets(20));
-        infoPane.setSpacing(30);
+        infoPane.setPadding(new Insets(10, 20, 10, 10));
+        infoPane.setSpacing(15);
         
         mapView.setPadding(new Insets(20));
         
@@ -526,7 +551,7 @@ public class MainViewer extends Stage
         mapPane = window;
     }
     
-    private void makeHexagonMap() throws Exception {
+    private void makeHexagonMap()  {
         mapPositions = StatisticsData.getMapPositions();
         
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
@@ -541,6 +566,8 @@ public class MainViewer extends Stage
         double newHeight = sceneHeight * 0.804;
         
         double newWidthToHeightRatio = newWidth/newHeight;
+        
+        final double gapSize = 5.0;
 
         // pane is too narrow
         if (newWidthToHeightRatio < WIDTH_TO_HEIGHT_RATIO) {
@@ -565,7 +592,7 @@ public class MainViewer extends Stage
             double hexagonWidth = (int) (newWidth / 7.5);
             // rows
             for (int m = 0; m < mapPositions.length; m++) {
-                final double gapSize = 5.0;
+                
                 FlowPane row = new FlowPane();
                     row.setHgap(gapSize);
                     row.setMinWidth(Double.MAX_VALUE);
@@ -586,11 +613,7 @@ public class MainViewer extends Stage
                         boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
                         //boroughButton.setStyle("-fx-font-size: " + String.valueOf(20.0/94.0 * hexagonWidth) + ";");
                         boroughButton.getStyleClass().add("boroughButton");
-                        boroughButton.setOnAction(e ->
-                                                       {
-                                                          try { openPropertyViewer(boroughButton.getBoroughName()); }
-                                                          catch (Exception ex) {}
-                                                       });
+                        boroughButton.setOnAction(e -> openPropertyViewer(boroughButton.getBoroughName()));
                         
                         ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
                             hexagonOutline.setFitWidth(hexagonWidth);
@@ -639,13 +662,13 @@ public class MainViewer extends Stage
         return spacerRectangle;
     }
     
-    private void openPropertyViewer(String boroughName) throws Exception {
+    private void openPropertyViewer(String boroughName) {
         try {
-            PropertyViewer stage = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
-            if(stage.getInternetConnection() == true){
-                stage.show();
+            PropertyViewer propertyViewer = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
+            if(propertyViewer.getInternetConnection() == true){
+                propertyViewer.show();
             } else {
-                stage.noConnectionAlert();
+                propertyViewer.noConnectionAlert();
             }  
         }
         catch (Exception e) {
@@ -668,7 +691,7 @@ public class MainViewer extends Stage
         return hexagon;
     }
     
-    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) throws Exception {
+    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) {
         ColorAdjust shader = new ColorAdjust();
             shader.setBrightness(StatisticsData.getBoroughMapColour(percentile));
             
@@ -680,7 +703,7 @@ public class MainViewer extends Stage
         return hexagon;
     }
     
-    private GridPane createKey() throws Exception {
+    private GridPane createKey() {
         GridPane key = new GridPane();
         key.getStyleClass().add("infoGrid");
         
@@ -729,6 +752,7 @@ public class MainViewer extends Stage
     private VBox createStatsPanel() {
         //setTitle("Information");
         
+    
         VBox statsBox = new VBox();
         statsBox.setSpacing(20);
         
@@ -770,8 +794,21 @@ public class MainViewer extends Stage
     }
     
     private void showMoreStats() {
-        Stage stage = new StatisticsViewer(selectedMinPrice, selectedMaxPrice);
-        stage.show();
+        if (statisticsViewer == null) {
+            statisticsViewer = new StatisticsViewer(selectedMinPrice, selectedMaxPrice);
+            statisticsViewer.show();
+        }
+        updateStats();
+    }
+    
+    private void updateStats() {
+        if (statisticsViewer == null) {
+            return;
+        }
+        
+        if (statisticsViewer.getCurrentMinPrice() != selectedMinPrice || statisticsViewer.getCurrentMaxPrice() != selectedMaxPrice) {
+            statisticsViewer.update(selectedMinPrice, selectedMaxPrice);
+        }
     }
     
     private GridPane alignItemsInGridPane(GridPane grid) {
@@ -785,6 +822,12 @@ public class MainViewer extends Stage
     }
     
     private void makeStatsPane() {
+        if(statsOrder.size() > 0)
+        {
+            statsOrder.clear();
+        }
+        currentStat = 0; 
+        
         Label reviewInfo = new Label("default");
         Label availableInfo = new Label("default");
         Label noHomeAndApartmentsInfo = new Label("default");
@@ -794,7 +837,6 @@ public class MainViewer extends Stage
         XYChart.Series averagePriceData = new XYChart.Series();
     
         // The layout of the window
-        VBox window = new VBox();
         GridPane statsGrid = new GridPane(); 
         VBox reviews = new VBox();
         VBox available = new VBox(); 
@@ -810,7 +852,7 @@ public class MainViewer extends Stage
           
         
         // The "title" labels in the window
-        Label title = new Label("Statistics");
+        Label title = new Label("General Statistics");
         Label reviewTitle = new Label("Average Reviews Per Property:");
         Label availableTitle = new Label("Total Available Properties:");
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
@@ -818,11 +860,22 @@ public class MainViewer extends Stage
         Label priceSDTitle = new Label("Standard Deviation of Price (£):");
         Label highAvgReviewTitle = new Label("Borough with the Highest \nAverage Amount of Reviews:");
         
+        VBox statsGridVBox = new VBox();
+        statsGridVBox.getChildren().add(statsGrid);
         
+        VBox AvgPriceBarCharVBox = new VBox();
+        AvgPriceBarCharVBox.getChildren().add(createAvgPriceBarChart());
+        
+        VBox AvgReviewsBarCharVBox = new VBox();
+        AvgReviewsBarCharVBox.getChildren().add(createAvgReviewsBarChart());
+        
+        statsOrder.add(statsGridVBox);
+        statsOrder.add(AvgPriceBarCharVBox);
+        statsOrder.add(AvgReviewsBarCharVBox);
         // Adding components 
-        window.setAlignment(Pos.CENTER);
-        window.getChildren().add(title); 
-        window.getChildren().add(statsGrid); 
+        statsWindow.setAlignment(Pos.CENTER);
+        statsWindow.getChildren().add(title); 
+        statsWindow.getChildren().add(getStatsIndex(0)); 
         //window.getChildren().add(barChart);
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
@@ -864,7 +917,7 @@ public class MainViewer extends Stage
         //scene.getStylesheets().add("stylesheet.css");
         
         statsGrid.setId("statsgrid"); 
-        window.getStyleClass().add("statsvbox");
+        statsWindow.getStyleClass().add("statsvbox");
         reviews.getStyleClass().add("statsvbox"); 
         available.getStyleClass().add("statsvbox");
         noHomeAndApartments.getStyleClass().add("statsvbox");
@@ -882,11 +935,6 @@ public class MainViewer extends Stage
         
         title.getStyleClass().add("welcomeTitle"); 
         
-        xAxis.setLabel("Borough");
-        yAxis.setLabel("Average Price");
-        averagePriceData.setName("Average Price per Night per Borough");
-        setAveragePricePerBorough();
-        barChart.getData().add(averagePriceData);
     
         setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
         setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments(false));
@@ -895,28 +943,120 @@ public class MainViewer extends Stage
         setText(priceSDInfo, StatisticsData.getPriceSDInfo(false));
         setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
         
-        statsPane = window;
+        Button leftStatsButton = new Button();
+        leftStatsButton.setText("<");
+        leftStatsButton.setOnAction(this::leftStatButtonAction);
+        leftStatsButton.setMinSize(10, 100);
+        leftStatsButton.setAlignment(Pos.CENTER);
+        
+        //Create the right button
+        Button rightStatsButton = new Button();
+        rightStatsButton.setText(">");
+        rightStatsButton.setOnAction(this::rightStatButtonAction);
+        rightStatsButton.setMinSize(10, 100);
+        rightStatsButton.setAlignment(Pos.CENTER);
+        
+        VBox rightButtonVBox = new VBox();
+        rightButtonVBox.getChildren().add(rightStatsButton);
+        rightButtonVBox.getStyleClass().add("statsvbox");
+        rightButtonVBox.setAlignment(Pos.CENTER);
+        
+        VBox leftButtonVBox = new VBox();
+        leftButtonVBox.getChildren().add(leftStatsButton);
+        leftButtonVBox.getStyleClass().add("statsvbox");
+        leftButtonVBox.setAlignment(Pos.CENTER);
+        
+        
+        BorderPane statsBorder = new BorderPane(); 
+        statsBorder.setCenter(statsWindow);
+        statsBorder.setLeft(leftButtonVBox);
+        statsBorder.setRight(rightButtonVBox);
+        
+        
+        statsPane = statsBorder;
+    }
+    
+    private BarChart createAvgPriceBarChart()
+    {
+        XYChart.Series averagePriceData = new XYChart.Series();
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        BarChart barChart = new BarChart(xAxis, yAxis);
+        xAxis.setLabel("Borough");
+        yAxis.setLabel("Average Price");
+        averagePriceData = getAveragePricePerBoroughData();
+        averagePriceData.setName("Average Price per Night per Borough");
+        barChart.getData().add(averagePriceData);
+        
+        return barChart;
+    }
+    
+    private BarChart createAvgReviewsBarChart()
+    {
+        XYChart.Series averageReviewsData = new XYChart.Series();
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        BarChart barChart = new BarChart(xAxis, yAxis);
+        xAxis.setLabel("Borough");
+        yAxis.setLabel("Average Review Count");
+        averageReviewsData = getAverageReviewsPerBoroughData();
+        averageReviewsData.setName("Average Number of Reviews per Borough");
+        barChart.getData().add(averageReviewsData);
+        
+        return barChart;
+    }
+    
+    private VBox getStatsIndex(int x)
+    {
+        if(statsOrder.size() > 0 && x >= 0 && x < statsOrder.size())
+        {
+            return statsOrder.get(x);
+        }
+        VBox box = new VBox();
+        return box;
     }
     
     /**
-     * Update all of the info labels
+     * Action for the left button which will go the element at index current - 1 in both
+     * title list and stat list. If it reaches the start of both of the lists, set the labels to
+     * the last element in the lists. 
      */
-    private void setInfo()
+    public void leftStatButtonAction(ActionEvent event)
     {
-        
-        
-        
-        
-        
-        
-        
-        // setReviewInfo(); 
-        // setNoHomeAndApartmentsInfo();
-        // setAvailableInfo();
-        // setExpensiveInfo();
-        // setPriceSDInfo();
-        // setHighAvgReviewInfo();
+        if(currentStat - 1 < 0)
+        {
+            swapWindowContent(statsOrder.size() - 1);
+        }
+        else
+        {
+            swapWindowContent(currentStat - 1);
+        }
     }
+    
+    /**
+     * Action for the right button which will go the element at index current + 1 in both
+     * title list and stat list. If it reaches the end of both of the lists, set the labels to
+     * the first element in the lists.
+     */
+    public void rightStatButtonAction(ActionEvent event)
+    {
+        if(currentStat + 1 >= statsOrder.size())
+        {
+            swapWindowContent(0);
+        }
+        else
+        {
+            swapWindowContent(currentStat + 1);
+        }
+    }
+    
+    private void swapWindowContent(int change)
+    {
+        statsWindow.getChildren().remove(statsOrder.get(currentStat));
+        currentStat = change; 
+        statsWindow.getChildren().add(statsOrder.get(currentStat));
+    }
+    
     
     private void setText(Label label, double dataToFormat) {
         String x = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
@@ -931,21 +1071,110 @@ public class MainViewer extends Stage
         label.setText(dataToFormat);
     }
     
-    private void setAveragePricePerBorough()
+    private XYChart.Series getAveragePricePerBoroughData()
     {
+        XYChart.Series data = new XYChart.Series();
         Map<String, Integer> information = StatisticsData.getAveragePricePerBorough();
         for (Map.Entry<String, Integer> set : information.entrySet())
         {
-            // averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
+            data.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
         }
+        return data; 
     }
     
-    // private void makeBookingPane(PropertyViewer stage) {
-        // BorderPane pane = new BorderPane();
-        // Label windowTitle = new Label("Your bookings: ");
-        // VBox centerPane = new VBox();
-        // for(Booking booking : bookingList) {
-            
-        // }
-    // }
+    private XYChart.Series getAverageReviewsPerBoroughData()
+    {
+        XYChart.Series data = new XYChart.Series();
+        Map<String, Integer> information = StatisticsData.getAverageReviewsPerBorough();
+        for (Map.Entry<String, Integer> set : information.entrySet())
+        {
+            data.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
+        }
+        return data; 
+    }
+    
+    private void makeBookingsPane() {
+        BorderPane pane = new BorderPane();
+        
+        VBox contentPane = new VBox();
+                
+                HBox hbox = new HBox();
+                    Label windowTitle = new Label("Your bookings: ");
+                hbox.getChildren().add(windowTitle);
+                hbox.setAlignment(Pos.CENTER);
+                
+                ScrollPane scrollPane = new ScrollPane();
+                    VBox bookingsPanel = new VBox();
+                        ArrayList<Booking> bookingList = DataHandler.getBookingList();
+                        if (! bookingList.isEmpty()) {
+                            for(Booking booking : bookingList) {
+                                BorderPane bookingListing = createBookingListing(booking);
+                                    bookingListing.getStyleClass().add("bookingListing");
+                                    bookingsPanel.setMargin(bookingListing, new Insets(10));
+                                    
+                                bookingsPanel.getChildren().add(bookingListing);
+                            }
+                        }
+                        else {
+                            Label noBookingsLabel = new Label("There are no bookings currently...");
+                            bookingsPanel.getChildren().add(noBookingsLabel);
+                        }       
+                scrollPane.setContent(bookingsPanel);
+        
+        contentPane.getChildren().add(hbox);
+        contentPane.getChildren().add(scrollPane);
+        contentPane.setSpacing(20);
+
+        pane.setCenter(contentPane);
+        
+        bookingsPane = pane;
+    }
+    
+    private BorderPane createBookingListing(Booking booking) {
+        AirbnbListing property = booking.getProperty();
+        
+        Label propertyName = new Label("Property: " + property.getName());  
+        Label hostName = new Label("Host name: " + property.getHost_name());
+        Label dates = new Label("Between: " + booking.getCheckInDate().toString()  +  " and " + booking.getCheckOutDate().toString());
+        Label durationLabel = new Label("Duration:  " + booking.getDuration() + " night(s)");
+        Label priceLabel = new Label("Price:  £" + booking.getGrandTotal());
+        
+        Button editButton = new Button("Edit Booking");
+            editButton.setPrefSize(110, 20);
+            editButton.setOnAction(e -> editBooking());
+        Button contactButton = new Button("Contact Host");
+            contactButton.setPrefSize(110, 20);
+            contactButton.setOnAction(e -> contactAction(property));
+        Button cancelButton = new Button("Cancel Booking");
+            cancelButton.setPrefSize(110, 20);
+            cancelButton.setOnAction(e -> cancelBookingAction(booking));
+        
+        BorderPane bookingListing = new BorderPane();
+            VBox centerPane = new VBox(propertyName, hostName, dates, durationLabel, priceLabel);
+                centerPane.setSpacing(5);
+            VBox rightPane = new VBox(editButton, contactButton, cancelButton);
+                rightPane.setSpacing(20);
+                rightPane.setAlignment(Pos.CENTER);
+        bookingListing.setCenter(centerPane);
+        bookingListing.setRight(rightPane);
+        bookingListing.setPadding(new Insets(10));
+        bookingListing.setMargin(centerPane, new Insets(0,110,0,0));
+        
+        return bookingListing;
+    }
+    
+    private void editBooking()  {
+
+    
+    }
+    
+    private void contactAction(AirbnbListing property)  {
+        WebEngine web = new WebEngine();
+        web.load("https://docs.oracle.com/javase/8/javafx/api/javafx/scene/web/WebEngine.html");
+    }
+    
+    private void cancelBookingAction(Booking booking)  {
+        DataHandler.removeToBookingList(booking);
+        setPane(4);
+    }
 }

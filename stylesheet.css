@@ -199,7 +199,7 @@
 
 // ------------- property viewer --------------------
 .rootPV {
-    -fx-background-color : aliceblue;
+    -fx-background-color : floralwhite;
 }
 .title {
      -fx-font: 12px "Verdana";
@@ -221,15 +221,30 @@
 }
 
 // ------------- Booking Window --------------------
-#rootBooking {
+.rootBooking {
     -fx-padding: 30;
-    -fx-background-color : aliceblue;
+    -fx-background-color : floralwhite;
 }
 #propertyLabel {
     -fx-font: 20px "Times New Roman";
     -fx-font-weight: bold;
 }
 .subLabels  {
+    -fx-font: 15px "Times New Roman";
+    -fx-font-weight: bold;
+}
+// ------------- Booking Window --------------------
+
+// ------------- Booking Viewer --------------------
+.bookingListing {
+    -fx-background-color : lightgoldenrodyellow;
+    -fx-border-color: darkslategrey;
+    -fx-padding: 5;
+}
+// ------------- Booking Viewer --------------------
+
+// ------------- Booking List --------------------
+# bookingList {
     -fx-font: 15px "Times New Roman";
     -fx-font-weight: bold;
 }

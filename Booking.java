@@ -1,4 +1,8 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.Period;
+import java.util.ArrayList;
+
 /**
  * Write a description of class Booking here.
  *
@@ -7,31 +11,51 @@ import java.time.LocalDate;
  */
 public class Booking
 {
-    
     private AirbnbListing property;
-    private String grandTotal;
+    private int grandTotal;
     private LocalDate checkIn;
     private LocalDate checkOut;
-    private int duration;
+    private long duration;
 
     /**
      * Constructor for objects of class Booking
      */
-    public Booking(AirbnbListing property, String grandTotal, String checkInDate, String checkOutDate)
+    public Booking(AirbnbListing property, int grandTotal, LocalDate checkInDate, LocalDate checkOutDate)
     {
         this.property = property;
         this.grandTotal = grandTotal;
-        this.checkIn = checkIn;
-        this.checkOut  = checkOut;
-        duration = checkOut.compareTo(checkIn);
+        this.checkIn = checkInDate;
+        this.checkOut  = checkOutDate;
+        duration = calculateDuration(checkInDate, checkOutDate);
+    }
+    
+    public static long calculateDuration(LocalDate checkInDate, LocalDate checkOutDate) {
+        //Period period = Period.between(checkInDate, checkOutDate);
+        long days = checkInDate.until(checkOutDate, ChronoUnit.DAYS);
+        return days;
+    }
+    
+    public String[] convertToCSV() {
+        String[] line = new String[4];
+        
+        line[0] = property.getId();
+        line[1] = String.valueOf(grandTotal);
+        line[2] = checkIn.toString();
+        line[3] = checkOut.toString();
+        
+        return line;
     }
 
-    public String getGrandTotal() {
+    public int getGrandTotal() {
         return grandTotal;
     }
     
     public AirbnbListing getProperty() {
         return property;
+    }
+    
+    public String getPropertyID() {
+        return property.getId();
     }
     
     public LocalDate getCheckInDate() {
@@ -42,7 +66,7 @@ public class Booking
         return checkOut;
     }
     
-    public int getgrandTotalDuration() {
+    public long getDuration() {
         return duration;
     }
 }

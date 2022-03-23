@@ -177,32 +177,6 @@ public class StatisticsData extends DataHandler
         return standardDeviation; 
     }
     
-    /**
-     * @return HashMap information which stores the average price per night in each borough
-     */
-    public static HashMap<String, Integer> getAveragePricePerBoroughTest()
-    {
-        HashMap<String, Integer> information = new HashMap<>();
-        for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
-        {
-            for(int columns = 0; columns < mapPositions[rows].length; columns++)
-            {   
-                if(mapPositions[rows][columns] != null)
-                {
-                    ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns]);
-                    int totalPrice = 0;
-                    for (int j = 0; j < boroughProperty.size(); j++) 
-                    {
-                        AirbnbListing property = boroughProperty.get(j);
-                        totalPrice += property.getPrice();
-                    }
-                    Integer averagePrice = new Integer(totalPrice / boroughProperty.size()); 
-                    information.put(mapPositions[rows][columns], averagePrice);
-                }
-            }
-        }
-        return information; 
-    }
     
     /**
      * @return HashMap information which stores the average price per night in each borough
@@ -221,6 +195,28 @@ public class StatisticsData extends DataHandler
             {
                 Integer averagePrice = new Integer(totalPrice / properties.size());
                 information.put(boroughName, averagePrice);
+            }
+        }
+        return information;
+    }
+    
+    /**
+     * @return HashMap information which stores the average reviews per each borough
+     */
+    public static HashMap<String, Integer> getAverageReviewsPerBorough()
+    {
+        HashMap<String, Integer> information = new HashMap<>();
+        for(String boroughName : sortedBoroughs.keySet()) {
+            ArrayList<AirbnbListing> properties = sortedBoroughs.get(boroughName).getBoroughListings();
+            int totalReviews = 0; 
+            for(int i = 0; i < properties.size(); i++)
+            {
+                totalReviews += properties.get(i).getNumberOfReviews(); 
+            }
+            if(properties.size() >= 1)
+            {
+                Integer averageReviews = new Integer(totalReviews / properties.size());
+                information.put(boroughName, averageReviews);
             }
         }
         return information;
@@ -247,7 +243,7 @@ public class StatisticsData extends DataHandler
         return brightness;
     }
     
-    public static double getBoroughMapColour(int percentile) throws Exception {
+    public static double getBoroughMapColour(int percentile) {
         NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(25, 50, 75);
         
         double brightness = getBrightness(percentile, noOfPropertiesStats);
@@ -284,7 +280,7 @@ public class StatisticsData extends DataHandler
         return brightness;
     }
     
-    public static ArrayList<Borough> getSortedNumberOfPropertiesInBoroughs(int minPrice, int maxPrice) throws Exception
+    public static ArrayList<Borough> getSortedNumberOfPropertiesInBoroughs(int minPrice, int maxPrice)
     {
         ArrayList<Borough> sortedNumberOfPropertiesAtPrice = new ArrayList<Borough>();
 
