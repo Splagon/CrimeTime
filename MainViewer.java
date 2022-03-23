@@ -1150,4 +1150,16 @@ public class MainViewer extends Stage
         
         return bookingListing;
     }
+    
+    private void editBooking(Booking booking) {
+        
+    }
+    
+    private void contactHost(Booking booking) {
+        
+    }
+    
+    private void cancelBooking(Booking booking) {
+        
+    }
 }

@@ -298,7 +298,7 @@ public class DataHandler
     
     public static void addToBookingList(Booking booking) {
         bookingList.add(booking);
-        saveBooking(booking);
+        saveBookingList();
     }
     
     private static void saveBooking(Booking booking) {
@@ -309,5 +309,9 @@ public class DataHandler
     public static void saveBookingList() {
         BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
         bookingsDataWriter.write(bookingList, bookingsDataFileName);
+    }
+    
+    private static void removeBooking() {
+        
     }
 }
