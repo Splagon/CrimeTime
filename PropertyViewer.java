@@ -520,10 +520,13 @@ public class PropertyViewer extends Stage {
         root.setAlignment(Pos.CENTER);
         root.getStyleClass().add("rootPV");
         
-        Scene scene = new Scene(root,300,100);
+        int width = 300;
+        
+        Scene scene = new Scene(root,width,100);
         scene.getStylesheets().add("stylesheet.css");
         confirmationStage.setScene(scene);
-        setStagePosititon(confirmationStage, bookingStage);
+            confirmationStage.setX(this.getX() + (this.getWidth() - width)/2);
+            confirmationStage.setY(this.getY() + this.getHeight()/2);
         confirmationStage.show();
     }
     
