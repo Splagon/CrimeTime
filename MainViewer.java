@@ -42,6 +42,8 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
+import java.awt.Desktop;
+import java.net.URI;
 
 /**
  * Write a description of class MapViewer here.
@@ -1173,7 +1175,7 @@ public class MainViewer extends Stage
             editButton.setOnAction(e -> editBooking());
         Button contactButton = new Button("Contact Host");
             contactButton.setPrefSize(110, 20);
-            contactButton.setOnAction(e -> contactAction(property));
+            contactButton.setOnAction(e -> contactAction(booking));
         Button cancelButton = new Button("Cancel Booking");
             cancelButton.setPrefSize(110, 20);
             cancelButton.setOnAction(e -> cancelBookingAction(booking));
@@ -1197,9 +1199,22 @@ public class MainViewer extends Stage
     
     }
     
-    private void contactAction(AirbnbListing property)  {
+    private void contactAction(Booking booking)  {
         WebEngine web = new WebEngine();
         web.load("https://docs.oracle.com/javase/8/javafx/api/javafx/scene/web/WebEngine.html");
+        
+        Desktop desktop;
+        if (Desktop.isDesktopSupported() 
+            && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+            try {
+                URI mailto = new URI("mailto:" + booking.getProperty().getMailHost_name(false) + "@kcl.ac.uk?subject=About%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "&body=Hello%20" + booking.getProperty().getMailHost_name(true) + ",%0A%0DI%20need%20to%20edit%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "%20in%20the%20property%20called%20'" + booking.getProperty().getMailName() + "'%20(Property%20iD%20:" + booking.getProperty().getId() + ")%0A%0D");
+                desktop.mail(mailto);
+            }
+            catch (Exception e) {}
+        } else {
+          // TODO fallback to some Runtime.exec(..) voodoo?
+          throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
+        }
     }
     
     private void cancelBookingAction(Booking booking)  {
