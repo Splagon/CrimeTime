@@ -1,4 +1,6 @@
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.ArrayList;
  
 
 /**
@@ -93,6 +95,10 @@ public class AirbnbListing {
     public String getName() {
         return name;
     }
+    
+    public String getMailName() {    
+        return name.replaceAll("\\s", "%20");
+    }
 
     public String getHost_id() {
         return host_id;
@@ -100,6 +106,22 @@ public class AirbnbListing {
 
     public String getHost_name() {
         return host_name;
+    }
+    
+    public String getMailHost_name(boolean withSpaces) {
+        if (withSpaces){
+            return host_name.replaceAll("\\s", "%20");
+        }
+        else {
+            String URL_mail_host_name = host_name;
+            String[] unacceptableSymbols = new String[] {"\\s", ",", ";", "<", ">", "/", "'", "#", "~", "-", "_", "=", "&", "^", "$", "£", "!", "|"};
+            
+            for (String symbol : unacceptableSymbols) {
+                URL_mail_host_name = URL_mail_host_name.replaceAll(symbol, "");
+            }
+            
+            return URL_mail_host_name;
+        }
     }
 
     public String getNeighbourhood() {
