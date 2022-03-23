@@ -45,12 +45,16 @@ public class DataHandler
 
     public static void initialiseHandler() {
         airbnbDataLoader = new AirbnbDataLoader();
-        bookingsDataLoader = new BookingsDataLoader();
-        
         listings = airbnbDataLoader.load();
-        bookingList = bookingsDataLoader.load(bookingsDataFileName);
+        
+        loadBookingsData();
         
         sortedBoroughs = sortBoroughs();
+    }
+    
+    private static void loadBookingsData() {
+        bookingsDataLoader = new BookingsDataLoader();
+        bookingList = bookingsDataLoader.load(bookingsDataFileName);
     }
     
     public static AirbnbListing getProperty(String iD) {
@@ -293,12 +297,13 @@ public class DataHandler
     }
     
     public static ArrayList<Booking> getBookingList() {
+        loadBookingsData();
         return bookingList;
     }
     
     public static void addToBookingList(Booking booking) {
         bookingList.add(booking);
-        saveBookingList();
+        saveBooking(booking);
     }
     
     private static void saveBooking(Booking booking) {
@@ -313,5 +318,6 @@ public class DataHandler
     
     public static void removeToBookingList(Booking booking) {
         bookingList.remove(booking);
+        saveBookingList();
     }
 }

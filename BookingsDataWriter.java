@@ -45,10 +45,11 @@ public class BookingsDataWriter
             String file = new File(bookingsDataURL.toURI()).getAbsolutePath();
             
             CSVReader reader = new CSVReader(new FileReader(file));
-            CSVWriter writer = new CSVWriter(new FileWriter(file));
+            String[] columnHeaders = reader.readNext();
+            reader.close();
             
-            String[] r = reader.readNext();
-            writer.writeNext(r);
+            CSVWriter writer = new CSVWriter(new FileWriter(file));
+            writer.writeNext(columnHeaders);
             
             for (Iterator i = bookingsList.iterator(); i.hasNext();) {
                 Booking nextBooking = (Booking) i.next();
