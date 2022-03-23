@@ -128,17 +128,25 @@ public class MainViewer extends Stage
     
     private void makePanelSwitcherPane() {
         panelSwitcherPane = new AnchorPane();
+        Label prevPanelButtonLabel = new Label("prev");
+        Label nextPanelButtonLabel = new Label("next");
         
         prevPanelButton = new Button("<");
             prevPanelButton.setOnAction(e -> goToPrevPanel());
         nextPanelButton = new Button(">");
             nextPanelButton.setOnAction(e -> goToNextPanel());
         
-        AnchorPane.setLeftAnchor(prevPanelButton, 5.0);
-        AnchorPane.setRightAnchor(nextPanelButton, 5.0);
+        HBox prevButtonHBox = new HBox();
+        prevButtonHBox.getChildren().addAll(prevPanelButton, prevPanelButtonLabel);
         
-        panelSwitcherPane.getChildren().add(prevPanelButton);
-        panelSwitcherPane.getChildren().add(nextPanelButton);
+        HBox nextButtonHBox = new HBox();
+        nextButtonHBox.getChildren().addAll(nextPanelButtonLabel, nextPanelButton);
+        
+        AnchorPane.setLeftAnchor(prevButtonHBox, 5.0);
+        AnchorPane.setRightAnchor(nextButtonHBox, 5.0);
+        
+        panelSwitcherPane.getChildren().add(prevButtonHBox);
+        panelSwitcherPane.getChildren().add(nextButtonHBox);
         
         root.setBottom(panelSwitcherPane);
     }
