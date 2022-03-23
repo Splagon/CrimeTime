@@ -91,6 +91,12 @@ public class MainViewer extends Stage
     
     private StatisticsViewer statisticsViewer;
     
+    ArrayList<VBox> statsOrder = new ArrayList<>();
+    
+    int currentStat = 0;
+    
+    VBox statsWindow = new VBox();
+    
     /**
      * Constructor for objects of class MapViewer
      */
@@ -806,6 +812,12 @@ public class MainViewer extends Stage
     }
     
     private void makeStatsPane() {
+        if(statsOrder.size() > 0)
+        {
+            statsOrder.clear();
+        }
+        currentStat = 0; 
+        
         Label reviewInfo = new Label("default");
         Label availableInfo = new Label("default");
         Label noHomeAndApartmentsInfo = new Label("default");
@@ -815,7 +827,6 @@ public class MainViewer extends Stage
         XYChart.Series averagePriceData = new XYChart.Series();
     
         // The layout of the window
-        VBox window = new VBox();
         GridPane statsGrid = new GridPane(); 
         VBox reviews = new VBox();
         VBox available = new VBox(); 
@@ -839,11 +850,18 @@ public class MainViewer extends Stage
         Label priceSDTitle = new Label("Standard Deviation of Price (£):");
         Label highAvgReviewTitle = new Label("Borough with the Highest \nAverage Amount of Reviews:");
         
+        VBox statsGridVBox = new VBox();
+        statsGridVBox.getChildren().add(statsGrid);
         
+        VBox AvgPriceBarCharVBox = new VBox();
+        AvgPriceBarCharVBox.getChildren().add(createAvgPriceBarChart());
+        
+        statsOrder.add(statsGridVBox);
+        statsOrder.add(AvgPriceBarCharVBox);
         // Adding components 
-        window.setAlignment(Pos.CENTER);
-        window.getChildren().add(title); 
-        window.getChildren().add(statsGrid); 
+        statsWindow.setAlignment(Pos.CENTER);
+        statsWindow.getChildren().add(title); 
+        statsWindow.getChildren().add(getStatsIndex(0)); 
         //window.getChildren().add(barChart);
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
@@ -885,7 +903,7 @@ public class MainViewer extends Stage
         //scene.getStylesheets().add("stylesheet.css");
         
         statsGrid.setId("statsgrid"); 
-        window.getStyleClass().add("statsvbox");
+        statsWindow.getStyleClass().add("statsvbox");
         reviews.getStyleClass().add("statsvbox"); 
         available.getStyleClass().add("statsvbox");
         noHomeAndApartments.getStyleClass().add("statsvbox");
@@ -903,11 +921,6 @@ public class MainViewer extends Stage
         
         title.getStyleClass().add("welcomeTitle"); 
         
-        xAxis.setLabel("Borough");
-        yAxis.setLabel("Average Price");
-        averagePriceData.setName("Average Price per Night per Borough");
-        setAveragePricePerBorough();
-        barChart.getData().add(averagePriceData);
     
         setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
         setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments(false));
@@ -918,14 +931,14 @@ public class MainViewer extends Stage
         
         Button leftStatsButton = new Button();
         leftStatsButton.setText("<");
-        //leftStatsButton.setOnAction();
+        leftStatsButton.setOnAction(this::leftStatButtonAction);
         leftStatsButton.setMinSize(10, 100);
         leftStatsButton.setAlignment(Pos.CENTER);
         
         //Create the right button
         Button rightStatsButton = new Button();
         rightStatsButton.setText(">");
-        //rightStatsButton.setOnAction();
+        rightStatsButton.setOnAction(this::rightStatButtonAction);
         rightStatsButton.setMinSize(10, 100);
         rightStatsButton.setAlignment(Pos.CENTER);
         
@@ -941,7 +954,7 @@ public class MainViewer extends Stage
         
         
         BorderPane statsBorder = new BorderPane(); 
-        statsBorder.setCenter(window);
+        statsBorder.setCenter(statsWindow);
         statsBorder.setLeft(leftButtonVBox);
         statsBorder.setRight(rightButtonVBox);
         
@@ -949,25 +962,72 @@ public class MainViewer extends Stage
         statsPane = statsBorder;
     }
     
-    /**
-     * Update all of the info labels
-     */
-    private void setInfo()
+    private BarChart createAvgPriceBarChart()
     {
+        XYChart.Series averagePriceData = new XYChart.Series();
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        BarChart barChart = new BarChart(xAxis, yAxis);
+        xAxis.setLabel("Borough");
+        yAxis.setLabel("Average Price");
+        averagePriceData = getAveragePricePerBoroughData();
+        averagePriceData.setName("Average Price per Night per Borough");
+        barChart.getData().add(averagePriceData);
         
-        
-        
-        
-        
-        
-        
-        // setReviewInfo(); 
-        // setNoHomeAndApartmentsInfo();
-        // setAvailableInfo();
-        // setExpensiveInfo();
-        // setPriceSDInfo();
-        // setHighAvgReviewInfo();
+        return barChart;
     }
+    
+    private VBox getStatsIndex(int x)
+    {
+        if(statsOrder.size() > 0 && x >= 0 && x < statsOrder.size())
+        {
+            return statsOrder.get(x);
+        }
+        VBox box = new VBox();
+        return box;
+    }
+    
+    /**
+     * Action for the left button which will go the element at index current - 1 in both
+     * title list and stat list. If it reaches the start of both of the lists, set the labels to
+     * the last element in the lists. 
+     */
+    public void leftStatButtonAction(ActionEvent event)
+    {
+        if(currentStat - 1 < 0)
+        {
+            swapWindowContent(statsOrder.size() - 1);
+        }
+        else
+        {
+            swapWindowContent(currentStat - 1);
+        }
+    }
+    
+    /**
+     * Action for the right button which will go the element at index current + 1 in both
+     * title list and stat list. If it reaches the end of both of the lists, set the labels to
+     * the first element in the lists.
+     */
+    public void rightStatButtonAction(ActionEvent event)
+    {
+        if(currentStat + 1 >= statsOrder.size())
+        {
+            swapWindowContent(0);
+        }
+        else
+        {
+            swapWindowContent(currentStat + 1);
+        }
+    }
+    
+    private void swapWindowContent(int change)
+    {
+        statsWindow.getChildren().remove(statsOrder.get(currentStat));
+        currentStat = change; 
+        statsWindow.getChildren().add(statsOrder.get(currentStat));
+    }
+    
     
     private void setText(Label label, double dataToFormat) {
         String x = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
@@ -982,13 +1042,15 @@ public class MainViewer extends Stage
         label.setText(dataToFormat);
     }
     
-    private void setAveragePricePerBorough()
+    private XYChart.Series getAveragePricePerBoroughData()
     {
+        XYChart.Series data = new XYChart.Series();
         Map<String, Integer> information = StatisticsData.getAveragePricePerBorough();
         for (Map.Entry<String, Integer> set : information.entrySet())
         {
-            // averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
+            data.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
         }
+        return data; 
     }
     
     private void makeBookingsPane() {
