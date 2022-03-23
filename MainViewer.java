@@ -856,8 +856,12 @@ public class MainViewer extends Stage
         VBox AvgPriceBarCharVBox = new VBox();
         AvgPriceBarCharVBox.getChildren().add(createAvgPriceBarChart());
         
+        VBox AvgReviewsBarCharVBox = new VBox();
+        AvgReviewsBarCharVBox.getChildren().add(createAvgReviewsBarChart());
+        
         statsOrder.add(statsGridVBox);
         statsOrder.add(AvgPriceBarCharVBox);
+        statsOrder.add(AvgReviewsBarCharVBox);
         // Adding components 
         statsWindow.setAlignment(Pos.CENTER);
         statsWindow.getChildren().add(title); 
@@ -977,6 +981,21 @@ public class MainViewer extends Stage
         return barChart;
     }
     
+    private BarChart createAvgReviewsBarChart()
+    {
+        XYChart.Series averageReviewsData = new XYChart.Series();
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        BarChart barChart = new BarChart(xAxis, yAxis);
+        xAxis.setLabel("Borough");
+        yAxis.setLabel("Average Review Count");
+        averageReviewsData = getAverageReviewsPerBoroughData();
+        averageReviewsData.setName("Average Number of Reviews per Borough");
+        barChart.getData().add(averageReviewsData);
+        
+        return barChart;
+    }
+    
     private VBox getStatsIndex(int x)
     {
         if(statsOrder.size() > 0 && x >= 0 && x < statsOrder.size())
@@ -1046,6 +1065,17 @@ public class MainViewer extends Stage
     {
         XYChart.Series data = new XYChart.Series();
         Map<String, Integer> information = StatisticsData.getAveragePricePerBorough();
+        for (Map.Entry<String, Integer> set : information.entrySet())
+        {
+            data.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
+        }
+        return data; 
+    }
+    
+    private XYChart.Series getAverageReviewsPerBoroughData()
+    {
+        XYChart.Series data = new XYChart.Series();
+        Map<String, Integer> information = StatisticsData.getAverageReviewsPerBorough();
         for (Map.Entry<String, Integer> set : information.entrySet())
         {
             data.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
