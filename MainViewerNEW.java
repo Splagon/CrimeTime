@@ -108,9 +108,6 @@ public class MainViewerNEW extends Stage
         lowestPrice = StatisticsData.getLowestPrice();
         highestPrice = StatisticsData.getHighestPrice();
         
-        //makePriceSelectorPane();
-        //makeStatsPane();
-        
         root = new BorderPane();
         makePanelSwitcherPane();
         
@@ -285,16 +282,17 @@ public class MainViewerNEW extends Stage
         confirm.setDisable(true);
         confirm.setOnAction(e -> 
                                  {
+                                    MapPane currentMapPane = (MapPane) mapPane;
                                     try {
-                                        MapPane holdMapPane = (MapPane) mapPane;
-                                        holdMapPane.makeHexagonMap(); 
+                                        currentMapPane.makeHexagonMap();
+                                        currentMapPane.makePane();
                                     }
                                     catch (Exception ex) {}
                                     
                                     try { changeToMapPane(); }
                                     catch (Exception ex) {}
                                     
-                                    //updateStats();
+                                    //currentMapPane.updateStats();
                                  });
         
         minBox.setOnAction(e -> {
