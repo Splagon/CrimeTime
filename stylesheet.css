@@ -225,21 +225,6 @@
     -fx-alignment: center;
 }
 
-.buttonsPV {
-    -fx-font: 14px "Ariel";
-    -fx-background-color: lavender;
-    -fx-border-color: indigo;
-}
-
-.buttonsPV:hover {
-    -fx-effect: dropshadow( one-pass-box , indigo , 8 , 0.0 , 2 , 2 );
-    -fx-border-color: transparent;
-}
-
-.buttonsPV:pressed {
-    -fx-background-color: lightgray;
-}
-
 #menu  {
     -fx-font: 12px "Ariel";
     -fx-font-weight: bold;

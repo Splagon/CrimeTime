@@ -152,14 +152,14 @@ public class PropertyViewer extends Stage {
         Button prevButton = new Button("Previous");
             prevButton.setOnAction(e -> viewPreviousProperty());
             prevButton.setPrefSize(130, 230);
-        prevButton.getStyleClass().add("buttonsPV");
+        prevButton.getStyleClass().add("smallWindowButtons");
         root.setAlignment(prevButton, Pos.CENTER);
         root.setLeft(prevButton);
         
         Button nextButton = new Button("Next");
             nextButton.setOnAction(e -> viewNextProperty());
             nextButton.setPrefSize(130, 230);
-        nextButton.getStyleClass().add("buttonsPV");
+        nextButton.getStyleClass().add("smallWindowButtons");
         root.setAlignment(nextButton, Pos.CENTER);
         root.setRight(nextButton);
         
@@ -188,11 +188,11 @@ public class PropertyViewer extends Stage {
             minNightsLabel.getStyleClass().add("propertyViewerInfoLabels");
             
             Button infoButton = new Button("Description");
-                infoButton.getStyleClass().add("buttonsPV");
+                infoButton.getStyleClass().add("smallWindowButtons");
                 infoButton.setOnAction(e -> popUpAction());
             
             Button bookingButton = new Button("Book property");
-                bookingButton.getStyleClass().add("buttonsPV");
+                bookingButton.getStyleClass().add("smallWindowButtons");
                 bookingButton.setOnAction(e -> openBookingWindow());
             
             HBox hbox = new HBox();
@@ -472,10 +472,12 @@ public class PropertyViewer extends Stage {
         
                 Button bookButton = new Button("Confirm Booking");
                     bookButton.setOnAction(e -> confirmationAction(updateGrandTotal(checkIn.getValue(), checkOut.getValue()),checkIn.getValue(), checkOut.getValue()));
+                    bookButton.getStyleClass().add("smallWindowButtons");
                 bottomPane.setRightAnchor(bookButton, 0.0);
             
                 Button goBackButton = new Button("Go Back");
                     goBackButton.setOnAction(e -> goBackAction());
+                    goBackButton.getStyleClass().add("smallWindowButtons");
                 bottomPane.setLeftAnchor(goBackButton, 0.0);
             
             bottomPane.getChildren().addAll(bookButton, goBackButton);

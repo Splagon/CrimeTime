@@ -112,9 +112,9 @@ public class MainViewerNEW extends Stage
         
         //panel switcher buttons
         prevPanelButton = new Button(prevButtonPreFix + "Bookings");
-        prevPanelButton.setPrefSize(150, 20);
+        prevPanelButton.setPrefSize(155, 20);
         nextPanelButton = new Button("Price Selection" + nextButtonPostFix);
-        nextPanelButton.setPrefSize(150, 20);
+        nextPanelButton.setPrefSize(155, 20);
         //styling for the buttons
         prevPanelButton.getStyleClass().add("smallWindowButtons");
         nextPanelButton.getStyleClass().add("smallWindowButtons");
