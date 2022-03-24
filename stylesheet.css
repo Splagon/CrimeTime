@@ -182,7 +182,7 @@
 
 // -------------- map scene ---------------------
 .tooltip {
-    -fx-font: 12px "Ariel";
+    -fx-font: 14px "Ariel";
     
 }
 
@@ -224,14 +224,27 @@
     -fx-spacing: 120;
     -fx-alignment: center;
 }
-.buttonsPV:hover {
+
+.buttonsPV {
     -fx-font: 14px "Ariel";
-    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
+    -fx-background-color: lavender;
+    -fx-border-color: indigo;
+}
+
+.buttonsPV:hover {
+    -fx-effect: dropshadow( one-pass-box , indigo , 8 , 0.0 , 2 , 2 );
+    -fx-border-color: transparent;
+}
+
+.buttonsPV:pressed {
+    -fx-background-color: lightgray;
 }
 
 #menu  {
-    -fx-font: 12px "Verdana";
+    -fx-font: 12px "Ariel";
     -fx-font-weight: bold;
+    -fx-background-color: lavender;
+    -fx-border-color: indigo;
 }
 
 // ------------- Booking Window --------------------

@@ -113,7 +113,7 @@ public class PropertyViewer extends Stage {
         root.setPadding(new Insets(0, 10, 0, 10)); // Sets the right and left padding of the pane
         
         // Create scene for the border pane with width = 600 and height = 400.
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 700, 400);
         scene.getStylesheets().add("stylesheet.css"); // Set the scene's stylesheet
         
         HBox topPane = new HBox();
@@ -172,6 +172,7 @@ public class PropertyViewer extends Stage {
         
             info.setAlignment(Pos.CENTER);
             info.setPrefWidth(600);
+            //info.setGridLinesVisible(true);
             
             hostLabel = new Label();
             priceLabel = new Label();
@@ -187,16 +188,17 @@ public class PropertyViewer extends Stage {
             minNightsLabel.getStyleClass().add("propertyViewerInfoLabels");
             
             Button infoButton = new Button("Description");
+                infoButton.getStyleClass().add("buttonsPV");
                 infoButton.setOnAction(e -> popUpAction());
             
-            
             Button bookingButton = new Button("Book property");
+                bookingButton.getStyleClass().add("buttonsPV");
                 bookingButton.setOnAction(e -> openBookingWindow());
-    
             
             HBox hbox = new HBox();
                 hbox.setSpacing(5);
-            hbox.getChildren().addAll(infoButton, noOfReviewsLabel, bookingButton);
+            //hbox.getChildren().addAll(infoButton, noOfReviewsLabel, bookingButton);
+            hbox.getChildren().addAll(infoButton, bookingButton);
             
             info.add(hostLabel, 0, 0);
             info.add(priceLabel, 0, 1);
