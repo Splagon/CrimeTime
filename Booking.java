@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 public class Booking
 {
+    // the property associated with the booking
     private AirbnbListing property;
     private int grandTotal;
     private LocalDate checkIn;
