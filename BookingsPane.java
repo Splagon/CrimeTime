@@ -55,6 +55,7 @@ public class BookingsPane extends MainViewerPane
                             bookingsPanel.getChildren().add(noBookingsLabel);
                         }       
                 scrollPane.setContent(bookingsPanel);
+                scrollPane.setFitToWidth(true);
         
         contentPane.getChildren().add(hbox);
         contentPane.getChildren().add(scrollPane);

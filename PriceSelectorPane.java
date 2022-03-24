@@ -24,12 +24,11 @@ public class PriceSelectorPane extends MainViewerPane
     }
     
     public void makePane() {
-        // setTitle("Price Selection Screen");
-        
         //All labels in the window
         Label title = new Label("Price Selection!");
         Label instruction = new Label("Please select a min and max for your price range: ");
         
+        //min max price selction boxes and confirm button
         HBox minMaxBox = mainViewer.createMinMaxBox();
         minMaxBox.setSpacing(5);
         
@@ -39,8 +38,6 @@ public class PriceSelectorPane extends MainViewerPane
         ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
         
         statusLabel = new Label(mainViewer.showStatus(confirm));
-        
-        //All buttons in the window
         
         //Layout of the window
         BorderPane window = new BorderPane(); //root of the window
@@ -56,7 +53,7 @@ public class PriceSelectorPane extends MainViewerPane
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
         
-        title.getStyleClass().add("welcomeTitle");
+        title.getStyleClass().add("windowTitle");
         
         instruction.getStyleClass().add("priceInstruction");
         

@@ -127,7 +127,7 @@ public class StatsPane extends MainViewerPane
         //scene.getStylesheets().add("stylesheet.css");
         
         statsGrid.setId("statsgrid"); 
-        statsWindow.getStyleClass().add("statsvbox");
+        statsWindow.getStyleClass().add("statsWindowAndButtons");
         reviews.getStyleClass().add("statsvbox"); 
         available.getStyleClass().add("statsvbox");
         noHomeAndApartments.getStyleClass().add("statsvbox");
@@ -143,7 +143,7 @@ public class StatsPane extends MainViewerPane
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        title.getStyleClass().add("welcomeTitle"); 
+        title.getStyleClass().add("windowTitle"); 
         
     
         setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
@@ -158,6 +158,7 @@ public class StatsPane extends MainViewerPane
         leftStatsButton.setOnAction(e ->leftStatButtonAction());
         leftStatsButton.setMinSize(10, 100);
         leftStatsButton.setAlignment(Pos.CENTER);
+        leftStatsButton.getStyleClass().add("smallWindowButtons");
         
         //Create the right button
         Button rightStatsButton = new Button();
@@ -165,15 +166,16 @@ public class StatsPane extends MainViewerPane
         rightStatsButton.setOnAction(e -> rightStatButtonAction());
         rightStatsButton.setMinSize(10, 100);
         rightStatsButton.setAlignment(Pos.CENTER);
+        rightStatsButton.getStyleClass().add("smallWindowButtons");
         
         VBox rightButtonVBox = new VBox();
         rightButtonVBox.getChildren().add(rightStatsButton);
-        rightButtonVBox.getStyleClass().add("statsvbox");
+        rightButtonVBox.getStyleClass().add("statsWindowAndButtons");
         rightButtonVBox.setAlignment(Pos.CENTER);
         
         VBox leftButtonVBox = new VBox();
         leftButtonVBox.getChildren().add(leftStatsButton);
-        leftButtonVBox.getStyleClass().add("statsvbox");
+        leftButtonVBox.getStyleClass().add("statsWindowAndButtons");
         leftButtonVBox.setAlignment(Pos.CENTER);
         
         

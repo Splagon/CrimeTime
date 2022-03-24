@@ -39,13 +39,11 @@ public class MapPane extends MainViewerPane
     }
     
     public void makePane() {
-        //setTitle("Map of London");
-            
         BorderPane window = new BorderPane();
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("welcomeTitle");
+                titleLabel.getStyleClass().add("windowTitle");
             HBox minMaxBox = mainViewer.createMinMaxBox();
                 minMaxBox = mainViewer.setInitialMinMaxBoxSelection(minMaxBox);
             VBox stats = createStatsPanel();
@@ -59,10 +57,8 @@ public class MapPane extends MainViewerPane
         //styling the min and max box as well as the confirm button for the map panel
         window.getStylesheets().add("stylesheet.css");
         confirm.getStyleClass().add("confirmForMap");
-        
         minBox.getStyleClass().add("mapMinMaxBoxes");
         maxBox.getStyleClass().add("mapMinMaxBoxes");
-        
         minMaxBox.getStyleClass().add("mapMinMaxBox");
             
         infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
@@ -271,8 +267,6 @@ public class MapPane extends MainViewerPane
     }
     
     private VBox createStatsPanel() {
-        //setTitle("Information");
-        
         NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice());
         
         VBox statsBox = new VBox();
@@ -309,6 +303,7 @@ public class MapPane extends MainViewerPane
         
         Button moreStatsButton = new Button("Show more stats!");
         moreStatsButton.setOnAction(e -> showMoreStats());
+        moreStatsButton.getStyleClass().add("smallWindowButtons");
         
         statsBox.getChildren().addAll(statsPanel, moreStatsButton);
             

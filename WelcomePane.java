@@ -22,8 +22,6 @@ public class WelcomePane extends MainViewerPane
     }
     
     public void makePane() {
-        //setTitle("Welcome");
-        
         //All labels in the window
         Label title = new Label("Welcome!");
         Label instructionsTitle = new Label("Instructions: ");
@@ -50,7 +48,7 @@ public class WelcomePane extends MainViewerPane
         //creating the scene and adding the CSS
         window.getStylesheets().add("stylesheet.css");
         
-        title.getStyleClass().add("welcomeTitle");
+        title.getStyleClass().add("windowTitle");
         
         instructions.getStyleClass().add("instructionsTitle"); 
         

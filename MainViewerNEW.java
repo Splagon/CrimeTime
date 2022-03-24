@@ -203,39 +203,13 @@ public class MainViewerNEW extends Stage
         
         MainViewerPane paneToChangeTo = paneOrder[currentSceneIndex];
         paneToChangeTo.makePane();
+        updateButtonText();
         
         setButtonsDisabled(currentSceneIndex);
         root.setCenter(paneToChangeTo.getPane());
         setTitle(paneToChangeTo.getTitleName());
         setScene(mainScene);
     }
-        
-    // // switch (nameOfPaneToChangeTo) {
-        // // case ("welcomePane") :
-            // // makeWelcomePane();
-            // // paneToChangeTo = welcomePane;
-            // // break;
-        // // case ("priceSelectorPane") :
-            // // setTitle("Price Selection Screen");
-            // // paneToChangeTo = priceSelectorPane;
-            // // break;
-        // // case ("mapPane") :
-            // // try {
-                // // makeMapPane();
-                // // paneToChangeTo = mapPane;
-            // // }
-            // // catch (Exception ex) {};
-            // // break;
-        // // case ("statsPane") :
-            // // setTitle("Information");
-            // // paneToChangeTo = statsPane;
-            // // break;
-        // // case ("bookingsPane") :
-            // // setTitle("Bookings");
-            // // makeBookingsPane();
-            // // paneToChangeTo = bookingsPane;
-            // // break;
-    // // }
     
     private void setButtonsDisabled(int currentSceneIndex) {
         int nextSceneIndex = currentSceneIndex + 1;
@@ -268,11 +242,6 @@ public class MainViewerNEW extends Stage
         }
     }
     
-    // private void setButtonsDisabled(boolean isPrevButtonsDisabled, boolean isNextButtonsDisabled) {
-        // prevPanelButton.setDisable(isPrevButtonsDisabled);
-        // nextPanelButton.setDisable(isNextButtonsDisabled);
-    // }
-    
     public void changeToPriceSelector() {
         setPane(1);
     }
@@ -304,8 +273,6 @@ public class MainViewerNEW extends Stage
                                     
                                     try { changeToMapPane(); }
                                     catch (Exception ex) {}
-                                    
-                                    //currentMapPane.updateStats();
                                  });
         
         minBox.setOnAction(e -> {
