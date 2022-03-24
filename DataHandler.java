@@ -78,19 +78,6 @@ public class DataHandler
         
         Iterator i = listingsFromBorough.iterator();
 
-        // while (i.hasNext()) 
-        // {
-            // AirbnbListing nextListing = (AirbnbListing) i.next();
-
-            // if((nextListing.getNeighbourhood().toLowerCase()).equals(borough.toLowerCase()) || borough == null) 
-            // {
-                // if (nextListing.getPrice() >= minPrice) {
-                    // if (nextListing.getPrice() <= maxPrice || maxPrice < 0) {
-                        // listingsFromBorough.add(nextListing);
-                    // }
-                // }
-            // }
-        // }
         if (! (minPrice < 0 && maxPrice < 0)) {        
             while (i.hasNext()) {
                 AirbnbListing nextListing = (AirbnbListing) i.next();

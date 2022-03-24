@@ -72,6 +72,7 @@ public class MainViewer extends Stage
     
     private Label statusLabel;
     
+    //the buttons at the bottom of screen
     private AnchorPane panelSwitcherPane;
     private Button prevPanelButton;
     private Button nextPanelButton;
@@ -115,6 +116,17 @@ public class MainViewer extends Stage
         makeStatsPane();
         
         root = new BorderPane();
+        
+        //panel switcher buttons
+        prevPanelButton = new Button("<-- Bookings");
+        prevPanelButton.setPrefSize(150, 20);
+        nextPanelButton = new Button("Price Selection -->");
+        nextPanelButton.setPrefSize(150, 20);
+        //styling for the buttons
+        prevPanelButton.getStyleClass().add("smallWindowButtons");
+        nextPanelButton.getStyleClass().add("smallWindowButtons");
+        
+        //panel switcher
         makePanelSwitcherPane();
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
@@ -141,10 +153,9 @@ public class MainViewer extends Stage
     private void makePanelSwitcherPane() {
         panelSwitcherPane = new AnchorPane();
         
-        prevPanelButton = new Button("<");
-            prevPanelButton.setOnAction(e -> goToPrevPanel());
-        nextPanelButton = new Button(">");
-            nextPanelButton.setOnAction(e -> goToNextPanel());
+        //switches panel once the button is clicked
+        prevPanelButton.setOnAction(e -> goToPrevPanel());
+        nextPanelButton.setOnAction(e -> goToNextPanel());
         
         AnchorPane.setLeftAnchor(prevPanelButton, 5.0);
         AnchorPane.setRightAnchor(nextPanelButton, 5.0);
@@ -162,6 +173,9 @@ public class MainViewer extends Stage
             currentSceneIndex = sceneOrder.length - 1;
         }
         
+        updatePrevButtonText();
+        updateNextButtonText();
+        
         setPane(currentSceneIndex);
     }
     
@@ -172,22 +186,52 @@ public class MainViewer extends Stage
             currentSceneIndex = 0;
         }
         
+        updatePrevButtonText();
+        updateNextButtonText();
+        
         setPane(currentSceneIndex);
     }
     
-    private void setNextPaneButtonLabel() {
+    private void updatePrevButtonText() {
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         
         switch (nameOfPaneToChangeTo) {
             case ("welcomePane") :
+                prevPanelButton.setText("<-- Bookings");
                 break;
             case ("priceSelectorPane") :
+                prevPanelButton.setText("<-- Welcome");
                 break;
             case ("mapPane") :
+                prevPanelButton.setText("<-- Price Selection");
                 break;
             case ("statsPane") :
+                prevPanelButton.setText("<-- Map");
                 break;
-            case ("favouritesPane") :
+            case ("bookingsPane") :
+                prevPanelButton.setText("<-- General Statistics");
+                break;
+        }
+    }
+    
+    private void updateNextButtonText() {
+        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+        
+        switch (nameOfPaneToChangeTo) {
+            case ("welcomePane") :
+                nextPanelButton.setText("Price Selection -->");
+                break;
+            case ("priceSelectorPane") :
+                nextPanelButton.setText("Map -->");
+                break;
+            case ("mapPane") :
+                nextPanelButton.setText("General Statistics -->");
+                break;
+            case ("statsPane") :
+                nextPanelButton.setText("Bookings -->");
+                break;
+            case ("bookingsPane") :
+                nextPanelButton.setText("Welcome -->");
                 break;
         }
     }
@@ -297,7 +341,7 @@ public class MainViewer extends Stage
         
         //window.getStyleClass().add("welcomeVBox");
         
-        title.getStyleClass().add("welcomeTitle");
+        title.getStyleClass().add("windowTitle");
         
         instructions.getStyleClass().add("instructionsTitle"); 
         
@@ -347,7 +391,7 @@ public class MainViewer extends Stage
         //Creating the scene and adding the css styling
         priceSelectorPane = window;
         
-        title.getStyleClass().add("welcomeTitle");
+        title.getStyleClass().add("windowTitle");
         
         instruction.getStyleClass().add("priceInstruction");
         
@@ -510,7 +554,7 @@ public class MainViewer extends Stage
         
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("welcomeTitle");
+                titleLabel.getStyleClass().add("windowTitle");
             HBox minMaxBox = createMinMaxBox();
                 minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
             VBox stats = createStatsPanel();
@@ -523,10 +567,8 @@ public class MainViewer extends Stage
         
         //styling the min and max box as well as the confirm button for the map panel
         confirm.getStyleClass().add("confirmForMap");
-        
         minBox.getStyleClass().add("mapMinMaxBoxes");
         maxBox.getStyleClass().add("mapMinMaxBoxes");
-        
         minMaxBox.getStyleClass().add("mapMinMaxBox");
             
         infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
@@ -740,8 +782,6 @@ public class MainViewer extends Stage
     }
     
     private VBox createStatsPanel() {
-        //setTitle("Information");
-        
         VBox statsBox = new VBox();
         statsBox.setSpacing(20);
         
@@ -776,6 +816,7 @@ public class MainViewer extends Stage
         
         Button moreStatsButton = new Button("Show more stats!");
         moreStatsButton.setOnAction(e -> showMoreStats());
+        moreStatsButton.getStyleClass().add("smallWindowButtons");
         
         statsBox.getChildren().addAll(statsPanel, moreStatsButton);
             
@@ -900,13 +941,10 @@ public class MainViewer extends Stage
         highAvgReview.getChildren().add(highAvgReviewTitle); 
         highAvgReview.getChildren().add(highAvgReviewInfo);
         
-        //Set the scene and add CSS
-        //Scene scene = new Scene(window, 1200,700);
-        
-        //scene.getStylesheets().add("stylesheet.css");
+        //add CSS
         
         statsGrid.setId("statsgrid"); 
-        statsWindow.getStyleClass().add("statsvbox");
+        statsWindow.getStyleClass().add("statsWindowAndButtons");
         reviews.getStyleClass().add("statsvbox"); 
         available.getStyleClass().add("statsvbox");
         noHomeAndApartments.getStyleClass().add("statsvbox");
@@ -922,7 +960,7 @@ public class MainViewer extends Stage
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        title.getStyleClass().add("welcomeTitle"); 
+        title.getStyleClass().add("windowTitle"); 
         
     
         setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
@@ -937,6 +975,7 @@ public class MainViewer extends Stage
         leftStatsButton.setOnAction(this::leftStatButtonAction);
         leftStatsButton.setMinSize(10, 100);
         leftStatsButton.setAlignment(Pos.CENTER);
+        leftStatsButton.getStyleClass().add("smallWindowButtons");
         
         //Create the right button
         Button rightStatsButton = new Button();
@@ -944,15 +983,16 @@ public class MainViewer extends Stage
         rightStatsButton.setOnAction(this::rightStatButtonAction);
         rightStatsButton.setMinSize(10, 100);
         rightStatsButton.setAlignment(Pos.CENTER);
+        rightStatsButton.getStyleClass().add("smallWindowButtons");
         
         VBox rightButtonVBox = new VBox();
         rightButtonVBox.getChildren().add(rightStatsButton);
-        rightButtonVBox.getStyleClass().add("statsvbox");
+        rightButtonVBox.getStyleClass().add("statsWindowAndButtons");
         rightButtonVBox.setAlignment(Pos.CENTER);
         
         VBox leftButtonVBox = new VBox();
         leftButtonVBox.getChildren().add(leftStatsButton);
-        leftButtonVBox.getStyleClass().add("statsvbox");
+        leftButtonVBox.getStyleClass().add("statsWindowAndButtons");
         leftButtonVBox.setAlignment(Pos.CENTER);
         
         
@@ -1085,12 +1125,14 @@ public class MainViewer extends Stage
     }
     
     private void makeBookingsPane() {
+        //creating the pane for the bookings and adding any styling
         BorderPane pane = new BorderPane();
         
         VBox contentPane = new VBox();
                 
                 HBox hbox = new HBox();
                     Label windowTitle = new Label("Your bookings: ");
+                    windowTitle.getStyleClass().add("windowTitle");
                 hbox.getChildren().add(windowTitle);
                 hbox.setAlignment(Pos.CENTER);
                 
@@ -1102,7 +1144,6 @@ public class MainViewer extends Stage
                                 BorderPane bookingListing = createBookingListing(booking);
                                     bookingListing.getStyleClass().add("bookingListing");
                                     bookingsPanel.setMargin(bookingListing, new Insets(10));
-                                    
                                 bookingsPanel.getChildren().add(bookingListing);
                             }
                         }
@@ -1123,26 +1164,36 @@ public class MainViewer extends Stage
     
     private BorderPane createBookingListing(Booking booking) {
         AirbnbListing property = booking.getProperty();
-        
         Label propertyName = new Label("Property: " + property.getName());  
         Label hostName = new Label("Host name: " + property.getHost_name());
         Label dates = new Label("Between: " + booking.getCheckInDate().toString()  +  " and " + booking.getCheckOutDate().toString());
         Label durationLabel = new Label("Duration:  " + booking.getDuration() + " night(s)");
         Label priceLabel = new Label("Price:  £" + booking.getGrandTotal());
         
+        //styling the labels
+        propertyName.getStyleClass().add("bookingListingLabels");
+        hostName.getStyleClass().add("bookingListingLabels");
+        dates.getStyleClass().add("bookingListingLabels");
+        durationLabel.getStyleClass().add("bookingListingLabels");
+        priceLabel.getStyleClass().add("bookingListingLabels");
+        
         Button editButton = new Button("Edit Booking");
-            editButton.setPrefSize(110, 20);
+            editButton.setPrefSize(140, 20);
             editButton.setOnAction(e -> editBooking());
+            editButton.getStyleClass().add("smallWindowButtons");
         Button contactButton = new Button("Contact Host");
-            contactButton.setPrefSize(110, 20);
+            contactButton.setPrefSize(140, 20);
             contactButton.setOnAction(e -> contactAction(booking));
+            contactButton.getStyleClass().add("smallWindowButtons");
         Button cancelButton = new Button("Cancel Booking");
-            cancelButton.setPrefSize(110, 20);
+            cancelButton.setPrefSize(140, 20);
             cancelButton.setOnAction(e -> cancelBookingAction(booking));
+            cancelButton.getStyleClass().add("smallWindowButtons");
         
         BorderPane bookingListing = new BorderPane();
             VBox centerPane = new VBox(propertyName, hostName, dates, durationLabel, priceLabel);
                 centerPane.setSpacing(5);
+                centerPane.setAlignment(Pos.CENTER_LEFT);
             VBox rightPane = new VBox(editButton, contactButton, cancelButton);
                 rightPane.setSpacing(20);
                 rightPane.setAlignment(Pos.CENTER);
@@ -1160,9 +1211,6 @@ public class MainViewer extends Stage
     }
     
     private void contactAction(Booking booking)  {
-        WebEngine web = new WebEngine();
-        web.load("https://docs.oracle.com/javase/8/javafx/api/javafx/scene/web/WebEngine.html");
-        
         Desktop desktop;
         if (Desktop.isDesktopSupported() 
             && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {

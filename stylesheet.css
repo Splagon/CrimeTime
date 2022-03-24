@@ -1,32 +1,15 @@
-// -------------- universal ---------------------
-.mainRoot {
-    -fx-padding: 20;
-    -fx-spacing: 20;
-    -fx-alignment: center;
-    -fx-background-color : floralwhite;
-}
-
-.mainRoot:Node {
-    -fx-alignment: center;
-
-}
-
-.mainHeading {
-    -fx-font: 30px "Ariel";
-    -fx-alignment: center;
-    -fx-text-alignment: center;
-    -fx-underline: true;
-    -fx-font-weight: bold;
-}
-// -------------- universal ---------------------
-
 #statsgrid{
     -fx-hgap: 0px;
     -fx-vgap: 0px;
-    -fx-grid-lines-visible: true;
 }
 
 .statsvbox {
+    -fx-padding: 10;
+    -fx-spacing: 8;
+    -fx-border-color: black;
+}
+
+.statsWindowAndButtons{
     -fx-padding: 10;
     -fx-spacing: 8;
 }
@@ -66,17 +49,48 @@
 
 .propertyViewerInfoLabels {
     -fx-padding: 10px;
-    -fx-font: 12px "Verdana";
+    -fx-font: 12px "Ariel";
 }
 
-// ------------ welcome scene -------------------
-.welcomeTitle {
+// -------------- main ---------------------
+.mainRoot {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-background-color : floralwhite;
+}
+
+.mainRoot:Node {
+    -fx-alignment: center;
+
+}
+
+.windowTitle {
     -fx-font: 30px "Ariel";
     -fx-alignment: center;
     -fx-text-alignment: center;
     -fx-underline: true;
     -fx-font-weight: bold;
 }
+
+.smallWindowButtons {
+    -fx-font: 14px "Ariel";
+    -fx-background-color: lavender;
+    -fx-border-color: indigo;
+}
+
+.smallWindowButtons:hover {
+    -fx-effect: dropshadow( one-pass-box , indigo , 8 , 0.0 , 2 , 2 );
+    -fx-border-color: transparent;
+}
+
+.smallWindowButtons:pressed {
+    -fx-background-color: lightgray;
+}
+
+// ----------------- main -----------------------
+
+// ------------ welcome scene -------------------
 
 .welcomeVBox {
     -fx-text-alignmet: center;
@@ -108,7 +122,6 @@
 .startButton {
     -fx-font: 25px "Ariel";
     -fx-padding: 20;
-    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
     -fx-background-color: indigo;
     -fx-text-fill: white;
 }
@@ -116,10 +129,11 @@
 .startButton:hover {
     -fx-font: 30px "Ariel";
     -fx-background-color: orange;
+    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
 }
 
 .startButton:pressed {
-    -fx-background-color: black;
+    -fx-background-color: lightgray;
 }
 // ------------ welcome scene -------------------
 
@@ -152,7 +166,7 @@
 }
 
 .priceConfirm: pressed {
-    -fx-background-color: black;
+    -fx-background-color: lightgrey;
 }
 
 .priceMinMaxBoxes {
@@ -183,7 +197,7 @@
 }
 
 .confirmForMap: pressed {
-    -fx-background-color: black;
+    -fx-background-color: lightgray;
 }
 
 .mapMinMaxBoxes {
@@ -226,11 +240,11 @@
     -fx-background-color : floralwhite;
 }
 #propertyLabel {
-    -fx-font: 20px "Times New Roman";
+    -fx-font: 20px "Ariel";
     -fx-font-weight: bold;
 }
 .subLabels  {
-    -fx-font: 15px "Times New Roman";
+    -fx-font: 15px "Ariel";
     -fx-font-weight: bold;
 }
 // ------------- Booking Window --------------------
@@ -241,10 +255,15 @@
     -fx-border-color: darkslategrey;
     -fx-padding: 5;
 }
+
+.bookingListingLabels {
+    -fx-font: 16px "Ariel";
+}
+
 // ------------- Booking Viewer --------------------
 
 // ------------- Booking List --------------------
 # bookingList {
-    -fx-font: 15px "Times New Roman";
+    -fx-font: 15px "Ariel";
     -fx-font-weight: bold;
 }
