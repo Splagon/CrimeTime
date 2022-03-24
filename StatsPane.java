@@ -11,6 +11,9 @@ import javafx.scene.chart.XYChart;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.Node;
+import javafx.animation.*;
+import javafx.util.Duration;
 
 /**
  * Write a description of class StatsPane here.
@@ -265,11 +268,28 @@ public class StatsPane extends MainViewerPane
     
     private void swapWindowContent(int change)
     {
+        //fadeOut(statsWindow, 1000);
         statsWindow.getChildren().remove(statsOrder.get(currentStat));
         currentStat = change; 
         statsWindow.getChildren().add(statsOrder.get(currentStat));
+        fadeIn(statsWindow, 1000);
     }
     
+    private void fadeOut(Node node, long time)
+    {
+        FadeTransition effect = new FadeTransition(Duration.millis(time), node);
+        effect.setFromValue(1.0);
+        effect.setToValue(0.0);
+        effect.play();
+    }
+    
+    private void fadeIn(Node node, long time)
+    {
+        FadeTransition effect = new FadeTransition(Duration.millis(time), node);
+        effect.setFromValue(0.0);
+        effect.setToValue(1.0);
+        effect.play();
+    }
     
     private void setText(Label label, double dataToFormat) {
         String formattedLabel = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
