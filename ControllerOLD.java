@@ -1,13 +1,4 @@
-
-
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
@@ -16,7 +7,7 @@ import javafx.stage.Stage;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class NEWTestController extends Application
+public class ControllerOLD extends Application
 {
     /**
      * The start method is the main entry point for every JavaFX application. 
@@ -28,7 +19,7 @@ public class NEWTestController extends Application
     @Override
     public void start(Stage stage)
     {
-        stage = new MainViewerNEW();
+        stage = new MainViewerOLD();
         stage.show();
     }
 }

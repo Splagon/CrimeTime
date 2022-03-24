@@ -4,12 +4,14 @@ import java.util.ArrayList;
 /**
  * Write a description of class Borough here.
  *
- * @author (your name)
+ * @author Michael Higham (k21051343),
  * @version (a version number or a date)
  */
 public class Borough
 {
+    // Name of the borough
     private String boroughName;
+    // List of all properties in the borough
     private ArrayList<AirbnbListing> listingsInBorough;
     
     public Borough(String boroughName, ArrayList<AirbnbListing> listingsInBorough)

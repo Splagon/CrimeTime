@@ -17,7 +17,7 @@ public class PriceSelectorPane extends MainViewerPane
     private static Pane priceSelectorPane;
     private static Label statusLabel;
     
-    public PriceSelectorPane(MainViewerNEW mainViewer)
+    public PriceSelectorPane(MainViewer mainViewer)
     {
         super(mainViewer);
         titleName = "Price Selector";

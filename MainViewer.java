@@ -44,6 +44,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
 import java.awt.Desktop;
 import java.net.URI;
+import java.util.Arrays;
 
 /**
  * Write a description of class MapViewer here.
@@ -53,51 +54,47 @@ import java.net.URI;
  */
 public class MainViewer extends Stage
 {
-    // instance variables
-    
-    private Pane welcomePane;
-    private Pane priceSelectorPane;
-    private Pane mapPane;
-    private Pane statsPane;
-    private Pane bookingsPane;
+    // all of the panes visible in the welcome scene
+    private MainViewerPane welcomePane = new WelcomePane(this);
+    private MainViewerPane priceSelectorPane = new PriceSelectorPane(this);
+    private MainViewerPane mapPane = new MapPane(this);
+    private MainViewerPane statsPane = new StatsPane(this);
+    private MainViewerPane bookingsPane = new BookingsPane(this);
     
     private int sceneWidth;
     private int sceneHeight;
     
+    // the user-selected min and max price
     private Integer selectedMinPrice;
     private Integer selectedMaxPrice;
     
+    // lowest and highest price of all properties
     private int lowestPrice;
     private int highestPrice;
     
-    private Label statusLabel;
-    
-    //the buttons at the bottom of screen
+    // the pane containing the pane switcher buttons
     private AnchorPane panelSwitcherPane;
+    
+    // buttons to switch to the next Pane
     private Button prevPanelButton;
     private Button nextPanelButton;
     
-    private final String[] sceneOrder = { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "bookingsPane" };
+    private final String prevButtonPreFix = "<-- ";
+    private final String nextButtonPostFix = " -->";
+    
+    // order of the panes in the main viewer
+    private MainViewerPane[] paneOrder = { welcomePane, priceSelectorPane, mapPane, statsPane, bookingsPane };
 
-    private int currentSceneIndex;
+    // index of the current pane being shown
+    private int currentPaneIndex;
     
+    // root of the window
     private BorderPane root = new BorderPane();
-    
-    private AnchorPane mapView;
-    
-    private String[][] mapPositions;
-    
-    private NoOfPropertiesStats noOfPropertiesStats;
     
     private Scene mainScene;
     
+    // the stage which holds the stats viewer
     private StatisticsViewer statisticsViewer;
-    
-    ArrayList<VBox> statsOrder = new ArrayList<>();
-    
-    int currentStat = 0;
-    
-    VBox statsWindow = new VBox();
     
     /**
      * Constructor for objects of class MapViewer
@@ -112,37 +109,21 @@ public class MainViewer extends Stage
         lowestPrice = StatisticsData.getLowestPrice();
         highestPrice = StatisticsData.getHighestPrice();
         
-        makePriceSelectorPane();
-        makeStatsPane();
-        
         root = new BorderPane();
         
         //panel switcher buttons
-        prevPanelButton = new Button("<-- Bookings");
-        prevPanelButton.setPrefSize(150, 20);
-        nextPanelButton = new Button("Price Selection -->");
-        nextPanelButton.setPrefSize(150, 20);
+        prevPanelButton = new Button(prevButtonPreFix + "Bookings");
+        prevPanelButton.setPrefSize(155, 20);
+        nextPanelButton = new Button("Price Selection" + nextButtonPostFix);
+        nextPanelButton.setPrefSize(155, 20);
+        
         //styling for the buttons
         prevPanelButton.getStyleClass().add("smallWindowButtons");
         nextPanelButton.getStyleClass().add("smallWindowButtons");
         
-        //panel switcher
         makePanelSwitcherPane();
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
-        // widthProperty().addListener(new ChangeListener<Number>() {
-            // @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                // if (currentSceneIndex == 2){
-                    // try {
-                        // makeHexagonMap();
-                        // setPane(2);
-                    // }
-                    // catch (Exception e) {}
-                // }
-            // }
-        // });
-
-        //setResizable(false);
         
         setPane(0);
         
@@ -157,8 +138,10 @@ public class MainViewer extends Stage
         prevPanelButton.setOnAction(e -> goToPrevPanel());
         nextPanelButton.setOnAction(e -> goToNextPanel());
         
-        AnchorPane.setLeftAnchor(prevPanelButton, 5.0);
-        AnchorPane.setRightAnchor(nextPanelButton, 5.0);
+        AnchorPane.setTopAnchor(prevPanelButton, 5.0);
+        AnchorPane.setLeftAnchor(prevPanelButton, 0.0);
+        AnchorPane.setTopAnchor(nextPanelButton, 5.0);
+        AnchorPane.setRightAnchor(nextPanelButton, 0.0);
         
         panelSwitcherPane.getChildren().add(prevPanelButton);
         panelSwitcherPane.getChildren().add(nextPanelButton);
@@ -167,319 +150,324 @@ public class MainViewer extends Stage
     }
     
     private void goToPrevPanel() {
-        currentSceneIndex--;
+        // currentSceneIndex--;
         
-        if (currentSceneIndex < 0) {
-            currentSceneIndex = sceneOrder.length - 1;
-        }
+        // if (currentSceneIndex < 0) {
+            // currentSceneIndex = paneOrder.length - 1;
+        // }
         
-        updatePrevButtonText();
-        updateNextButtonText();
+        currentPaneIndex = decreaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
         
-        setPane(currentSceneIndex);
+        updateButtonText();
+        
+        setPane(currentPaneIndex);
     }
     
     private void goToNextPanel() {
-        currentSceneIndex++;
+        // currentSceneIndex++;
         
-        if (currentSceneIndex >= sceneOrder.length) {
-            currentSceneIndex = 0;
-        }
+        // if (currentSceneIndex >= paneOrder.length) {
+            // currentSceneIndex = 0;
+        // }
         
-        updatePrevButtonText();
-        updateNextButtonText();
+        currentPaneIndex = increaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
         
-        setPane(currentSceneIndex);
+        updateButtonText();
+        
+        setPane(currentPaneIndex);
     }
     
-    private void updatePrevButtonText() {
-        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+    private int decreaseIndex(int index, List list)
+    {
+        index--;
         
-        switch (nameOfPaneToChangeTo) {
-            case ("welcomePane") :
-                prevPanelButton.setText("<-- Bookings");
-                break;
-            case ("priceSelectorPane") :
-                prevPanelButton.setText("<-- Welcome");
-                break;
-            case ("mapPane") :
-                prevPanelButton.setText("<-- Price Selection");
-                break;
-            case ("statsPane") :
-                prevPanelButton.setText("<-- Map");
-                break;
-            case ("bookingsPane") :
-                prevPanelButton.setText("<-- General Statistics");
-                break;
+        if (index < 0) {
+            index = list.size() - 1;
         }
+        
+        return index;
     }
     
-    private void updateNextButtonText() {
-        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+    private int increaseIndex(int index, List list)
+    {
+        index++;
         
-        switch (nameOfPaneToChangeTo) {
-            case ("welcomePane") :
-                nextPanelButton.setText("Price Selection -->");
-                break;
-            case ("priceSelectorPane") :
-                nextPanelButton.setText("Map -->");
-                break;
-            case ("mapPane") :
-                nextPanelButton.setText("General Statistics -->");
-                break;
-            case ("statsPane") :
-                nextPanelButton.setText("Bookings -->");
-                break;
-            case ("bookingsPane") :
-                nextPanelButton.setText("Welcome -->");
-                break;
+        if (index >= list.size()) {
+            index = 0;
         }
+        
+        return index;
     }
     
-    public void setPane(int newSceneIndex) {      
-        currentSceneIndex = newSceneIndex;
-        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
-        Pane paneToChangeTo = new Pane();
+    private void updateButtonText() {
+        String nameOfPaneToChangeTo = paneOrder[currentPaneIndex].getClass().toString();
+        nameOfPaneToChangeTo = nameOfPaneToChangeTo.substring(6);
         
-        switch (nameOfPaneToChangeTo) {
-            case ("welcomePane") :
-                makeWelcomePane();
-                paneToChangeTo = welcomePane;
-                break;
-            case ("priceSelectorPane") :
-                setTitle("Price Selection Screen");
-                paneToChangeTo = priceSelectorPane;
-                break;
-            case ("mapPane") :
-                try {
-                    makeMapPane();
-                    paneToChangeTo = mapPane;
-                }
-                catch (Exception ex) {};
-                break;
-            case ("statsPane") :
-                setTitle("Information");
-                paneToChangeTo = statsPane;
-                break;
-            case ("bookingsPane") :
-                setTitle("Bookings");
-                makeBookingsPane();
-                paneToChangeTo = bookingsPane;
-                break;
-        }
+        int prevSceneIndex = decreaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
+        int nextSceneIndex = increaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
         
-        setButtonsDisabled(currentSceneIndex);
-        root.setCenter(paneToChangeTo);
+        MainViewerPane prevPane = paneOrder[prevSceneIndex];
+        MainViewerPane nextPane = paneOrder[nextSceneIndex];
+        
+        setPrevNextButtonText(prevPane, nextPane);
+        
+        // switch (nameOfPaneToChangeTo) 
+        // {
+            // case ("WelcomePane") :
+                // prevPanelButton.setText(prevButtonPreFix + "Bookings");
+                // nextPanelButton.setText("Price Selection" + nextButtonPostFix);
+                // break;
+            // case ("PriceSelectorPane") :
+                // prevPanelButton.setText(prevButtonPreFix + "Welcome");
+                // nextPanelButton.setText("Map" + nextButtonPostFix);
+                // break;
+            // case ("MapPane") :
+                // prevPanelButton.setText(prevButtonPreFix + "Price Selector");
+                // nextPanelButton.setText("General Statistics" + nextButtonPostFix);
+                // break;
+            // case ("StatsPane") :
+                // prevPanelButton.setText(prevButtonPreFix + "Map");
+                // nextPanelButton.setText("Bookings" + nextButtonPostFix);
+                // break;
+            // case ("BookingsPane") :
+                // prevPanelButton.setText(prevButtonPreFix + "General Statistics");
+                // nextPanelButton.setText("Welcome" + nextButtonPostFix);
+                // break;
+        // }
+    }
+    
+    /**
+     * Appends the name of the next and previous pane to the appropriate button
+     */
+    private void setPrevNextButtonText(MainViewerPane prevPane, MainViewerPane nextPane)
+    {
+        prevPanelButton.setText(prevButtonPreFix + prevPane.getTitleName());
+        nextPanelButton.setText(nextPane.getTitleName() + nextButtonPostFix);
+    }
+    
+    public void setPane(int newSceneIndex) 
+    {
+        currentPaneIndex = newSceneIndex;
+        
+        MainViewerPane paneToChangeTo = paneOrder[currentPaneIndex];
+        
+        paneToChangeTo.makePane();
+        updateButtonText();
+        setButtonsDisabled(currentPaneIndex);
+        
+        root.setCenter(paneToChangeTo.getPane());
+        setTitle(paneToChangeTo.getTitleName());
+        
         setScene(mainScene);
     }
     
-    private void setButtonsDisabled(int currentSceneIndex) {
-        int nextSceneIndex = currentSceneIndex + 1;
-        int prevSceneIndex = currentSceneIndex - 1;
-        
-        if (nextSceneIndex >= sceneOrder.length) {
-            nextSceneIndex = 0;
-        }
-        if (prevSceneIndex < 0) {
-            prevSceneIndex = sceneOrder.length - 1;
-        }
+    private void setButtonsDisabled(int currentSceneIndex) 
+    {
+        int nextSceneIndex = increaseIndex(currentSceneIndex, Arrays.asList(paneOrder));
+        int prevSceneIndex = decreaseIndex(currentSceneIndex, Arrays.asList(paneOrder));
         
         if (selectedMinPrice == null && selectedMaxPrice == null) 
         {    
-            if (sceneOrder[nextSceneIndex] == "mapPane") {
-                nextPanelButton.setDisable(true);
-            }
-            else 
-            {
-                nextPanelButton.setDisable(false);
-            }
-            if (sceneOrder[prevSceneIndex] == "mapPane") {
-                prevPanelButton.setDisable(true);
-            }
-            else 
-            {
-                prevPanelButton.setDisable(false);
-            }
+            buttonDisablerForMapPane(prevPanelButton, prevSceneIndex);
+            buttonDisablerForMapPane(nextPanelButton, nextSceneIndex);
         }
-        else {
+        else
+        {
             prevPanelButton.setDisable(false);
             nextPanelButton.setDisable(false);
         }
     }
     
-    private void setButtonsDisabled(boolean isPrevButtonsDisabled, boolean isNextButtonsDisabled) {
-        prevPanelButton.setDisable(isPrevButtonsDisabled);
-        nextPanelButton.setDisable(isNextButtonsDisabled);
-    }
-
-    private void makeWelcomePane() {
-        // setTitle("Welcome");
-        
-        //All labels in the window
-        Label title = new Label("Welcome!");
-        Label instructionsTitle = new Label("Instructions: ");
-        Label instructions1 = new Label("- When you are ready click start, this will send you to the next window where you will be able to enter your price range.");
-        Label instructions2 = new Label("- Once your price range has been selected you will then be able to view the map and see where the you be able to find a property. ");
-        Label instructions3 = new Label("- In order to view the map you will need to click the confirm button once both your min and max price have been slected.");
-        
-        //Buttons in the window
-        Button startButton = new Button("Start"); 
-        startButton.setOnAction(e -> changeToPriceSelector());
-        
-        //layout of the whole window
-        VBox window = new VBox(); //root of the scene
-        VBox instructions = new VBox();
-        BorderPane instrcutionsAndStart = new BorderPane();
-
-        //adding elements to the window
-        window.getChildren().addAll(title, instrcutionsAndStart);
-        window.setAlignment(Pos.CENTER);
-        instructions.getChildren().addAll(instructionsTitle, instructions1, instructions2, instructions3); 
-        
-        instrcutionsAndStart.setLeft(instructions);
-        instrcutionsAndStart.setCenter(startButton);
-        
-        //creating the scene and adding the CSS
-        welcomePane = window;
-        
-        //window.getStyleClass().add("welcomeVBox");
-        
-        title.getStyleClass().add("windowTitle");
-        
-        instructions.getStyleClass().add("instructionsTitle"); 
-        
-        instructions1.getStyleClass().add("instructions"); 
-        instructions2.getStyleClass().add("instructions"); 
-        instructions3.getStyleClass().add("instructions");
-        
-        instrcutionsAndStart.getStyleClass().add("instructionsAndStart");
-        
-        startButton.getStyleClass().add("startButton");
+    /**
+     * If the selected min and max price is not chosen, the next and previous 
+     * pane buttons are disabled if the next or previous pane are the map
+     * respectively.
+     */
+    private void buttonDisablerForMapPane(Button button, int index) 
+    {
+        if (paneOrder[index].equals(mapPane)) 
+        {
+            button.setDisable(true);
+        }
+        else 
+        {
+            button.setDisable(false);
+        }
     }
     
-    public void changeToPriceSelector() {
-        setPane(1);
-    }
-    
-    private void makePriceSelectorPane() {
-        // setTitle("Price Selection Screen");
-        
-        //All labels in the window
-        Label title = new Label("Price Selection!");
-        Label instruction = new Label("Please select a min and max for your price range: ");
-        
-        HBox minMaxBox = createMinMaxBox();
-        minMaxBox.setSpacing(5);
-        
-        Button confirm = (Button) minMaxBox.getChildren().get(2);
-        
-        ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
-        ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
-        
-        statusLabel = new Label(showStatus(confirm));
-        
-        //All buttons in the window
-        
-        //Layout of the window
-        BorderPane window = new BorderPane(); //root of the window
-        VBox titleAndInstruction = new VBox();
-        
-        //Adding elements to the window
-        window.setCenter(minMaxBox);
-        window.setTop(titleAndInstruction);
-        window.setBottom(statusLabel); 
-
-        titleAndInstruction.getChildren().addAll(title, instruction);
-        
-        //Creating the scene and adding the css styling
-        priceSelectorPane = window;
-        
-        title.getStyleClass().add("windowTitle");
-        
-        instruction.getStyleClass().add("priceInstruction");
-        
-        titleAndInstruction.getStyleClass().add("priceTitleAndTitle");
-        
-        confirm.getStyleClass().add("priceConfirm");
-        
-        minBox.getStyleClass().add("priceMinMaxBoxes");
-        maxBox.getStyleClass().add("priceMinMaxBoxes");
-        
-        minMaxBox.getStyleClass().add("priceMinMaxBox");
-        
-        statusLabel.getStyleClass().add("priceStatusLabel");
-    }
-    
-    private HBox createMinMaxBox() {
-        //adding the options to the price selection box, as well as assigning appropriate values to the instance variables
+    /**
+     * Creates two combo boxes allowing the user to select the minimum and 
+     * price and confirm the selected options using a confirm button.
+     * 
+     * @return HBox containing the minimum and maximum price combo boxes with a 
+     *         confirm button.
+     */
+    public HBox createMinMaxBox() {
+        //adding the options to the price selection box, as well as assigning appropriate values
         HBox minMaxBox = new HBox();
+        
         ComboBox<String> minBox = new ComboBox<String>();
         ComboBox<String> maxBox = new ComboBox<String>();
         minBox.setValue("Min Price:");
         maxBox.setValue("Max Price:");
         
         ArrayList<String> options = getPriceSelectionOptions(lowestPrice, highestPrice);
+        
         minBox.getItems().add("No Min");
         minBox.getItems().addAll(options);
+        
         maxBox.getItems().addAll(options);
         maxBox.getItems().add("No Max");
         
         Button confirm = new Button("Confirm");
-        confirm.setDisable(true);
-        confirm.setOnAction(e -> 
-                                 {
-                                    try { makeHexagonMap(); }
-                                    catch (Exception ex) {}
-                                    
-                                    try { changeToMapPane(); }
-                                    catch (Exception ex) {}
-                                    
-                                    updateStats();
-                                 });
+            confirm.setDisable(true);
+            confirm.setOnAction(e -> confirmButtonAction());
         
-        minBox.setOnAction(e -> {
-            String selected = minBox.getValue();
-            if ("No Min".equals(selected)) {
-                selectedMinPrice = -1;
-            }
-            else {
-                selectedMinPrice = Integer.parseInt(selected);
-            }
-            statusLabel.setText(showStatus(confirm));
-        });
-        maxBox.setOnAction(e -> {
-            String selected = maxBox.getValue();
-            if ("No Max".equals(selected)) {
-                selectedMaxPrice = -1;
-            }
-            else {
-                selectedMaxPrice = Integer.parseInt(selected);
-            }
-            statusLabel.setText(showStatus(confirm));
-        });
+        minBox.setOnAction(e -> getSelectionOfUser(minBox, confirm, true));
+        maxBox.setOnAction(e -> getSelectionOfUser(maxBox, confirm, false));
         
         minMaxBox.getChildren().addAll(minBox, maxBox, confirm);
         
         return minMaxBox;
     }
     
-    private HBox setInitialMinMaxBoxSelection(HBox minMaxBox) {
+    /**
+     * Switches the pane to the map pane if the confirm button is pressed and the
+     * requirements are met.
+     */
+    private void confirmButtonAction() 
+    {
+        MapPane currentMapPane = (MapPane) mapPane;
+        
+        currentMapPane.makeHexagonMap();
+        currentMapPane.makePane();
+        
+        changeToMapPane();
+    }
+    
+    /**
+     * Gets the current selection of the respective combobox and enables/disables
+     * the confirm button depending of the user's selection
+     * 
+     * @param box The combobox to get the value selected.
+     * @param confirm The confirm button to enable/disable.
+     * @param isMinBox Indicates whether the box is the min price combobox.
+     */
+    private void getSelectionOfUser(ComboBox<String> box, Button confirm, boolean isMinBox)
+    {
+        getMinMaxBoxValue(box, isMinBox);
+        
+        PriceSelectorPane priceSelectorPane = (PriceSelectorPane) this.priceSelectorPane;
+        priceSelectorPane.updateStatus(showStatus(confirm));
+    }
+    
+    /**
+     * Gets the user's selection of the referenced box.
+     * 
+     * @param box The combobox to get the value selected
+     * @param isMinBox Indicates whether the box is the min price combobox.
+     */
+    private void getMinMaxBoxValue(ComboBox<String> box, boolean isMinBox) 
+    {
+        String selected = box.getValue();
+        
+        if (selected.equals("No Min")) 
+        {
+            selectedMinPrice = -1;
+        }
+        else if (selected.equals("No Max")) 
+        {
+            selectedMaxPrice = -1;
+        }
+        else 
+        {
+            Integer integerHold = Integer.parseInt(selected);
+            
+            if (isMinBox) 
+            {
+                selectedMinPrice = integerHold;
+            }
+            else
+            {
+                selectedMaxPrice = integerHold;
+            }
+        }
+    }
+    
+    /**
+     * Checks whether the current min and max price selections fall within the 
+     * specified paramaters and returns the corresponding status message.
+     * 
+     * @param confirm The confirm button to change the status of.
+     * 
+     * @return The current status message of the comparison between the comboboxes.
+     */
+    public String showStatus(Button confirm) {
+        if (selectedMinPrice == null && selectedMaxPrice == null) 
+        {
+            confirm.setDisable(true);
+            return "Currently nothing has been selected!";
+        }
+        else if (selectedMinPrice != null && selectedMaxPrice == null) 
+        {
+            confirm.setDisable(true);
+            return "Currently only your min price has been selected!";
+        }
+        else if (selectedMinPrice == null && selectedMaxPrice != null) 
+        {
+            confirm.setDisable(true);
+            return "Currently only your max price has been selected!";
+        }
+        else  
+        {
+            if (selectedMinPrice == -1 || selectedMaxPrice == -1)  
+            {
+                confirm.setDisable(false);
+                return "Both your min and max price have been selected";
+            }
+            else if (selectedMinPrice > selectedMaxPrice) 
+            {
+                confirm.setDisable(true);
+                return "Your min price is not less than your max price!";
+            }
+            confirm.setDisable(false);
+            return "Both your min and max price have been selected";
+        }
+    }
+    
+    /**
+     * Sets the initial value of the minimum and maximum comboboxes to fit the
+     * current selected minimum and maxium prices.
+     * 
+     * @param minMaxBox The HBox containing the minimum and maximum comboboxes.
+     * 
+     * @return A HBox containing the appropriate min and max price selections.
+     */
+    public HBox setInitialMinMaxBoxSelection(HBox minMaxBox) 
+    {
         ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
         ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
         
-        if (selectedMinPrice != null){
-            if (selectedMinPrice >= 0) {
+        if (selectedMinPrice != null)
+        {
+            if (selectedMinPrice >= 0) 
+            {
                 minBox.getSelectionModel().select(selectedMinPrice.toString());
             }
-            else {
+            else
+            {
                 minBox.getSelectionModel().select("No Min");
             }
         }
-        if (selectedMaxPrice != null){
-            if (selectedMaxPrice >= 0) {
+        
+        if (selectedMaxPrice != null)
+        {
+            if (selectedMaxPrice >= 0) 
+            {
                 maxBox.getSelectionModel().select(selectedMaxPrice.toString());
             }
-            else {
+            else 
+            {
                 maxBox.getSelectionModel().select("No Max");
             }
         }
@@ -491,744 +479,104 @@ public class MainViewer extends Stage
     }
     
     /**
-     * creating the list of all possible prices which can be selected
+     * Creates the list of all possible prices which can be selected.
+     * 
+     * @param low The lowest price of all of the properties.
+     * @param high The highest price of all of the properties.
+     * 
+     * @return An arraylist of all possible prices which can be selected.
      */
-    private ArrayList<String> getPriceSelectionOptions(int low, int high) {
-        ArrayList options = new ArrayList <> ();
+    private ArrayList<String> getPriceSelectionOptions(int low, int high) 
+    {
+        ArrayList<String> options = new ArrayList<String>();
         
-        for (int i = low; i <= 100; i+=10) {
+        // for (int i = low; i <= 100; i+=10) 
+        // {
+            // Integer num = i;
+            // options.add(num.toString());
+        // }
+        
+        // for (int i = 100; i < 200; i+=25) 
+        // {
+            // Integer num = i;
+            // options.add(num.toString());
+        // }
+        
+        // for (int i = 200; i < 500; i+=50) 
+        // {
+            // Integer num = i;
+            // options.add(num.toString());
+        // }
+        
+        // for (int i = 500; i < 1000; i+=100) 
+        // {
+            // Integer num = i;
+            // options.add(num.toString());
+        // }
+        
+        // for (int i = 1000; i <= high; i+=1000) 
+        // {
+            // Integer num = i;
+            // options.add(num.toString());
+        // }
+        
+        for (int i = low; i <= high;) 
+        {
             Integer num = i;
             options.add(num.toString());
+            
+            if (i <= 100)
+            {
+                i += 10;
+            }
+            else if (i < 200)
+            {
+                i += 25;
+            }
+            else if (i < 500)
+            {
+                i += 50;
+            }
+            else if (i < 1000)
+            {
+                i += 100;
+            }
+            else
+            {
+                i += 1000;
+            }
         }
-        for (int i = 100; i < 200; i+=25) {
-            Integer num = i;
-            options.add(num.toString());
-        }
-        for (int i = 200; i < 500; i+=50) {
-            Integer num = i;
-            options.add(num.toString());
-        }
-        for (int i = 500; i < 1000; i+=100) {
-            Integer num = i;
-            options.add(num.toString());
-        }
-        for (int i = 1000; i <= high; i+=1000) {
-            Integer num = i;
-            options.add(num.toString());
-        }
+        
         return options;
     }
     
-    private String showStatus(Button confirm) {
-        if (selectedMinPrice == null && selectedMaxPrice == null) {
-            confirm.setDisable(true);
-            return "Currently nothing has been selected!";
-        }
-        else if (selectedMinPrice != null && selectedMaxPrice == null) {
-            confirm.setDisable(true);
-            return "Currently only your min price has been selected!";
-        }
-        else if (selectedMinPrice == null && selectedMaxPrice != null) {
-            confirm.setDisable(true);
-            return "Currently only your max price has been selected!";
-        }
-        else  {
-            if (selectedMinPrice == -1 || selectedMaxPrice == -1)  {
-                confirm.setDisable(false);
-                return "Both your min and max price have been selected";
-            }
-            else if (selectedMinPrice > selectedMaxPrice) {
-                confirm.setDisable(true);
-                return "Your min price is not less than your max price!";
-            }
-            confirm.setDisable(false);
-            return "Both your min and max price have been selected";
-        }
+    public void changeToPriceSelectorPane() 
+    {
+        setPane(1);
     }
     
-    private void changeToMapPane() {
+    public void changeToMapPane() 
+    {
         setPane(2);
     }
     
-    private void makeMapPane() {
-        // setTitle("Map of London");
-            
-        BorderPane window = new BorderPane();
-        
-        VBox infoPane = new VBox();
-            Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("windowTitle");
-            HBox minMaxBox = createMinMaxBox();
-                minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
-            VBox stats = createStatsPanel();
-            GridPane key = createKey();
-            
-        Button confirm = (Button) minMaxBox.getChildren().get(2);
-        
-        ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
-        ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
-        
-        //styling the min and max box as well as the confirm button for the map panel
-        confirm.getStyleClass().add("confirmForMap");
-        minBox.getStyleClass().add("mapMinMaxBoxes");
-        maxBox.getStyleClass().add("mapMinMaxBoxes");
-        minMaxBox.getStyleClass().add("mapMinMaxBox");
-            
-        infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
-        infoPane.setPadding(new Insets(10, 20, 10, 10));
-        infoPane.setSpacing(15);
-        
-        mapView.setPadding(new Insets(20));
-        
-        window.setLeft(infoPane);
-        window.setCenter(mapView);
-        
-        mapPane = window;
-    }
-    
-    private void makeHexagonMap()  {
-        mapPositions = StatisticsData.getMapPositions();
-        
-        noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
-        
-        double sceneWidth = getScene().getWidth();
-        double sceneHeight = getScene().getHeight();
-        
-        final double WIDTH_TO_HEIGHT_RATIO = 725.0 / 510.0;
-        final double HEIGHT_TO_WIDTH_RATIO = 1 / WIDTH_TO_HEIGHT_RATIO;
-        
-        double newWidth = sceneWidth * 0.655;
-        double newHeight = sceneHeight * 0.804;
-        
-        double newWidthToHeightRatio = newWidth/newHeight;
-        
-        final double gapSize = 5.0;
-
-        // pane is too narrow
-        if (newWidthToHeightRatio < WIDTH_TO_HEIGHT_RATIO) {
-            newHeight = newWidth * HEIGHT_TO_WIDTH_RATIO;
-        }
-        // pane is too wide
-        else if (newWidthToHeightRatio > WIDTH_TO_HEIGHT_RATIO) {
-            newWidth = newHeight * WIDTH_TO_HEIGHT_RATIO;
-        }
-        
-        //newHeight = 510;
-        //newWidth = 720;
-            
-        mapView = new AnchorPane();
-            mapView.setPrefSize(newWidth, newHeight);
-            mapView.setMinSize(670, 310);
-            
-            setMinWidth(1050);
-            setMinHeight(620);
-            
-            //double hexagonWidth = 94.0;
-            double hexagonWidth = (int) (newWidth / 7.5);
-            // rows
-            for (int m = 0; m < mapPositions.length; m++) {
-                
-                FlowPane row = new FlowPane();
-                    row.setHgap(gapSize);
-                    row.setMinWidth(Double.MAX_VALUE);
-                    
-                StackPane rowSpace;
-                
-                if (m % 2 == 0) {
-                        createInsetRectangle(hexagonWidth, row, gapSize);
-                }
-                
-                //columns
-                for (int n = 0; n < mapPositions[m].length; n++) {
-                    rowSpace = new StackPane();
-                    if (mapPositions[m][n] != null) {
-                        MapButton boroughButton = new MapButton(mapPositions[m][n]);
-                        boroughButton.setShape(new Circle(hexagonWidth));
-                        boroughButton.setMinSize(hexagonWidth*0.97, hexagonWidth*0.85);
-                        boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
-                        //boroughButton.setStyle("-fx-font-size: " + String.valueOf(20.0/94.0 * hexagonWidth) + ";");
-                        boroughButton.getStyleClass().add("boroughButton");
-                        boroughButton.setOnAction(e -> openPropertyViewer(boroughButton.getBoroughName()));
-                        
-                        ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
-                            hexagonOutline.setFitWidth(hexagonWidth);
-                            hexagonOutline.setFitHeight(hexagonWidth);
-                        
-                        ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
-                        ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), (int) hexagonWidth, noOfPropertiesStats);
-                        
-                        // Rectangle bgTest = new Rectangle(hexagonWidth,hexagonWidth);
-                            // bgTest.setFill(Color.FUCHSIA);
-                        
-                        rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);                        
-                    }
-                    else {
-                        Rectangle emptySpace = createSpacerRectangle((int) hexagonWidth);
-                        rowSpace.getChildren().add(emptySpace);
-                    }
-                    row.getChildren().add(rowSpace);
-                }
-                
-                if (m % 2 == 1) {
-                    createInsetRectangle(hexagonWidth, row, gapSize);
-                }
-                AnchorPane.setTopAnchor(row, m * (newHeight/mapPositions.length + gapSize));
-                mapView.getChildren().add(row);
-            }
-            
-            // HBox minMaxBox = createMinMaxBox();
-                // minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
-                // AnchorPane.setTopAnchor(minMaxBox, 11.0);
-                // AnchorPane.setRightAnchor(minMaxBox, 0.0);
-                
-            // mapView.getChildren().add(minMaxBox);
-    }
-    
-    private void createInsetRectangle(double hexagonWidth, FlowPane row, double gapSize) {
-        StackPane rowSpace = new StackPane();
-        Rectangle insetSpace = createSpacerRectangle((int) ((hexagonWidth - gapSize) / 2.0));
-        rowSpace.getChildren().add(insetSpace);
-        row.getChildren().add(rowSpace);
-    }
-    
-    private Rectangle createSpacerRectangle(int widthHeight) {
-        Rectangle spacerRectangle = new Rectangle(widthHeight, widthHeight);
-        spacerRectangle.setFill(Color.TRANSPARENT);
-        return spacerRectangle;
-    }
-    
-    private void openPropertyViewer(String boroughName) {
-        try {
-            PropertyViewer propertyViewer = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
-            if(propertyViewer.getInternetConnection() == true){
-                propertyViewer.show();
-            } else {
-                propertyViewer.noConnectionAlert();
-            }  
-        }
-        catch (Exception e) {
-            Alert alert = new Alert(AlertType.WARNING);
-                alert.setHeaderText("No Available Properties in " + boroughName);
-                alert.setContentText("Unfortunately, there are no available properties in this\nborough within your price range. Welcome to the London\nhousing market...");
-            alert.show();
-        };
-    }
-    
-    private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) {
-        ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(StatisticsData.getBoroughMapColour(boroughName, selectedMinPrice, selectedMaxPrice, noOfPropertiesStats));
-            
-        hexagon.setFitWidth(heightWidth);
-        hexagon.setFitHeight(heightWidth);
-            
-        hexagon.setEffect(shader);
-        
-        return hexagon;
-    }
-    
-    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) {
-        ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(StatisticsData.getBoroughMapColour(percentile));
-            
-        hexagon.setFitWidth(heightWidth);
-        hexagon.setFitHeight(heightWidth);
-            
-        hexagon.setEffect(shader);
-        
-        return hexagon;
-    }
-    
-    private GridPane createKey() {
-        GridPane key = new GridPane();
-        key.getStyleClass().add("infoGrid");
-        
-        int hexagonKeyHeightWidth = 20;
-        
-        Label keyTitleLabel = new Label("Key");
-        Label keyDescriptionLabel = new Label("(Sorted by number of\nProperties in Borough)");
-            keyDescriptionLabel.getStyleClass().add("labelSmall");
-        Label keyLabelEmpty = new Label("No Properties in Borough");
-        Label keyLabelPercentile25 = new Label("Below Lower Quartile");
-        Label keyLabelPercentile50 = new Label("Between Lower Quartile\n and Median");
-        Label keyLabelPercentile75 = new Label("Between Median\n and Lower Quartile");
-        Label keyLabelPercentile100 = new Label("Above Upper Quartile");
-        
-
-        for (int i = 0; i < 5; i++) {
-            StackPane completeHexagon = new StackPane();
-            
-            ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
-            ImageView hexagonOutline = new ImageView(new Image("/hexagonOutlineThick.png"));
-            
-            ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, hexagonKeyHeightWidth, i*20);
-            
-            hexagonOutline.setFitHeight(hexagonKeyHeightWidth);
-            hexagonOutline.setFitWidth(hexagonKeyHeightWidth);
-            
-            completeHexagon.getChildren().addAll(hexagonFilled, hexagonOutline);
-            
-            key.add(completeHexagon, 0, i+1);
-        }
-        
-        key.add(keyTitleLabel, 0, 0);
-        key.add(keyDescriptionLabel, 1, 0);
-            
-        key.add(keyLabelEmpty, 1, 1);
-        key.add(keyLabelPercentile25, 1, 2);
-        key.add(keyLabelPercentile50, 1, 3);
-        key.add(keyLabelPercentile75, 1, 4);
-        key.add(keyLabelPercentile100, 1, 5);
-        
-        key = alignItemsInGridPane(key);
-        
-        return key;
-    }
-    
-    private VBox createStatsPanel() {
-        VBox statsBox = new VBox();
-        statsBox.setSpacing(20);
-        
-        GridPane statsPanel = new GridPane();
-        statsPanel.getStyleClass().add("infoGrid");
-        
-        Label statsTitleLabel = new Label("Statistics");
-        Label statsDescriptionLabel = new Label("(number of\nproperties in borough)");
-            statsDescriptionLabel.getStyleClass().add("labelSmall");
-        Label statsLabel1 = new Label("Minimum");
-        Label statsLabel2 = new Label("Lower Quartile");
-        Label statsLabel3 = new Label("Median");
-        Label statsLabel4 = new Label("Upper Quartile");
-        Label statsLabel5 = new Label("Maximum");
-        
-        statsPanel.add(statsTitleLabel, 0, 0);
-        statsPanel.add(statsDescriptionLabel, 1, 0);
-        
-        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getMinNoOfPropertiesInBorough())), 1, 1);
-        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getFirstQuartile())), 1, 2);
-        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getMedian())), 1, 3);
-        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getThirdQuartile())), 1, 4);
-        statsPanel.add(new Label(String.valueOf(noOfPropertiesStats.getMaxNoOfPropertiesInBorough())), 1, 5);
-        
-        statsPanel = alignItemsInGridPane(statsPanel);
-        
-        statsPanel.add(statsLabel1, 0, 1);
-        statsPanel.add(statsLabel2, 0, 2);
-        statsPanel.add(statsLabel3, 0, 3);
-        statsPanel.add(statsLabel4, 0, 4);
-        statsPanel.add(statsLabel5, 0, 5);
-        
-        Button moreStatsButton = new Button("Show more stats!");
-        moreStatsButton.setOnAction(e -> showMoreStats());
-        moreStatsButton.getStyleClass().add("smallWindowButtons");
-        
-        statsBox.getChildren().addAll(statsPanel, moreStatsButton);
-            
-        return statsBox;
-    }
-    
-    private void showMoreStats() {
-        if (statisticsViewer == null) {
-            statisticsViewer = new StatisticsViewer(selectedMinPrice, selectedMaxPrice);
-            statisticsViewer.show();
-        }
-        updateStats();
-    }
-    
-    private void updateStats() {
-        if (statisticsViewer == null) {
-            return;
-        }
-        
-        if (statisticsViewer.getCurrentMinPrice() != selectedMinPrice || statisticsViewer.getCurrentMaxPrice() != selectedMaxPrice) {
-            statisticsViewer.update(selectedMinPrice, selectedMaxPrice);
-        }
-    }
-    
-    private GridPane alignItemsInGridPane(GridPane grid) {
-        for (Node node : grid.getChildren()) {
-            grid.setHalignment(node, HPos.CENTER);
-            grid.setValignment(node, VPos.CENTER);
-            node.maxWidth(Double.MAX_VALUE);
-            node.maxHeight(Double.MAX_VALUE);
-        }
-        return grid;
-    }
-    
-    private void makeStatsPane() {
-        if(statsOrder.size() > 0)
-        {
-            statsOrder.clear();
-        }
-        currentStat = 0; 
-        
-        Label reviewInfo = new Label("default");
-        Label availableInfo = new Label("default");
-        Label noHomeAndApartmentsInfo = new Label("default");
-        Label expensiveInfo = new Label("default");
-        Label priceSDInfo = new Label("default");
-        Label highAvgReviewInfo = new Label("default:"); 
-        XYChart.Series averagePriceData = new XYChart.Series();
-    
-        // The layout of the window
-        GridPane statsGrid = new GridPane(); 
-        VBox reviews = new VBox();
-        VBox available = new VBox(); 
-        VBox noHomeAndApartments = new VBox();
-        VBox expensive = new VBox(); 
-        VBox priceSD = new VBox(); 
-        VBox averagePrice = new VBox(); 
-        VBox highAvgReview = new VBox();
-        
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-        BarChart barChart = new BarChart(xAxis, yAxis);
-          
-        
-        // The "title" labels in the window
-        Label title = new Label("General Statistics");
-        Label reviewTitle = new Label("Average Reviews Per Property:");
-        Label availableTitle = new Label("Total Available Properties:");
-        Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
-        Label expensiveTitle = new Label("Most Expensive Borough:");
-        Label priceSDTitle = new Label("Standard Deviation of Price (£):");
-        Label highAvgReviewTitle = new Label("Borough with the Highest \nAverage Amount of Reviews:");
-        
-        VBox statsGridVBox = new VBox();
-        statsGridVBox.getChildren().add(statsGrid);
-        
-        VBox AvgPriceBarCharVBox = new VBox();
-        AvgPriceBarCharVBox.getChildren().add(createAvgPriceBarChart());
-        
-        VBox AvgReviewsBarCharVBox = new VBox();
-        AvgReviewsBarCharVBox.getChildren().add(createAvgReviewsBarChart());
-        
-        statsOrder.add(statsGridVBox);
-        statsOrder.add(AvgPriceBarCharVBox);
-        statsOrder.add(AvgReviewsBarCharVBox);
-        // Adding components 
-        statsWindow.setAlignment(Pos.CENTER);
-        statsWindow.getChildren().add(title); 
-        statsWindow.getChildren().add(getStatsIndex(0)); 
-        //window.getChildren().add(barChart);
-        title.setAlignment(Pos.CENTER);
-        statsGrid.setAlignment(Pos.CENTER); 
-        
-        statsGrid.add(reviews, 0, 0);
-        statsGrid.add(available, 0, 1);
-        statsGrid.add(noHomeAndApartments, 1, 0);
-        statsGrid.add(expensive, 1, 1);
-        statsGrid.add(priceSD, 0, 2); 
-        statsGrid.add(highAvgReview, 1 , 2); 
-        
-        reviews.setAlignment(Pos.CENTER);
-        reviews.getChildren().add(reviewTitle); 
-        reviews.getChildren().add(reviewInfo);
-        
-        available.setAlignment(Pos.CENTER);
-        available.getChildren().add(availableTitle); 
-        available.getChildren().add(availableInfo);
-        
-        noHomeAndApartments.setAlignment(Pos.CENTER);
-        noHomeAndApartments.getChildren().add(noHomeAndApartmentsTitle); 
-        noHomeAndApartments.getChildren().add(noHomeAndApartmentsInfo);
-        
-        expensive.setAlignment(Pos.CENTER);
-        expensive.getChildren().add(expensiveTitle); 
-        expensive.getChildren().add(expensiveInfo);
-        
-        priceSD.setAlignment(Pos.CENTER);
-        priceSD.getChildren().add(priceSDTitle); 
-        priceSD.getChildren().add(priceSDInfo);
-        
-        highAvgReview.setAlignment(Pos.CENTER);
-        highAvgReview.getChildren().add(highAvgReviewTitle); 
-        highAvgReview.getChildren().add(highAvgReviewInfo);
-        
-        //add CSS
-        
-        statsGrid.setId("statsgrid"); 
-        statsWindow.getStyleClass().add("statsWindowAndButtons");
-        reviews.getStyleClass().add("statsvbox"); 
-        available.getStyleClass().add("statsvbox");
-        noHomeAndApartments.getStyleClass().add("statsvbox");
-        expensive.getStyleClass().add("statsvbox");
-        priceSD.getStyleClass().add("statsvbox");
-        highAvgReview.getStyleClass().add("statsvbox");
-        
-        
-        reviewInfo.getStyleClass().add("statslabels"); 
-        availableInfo.getStyleClass().add("statslabels"); 
-        noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
-        expensiveInfo.getStyleClass().add("statslabels"); 
-        priceSDInfo.getStyleClass().add("statslabels"); 
-        highAvgReviewInfo.getStyleClass().add("statslabels");
-        
-        title.getStyleClass().add("windowTitle"); 
-        
-    
-        setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
-        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments(false));
-        setText(availableInfo, StatisticsData.getAvailableInfo(false));
-        setText(expensiveInfo, StatisticsData.getExpensiveInfo());
-        setText(priceSDInfo, StatisticsData.getPriceSDInfo(false));
-        setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
-        
-        Button leftStatsButton = new Button();
-        leftStatsButton.setText("<");
-        leftStatsButton.setOnAction(this::leftStatButtonAction);
-        leftStatsButton.setMinSize(10, 100);
-        leftStatsButton.setAlignment(Pos.CENTER);
-        leftStatsButton.getStyleClass().add("smallWindowButtons");
-        
-        //Create the right button
-        Button rightStatsButton = new Button();
-        rightStatsButton.setText(">");
-        rightStatsButton.setOnAction(this::rightStatButtonAction);
-        rightStatsButton.setMinSize(10, 100);
-        rightStatsButton.setAlignment(Pos.CENTER);
-        rightStatsButton.getStyleClass().add("smallWindowButtons");
-        
-        VBox rightButtonVBox = new VBox();
-        rightButtonVBox.getChildren().add(rightStatsButton);
-        rightButtonVBox.getStyleClass().add("statsWindowAndButtons");
-        rightButtonVBox.setAlignment(Pos.CENTER);
-        
-        VBox leftButtonVBox = new VBox();
-        leftButtonVBox.getChildren().add(leftStatsButton);
-        leftButtonVBox.getStyleClass().add("statsWindowAndButtons");
-        leftButtonVBox.setAlignment(Pos.CENTER);
-        
-        
-        BorderPane statsBorder = new BorderPane(); 
-        statsBorder.setCenter(statsWindow);
-        statsBorder.setLeft(leftButtonVBox);
-        statsBorder.setRight(rightButtonVBox);
-        
-        statsPane = statsBorder;
-    }
-    
-    private BarChart createAvgPriceBarChart()
+    public Integer getSelectedMinPrice() 
     {
-        XYChart.Series averagePriceData = new XYChart.Series();
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-        BarChart barChart = new BarChart(xAxis, yAxis);
-        xAxis.setLabel("Borough");
-        yAxis.setLabel("Average Price");
-        averagePriceData = getAveragePricePerBoroughData();
-        averagePriceData.setName("Average Price per Night per Borough");
-        barChart.getData().add(averagePriceData);
-        
-        return barChart;
+        return selectedMinPrice;
     }
     
-    private BarChart createAvgReviewsBarChart()
+    public Integer getSelectedMaxPrice() 
     {
-        XYChart.Series averageReviewsData = new XYChart.Series();
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-        BarChart barChart = new BarChart(xAxis, yAxis);
-        xAxis.setLabel("Borough");
-        yAxis.setLabel("Average Review Count");
-        averageReviewsData = getAverageReviewsPerBoroughData();
-        averageReviewsData.setName("Average Number of Reviews per Borough");
-        barChart.getData().add(averageReviewsData);
-        
-        return barChart;
+        return selectedMaxPrice;
     }
     
-    private VBox getStatsIndex(int x)
+    public Scene getMainScene() 
     {
-        if(statsOrder.size() > 0 && x >= 0 && x < statsOrder.size())
-        {
-            return statsOrder.get(x);
-        }
-        VBox box = new VBox();
-        return box;
+        return getScene();
     }
     
-    /**
-     * Action for the left button which will go the element at index current - 1 in both
-     * title list and stat list. If it reaches the start of both of the lists, set the labels to
-     * the last element in the lists. 
-     */
-    public void leftStatButtonAction(ActionEvent event)
+    public StatisticsViewer getStatisticsViewer() 
     {
-        if(currentStat - 1 < 0)
-        {
-            swapWindowContent(statsOrder.size() - 1);
-        }
-        else
-        {
-            swapWindowContent(currentStat - 1);
-        }
-    }
-    
-    /**
-     * Action for the right button which will go the element at index current + 1 in both
-     * title list and stat list. If it reaches the end of both of the lists, set the labels to
-     * the first element in the lists.
-     */
-    public void rightStatButtonAction(ActionEvent event)
-    {
-        if(currentStat + 1 >= statsOrder.size())
-        {
-            swapWindowContent(0);
-        }
-        else
-        {
-            swapWindowContent(currentStat + 1);
-        }
-    }
-    
-    private void swapWindowContent(int change)
-    {
-        statsWindow.getChildren().remove(statsOrder.get(currentStat));
-        currentStat = change; 
-        statsWindow.getChildren().add(statsOrder.get(currentStat));
-    }
-    
-    
-    private void setText(Label label, double dataToFormat) {
-        String formattedLabel = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
-        label.setText(formattedLabel);
-    }
-    
-    private void setText(Label label, int dataToFormat) {
-        label.setText(String.valueOf(dataToFormat));
-    }
-    
-    private void setText(Label label, String dataToFormat) {
-        label.setText(dataToFormat);
-    }
-    
-    /**
-     * Hola Matthew! this should probably one method with a variable. Gracias
-     */
-    private XYChart.Series getAveragePricePerBoroughData()
-    {
-        XYChart.Series data = new XYChart.Series();
-        HashMap<String, Integer> information = StatisticsData.getAveragePricePerBorough();
-        for (String entry : information.keySet())
-        {
-            data.getData().add(new XYChart.Data(entry, information.get(entry)));
-        }
-        return data; 
-    }
-    
-    private XYChart.Series getAverageReviewsPerBoroughData()
-    {
-        XYChart.Series data = new XYChart.Series();
-        HashMap<String, Integer> information = StatisticsData.getAverageReviewsPerBorough();
-        for (String entry : information.keySet())
-        {
-            data.getData().add(new XYChart.Data(entry, information.get(entry)));
-        }
-        return data; 
-    }
-    
-    private void makeBookingsPane() {
-        //creating the pane for the bookings and adding any styling
-        BorderPane pane = new BorderPane();
-        
-        VBox contentPane = new VBox();
-                
-                HBox hbox = new HBox();
-                    Label windowTitle = new Label("Your bookings: ");
-                    windowTitle.getStyleClass().add("windowTitle");
-                hbox.getChildren().add(windowTitle);
-                hbox.setAlignment(Pos.CENTER);
-                
-                ScrollPane scrollPane = new ScrollPane();
-                    VBox bookingsPanel = new VBox();
-                        ArrayList<Booking> bookingList = DataHandler.getBookingList();
-                        if (! bookingList.isEmpty()) {
-                            for(Booking booking : bookingList) {
-                                BorderPane bookingListing = createBookingListing(booking);
-                                    bookingListing.getStyleClass().add("bookingListing");
-                                    bookingsPanel.setMargin(bookingListing, new Insets(10));
-                                bookingsPanel.getChildren().add(bookingListing);
-                            }
-                        }
-                        else {
-                            Label noBookingsLabel = new Label("There are no bookings currently...");
-                            bookingsPanel.getChildren().add(noBookingsLabel);
-                        }       
-                scrollPane.setContent(bookingsPanel);
-        
-        contentPane.getChildren().add(hbox);
-        contentPane.getChildren().add(scrollPane);
-        contentPane.setSpacing(20);
-
-        pane.setCenter(contentPane);
-        
-        bookingsPane = pane;
-    }
-    
-    private BorderPane createBookingListing(Booking booking) {
-        AirbnbListing property = booking.getProperty();
-        Label propertyName = new Label("Property: " + property.getName());  
-        Label hostName = new Label("Host name: " + property.getHost_name());
-        Label dates = new Label("Between: " + booking.getCheckInDate().toString()  +  " and " + booking.getCheckOutDate().toString());
-        Label durationLabel = new Label("Duration:  " + booking.getDuration() + " night(s)");
-        Label priceLabel = new Label("Price:  £" + booking.getGrandTotal());
-        
-        //styling the labels
-        propertyName.getStyleClass().add("bookingListingLabels");
-        hostName.getStyleClass().add("bookingListingLabels");
-        dates.getStyleClass().add("bookingListingLabels");
-        durationLabel.getStyleClass().add("bookingListingLabels");
-        priceLabel.getStyleClass().add("bookingListingLabels");
-        
-        Button editButton = new Button("Edit Booking");
-            editButton.setPrefSize(140, 20);
-            editButton.setOnAction(e -> editBooking());
-            editButton.getStyleClass().add("smallWindowButtons");
-        Button contactButton = new Button("Contact Host");
-            contactButton.setPrefSize(140, 20);
-            contactButton.setOnAction(e -> contactAction(booking));
-            contactButton.getStyleClass().add("smallWindowButtons");
-        Button cancelButton = new Button("Cancel Booking");
-            cancelButton.setPrefSize(140, 20);
-            cancelButton.setOnAction(e -> cancelBookingAction(booking));
-            cancelButton.getStyleClass().add("smallWindowButtons");
-        
-        BorderPane bookingListing = new BorderPane();
-            VBox centerPane = new VBox(propertyName, hostName, dates, durationLabel, priceLabel);
-                centerPane.setSpacing(5);
-                centerPane.setAlignment(Pos.CENTER_LEFT);
-            VBox rightPane = new VBox(editButton, contactButton, cancelButton);
-                rightPane.setSpacing(20);
-                rightPane.setAlignment(Pos.CENTER);
-        bookingListing.setCenter(centerPane);
-        bookingListing.setRight(rightPane);
-        bookingListing.setPadding(new Insets(10));
-        bookingListing.setMargin(centerPane, new Insets(0,110,0,0));
-        
-        return bookingListing;
-    }
-    
-    private void editBooking()  {
-
-    
-    }
-    
-    private void contactAction(Booking booking)  {
-        Desktop desktop;
-        if (Desktop.isDesktopSupported() 
-            && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
-            try {
-                URI mailto = new URI("mailto:" + booking.getProperty().getMailHost_name(false) + "@kcl.ac.uk?subject=About%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "&body=Hello%20" + booking.getProperty().getMailHost_name(true) + ",%0A%0DI%20need%20to%20edit%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "%20in%20the%20property%20called%20'" + booking.getProperty().getMailName() + "'%20(Property%20iD%20:" + booking.getProperty().getId() + ")%0A%0D");
-                desktop.mail(mailto);
-            }
-            catch (Exception e) {}
-        } else {
-          // TODO fallback to some Runtime.exec(..) voodoo?
-          throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
-        }
-    }
-    private void cancelBookingAction(Booking booking)  {
-        DataHandler.removeToBookingList(booking);
-        setPane(4);
+        return statisticsViewer;
     }
 }

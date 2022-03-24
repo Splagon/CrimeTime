@@ -15,7 +15,7 @@ public class WelcomePane extends MainViewerPane
 {
     private static Pane welcomePane;
     
-    public WelcomePane(MainViewerNEW mainViewer)
+    public WelcomePane(MainViewer mainViewer)
     {
         super(mainViewer);
         titleName = "Welcome";
@@ -31,7 +31,7 @@ public class WelcomePane extends MainViewerPane
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
-        startButton.setOnAction(e -> mainViewer.changeToPriceSelector());
+        startButton.setOnAction(e -> mainViewer.changeToPriceSelectorPane());
         
         //layout of the whole window
         VBox window = new VBox(); //root of the scene

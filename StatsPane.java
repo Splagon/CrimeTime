@@ -28,7 +28,7 @@ public class StatsPane extends MainViewerPane
     int currentStat = 0;
     VBox statsWindow;
     
-    public StatsPane(MainViewerNEW mainViewer)
+    public StatsPane(MainViewer mainViewer)
     {
         super(mainViewer);
         titleName = "Statistics";

@@ -9,13 +9,13 @@ import javafx.scene.layout.Pane;
 public abstract class MainViewerPane extends Pane
 {
     //protected Pane pane = new Pane();
-    protected MainViewerNEW mainViewer;
+    protected MainViewer mainViewer;
     protected String titleName;
     
     /**
      * Constructor for objects of class MainViewerPane
      */
-    public MainViewerPane(MainViewerNEW mainViewer)
+    public MainViewerPane(MainViewer mainViewer)
     {
         this.mainViewer = mainViewer;
     }

@@ -32,7 +32,7 @@ public class MapPane extends MainViewerPane
     private static Pane mapPane;
     private static AnchorPane mapView;
     
-    public MapPane(MainViewerNEW mainViewer)
+    public MapPane(MainViewer mainViewer)
     {
         super(mainViewer);
         titleName = "Map of London";
@@ -188,7 +188,7 @@ public class MapPane extends MainViewerPane
                 propertyViewer.noConnectionAlert();
             }  
         }
-        catch (Exception e) {
+        catch (IndexOutOfBoundsException e) {
             Alert alert = new Alert(AlertType.WARNING);
                 alert.setHeaderText("No Available Properties in " + boroughName);
                 alert.setContentText("Unfortunately, there are no available properties in this\nborough within your price range. Welcome to the London\nhousing market...");
