@@ -106,7 +106,7 @@ public class MapPane extends MainViewerPane
         //newHeight = 510;
         //newWidth = 720;
             
-        AnchorPane mapView = new AnchorPane();
+        mapView = new AnchorPane();
             mapView.setPrefSize(newWidth, newHeight);
             mapView.setMinSize(670, 310);
             
@@ -166,12 +166,7 @@ public class MapPane extends MainViewerPane
                 mapView.getChildren().add(row);
             }
             
-            HBox minMaxBox = mainViewer.createMinMaxBox();
-                minMaxBox = mainViewer.setInitialMinMaxBoxSelection(minMaxBox);
-                AnchorPane.setTopAnchor(minMaxBox, 11.0);
-                AnchorPane.setRightAnchor(minMaxBox, 0.0);
-                
-            mapView.getChildren().add(minMaxBox);
+        updateStats();
     }
     
     private void createInsetRectangle(double hexagonWidth, FlowPane row, double gapSize) {

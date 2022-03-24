@@ -126,7 +126,7 @@ public class DataHandler
         {
             AirbnbListing nextListing = (AirbnbListing) i.next();
         
-            if (currentRunOfListingsFromSameBorough.isEmpty() || nextListing.getNeighbourhood().equals(boroughOfCurrentRunOfListings))
+            if (currentRunOfListingsFromSameBorough.isEmpty() || nextListing.getNeighbourhood().equalsIgnoreCase(boroughOfCurrentRunOfListings))
             {
                 currentRunOfListingsFromSameBorough.add(nextListing);
                 boroughOfCurrentRunOfListings = currentRunOfListingsFromSameBorough.get(0).getNeighbourhood();
