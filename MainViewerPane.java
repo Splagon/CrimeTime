@@ -10,6 +10,7 @@ public abstract class MainViewerPane extends Pane
 {
     //protected Pane pane = new Pane();
     protected MainViewerNEW mainViewer;
+    protected String titleName;
     
     /**
      * Constructor for objects of class MainViewerPane
@@ -22,4 +23,8 @@ public abstract class MainViewerPane extends Pane
     public abstract void makePane();
     
     public abstract Pane getPane();
+    
+    public String getTitleName() {
+        return titleName;
+    }
 }

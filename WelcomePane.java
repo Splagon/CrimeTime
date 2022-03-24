@@ -18,6 +18,7 @@ public class WelcomePane extends MainViewerPane
     public WelcomePane(MainViewerNEW mainViewer)
     {
         super(mainViewer);
+        titleName = "Welcome";
     }
     
     public void makePane() {

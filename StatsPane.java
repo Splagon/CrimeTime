@@ -28,6 +28,7 @@ public class StatsPane extends MainViewerPane
     public StatsPane(MainViewerNEW mainViewer)
     {
         super(mainViewer);
+        titleName = "Statistics";
     }
     
     public void makePane() {

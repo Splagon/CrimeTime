@@ -194,6 +194,7 @@ public class MainViewerNEW extends Stage
         
         setButtonsDisabled(currentSceneIndex);
         root.setCenter(paneToChangeTo.getPane());
+        setTitle(paneToChangeTo.getTitleName());
         setScene(mainScene);
     }
         

@@ -35,6 +35,7 @@ public class MapPane extends MainViewerPane
     public MapPane(MainViewerNEW mainViewer)
     {
         super(mainViewer);
+        titleName = "Map of London";
     }
     
     public void makePane() {

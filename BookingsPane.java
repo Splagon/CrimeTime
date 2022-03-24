@@ -24,6 +24,7 @@ public class BookingsPane extends MainViewerPane
     public BookingsPane(MainViewerNEW mainViewer)
     {
         super(mainViewer);
+        titleName = "Bookings";
     }
     
     public void makePane() {
