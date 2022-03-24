@@ -284,17 +284,20 @@ public class MainViewer extends Stage
             prevSceneIndex = sceneOrder.length - 1;
         }
         
-        if (selectedMinPrice == null && selectedMaxPrice == null) {    
+        if (selectedMinPrice == null && selectedMaxPrice == null) 
+        {    
             if (sceneOrder[nextSceneIndex] == "mapPane") {
                 nextPanelButton.setDisable(true);
             }
-            else {
+            else 
+            {
                 nextPanelButton.setDisable(false);
             }
             if (sceneOrder[prevSceneIndex] == "mapPane") {
                 prevPanelButton.setDisable(true);
             }
-            else {
+            else 
+            {
                 prevPanelButton.setDisable(false);
             }
         }
