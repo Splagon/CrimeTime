@@ -122,9 +122,9 @@ public class MainViewer extends Stage
         
         //panel switcher buttons
         prevPanelButton = new Button("<-- Bookings");
-        prevPanelButton.setPrefSize(135, 20);
+        prevPanelButton.setPrefSize(150, 20);
         nextPanelButton = new Button("Price Selection -->");
-        nextPanelButton.setPrefSize(135, 20);
+        nextPanelButton.setPrefSize(150, 20);
         //styling for the buttons
         prevPanelButton.getStyleClass().add("smallWindowButtons");
         nextPanelButton.getStyleClass().add("smallWindowButtons");
@@ -571,10 +571,8 @@ public class MainViewer extends Stage
         
         //styling the min and max box as well as the confirm button for the map panel
         confirm.getStyleClass().add("confirmForMap");
-        
         minBox.getStyleClass().add("mapMinMaxBoxes");
         maxBox.getStyleClass().add("mapMinMaxBoxes");
-        
         minMaxBox.getStyleClass().add("mapMinMaxBox");
             
         infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
@@ -788,9 +786,6 @@ public class MainViewer extends Stage
     }
     
     private VBox createStatsPanel() {
-        //setTitle("Information");
-        
-    
         VBox statsBox = new VBox();
         statsBox.setSpacing(20);
         
@@ -825,6 +820,7 @@ public class MainViewer extends Stage
         
         Button moreStatsButton = new Button("Show more stats!");
         moreStatsButton.setOnAction(e -> showMoreStats());
+        moreStatsButton.getStyleClass().add("smallWindowButtons");
         
         statsBox.getChildren().addAll(statsPanel, moreStatsButton);
             
@@ -983,6 +979,7 @@ public class MainViewer extends Stage
         leftStatsButton.setOnAction(this::leftStatButtonAction);
         leftStatsButton.setMinSize(10, 100);
         leftStatsButton.setAlignment(Pos.CENTER);
+        leftStatsButton.getStyleClass().add("smallWindowButtons");
         
         //Create the right button
         Button rightStatsButton = new Button();
@@ -990,6 +987,7 @@ public class MainViewer extends Stage
         rightStatsButton.setOnAction(this::rightStatButtonAction);
         rightStatsButton.setMinSize(10, 100);
         rightStatsButton.setAlignment(Pos.CENTER);
+        rightStatsButton.getStyleClass().add("smallWindowButtons");
         
         VBox rightButtonVBox = new VBox();
         rightButtonVBox.getChildren().add(rightStatsButton);
@@ -1148,7 +1146,6 @@ public class MainViewer extends Stage
                                 BorderPane bookingListing = createBookingListing(booking);
                                     bookingListing.getStyleClass().add("bookingListing");
                                     bookingsPanel.setMargin(bookingListing, new Insets(10));
-                                    
                                 bookingsPanel.getChildren().add(bookingListing);
                             }
                         }
@@ -1169,26 +1166,36 @@ public class MainViewer extends Stage
     
     private BorderPane createBookingListing(Booking booking) {
         AirbnbListing property = booking.getProperty();
-        
         Label propertyName = new Label("Property: " + property.getName());  
         Label hostName = new Label("Host name: " + property.getHost_name());
         Label dates = new Label("Between: " + booking.getCheckInDate().toString()  +  " and " + booking.getCheckOutDate().toString());
         Label durationLabel = new Label("Duration:  " + booking.getDuration() + " night(s)");
         Label priceLabel = new Label("Price:  £" + booking.getGrandTotal());
         
+        //styling the labels
+        propertyName.getStyleClass().add("bookingListingLabels");
+        hostName.getStyleClass().add("bookingListingLabels");
+        dates.getStyleClass().add("bookingListingLabels");
+        durationLabel.getStyleClass().add("bookingListingLabels");
+        priceLabel.getStyleClass().add("bookingListingLabels");
+        
         Button editButton = new Button("Edit Booking");
-            editButton.setPrefSize(110, 20);
+            editButton.setPrefSize(140, 20);
             editButton.setOnAction(e -> editBooking());
+            editButton.getStyleClass().add("smallWindowButtons");
         Button contactButton = new Button("Contact Host");
-            contactButton.setPrefSize(110, 20);
+            contactButton.setPrefSize(140, 20);
             contactButton.setOnAction(e -> contactAction(booking));
+            contactButton.getStyleClass().add("smallWindowButtons");
         Button cancelButton = new Button("Cancel Booking");
-            cancelButton.setPrefSize(110, 20);
+            cancelButton.setPrefSize(140, 20);
             cancelButton.setOnAction(e -> cancelBookingAction(booking));
+            cancelButton.getStyleClass().add("smallWindowButtons");
         
         BorderPane bookingListing = new BorderPane();
             VBox centerPane = new VBox(propertyName, hostName, dates, durationLabel, priceLabel);
                 centerPane.setSpacing(5);
+                centerPane.setAlignment(Pos.CENTER_LEFT);
             VBox rightPane = new VBox(editButton, contactButton, cancelButton);
                 rightPane.setSpacing(20);
                 rightPane.setAlignment(Pos.CENTER);

@@ -73,13 +73,19 @@
     -fx-font-weight: bold;
 }
 
-smallWindowButtons {
-    -fx-font: 12px "Ariel";
+.smallWindowButtons {
+    -fx-font: 14px "Ariel";
+    -fx-background-color: lavender;
+    -fx-border-color: indigo;
 }
 
-.smallWindowButtons : hover{
-    -fx-font: 14px "Ariel";
-    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 2 );
+.smallWindowButtons:hover {
+    -fx-effect: dropshadow( one-pass-box , indigo , 8 , 0.0 , 2 , 2 );
+    -fx-border-color: transparent;
+}
+
+.smallWindowButtons:pressed {
+    -fx-background-color: lightgray;
 }
 
 // ----------------- main -----------------------
@@ -127,7 +133,7 @@ smallWindowButtons {
 }
 
 .startButton:pressed {
-    -fx-background-color: black;
+    -fx-background-color: lightgray;
 }
 // ------------ welcome scene -------------------
 
@@ -160,7 +166,7 @@ smallWindowButtons {
 }
 
 .priceConfirm: pressed {
-    -fx-background-color: black;
+    -fx-background-color: lightgrey;
 }
 
 .priceMinMaxBoxes {
@@ -191,7 +197,7 @@ smallWindowButtons {
 }
 
 .confirmForMap: pressed {
-    -fx-background-color: black;
+    -fx-background-color: lightgray;
 }
 
 .mapMinMaxBoxes {
@@ -234,11 +240,11 @@ smallWindowButtons {
     -fx-background-color : floralwhite;
 }
 #propertyLabel {
-    -fx-font: 20px "Times New Roman";
+    -fx-font: 20px "Ariel";
     -fx-font-weight: bold;
 }
 .subLabels  {
-    -fx-font: 15px "Times New Roman";
+    -fx-font: 15px "Ariel";
     -fx-font-weight: bold;
 }
 // ------------- Booking Window --------------------
@@ -249,10 +255,15 @@ smallWindowButtons {
     -fx-border-color: darkslategrey;
     -fx-padding: 5;
 }
+
+.bookingListingLabels {
+    -fx-font: 16px "Ariel";
+}
+
 // ------------- Booking Viewer --------------------
 
 // ------------- Booking List --------------------
 # bookingList {
-    -fx-font: 15px "Times New Roman";
+    -fx-font: 15px "Ariel";
     -fx-font-weight: bold;
 }
