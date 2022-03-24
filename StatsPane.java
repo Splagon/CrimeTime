@@ -23,7 +23,7 @@ public class StatsPane extends MainViewerPane
     private static Pane statsPane;
     ArrayList<VBox> statsOrder = new ArrayList<>();
     int currentStat = 0;
-    VBox statsWindow = new VBox();
+    VBox statsWindow;
     
     public StatsPane(MainViewerNEW mainViewer)
     {
@@ -32,6 +32,8 @@ public class StatsPane extends MainViewerPane
     }
     
     public void makePane() {
+        statsWindow = new VBox();
+        
         if(statsOrder.size() > 0)
         {
             statsOrder.clear();

@@ -137,8 +137,10 @@ public class MainViewerNEW extends Stage
         prevPanelButton.setOnAction(e -> goToPrevPanel());
         nextPanelButton.setOnAction(e -> goToNextPanel());
         
-        AnchorPane.setLeftAnchor(prevPanelButton, 5.0);
-        AnchorPane.setRightAnchor(nextPanelButton, 5.0);
+        AnchorPane.setTopAnchor(prevPanelButton, 5.0);
+        AnchorPane.setLeftAnchor(prevPanelButton, 0.0);
+        AnchorPane.setTopAnchor(nextPanelButton, 5.0);
+        AnchorPane.setRightAnchor(nextPanelButton, 0.0);
         
         panelSwitcherPane.getChildren().add(prevPanelButton);
         panelSwitcherPane.getChildren().add(nextPanelButton);
