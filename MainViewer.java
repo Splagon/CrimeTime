@@ -76,8 +76,7 @@ public class MainViewer extends Stage
     private Button prevPanelButton;
     private Button nextPanelButton;
     
-    private String[] sceneOrder = { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "bookingsPane" };
-    //private PaneListing[] paneOrder = { welcomePane, priceSelectorPane, mapPane, statsPane, favouritesPane };
+    private final String[] sceneOrder = { "welcomePane", "priceSelectorPane", "mapPane", "statsPane", "bookingsPane" };
 
     private int currentSceneIndex;
     
@@ -86,8 +85,6 @@ public class MainViewer extends Stage
     private AnchorPane mapView;
     
     private String[][] mapPositions;
-    
-    //private StatisticsData dataHandler;
     
     private NoOfPropertiesStats noOfPropertiesStats;
     
@@ -195,8 +192,8 @@ public class MainViewer extends Stage
         }
     }
     
-    public void setPane(int currentSceneIndex) {      
-        this.currentSceneIndex = currentSceneIndex;
+    public void setPane(int newSceneIndex) {      
+        currentSceneIndex = newSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
         Pane paneToChangeTo = new Pane();
         
@@ -269,7 +266,7 @@ public class MainViewer extends Stage
     }
 
     private void makeWelcomePane() {
-        setTitle("Welcome");
+        // setTitle("Welcome");
         
         //All labels in the window
         Label title = new Label("Welcome!");
@@ -313,12 +310,12 @@ public class MainViewer extends Stage
         startButton.getStyleClass().add("startButton");
     }
     
-    private void changeToPriceSelector() {
+    public void changeToPriceSelector() {
         setPane(1);
     }
     
     private void makePriceSelectorPane() {
-        setTitle("Price Selection Screen");
+        // setTitle("Price Selection Screen");
         
         //All labels in the window
         Label title = new Label("Price Selection!");
@@ -476,7 +473,6 @@ public class MainViewer extends Stage
     }
     
     private String showStatus(Button confirm) {
-
         if (selectedMinPrice == null && selectedMaxPrice == null) {
             confirm.setDisable(true);
             return "Currently nothing has been selected!";
@@ -508,7 +504,7 @@ public class MainViewer extends Stage
     }
     
     private void makeMapPane() {
-        setTitle("Map of London");
+        // setTitle("Map of London");
             
         BorderPane window = new BorderPane();
         
@@ -746,7 +742,6 @@ public class MainViewer extends Stage
     private VBox createStatsPanel() {
         //setTitle("Information");
         
-    
         VBox statsBox = new VBox();
         statsBox.setSpacing(20);
         
@@ -966,7 +961,6 @@ public class MainViewer extends Stage
         statsBorder.setLeft(leftButtonVBox);
         statsBorder.setRight(rightButtonVBox);
         
-        
         statsPane = statsBorder;
     }
     
@@ -1053,8 +1047,8 @@ public class MainViewer extends Stage
     
     
     private void setText(Label label, double dataToFormat) {
-        String x = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
-        label.setText(x);
+        String formattedLabel = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
+        label.setText(formattedLabel);
     }
     
     private void setText(Label label, int dataToFormat) {
@@ -1065,13 +1059,16 @@ public class MainViewer extends Stage
         label.setText(dataToFormat);
     }
     
+    /**
+     * Hola Matthew! this should probably one method with a variable. Gracias
+     */
     private XYChart.Series getAveragePricePerBoroughData()
     {
         XYChart.Series data = new XYChart.Series();
-        Map<String, Integer> information = StatisticsData.getAveragePricePerBorough();
-        for (Map.Entry<String, Integer> set : information.entrySet())
+        HashMap<String, Integer> information = StatisticsData.getAveragePricePerBorough();
+        for (String entry : information.keySet())
         {
-            data.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
+            data.getData().add(new XYChart.Data(entry, information.get(entry)));
         }
         return data; 
     }
@@ -1079,10 +1076,10 @@ public class MainViewer extends Stage
     private XYChart.Series getAverageReviewsPerBoroughData()
     {
         XYChart.Series data = new XYChart.Series();
-        Map<String, Integer> information = StatisticsData.getAverageReviewsPerBorough();
-        for (Map.Entry<String, Integer> set : information.entrySet())
+        HashMap<String, Integer> information = StatisticsData.getAverageReviewsPerBorough();
+        for (String entry : information.keySet())
         {
-            data.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
+            data.getData().add(new XYChart.Data(entry, information.get(entry)));
         }
         return data; 
     }
@@ -1179,7 +1176,6 @@ public class MainViewer extends Stage
           throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
         }
     }
-    
     private void cancelBookingAction(Booking booking)  {
         DataHandler.removeToBookingList(booking);
         setPane(4);
