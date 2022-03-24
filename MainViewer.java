@@ -236,6 +236,28 @@ public class MainViewer extends Stage
         }
     }
     
+    private void updateNextButtonText() {
+        String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
+        
+        switch (nameOfPaneToChangeTo) {
+            case ("welcomePane") :
+                nextPanelButton.setText("Price Selection -->");
+                break;
+            case ("priceSelectorPane") :
+                nextPanelButton.setText("Map -->");
+                break;
+            case ("mapPane") :
+                nextPanelButton.setText("General Statistics -->");
+                break;
+            case ("statsPane") :
+                nextPanelButton.setText("Bookings -->");
+                break;
+            case ("bookingsPane") :
+                nextPanelButton.setText("Welcome -->");
+                break;
+        }
+    }
+    
     public void setPane(int newSceneIndex) {      
         currentSceneIndex = newSceneIndex;
         String nameOfPaneToChangeTo = sceneOrder[currentSceneIndex];
