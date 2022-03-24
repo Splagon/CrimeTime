@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 public class PriceSelectorPane extends MainViewerPane
 {
     private static Pane priceSelectorPane;
-    Label statusLabel;
+    private static Label statusLabel;
     
     public PriceSelectorPane(MainViewerNEW mainViewer)
     {
@@ -71,5 +71,9 @@ public class PriceSelectorPane extends MainViewerPane
     
     public Pane getPane() {
         return priceSelectorPane;
+    }
+    
+    public void updateStatus(String status) {
+        statusLabel.setText(status);
     }
 }

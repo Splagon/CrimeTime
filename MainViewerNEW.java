@@ -69,7 +69,7 @@ public class MainViewerNEW extends Stage
     private int lowestPrice;
     private int highestPrice;
     
-    private Label statusLabel;
+    //private Label statusLabel;
     
     private AnchorPane panelSwitcherPane;
     private Button prevPanelButton;
@@ -285,7 +285,8 @@ public class MainViewerNEW extends Stage
             else {
                 selectedMinPrice = Integer.parseInt(selected);
             }
-            statusLabel.setText(showStatus(confirm));
+            PriceSelectorPane priceSelectorPane = (PriceSelectorPane) this.priceSelectorPane;
+            priceSelectorPane.updateStatus(showStatus(confirm));
         });
         maxBox.setOnAction(e -> {
             String selected = maxBox.getValue();
@@ -295,7 +296,8 @@ public class MainViewerNEW extends Stage
             else {
                 selectedMaxPrice = Integer.parseInt(selected);
             }
-            statusLabel.setText(showStatus(confirm));
+            PriceSelectorPane priceSelectorPane = (PriceSelectorPane) this.priceSelectorPane;
+            priceSelectorPane.updateStatus(showStatus(confirm));
         });
         
         minMaxBox.getChildren().addAll(minBox, maxBox, confirm);
