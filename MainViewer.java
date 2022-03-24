@@ -199,6 +199,9 @@ public class MainViewer extends Stage
         return index;
     }
     
+    /**
+     * Updates the text of the next and previous pane buttons
+     */
     private void updateButtonText() {
         String nameOfPaneToChangeTo = paneOrder[currentPaneIndex].getClass().toString();
         nameOfPaneToChangeTo = nameOfPaneToChangeTo.substring(6);
