@@ -28,13 +28,15 @@ public class BookingsDataLoader
             //skip the first row (column headers)
             reader.readNext();
             while ((line = reader.readNext()) != null) {
-                String propertyID = line[0];
-                int grandTotal = Integer.valueOf(line[1]);
-                LocalDate checkInDate = LocalDate.parse(line[2]);
-                LocalDate checkOutDate = LocalDate.parse(line[3]);
-
-                Booking booking = new Booking(DataHandler.getProperty(propertyID), grandTotal, checkInDate, checkOutDate);
-                bookings.add(booking);
+                if (line.length > 3){
+                    String propertyID = line[0];
+                    int grandTotal = Integer.valueOf(line[1]);
+                    LocalDate checkInDate = LocalDate.parse(line[2]);
+                    LocalDate checkOutDate = LocalDate.parse(line[3]);
+    
+                    Booking booking = new Booking(DataHandler.getProperty(propertyID), grandTotal, checkInDate, checkOutDate);
+                    bookings.add(booking);
+                }
             }
         } 
         catch(IOException | URISyntaxException e) 
