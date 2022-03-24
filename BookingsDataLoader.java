@@ -28,7 +28,7 @@ public class BookingsDataLoader
             //skip the first row (column headers)
             reader.readNext();
             while ((line = reader.readNext()) != null) {
-                if (line.length > 3){
+                if (line[0].length() > 0){
                     String propertyID = line[0];
                     int grandTotal = Integer.valueOf(line[1]);
                     LocalDate checkInDate = LocalDate.parse(line[2]);

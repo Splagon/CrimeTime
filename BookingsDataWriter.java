@@ -37,7 +37,7 @@ public class BookingsDataWriter
         }
     }
     
-    public void write(ArrayList<Booking> bookingsList, String bookingsDataFileName) {
+    public void write(ArrayList<Booking> bookingsList, String bookingsDataFileName, int itemsRemoved) {
         try 
         {
             URL bookingsDataURL = getClass().getResource(bookingsDataFileName);
@@ -50,11 +50,17 @@ public class BookingsDataWriter
             
             CSVWriter writer = new CSVWriter(new FileWriter(file));
             writer.writeNext(columnHeaders);
+            int numOfColums = columnHeaders.length;
             
             for (Iterator i = bookingsList.iterator(); i.hasNext();) {
                 Booking nextBooking = (Booking) i.next();
                 writer.writeNext(nextBooking.convertToCSV());
             }
+            
+            for (int j = 0; j < itemsRemoved; j++) {
+                writer.writeNext(new String[numOfColums]);
+            }
+            
             writer.close();
         }
         catch (IOException | URISyntaxException e)

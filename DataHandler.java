@@ -298,13 +298,13 @@ public class DataHandler
         bookingsDataWriter.write(booking, bookingsDataFileName);
     }
     
-    public static void saveBookingList() {
+    public static void saveBookingList(int itemsRemoved) {
         BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
-        bookingsDataWriter.write(bookingList, bookingsDataFileName);
+        bookingsDataWriter.write(bookingList, bookingsDataFileName, itemsRemoved);
     }
     
     public static void removeToBookingList(Booking booking) {
         bookingList.remove(booking);
-        saveBookingList();
+        saveBookingList(1);
     }
 }
