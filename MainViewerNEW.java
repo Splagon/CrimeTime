@@ -74,6 +74,8 @@ public class MainViewerNEW extends Stage
     private AnchorPane panelSwitcherPane;
     private Button prevPanelButton;
     private Button nextPanelButton;
+    private final String prevButtonPreFix = "<-- ";
+    private final String nextButtonPostFix = " -->";
     
     private MainViewerPane[] paneOrder = { welcomePane, priceSelectorPane, mapPane, statsPane, bookingsPane };
 
@@ -84,8 +86,6 @@ public class MainViewerNEW extends Stage
     private AnchorPane mapView;
     
     private String[][] mapPositions;
-    
-    //private NoOfPropertiesStats noOfPropertiesStats;
     
     private Scene mainScene;
     
@@ -108,26 +108,21 @@ public class MainViewerNEW extends Stage
         lowestPrice = StatisticsData.getLowestPrice();
         highestPrice = StatisticsData.getHighestPrice();
         
-        //makePriceSelectorPane();
-        //makeStatsPane();
-        
         root = new BorderPane();
+        
+        //panel switcher buttons
+        prevPanelButton = new Button(prevButtonPreFix + "Bookings");
+        prevPanelButton.setPrefSize(150, 20);
+        nextPanelButton = new Button("Price Selection" + nextButtonPostFix);
+        nextPanelButton.setPrefSize(150, 20);
+        //styling for the buttons
+        prevPanelButton.getStyleClass().add("smallWindowButtons");
+        nextPanelButton.getStyleClass().add("smallWindowButtons");
+        
+        //panel switcher
         makePanelSwitcherPane();
         
         mainScene = new Scene(root, sceneWidth, sceneHeight);
-        // widthProperty().addListener(new ChangeListener<Number>() {
-            // @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                // if (currentSceneIndex == 2){
-                    // try {
-                        // makeHexagonMap();
-                        // setPane(2);
-                    // }
-                    // catch (Exception e) {}
-                // }
-            // }
-        // });
-
-        //setResizable(false);
         
         setPane(0);
         
@@ -138,10 +133,9 @@ public class MainViewerNEW extends Stage
     private void makePanelSwitcherPane() {
         panelSwitcherPane = new AnchorPane();
         
-        prevPanelButton = new Button("<");
-            prevPanelButton.setOnAction(e -> goToPrevPanel());
-        nextPanelButton = new Button(">");
-            nextPanelButton.setOnAction(e -> goToNextPanel());
+        //switches panel once the button is clicked
+        prevPanelButton.setOnAction(e -> goToPrevPanel());
+        nextPanelButton.setOnAction(e -> goToNextPanel());
         
         AnchorPane.setLeftAnchor(prevPanelButton, 5.0);
         AnchorPane.setRightAnchor(nextPanelButton, 5.0);
@@ -159,6 +153,8 @@ public class MainViewerNEW extends Stage
             currentSceneIndex = paneOrder.length - 1;
         }
         
+        updateButtonText();
+        
         setPane(currentSceneIndex);
     }
     
@@ -169,25 +165,38 @@ public class MainViewerNEW extends Stage
             currentSceneIndex = 0;
         }
         
+        updateButtonText();
+        
         setPane(currentSceneIndex);
     }
     
-    // private void setNextPaneButtonLabel() {
-        // // String nameOfPaneToChangeTo = paneOrder[currentSceneIndex];
+    private void updateButtonText() {
+        String nameOfPaneToChangeTo = paneOrder[currentSceneIndex].getClass().toString();
+        nameOfPaneToChangeTo = nameOfPaneToChangeTo.substring(6);
         
-        // // switch (nameOfPaneToChangeTo) {
-            // // case ("welcomePane") :
-                // // break;
-            // // case ("priceSelectorPane") :
-                // // break;
-            // // case ("mapPane") :
-                // // break;
-            // // case ("statsPane") :
-                // // break;
-            // // case ("favouritesPane") :
-                // // break;
-        // // }
-    // }
+        switch (nameOfPaneToChangeTo) {
+            case ("WelcomePane") :
+                prevPanelButton.setText(prevButtonPreFix + "Bookings");
+                nextPanelButton.setText("Price Selection" + nextButtonPostFix);
+                break;
+            case ("PriceSelectorPane") :
+                prevPanelButton.setText(prevButtonPreFix + "Welcome");
+                nextPanelButton.setText("Map" + nextButtonPostFix);
+                break;
+            case ("MapPane") :
+                prevPanelButton.setText(prevButtonPreFix + "Price Selection");
+                nextPanelButton.setText("General Statistics" + nextButtonPostFix);
+                break;
+            case ("StatsPane") :
+                prevPanelButton.setText(prevButtonPreFix + "Map");
+                nextPanelButton.setText("Bookings" + nextButtonPostFix);
+                break;
+            case ("BookingsPane") :
+                prevPanelButton.setText(prevButtonPreFix + "General Statistics");
+                nextPanelButton.setText("Welcome" + nextButtonPostFix);
+                break;
+        }
+    }
     
     public void setPane(int newSceneIndex) {
         currentSceneIndex = newSceneIndex;
