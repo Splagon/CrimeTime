@@ -13,10 +13,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.geometry.*;
 import java.util.Map;
 import java.util.HashMap;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 
 /**
  * Write a description of class StatisticsViewer here.
@@ -29,7 +25,6 @@ public class StatisticsViewer extends Stage
     // instance variables - replace the example below with your own
     
     // The information labels in the window
-    private XYChart.Series averagePriceData = new XYChart.Series();
     private NoOfPropertiesStats noOfPropertiesStats;
     StatBox stat1 = new StatBox();
     StatBox stat2 = new StatBox();
@@ -116,29 +111,35 @@ public class StatisticsViewer extends Stage
         setScene(scene);
     }
     
+    /**
+     * Convert a double data type to String then set it as a Label's text
+     * @params Label label - the label which will be affected; double dataToFormat - The data to format into a String
+     */
     private String formatData(double dataToFormat) {
         String formatedData = String.format("%.2f", dataToFormat) + " (2 d.p)"; 
         return formatedData;
     }
 
+    /**
+     * Convert an int data type to String then set it as a Label's text
+     * @params Label label - the label which will be affected; int dataToFormat - The data to format into a String
+     */
     private String formatData(int dataToFormat) {
         String formatedData = String.valueOf(dataToFormat);
         return formatedData;
     }
 
+    /**
+     * Set a Label's text to a passed through String
+     * @params Label label - the label which will be affected; String dataToFormat - The String that the Label's text will be set to
+     */
     private String formatData(String dataToFormat) {
         return dataToFormat;
     }
 
-    private void setAveragePricePerBorough()
-    {
-        Map<String, Integer> information = StatisticsData.getAveragePricePerBorough();
-        for (Map.Entry<String, Integer> set : information.entrySet())
-        {
-            averagePriceData.getData().add(new XYChart.Data(set.getKey(), set.getValue()));
-        }
-    }
-
+    /**
+     * Update the Info labels in the different stat boxes
+     */
     public void updateInfo()
     {
         stat1.updateInfo("Average Reviews Per Property:", formatData(StatisticsData.getAverageNoReviews(true)));
@@ -147,18 +148,25 @@ public class StatisticsViewer extends Stage
         stat3.updateInfo("Standard Deviation of Price (£):", formatData(StatisticsData.getPriceSDInfo(true)));
     }
     
+    /**
+     * Recreate the scene with the updated statistics data 
+     */
     public void update(int selectedMinPrice, int selectedMaxPrice) {
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
-        
         //updateInfo();
-        
         constructScene(selectedMinPrice, selectedMaxPrice);
     }
     
+    /**
+     * @return int the curret minimum price
+     */
     public int getCurrentMinPrice() {
         return noOfPropertiesStats.getMinPrice();
     }
     
+    /**
+     * @return int the current max price
+     */
     public int getCurrentMaxPrice() {
         return noOfPropertiesStats.getMaxPrice();
     }
