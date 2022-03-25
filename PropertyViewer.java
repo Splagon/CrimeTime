@@ -42,8 +42,10 @@ import java.net.MalformedURLException;
  * The location of the property displayed is shown on a map. The user can book a 
  * property through the property viewer.
  * 
- * @author AppMakers
- * @version 1.0
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ *         
+ * @version 25/03/22
  */
 public class PropertyViewer extends Stage {
     // List that holds the properties of a predetermined borough within a particular price range
