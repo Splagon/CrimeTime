@@ -6,9 +6,9 @@ import javafx.scene.control.Button;
 import javafx.geometry.Pos;
 
 /**
- * This creates the welcome panel
- * On the panel there will be a title, instrcutions and a start button
- * This panel will be placed into the main window and dispalyed to the user
+ * This creates the welcome pane
+ * On the pane there will be a title, instrcutions and a start button
+ * This pane will be placed into the main window and dispalyed to the user
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
@@ -54,7 +54,7 @@ public class WelcomePane extends MainViewerPane
         startButton.setOnAction(e -> mainViewer.changeToPriceSelectorPane());
         
         //layout of the whole window
-        VBox window = new VBox(); //root of the scene
+        VBox window = new VBox();
         VBox instructions = new VBox();
         BorderPane instrcutionsAndStart = new BorderPane();
 
