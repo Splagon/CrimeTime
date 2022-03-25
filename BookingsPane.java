@@ -115,6 +115,7 @@ public class BookingsPane extends MainViewerPane
         pv.openBookingWindow(bookingProperty);
        
         cancelBookingAction(booking);
+        mainViewer.setPane(0);
     }
     
     private void contactAction(Booking booking)  {
