@@ -69,6 +69,7 @@ public class PropertyViewer extends Stage {
     private Stage descriptionStage, bookingStage;
     // Holds applcation's internet connectivity status
     private boolean applicationConnected;
+ 
     
     /**
      * Constructor of property viewer stage.
@@ -86,9 +87,10 @@ public class PropertyViewer extends Stage {
         this.sortedBy = sortedBy;
         currentPropertyIndex = 0;
         applicationConnected = true;
+       
         
         makePropertyViewerScene();
-        
+         
         this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
     }
     
@@ -193,7 +195,7 @@ public class PropertyViewer extends Stage {
             
             Button bookingButton = new Button("Book property");
                 bookingButton.getStyleClass().add("smallWindowButtons");
-                bookingButton.setOnAction(e -> openBookingWindow());
+                bookingButton.setOnAction(e -> openBookingWindow(properties.get(currentPropertyIndex)));
             
             HBox hbox = new HBox();
                 hbox.setSpacing(5);
@@ -257,7 +259,7 @@ public class PropertyViewer extends Stage {
         }
         // Used MapBox api to load a map pointing the location of current property displayed.
         try  {
-            URL url = new URL("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",12,0/600x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw");
+            URL url = new URL("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",12,0/800x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw");
             URLConnection connection = url.openConnection();
             connection.connect(); // test internet connectivity, if no connection: throws an exception
             webEngine.load(url.toString());
@@ -379,21 +381,17 @@ public class PropertyViewer extends Stage {
         alert.show();
     }
     
-    public boolean getInternetConnection(){
-        return applicationConnected;
-    }
-    
-    public void openBookingWindow() {
+    public void openBookingWindow(AirbnbListing bookingProperty) {
         this.close();
         closeDescription();
-        
+ 
         bookingStage = new Stage();
         bookingStage.setTitle("Booking Window");
         
         BorderPane root = new BorderPane();
         root.getStyleClass().add("rootBooking");
         
-            Label propertyLabel  = new Label(properties.get(currentPropertyIndex).getName());
+            Label propertyLabel  = new Label(bookingProperty.getName());
             root.setAlignment(propertyLabel, Pos.CENTER);
             propertyLabel.setId("propertyLabel");
             
@@ -415,11 +413,11 @@ public class PropertyViewer extends Stage {
                 Label checkOutlabel = new Label("Check-Out Date:");
                     gridPane.add(checkOutlabel, 1, 0);
                 DatePicker checkOut = new DatePicker();
-                    checkOut.setValue(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights()));
+                    checkOut.setValue(checkIn.getValue().plusDays(bookingProperty.getMinimumNights()));
                     gridPane.add(checkOut, 1, 1);
                     
-                Label grandTotalLabel = new Label("The price for your stay is: £" + properties.get(currentPropertyIndex).getPrice());
-                    checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights())));
+                Label grandTotalLabel = new Label("The price for your stay is: £" + bookingProperty.getPrice());
+                    checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(bookingProperty.getMinimumNights())));
                     checkOut.setOnAction(e -> grandTotalLabel.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
                     
                     final Callback<DatePicker, DateCell> dayCellFactoryOut = new Callback<DatePicker, DateCell>() {
@@ -459,8 +457,8 @@ public class PropertyViewer extends Stage {
                         }
                     };
                     
-                    checkOut.setDayCellFactory(dayCellFactoryOut);
                     checkIn.setDayCellFactory(dayCellFactoryIn);
+                    checkOut.setDayCellFactory(dayCellFactoryOut);
                     
               vbox.setAlignment(Pos.CENTER);
               vbox.getChildren().addAll(gridPane, grandTotalLabel);
@@ -471,10 +469,10 @@ public class PropertyViewer extends Stage {
             AnchorPane bottomPane = new AnchorPane();
         
                 Button bookButton = new Button("Confirm Booking");
-                    bookButton.setOnAction(e -> confirmationAction(updateGrandTotal(checkIn.getValue(), checkOut.getValue()),checkIn.getValue(), checkOut.getValue()));
+                    bookButton.setOnAction(e -> confirmationAction(updateGrandTotal(checkIn.getValue(), checkOut.getValue()),checkIn.getValue(), checkOut.getValue()));  
                     bookButton.getStyleClass().add("smallWindowButtons");
                 bottomPane.setRightAnchor(bookButton, 0.0);
-            
+
                 Button goBackButton = new Button("Go Back");
                     goBackButton.setOnAction(e -> goBackAction());
                     goBackButton.getStyleClass().add("smallWindowButtons");
@@ -484,13 +482,12 @@ public class PropertyViewer extends Stage {
             
         root.setBottom(bottomPane);
         
-        
         Scene scene = new Scene(root, 600, 400);
         scene.getStylesheets().add("stylesheet.css");
-        
+            
         bookingStage.setScene(scene);
         setStagePosititon(bookingStage, this);
-        bookingStage.show();    
+        bookingStage.show();
     }
     
     private void goBackAction() {

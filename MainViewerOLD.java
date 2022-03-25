@@ -698,11 +698,11 @@ public class MainViewerOLD extends Stage
     private void openPropertyViewer(String boroughName) {
         try {
             PropertyViewer propertyViewer = new PropertyViewer(boroughName, selectedMinPrice, selectedMaxPrice, null);
-            if(propertyViewer.getInternetConnection() == true){
-                propertyViewer.show();
-            } else {
-                propertyViewer.noConnectionAlert();
-            }  
+            //if(propertyViewer.getInternetConnection() == true){
+               // propertyViewer.show();
+            //} else {
+               // propertyViewer.noConnectionAlert();
+            //}  
         }
         catch (Exception e) {
             Alert alert = new Alert(AlertType.WARNING);

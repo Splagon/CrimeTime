@@ -181,12 +181,7 @@ public class MapPane extends MainViewerPane
     
     private void openPropertyViewer(String boroughName) {
         try {
-            PropertyViewer propertyViewer = new PropertyViewer(boroughName, mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice(), null);
-            if(propertyViewer.getInternetConnection() == true){
-                propertyViewer.show();
-            } else {
-                propertyViewer.noConnectionAlert();
-            }  
+            PropertyViewer propertyViewer = new PropertyViewer(boroughName, mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice(), null);  
         }
         catch (IndexOutOfBoundsException e) {
             Alert alert = new Alert(AlertType.WARNING);

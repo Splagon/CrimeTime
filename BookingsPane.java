@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.web.WebEngine;
 import java.awt.Desktop;
 import java.net.URI;
+import java.time.LocalDate;
 
 /**
  * Write a description of class BookingsPane here.
@@ -83,7 +84,7 @@ public class BookingsPane extends MainViewerPane
         
         Button editButton = new Button("Edit Booking");
             editButton.setPrefSize(140, 20);
-            editButton.setOnAction(e -> editBooking());
+            editButton.setOnAction(e -> editBooking(booking));
             editButton.getStyleClass().add("smallWindowButtons");
         Button contactButton = new Button("Contact Host");
             contactButton.setPrefSize(140, 20);
@@ -103,15 +104,17 @@ public class BookingsPane extends MainViewerPane
                 rightPane.setAlignment(Pos.CENTER);
         bookingListing.setCenter(centerPane);
         bookingListing.setRight(rightPane);
-        bookingListing.setPadding(new Insets(10));
-        bookingListing.setMargin(centerPane, new Insets(0,110,0,0));
         
         return bookingListing;
     }
     
-    private void editBooking()  {
-
-    
+    private void editBooking(Booking booking) {
+        AirbnbListing bookingProperty = booking.getProperty();
+        
+        PropertyViewer pv = new PropertyViewer(bookingProperty.getNeighbourhood(), -1, -1, null);
+        pv.openBookingWindow(bookingProperty);
+       
+        cancelBookingAction(booking);
     }
     
     private void contactAction(Booking booking)  {
@@ -128,6 +131,7 @@ public class BookingsPane extends MainViewerPane
           throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
         }
     }
+    
     private void cancelBookingAction(Booking booking)  {
         DataHandler.removeToBookingList(booking);
         mainViewer.setPane(4);
