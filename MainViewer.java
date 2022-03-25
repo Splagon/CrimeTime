@@ -1,55 +1,22 @@
 import javafx.application.Application;
 import javafx.application.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.geometry.Insets;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.scene.Group;
-import javafx.scene.image.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import javafx.scene.control.ComboBox;
-import java.util.ArrayList;
-import java.net.URL;
-import java.io.File;
-import java.util.Iterator;
-import javafx.scene.layout.GridPane;
-import javafx.scene.effect.ColorAdjust;
-import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.*;
-import javafx.scene.Node;
-import java.util.HashMap;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.geometry.*;
-import java.util.*;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.web.WebEngine;
-import java.awt.Desktop;
-import java.net.URI;
+import java.util.List;
 import java.util.Arrays;
+import java.util.ArrayList;
+
 
 /**
  * Write a description of class MapViewer here.
  *
- * @author (your name)
+ * @author Michael Higham (k21051343),
  * @version (a version number or a date)
  */
 public class MainViewer extends Stage
@@ -331,6 +298,8 @@ public class MainViewer extends Stage
         
         minMaxBox.getChildren().addAll(minBox, maxBox, confirm);
         
+        minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
+        
         return minMaxBox;
     }
     
@@ -359,9 +328,7 @@ public class MainViewer extends Stage
     private void getSelectionOfUser(ComboBox<String> box, Button confirm, boolean isMinBox)
     {
         getMinMaxBoxValue(box, isMinBox);
-        
-        PriceSelectorPane priceSelectorPane = (PriceSelectorPane) this.priceSelectorPane;
-        priceSelectorPane.updateStatus(showStatus(confirm));
+        showStatus(confirm);
     }
     
     /**
@@ -405,36 +372,44 @@ public class MainViewer extends Stage
      * 
      * @return The current status message of the comparison between the comboboxes.
      */
-    public String showStatus(Button confirm) {
+    public void showStatus(Button confirm) {
         if (selectedMinPrice == null && selectedMaxPrice == null) 
         {
             confirm.setDisable(true);
-            return "Currently nothing has been selected!";
+            // Alert alert = new Alert(AlertType.WARNING);
+                // alert.setHeaderText("Both your min and max have not been selected");
+                // alert.setContentText("Unfortunately, you will need to select both and a max price");
+            // alert.show();
+            return;
         }
         else if (selectedMinPrice != null && selectedMaxPrice == null) 
         {
             confirm.setDisable(true);
-            return "Currently only your min price has been selected!";
+            return;
         }
         else if (selectedMinPrice == null && selectedMaxPrice != null) 
         {
             confirm.setDisable(true);
-            return "Currently only your max price has been selected!";
+            return;
         }
         else  
         {
             if (selectedMinPrice == -1 || selectedMaxPrice == -1)  
             {
                 confirm.setDisable(false);
-                return "Both your min and max price have been selected";
+                return;
             }
             else if (selectedMinPrice > selectedMaxPrice) 
             {
                 confirm.setDisable(true);
-                return "Your min price is not less than your max price!";
+                Alert alert = new Alert(AlertType.WARNING);
+                    alert.setHeaderText("Your min price must be less than or equal to your max price!");
+                    alert.setContentText("Unfortunately, your min price is not less than your max price!");
+                alert.show();
+                return;
             }
             confirm.setDisable(false);
-            return "Both your min and max price have been selected";
+            return;
         }
     }
     

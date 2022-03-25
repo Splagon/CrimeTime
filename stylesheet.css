@@ -3,6 +3,13 @@
     -fx-vgap: 0px;
 }
 
+.statsPopUp {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-background-color : floralwhite;
+}
+
 .statsvbox {
     -fx-padding: 10;
     -fx-spacing: 8;

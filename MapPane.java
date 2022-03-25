@@ -1,25 +1,20 @@
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.geometry.Insets;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.Node;
-import javafx.scene.text.Font;
-import javafx.scene.shape.*;
-import javafx.scene.image.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.Node;
+import javafx.scene.shape.*;
+import javafx.scene.image.*;
+import javafx.scene.text.Font;
+import javafx.scene.paint.Color;
 import javafx.scene.effect.ColorAdjust;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.paint.Color;
+import javafx.geometry.Insets;
+
+
 
 /**
  * Write a description of class MapPane here.

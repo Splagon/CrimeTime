@@ -54,6 +54,7 @@ public class StatBox extends Pane
         leftButton.setOnAction(this::leftButtonAction);
         leftButton.setMinSize(10, 90);
         leftButton.setAlignment(Pos.CENTER);
+        leftButton.getStyleClass().add("smallWindowButtons");
         
         //Create the right button
         Button rightButton = new Button();
@@ -61,6 +62,7 @@ public class StatBox extends Pane
         rightButton.setOnAction(this::rightButtonAction);
         rightButton.setMinSize(10, 90);
         rightButton.setAlignment(Pos.CENTER);
+        rightButton.getStyleClass().add("smallWindowButtons");
         
         //Create the border pane and add elements to it
         BorderPane pane = new BorderPane(); 
