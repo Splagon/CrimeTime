@@ -44,6 +44,9 @@ public class StatsPane extends MainViewerPane
         }
         currentStat = 0; 
         
+        // Create a border pane
+        BorderPane statsBorder = new BorderPane(); 
+        
         // The "title" labels in the window
         Label title = new Label("General Statistics");
         Label reviewTitle = new Label("Average Reviews Per Property:");
@@ -109,9 +112,74 @@ public class StatsPane extends MainViewerPane
         statsGrid.add(priceSD, 0, 2); 
         statsGrid.add(highAvgReview, 1 , 2);
         
+        // Create a VBox to hold the grid pane
+        VBox statsGridVBox = new VBox();
+        statsGridVBox.getChildren().add(statsGrid);
         
+        // Create a VBox to hold the Average Price Bar Chart
+        VBox AvgPriceBarChartVBox = new VBox();
+        // Create the Average Price Bar Chart
+        BarChart AvgPriceBarChart = createBarChart(getBarChartData(StatisticsData.getAveragePricePerBorough()), "Boroughs", "Average Price", "Average Price per Night per Borough");
+        // Add the Bar Chart to the Average Price Bar Chart
+        AvgPriceBarChartVBox.getChildren().add(AvgPriceBarChart);
         
+        // Create a VBox to hold the Average Reviews Bar Chart
+        VBox AvgReviewsBarChartVBox = new VBox();
+        // Create the Average Reviews Bar Chart
+        BarChart AvgReviewsBarChart = createBarChart(getBarChartData(StatisticsData.getAverageReviewsPerBorough()), "Boroughs", "Average Reviews", "Average Number of Reviews per Borough");
+        // Add the Bar Chart to the Average Reviews Bar Chart
+        AvgReviewsBarChartVBox.getChildren().add(AvgReviewsBarChart);
+    
+        //Add the VBoxes to the StatsOrder array list
+        statsOrder.add(statsGridVBox);
+        statsOrder.add(AvgPriceBarChartVBox);
+        statsOrder.add(AvgReviewsBarChartVBox);
+        // Adding components to the statsWindow VBox
+        statsWindow.setAlignment(Pos.CENTER);
+        statsWindow.getChildren().add(title); 
+        statsWindow.getChildren().add(getStatsOrderObject(0)); 
+        title.setAlignment(Pos.CENTER);     
         
+        // Set the Info Labels to the data. 
+        setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
+        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments(false));
+        setText(availableInfo, StatisticsData.getAvailableInfo(false));
+        setText(expensiveInfo, StatisticsData.getExpensiveInfo());
+        setText(priceSDInfo, StatisticsData.getPriceSDInfo(false));
+        setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
+        
+        //Create the left button
+        Button leftStatsButton = new Button();
+        leftStatsButton.setText("<");
+        leftStatsButton.setOnAction(e ->leftStatButtonAction());
+        leftStatsButton.setMinSize(10, 100);
+        leftStatsButton.setAlignment(Pos.CENTER);
+        
+        //Create the right button
+        Button rightStatsButton = new Button();
+        rightStatsButton.setText(">");
+        rightStatsButton.setOnAction(e -> rightStatButtonAction());
+        rightStatsButton.setMinSize(10, 100);
+        rightStatsButton.setAlignment(Pos.CENTER);
+        
+        // Create a VBox to hold the right button
+        VBox rightButtonVBox = new VBox();
+        // Add the right stats button to the VBox
+        rightButtonVBox.getChildren().add(rightStatsButton);
+        rightButtonVBox.setAlignment(Pos.CENTER);
+        
+        // Create a VBox to hold the left button
+        VBox leftButtonVBox = new VBox();
+        // Add the left stats button to the VBox
+        leftButtonVBox.getChildren().add(leftStatsButton);
+        leftButtonVBox.setAlignment(Pos.CENTER);
+        
+        // Add elements to the statsBorder pane
+        statsBorder.setCenter(statsWindow);
+        statsBorder.setLeft(leftButtonVBox);
+        statsBorder.setRight(rightButtonVBox);
+        
+        // Add CSS styling
         statsGrid.setAlignment(Pos.CENTER);
         statsGrid.setId("statsgrid"); 
         statsWindow.getStyleClass().add("statsWindowAndButtons");
@@ -122,7 +190,6 @@ public class StatsPane extends MainViewerPane
         priceSD.getStyleClass().add("statsvbox");
         highAvgReview.getStyleClass().add("statsvbox");
         
-        
         reviewInfo.getStyleClass().add("statslabels"); 
         availableInfo.getStyleClass().add("statslabels"); 
         noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
@@ -130,84 +197,13 @@ public class StatsPane extends MainViewerPane
         priceSDInfo.getStyleClass().add("statslabels"); 
         highAvgReviewInfo.getStyleClass().add("statslabels");
         
-        
-        
-        
-        
-        
-        
-        
-        
-        VBox statsGridVBox = new VBox();
-        statsGridVBox.getChildren().add(statsGrid);
-        
-        VBox AvgPriceBarChartVBox = new VBox();
-        BarChart AvgPriceBarChart = createBarChart(getBarChartData(StatisticsData.getAveragePricePerBorough()), "Boroughs", "Average Price", "Average Price per Night per Borough");
-        AvgPriceBarChartVBox.getChildren().add(AvgPriceBarChart);
-        
-        VBox AvgReviewsBarChartVBox = new VBox();
-        BarChart AvgReviewsBarChart = createBarChart(getBarChartData(StatisticsData.getAverageReviewsPerBorough()), "Boroughs", "Average Reviews", "Average Number of Reviews per Borough");
-        AvgReviewsBarChartVBox.getChildren().add(AvgReviewsBarChart);
-    
-        statsOrder.add(statsGridVBox);
-        statsOrder.add(AvgPriceBarChartVBox);
-        statsOrder.add(AvgReviewsBarChartVBox);
-        // Adding components 
-        statsWindow.setAlignment(Pos.CENTER);
-        statsWindow.getChildren().add(title); 
-        statsWindow.getChildren().add(getStatsOrderObject(0)); 
-        title.setAlignment(Pos.CENTER); 
         title.getStyleClass().add("windowTitle");
-        
-        
-        
-        //Set the scene and add CSS
-        //Scene scene = new Scene(window, 1200,700);
-        
-        //scene.getStylesheets().add("stylesheet.css");
-    
-        
-         
-        
-    
-        setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
-        setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments(false));
-        setText(availableInfo, StatisticsData.getAvailableInfo(false));
-        setText(expensiveInfo, StatisticsData.getExpensiveInfo());
-        setText(priceSDInfo, StatisticsData.getPriceSDInfo(false));
-        setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
-        
-        Button leftStatsButton = new Button();
-        leftStatsButton.setText("<");
-        leftStatsButton.setOnAction(e ->leftStatButtonAction());
-        leftStatsButton.setMinSize(10, 100);
-        leftStatsButton.setAlignment(Pos.CENTER);
+        leftButtonVBox.getStyleClass().add("statsWindowAndButtons");
+        rightButtonVBox.getStyleClass().add("statsWindowAndButtons");
         leftStatsButton.getStyleClass().add("smallWindowButtons");
-        
-        //Create the right button
-        Button rightStatsButton = new Button();
-        rightStatsButton.setText(">");
-        rightStatsButton.setOnAction(e -> rightStatButtonAction());
-        rightStatsButton.setMinSize(10, 100);
-        rightStatsButton.setAlignment(Pos.CENTER);
         rightStatsButton.getStyleClass().add("smallWindowButtons");
         
-        VBox rightButtonVBox = new VBox();
-        rightButtonVBox.getChildren().add(rightStatsButton);
-        rightButtonVBox.getStyleClass().add("statsWindowAndButtons");
-        rightButtonVBox.setAlignment(Pos.CENTER);
-        
-        VBox leftButtonVBox = new VBox();
-        leftButtonVBox.getChildren().add(leftStatsButton);
-        leftButtonVBox.getStyleClass().add("statsWindowAndButtons");
-        leftButtonVBox.setAlignment(Pos.CENTER);
-        
-        
-        BorderPane statsBorder = new BorderPane(); 
-        statsBorder.setCenter(statsWindow);
-        statsBorder.setLeft(leftButtonVBox);
-        statsBorder.setRight(rightButtonVBox);
-        
+        // Set the pane
         statsPane = statsBorder;
     }
     

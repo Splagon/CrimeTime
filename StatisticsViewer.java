@@ -96,7 +96,7 @@ public class StatisticsViewer extends Stage
 
         scene.getStylesheets().add("stylesheet.css");
 
-        window.getStylesheets().add("statsPopUp");
+        //window.getStylesheets().add("statsPopUp");
         
         statsGrid.setId("statsgrid"); 
 
