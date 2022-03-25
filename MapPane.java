@@ -13,14 +13,15 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.geometry.Insets;
-
+import javafx.geometry.Pos;
 
 
 /**
  * Write a description of class MapPane here.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ * @version 25/03/22
  */
 public class MapPane extends MainViewerPane
 {   
@@ -31,7 +32,7 @@ public class MapPane extends MainViewerPane
     {
         super(mainViewer);
         titleName = "Map of London";
-        hasMinMaxBox = true;
+        hasMinMaxBox = false;
     }
     
     public void makePane() {
@@ -40,10 +41,12 @@ public class MapPane extends MainViewerPane
         VBox infoPane = new VBox();
             Label titleLabel = new Label("Boroughs of London");
                 titleLabel.getStyleClass().add("windowTitle");
-            HBox minMaxBox = mainViewer.createMinMaxBox();
-                minMaxBox = mainViewer.setInitialMinMaxBoxSelection(minMaxBox);
             VBox stats = createStatsPanel();
             GridPane key = createKey();
+            
+        VBox priceChanger = new VBox();
+            HBox minMaxBox = mainViewer.createMinMaxBox();
+                minMaxBox = mainViewer.setInitialMinMaxBoxSelection(minMaxBox);
             
         Button confirm = (Button) minMaxBox.getChildren().get(2);
         
@@ -61,10 +64,12 @@ public class MapPane extends MainViewerPane
         infoPane.setPadding(new Insets(10, 20, 10, 10));
         infoPane.setSpacing(15);
         
-        mapView.setPadding(new Insets(20));
+        priceChanger.getChildren().add(minMaxBox);
+        priceChanger.setPadding(new Insets(10, 0, 0, 0));
         
         window.setLeft(infoPane);
         window.setCenter(mapView);
+        window.setRight(priceChanger);
         
         mapPane = window;
     }

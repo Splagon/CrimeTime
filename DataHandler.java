@@ -8,8 +8,9 @@ import java.util.Map;
 /**
  * Write a description of class DataHandler here.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ * @version 25/03/22
  */
 public class DataHandler
 {
@@ -303,7 +304,7 @@ public class DataHandler
         bookingsDataWriter.write(bookingList, bookingsDataFileName, itemsRemoved);
     }
     
-    public static void removeToBookingList(Booking booking) {
+    public static void removeFromBookingList(Booking booking) {
         bookingList.remove(booking);
         saveBookingList(1);
     }

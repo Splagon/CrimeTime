@@ -16,8 +16,9 @@ import java.util.ArrayList;
 /**
  * Write a description of class MapViewer here.
  *
- * @author Michael Higham (k21051343),
- * @version (a version number or a date)
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ * @version 25/03/22
  */
 public class MainViewer extends Stage
 {
@@ -63,6 +64,9 @@ public class MainViewer extends Stage
     // the stage which holds the stats viewer
     private StatisticsViewer statisticsViewer;
     
+    //animations for the panels
+    private Animations animations = new Animations();
+    
     /**
      * Constructor for objects of class MapViewer
      */
@@ -70,8 +74,8 @@ public class MainViewer extends Stage
     {         
         DataHandler.initialiseHandler();
         
-        sceneWidth = 1100;
-        sceneHeight = 635;
+        sceneWidth = 1300;
+        sceneHeight = 650;
         
         lowestPrice = StatisticsData.getLowestPrice();
         highestPrice = StatisticsData.getHighestPrice();
@@ -201,6 +205,7 @@ public class MainViewer extends Stage
         updateButtonText();
         setButtonsDisabled(currentPaneIndex);
         
+        animations.fadeIn(paneToChangeTo.getPane(), 1000);
         root.setCenter(paneToChangeTo.getPane());
         
         addTopMinMaxBox(paneToChangeTo);
@@ -208,6 +213,11 @@ public class MainViewer extends Stage
         setTitle(paneToChangeTo.getTitleName());
         
         setScene(mainScene);
+    }
+    
+    public void refreshPane() 
+    {
+        setPane(currentPaneIndex);
     }
     
     private void addTopMinMaxBox(MainViewerPane paneToChangeTo) {
@@ -568,5 +578,15 @@ public class MainViewer extends Stage
     public StatisticsViewer getStatisticsViewer() 
     {
         return statisticsViewer;
+    }
+    
+    /**
+     * 
+     */
+    public static void setStagePosititon(Stage openingStage, Stage closingStage) {
+        double currentStagePositionX = closingStage.getX();
+        double currentStagePositionY = closingStage.getY();
+        openingStage.setX(currentStagePositionX);
+        openingStage.setY(currentStagePositionY);
     }
 }

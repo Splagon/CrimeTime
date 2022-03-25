@@ -7,6 +7,10 @@ import java.util.ArrayList;
  * Represents one listing of a property for rental on Airbnb.
  * This is essentially one row in the data table. Each column
  * has a corresponding field.
+ * 
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ * @version 25/03/22
  */ 
 
 public class AirbnbListing {

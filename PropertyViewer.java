@@ -348,7 +348,7 @@ public class PropertyViewer extends Stage {
         // New property viewer stage is created.
         Stage stage = new PropertyViewer(borough, minPrice, maxPrice, sortedBy);
         // We open the stage at the same positions of the initial one, for better UX.
-        setStagePosititon(stage, this);
+        MainViewer.setStagePosititon(stage, this);
         // if description window is opened, we close it for better UX.
         closeDescription();
         
@@ -359,7 +359,8 @@ public class PropertyViewer extends Stage {
     /**
      * Method executed when the user closes the PV window.
      */
-    private void closePropertyViewer() {
+    public void closePropertyViewer() 
+    {
         // We close description window whenever PV is closed for better UX.
         closeDescription();
     }
@@ -367,8 +368,10 @@ public class PropertyViewer extends Stage {
     /**
      * Close the description window.
      */
-    private void closeDescription() {
-        if (descriptionStage != null) {
+    private void closeDescription() 
+    {
+        if (descriptionStage != null) 
+        {
             descriptionStage.close();
             descriptionStage = null;
         }
@@ -384,6 +387,7 @@ public class PropertyViewer extends Stage {
         alert.show();
     }
     
+
     /**
      * Creates the booking window. The name of the property is shown at the top,
      * then two date pickers are used in the center of the pane and finally a 
@@ -392,8 +396,10 @@ public class PropertyViewer extends Stage {
      * @param bookingProperty The property that is currently being booked.
      */
     public void openBookingWindow(AirbnbListing bookingProperty) {
+
         this.close();
         closeDescription();
+
  
         bookingStage = new Stage();
         bookingStage.setTitle("Booking Window");

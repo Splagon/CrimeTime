@@ -15,8 +15,9 @@ import java.time.LocalDate;
 /**
  * Write a description of class BookingsPane here.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ * @version 25/03/22
  */
 public class BookingsPane extends MainViewerPane
 {  
@@ -112,11 +113,10 @@ public class BookingsPane extends MainViewerPane
     private void editBooking(Booking booking) {
         AirbnbListing bookingProperty = booking.getProperty();
         
-        PropertyViewer pv = new PropertyViewer(bookingProperty.getNeighbourhood(), -1, -1, null);
-        pv.openBookingWindow(bookingProperty);
-       
-        cancelBookingAction(booking);
-        mainViewer.setPane(0);
+        DataHandler.removeFromBookingList(booking);
+        
+        //PropertyViewer propertyViewer = new PropertyViewer(bookingProperty.getNeighbourhood(), -1, -1, null);
+        BookingWindow bookingWindow = new BookingWindow(bookingProperty, mainViewer);
     }
     
     private void contactAction(Booking booking)  {
@@ -129,14 +129,13 @@ public class BookingsPane extends MainViewerPane
             }
             catch (Exception e) {}
         } else {
-          // TODO fallback to some Runtime.exec(..) voodoo?
-          throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
+          throw new RuntimeException("OS isn't supported...");
         }
     }
     
     private void cancelBookingAction(Booking booking)  {
-        DataHandler.removeToBookingList(booking);
-        mainViewer.setPane(4);
+        DataHandler.removeFromBookingList(booking);
+        mainViewer.refreshPane();
     }
     
     public Pane getPane() {
