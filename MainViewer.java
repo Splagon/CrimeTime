@@ -310,6 +310,8 @@ public class MainViewer extends Stage
         
         minMaxBox.getChildren().addAll(minBox, maxBox, confirm);
         
+        minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
+        
         return minMaxBox;
     }
     

@@ -44,8 +44,7 @@ public class StatisticsViewer extends Stage
     public StatisticsViewer(int selectedMinPrice, int selectedMaxPrice)
     {
         // The layout of the window
-        try{ noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice); }
-        catch (Exception ex) {};   
+        noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
         
         //StatisticsData.initialiseHandler();
         StatisticsData.setBoroughListings(selectedMinPrice, selectedMaxPrice);
@@ -70,9 +69,6 @@ public class StatisticsViewer extends Stage
         stat4.addInfo("No. of Properties in Borough\nUpper Quartile:", String.valueOf(noOfPropertiesStats.getThirdQuartile()));
         stat4.addInfo("No. of Properties in Borough\nMaximum:", String.valueOf(noOfPropertiesStats.getMaxNoOfPropertiesInBorough()));
         stat4.setFirst();
-        
-        
-
 
         // The "title" labels in the window
         Label title = new Label("Statistics Based on Price Selected");
@@ -100,16 +96,14 @@ public class StatisticsViewer extends Stage
 
         scene.getStylesheets().add("stylesheet.css");
 
+        window.getStylesheets().add("statsPopUp");
+        
         statsGrid.setId("statsgrid"); 
 
-
-        title.getStyleClass().add("welcomeTitle");
-
-
+        title.getStyleClass().add("windowTitle");
         
         setTitle("Information");
         setScene(scene);
-
     }
     
     private void constructScene(int selectedMinPrice, int selectedMaxPrice)  {
