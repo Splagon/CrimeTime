@@ -13,7 +13,7 @@ import java.net.URI;
 import java.time.LocalDate;
 
 /**
- * Write a description of class BookingsPane here.
+ * A class the represetns the bookings pane in the main viewer.
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
@@ -23,6 +23,10 @@ public class BookingsPane extends MainViewerPane
 {  
     private static Pane bookingsPane;
     
+    /**
+     * Constructor of BookingsPane 
+     * @param mainViewer The parent of the class
+     */
     public BookingsPane(MainViewer mainViewer)
     {
         super(mainViewer);

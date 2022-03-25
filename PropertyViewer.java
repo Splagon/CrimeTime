@@ -582,6 +582,7 @@ public class PropertyViewer extends Stage {
      * 
      * @param checkIn The date the users checks-in.
      * @param checkOut The date the users checks-out.
+     * @return The duration in days between two dates
      */
     private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) {
         // GrandTotal = price of a night in the property *  the duration of the stay
