@@ -43,7 +43,6 @@ public class StatsPane extends MainViewerPane
         }
         currentStat = 0; 
         
-        
         // The "title" labels in the window
         Label title = new Label("General Statistics");
         Label reviewTitle = new Label("Average Reviews Per Property:");
@@ -101,12 +100,15 @@ public class StatsPane extends MainViewerPane
         highAvgReview.getChildren().add(highAvgReviewTitle); 
         highAvgReview.getChildren().add(highAvgReviewInfo);
         
+        // Add elements to the Statistics Grid
         statsGrid.add(reviews, 0, 0);
         statsGrid.add(available, 0, 1);
         statsGrid.add(noHomeAndApartments, 1, 0);
         statsGrid.add(expensive, 1, 1);
         statsGrid.add(priceSD, 0, 2); 
         statsGrid.add(highAvgReview, 1 , 2);
+        
+        
         
         
         statsGrid.setAlignment(Pos.CENTER);
