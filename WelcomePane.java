@@ -19,6 +19,7 @@ public class WelcomePane extends MainViewerPane
     {
         super(mainViewer);
         titleName = "Welcome";
+        hasMinMaxBox = false;
     }
     
     public void makePane() {

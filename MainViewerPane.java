@@ -11,6 +11,7 @@ public abstract class MainViewerPane extends Pane
     //protected Pane pane = new Pane();
     protected MainViewer mainViewer;
     protected String titleName;
+    protected boolean hasMinMaxBox;
     
     /**
      * Constructor for objects of class MainViewerPane
@@ -26,5 +27,9 @@ public abstract class MainViewerPane extends Pane
     
     public String getTitleName() {
         return titleName;
+    }
+    
+    public boolean getHasMinMaxBox() {
+        return hasMinMaxBox;
     }
 }

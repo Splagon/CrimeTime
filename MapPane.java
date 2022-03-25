@@ -31,6 +31,7 @@ public class MapPane extends MainViewerPane
     {
         super(mainViewer);
         titleName = "Map of London";
+        hasMinMaxBox = true;
     }
     
     public void makePane() {
@@ -56,7 +57,7 @@ public class MapPane extends MainViewerPane
         maxBox.getStyleClass().add("mapMinMaxBoxes");
         minMaxBox.getStyleClass().add("mapMinMaxBox");
             
-        infoPane.getChildren().addAll(titleLabel, minMaxBox, key, stats);
+        infoPane.getChildren().addAll(titleLabel, key, stats);
         infoPane.setPadding(new Insets(10, 20, 10, 10));
         infoPane.setSpacing(15);
         

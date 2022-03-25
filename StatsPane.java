@@ -32,6 +32,7 @@ public class StatsPane extends MainViewerPane
     {
         super(mainViewer);
         titleName = "Statistics";
+        hasMinMaxBox = true;
     }
     
     public void makePane() {

@@ -20,6 +20,7 @@ public class PriceSelectorPane extends MainViewerPane
     {
         super(mainViewer);
         titleName = "Price Selector";
+        hasMinMaxBox = false;
     }
     
     public void makePane() {

@@ -25,6 +25,7 @@ public class BookingsPane extends MainViewerPane
     {
         super(mainViewer);
         titleName = "Bookings";
+        hasMinMaxBox = false;
     }
     
     public void makePane() {

@@ -180,30 +180,6 @@ public class MainViewer extends Stage
         MainViewerPane nextPane = paneOrder[nextSceneIndex];
         
         setPrevNextButtonText(prevPane, nextPane);
-        
-        // switch (nameOfPaneToChangeTo) 
-        // {
-            // case ("WelcomePane") :
-                // prevPanelButton.setText(prevButtonPreFix + "Bookings");
-                // nextPanelButton.setText("Price Selection" + nextButtonPostFix);
-                // break;
-            // case ("PriceSelectorPane") :
-                // prevPanelButton.setText(prevButtonPreFix + "Welcome");
-                // nextPanelButton.setText("Map" + nextButtonPostFix);
-                // break;
-            // case ("MapPane") :
-                // prevPanelButton.setText(prevButtonPreFix + "Price Selector");
-                // nextPanelButton.setText("General Statistics" + nextButtonPostFix);
-                // break;
-            // case ("StatsPane") :
-                // prevPanelButton.setText(prevButtonPreFix + "Map");
-                // nextPanelButton.setText("Bookings" + nextButtonPostFix);
-                // break;
-            // case ("BookingsPane") :
-                // prevPanelButton.setText(prevButtonPreFix + "General Statistics");
-                // nextPanelButton.setText("Welcome" + nextButtonPostFix);
-                // break;
-        // }
     }
     
     /**
@@ -226,9 +202,45 @@ public class MainViewer extends Stage
         setButtonsDisabled(currentPaneIndex);
         
         root.setCenter(paneToChangeTo.getPane());
+        
+        addTopMinMaxBox(paneToChangeTo);
+        
         setTitle(paneToChangeTo.getTitleName());
         
         setScene(mainScene);
+    }
+    
+    private void addTopMinMaxBox(MainViewerPane paneToChangeTo) {
+        if (paneToChangeTo.getHasMinMaxBox()) 
+        {
+            AnchorPane topPane = new AnchorPane();
+            final double spacing = 5.0;
+            
+            HBox minMaxBox = createMinMaxBox();
+                minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
+                AnchorPane.setTopAnchor(minMaxBox, spacing);
+                AnchorPane.setBottomAnchor(minMaxBox, spacing);
+                AnchorPane.setRightAnchor(minMaxBox, spacing);
+                
+                Button confirm = (Button) minMaxBox.getChildren().get(2);
+                ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
+                ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
+        
+                //styling the min and max box as well as the confirm button
+                confirm.getStyleClass().add("confirmForMap");
+                minBox.getStyleClass().add("mapMinMaxBoxes");
+                maxBox.getStyleClass().add("mapMinMaxBoxes");
+                minMaxBox.getStyleClass().add("mapMinMaxBox");
+            
+            topPane.getChildren().add(minMaxBox);
+            
+            root.setTop(topPane);
+        }
+        else
+        {
+            AnchorPane emptyPane = new AnchorPane();
+            root.setTop(emptyPane);
+        }
     }
     
     private void setButtonsDisabled(int currentSceneIndex) 
