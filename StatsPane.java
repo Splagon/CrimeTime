@@ -79,11 +79,11 @@ public class StatsPane extends MainViewerPane
         statsGridVBox.getChildren().add(statsGrid);
         
         VBox AvgPriceBarCharVBox = new VBox();
-        AvgPriceBarCharVBox.getChildren().add(createAvgPriceBarChart());
+        AvgPriceBarCharVBox.getChildren().add(createBarChart(getAveragePricePerBoroughData()));
         
         VBox AvgReviewsBarCharVBox = new VBox();
-        AvgReviewsBarCharVBox.getChildren().add(createAvgReviewsBarChart());
-        
+        AvgReviewsBarCharVBox.getChildren().add(createBarChart(getAverageReviewsPerBoroughData()));
+    
         statsOrder.add(statsGridVBox);
         statsOrder.add(AvgPriceBarCharVBox);
         statsOrder.add(AvgReviewsBarCharVBox);
@@ -192,7 +192,7 @@ public class StatsPane extends MainViewerPane
         statsPane = statsBorder;
     }
     
-    private BarChart createAvgPriceBarChart()
+    private BarChart createBarChart(XYChart.Series data)
     {
         XYChart.Series averagePriceData = new XYChart.Series();
         CategoryAxis xAxis = new CategoryAxis();
@@ -200,24 +200,9 @@ public class StatsPane extends MainViewerPane
         BarChart barChart = new BarChart(xAxis, yAxis);
         xAxis.setLabel("Borough");
         yAxis.setLabel("Average Price");
-        averagePriceData = getAveragePricePerBoroughData();
+        averagePriceData = data;
         averagePriceData.setName("Average Price per Night per Borough");
         barChart.getData().add(averagePriceData);
-        
-        return barChart;
-    }
-    
-    private BarChart createAvgReviewsBarChart()
-    {
-        XYChart.Series averageReviewsData = new XYChart.Series();
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-        BarChart barChart = new BarChart(xAxis, yAxis);
-        xAxis.setLabel("Borough");
-        yAxis.setLabel("Average Review Count");
-        averageReviewsData = getAverageReviewsPerBoroughData();
-        averageReviewsData.setName("Average Number of Reviews per Borough");
-        barChart.getData().add(averageReviewsData);
         
         return barChart;
     }
