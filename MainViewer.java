@@ -326,9 +326,7 @@ public class MainViewer extends Stage
     private void getSelectionOfUser(ComboBox<String> box, Button confirm, boolean isMinBox)
     {
         getMinMaxBoxValue(box, isMinBox);
-        
-        PriceSelectorPane priceSelectorPane = (PriceSelectorPane) this.priceSelectorPane;
-        priceSelectorPane.updateStatus(showStatus(confirm));
+        showStatus(confirm);
     }
     
     /**
@@ -372,36 +370,44 @@ public class MainViewer extends Stage
      * 
      * @return The current status message of the comparison between the comboboxes.
      */
-    public String showStatus(Button confirm) {
+    public void showStatus(Button confirm) {
         if (selectedMinPrice == null && selectedMaxPrice == null) 
         {
             confirm.setDisable(true);
-            return "Currently nothing has been selected!";
+            // Alert alert = new Alert(AlertType.WARNING);
+                // alert.setHeaderText("Both your min and max have not been selected");
+                // alert.setContentText("Unfortunately, you will need to select both and a max price");
+            // alert.show();
+            return;
         }
         else if (selectedMinPrice != null && selectedMaxPrice == null) 
         {
             confirm.setDisable(true);
-            return "Currently only your min price has been selected!";
+            return;
         }
         else if (selectedMinPrice == null && selectedMaxPrice != null) 
         {
             confirm.setDisable(true);
-            return "Currently only your max price has been selected!";
+            return;
         }
         else  
         {
             if (selectedMinPrice == -1 || selectedMaxPrice == -1)  
             {
                 confirm.setDisable(false);
-                return "Both your min and max price have been selected";
+                return;
             }
             else if (selectedMinPrice > selectedMaxPrice) 
             {
                 confirm.setDisable(true);
-                return "Your min price is not less than your max price!";
+                Alert alert = new Alert(AlertType.WARNING);
+                    alert.setHeaderText("Your min price must be less than or equal to your max price!");
+                    alert.setContentText("Unfortunately, your min price is not less than your max price!");
+                alert.show();
+                return;
             }
             confirm.setDisable(false);
-            return "Both your min and max price have been selected";
+            return;
         }
     }
     
