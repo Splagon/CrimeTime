@@ -8,6 +8,12 @@ import java.util.Arrays;
 import com.opencsv.CSVReader;
 import java.net.URISyntaxException;
 
+/**
+ * 
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ * @version 25/03/22
+ */
 public class AirbnbDataLoader {
     /** 
      * Return an ArrayList containing the rows in the AirBnB London data set csv file.

@@ -4,8 +4,9 @@ import java.util.ArrayList;
 /**
  * Write a description of class Borough here.
  *
- * @author Michael Higham (k21051343),
- * @version (a version number or a date)
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ * @version 25/03/22
  */
 public class Borough
 {

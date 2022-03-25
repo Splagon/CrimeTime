@@ -6,16 +6,24 @@ import javafx.scene.control.Button;
 import javafx.geometry.Pos;
 
 /**
- * Write a description of class WelcomePane here.
+ * This creates the welcome panel
+ * On the panel there will be a title, instrcutions and a start button
+ * This panel will be placed into the main window and dispalyed to the user
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ * @version 25/03/22
  */
 public class WelcomePane extends MainViewerPane
 {
     private static Pane welcomePane;
     private Animations animations = new Animations();
     
+    /**
+     * Constructor for objects of class WelcomePane
+     * 
+     * @param MainViewer mainViewer - used to call methods within the MainViewer
+     */
     public WelcomePane(MainViewer mainViewer)
     {
         super(mainViewer);
@@ -23,6 +31,9 @@ public class WelcomePane extends MainViewerPane
         hasMinMaxBox = false;
     }
     
+    /**
+     * This constructs the pane and its functionality and adds any styling
+     */
     public void makePane() {
         //All labels in the window
         Label title = new Label("Welcome!");
@@ -39,7 +50,7 @@ public class WelcomePane extends MainViewerPane
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
-        startButton.setOnMouseEntered(e -> animations.spin(3000, startButton));
+        startButton.setOnMouseEntered(e -> animations.spin(1000, startButton));
         startButton.setOnAction(e -> mainViewer.changeToPriceSelectorPane());
         
         //layout of the whole window
@@ -51,10 +62,11 @@ public class WelcomePane extends MainViewerPane
         window.getChildren().addAll(title, instrcutionsAndStart);
         window.setAlignment(Pos.CENTER);
         instructions.getChildren().addAll(instructionsTitle, instruction1, instruction2, instruction3, instruction4, instruction5, instruction6, instruction7, instruction8, instruction9); 
+        instructions.setSpacing(5);
         instrcutionsAndStart.setLeft(instructions);
         instrcutionsAndStart.setCenter(startButton);
         
-        //creating the scene and adding the CSS
+        //add the CSS styling
         window.getStylesheets().add("stylesheet.css");
         
         title.getStyleClass().add("windowTitle");
@@ -74,10 +86,15 @@ public class WelcomePane extends MainViewerPane
         instrcutionsAndStart.getStyleClass().add("instructionsAndStart");
         
         startButton.getStyleClass().add("startButton");
-        
+    
         welcomePane = window;
     }
     
+    /**
+     * returns the pane
+     * 
+     * @return it will return type Pane
+     */
     public Pane getPane() {
         return welcomePane;
     }

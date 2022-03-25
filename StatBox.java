@@ -21,8 +21,9 @@ import java.awt.Font;
  * Create a border pane which will house a list of statistic titles and information in a list. The next or previous stat
  * can be displayed through the use of the right and left buttons. 
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
+ *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
+ * @version 25/03/22
  */
 public class StatBox extends Pane
 {
