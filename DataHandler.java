@@ -303,7 +303,7 @@ public class DataHandler
         bookingsDataWriter.write(bookingList, bookingsDataFileName, itemsRemoved);
     }
     
-    public static void removeToBookingList(Booking booking) {
+    public static void removeFromBookingList(Booking booking) {
         bookingList.remove(booking);
         saveBookingList(1);
     }

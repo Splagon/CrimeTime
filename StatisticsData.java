@@ -235,7 +235,8 @@ public class StatisticsData extends DataHandler
         return average;
     }
     
-    public static double getBoroughMapColour(String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats) {     
+    public static double getBoroughMapColour(String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats) 
+    {     
         int noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
         
         double brightness = getBrightness(noOfPropertiesInBorough, noOfPropertiesStats);
@@ -243,7 +244,8 @@ public class StatisticsData extends DataHandler
         return brightness;
     }
     
-    public static double getBoroughMapColour(int percentile) {
+    public static double getBoroughMapColour(int percentile) 
+    {
         NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(25, 50, 75);
         
         double brightness = getBrightness(percentile, noOfPropertiesStats);
@@ -259,16 +261,20 @@ public class StatisticsData extends DataHandler
         
         double brightness;
         
-        if (noOfPropertiesInBorough == 0) {
+        if (noOfPropertiesInBorough == 0) 
+        {
             brightness = 0.00;
         }
-        else if (noOfPropertiesInBorough < firstQuartile) {
+        else if (noOfPropertiesInBorough < firstQuartile) 
+        {
             brightness = 0.1;
         }
-        else if (noOfPropertiesInBorough < median) {
+        else if (noOfPropertiesInBorough < median) 
+        {
             brightness = 0.4;
         }
-        else if (noOfPropertiesInBorough < thirdQuartile) {
+        else if (noOfPropertiesInBorough < thirdQuartile) 
+        {
             brightness = 0.65;
         }
         else {
@@ -284,7 +290,8 @@ public class StatisticsData extends DataHandler
     {
         ArrayList<Borough> sortedNumberOfPropertiesAtPrice = new ArrayList<Borough>();
 
-        for (String boroughName : boroughs) {
+        for (String boroughName : boroughs) 
+        {
             ArrayList<AirbnbListing> propertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice);
             Borough boroughToAdd = new Borough(boroughName, propertiesInBorough);
             sortedNumberOfPropertiesAtPrice.add(boroughToAdd);

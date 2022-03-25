@@ -210,6 +210,11 @@ public class MainViewer extends Stage
         setScene(mainScene);
     }
     
+    public void refreshPane() 
+    {
+        setPane(currentPaneIndex);
+    }
+    
     private void addTopMinMaxBox(MainViewerPane paneToChangeTo) {
         if (paneToChangeTo.getHasMinMaxBox()) 
         {
@@ -568,5 +573,15 @@ public class MainViewer extends Stage
     public StatisticsViewer getStatisticsViewer() 
     {
         return statisticsViewer;
+    }
+    
+    /**
+     * 
+     */
+    public static void setStagePosititon(Stage openingStage, Stage closingStage) {
+        double currentStagePositionX = closingStage.getX();
+        double currentStagePositionY = closingStage.getY();
+        openingStage.setX(currentStagePositionX);
+        openingStage.setY(currentStagePositionY);
     }
 }

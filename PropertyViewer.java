@@ -195,7 +195,7 @@ public class PropertyViewer extends Stage {
             
             Button bookingButton = new Button("Book property");
                 bookingButton.getStyleClass().add("smallWindowButtons");
-                bookingButton.setOnAction(e -> openBookingWindow(properties.get(currentPropertyIndex)));
+                bookingButton.setOnAction(e -> openBookingWindow());
             
             HBox hbox = new HBox();
                 hbox.setSpacing(5);
@@ -345,7 +345,7 @@ public class PropertyViewer extends Stage {
         // New property viewer stage is created.
         Stage stage = new PropertyViewer(borough, minPrice, maxPrice, sortedBy);
         // We open the stage at the same positions of the initial one, for better UX.
-        setStagePosititon(stage, this);
+        MainViewer.setStagePosititon(stage, this);
         // if description window is opened, we close it for better UX.
         closeDescription();
         
@@ -356,7 +356,8 @@ public class PropertyViewer extends Stage {
     /**
      * Method executed when the user closes the PV window.
      */
-    public void closePropertyViewer() {
+    public void closePropertyViewer() 
+    {
         // We close description window whenever PV is closed for better UX.
         closeDescription();
     }
@@ -364,8 +365,10 @@ public class PropertyViewer extends Stage {
     /**
      * Close the description window.
      */
-    private void closeDescription() {
-        if (descriptionStage != null) {
+    private void closeDescription() 
+    {
+        if (descriptionStage != null) 
+        {
             descriptionStage.close();
             descriptionStage = null;
         }
@@ -381,167 +384,10 @@ public class PropertyViewer extends Stage {
         alert.show();
     }
     
-    public void openBookingWindow(AirbnbListing bookingProperty) {
+    private void openBookingWindow() {
         this.close();
         closeDescription();
- 
-        bookingStage = new Stage();
-        bookingStage.setTitle("Booking Window");
-        
-        BorderPane root = new BorderPane();
-        root.getStyleClass().add("rootBooking");
-        
-            Label propertyLabel  = new Label(bookingProperty.getName());
-            root.setAlignment(propertyLabel, Pos.CENTER);
-            propertyLabel.setId("propertyLabel");
-            
-        root.setTop(propertyLabel);
-            
-            VBox vbox = new VBox();
-            
-            GridPane gridPane = new GridPane();
-             gridPane.setAlignment(Pos.CENTER);
-             gridPane.setHgap(10);
-             gridPane.setVgap(10);
-                
-                Label checkInlabel = new Label("Check-In Date:");
-                    gridPane.add(checkInlabel, 0, 0);
-                DatePicker checkIn =  new DatePicker();
-                    checkIn.setValue(LocalDate.now());
-                    gridPane.add(checkIn, 0, 1);
-                
-                Label checkOutlabel = new Label("Check-Out Date:");
-                    gridPane.add(checkOutlabel, 1, 0);
-                DatePicker checkOut = new DatePicker();
-                    checkOut.setValue(checkIn.getValue().plusDays(bookingProperty.getMinimumNights()));
-                    gridPane.add(checkOut, 1, 1);
-                    
-                Label grandTotalLabel = new Label("The price for your stay is: £" + bookingProperty.getPrice());
-                    checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(bookingProperty.getMinimumNights())));
-                    checkOut.setOnAction(e -> grandTotalLabel.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
-                    
-                    final Callback<DatePicker, DateCell> dayCellFactoryOut = new Callback<DatePicker, DateCell>() {
-                        @Override
-                        public DateCell call(final DatePicker datePicker) {
-                            return new DateCell() {
-                                @Override
-                                public void updateItem(LocalDate item, boolean empty) {
-                                    super.updateItem(item, empty);
-                                    if (item.isBefore(checkIn.getValue())) {
-                                        setDisable(true);
-                                        setStyle("-fx-background-color: #ffc0cb;");
-                                    } else if(item.isAfter(checkIn.getValue().minusDays(1)) && item.isBefore(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights()))){
-                                        setDisable(true);
-                                        setStyle("-fx-background-color: #ffa07a;");
-                                    } else if (item.isAfter(checkIn.getValue().plusDays(properties.get(currentPropertyIndex).getMinimumNights()).minusDays(1)) && item.isBefore(checkOut.getValue())){
-                                        setStyle("-fx-background-color: #90ee90;");
-                                    }
-                                }      
-                            };
-                        }
-                    };
-                    
-                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() {
-                        @Override
-                        public DateCell call(final DatePicker datePicker) {
-                            return new DateCell() {
-                                @Override
-                                public void updateItem(LocalDate item, boolean empty) {
-                                    super.updateItem(item, empty);
-                                    if (item.isBefore(LocalDate.now())) {
-                                        setDisable(true);
-                                        setStyle("-fx-background-color: #ffc0cb;");
-                                    }  
-                                }      
-                            };
-                        }
-                    };
-                    
-                    checkIn.setDayCellFactory(dayCellFactoryIn);
-                    checkOut.setDayCellFactory(dayCellFactoryOut);
-                    
-              vbox.setAlignment(Pos.CENTER);
-              vbox.getChildren().addAll(gridPane, grandTotalLabel);
-              vbox.setSpacing(80);
-            
-        root.setCenter(vbox);
-            
-            AnchorPane bottomPane = new AnchorPane();
-        
-                Button bookButton = new Button("Confirm Booking");
-                    bookButton.setOnAction(e -> confirmationAction(updateGrandTotal(checkIn.getValue(), checkOut.getValue()),checkIn.getValue(), checkOut.getValue()));  
-                    bookButton.getStyleClass().add("smallWindowButtons");
-                bottomPane.setRightAnchor(bookButton, 0.0);
-
-                Button goBackButton = new Button("Go Back");
-                    goBackButton.setOnAction(e -> goBackAction());
-                    goBackButton.getStyleClass().add("smallWindowButtons");
-                bottomPane.setLeftAnchor(goBackButton, 0.0);
-            
-            bottomPane.getChildren().addAll(bookButton, goBackButton);
-            
-        root.setBottom(bottomPane);
-        
-        Scene scene = new Scene(root, 600, 400);
-        scene.getStylesheets().add("stylesheet.css");
-            
-        bookingStage.setScene(scene);
-        setStagePosititon(bookingStage, this);
-        bookingStage.show();
-    }
-    
-    private void goBackAction() {
-        setStagePosititon(this, bookingStage);
-        this.show();
-        bookingStage.close();
-    }
-    
-    private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
-        showConfirmationStage();
-        bookingStage.close();
-        AirbnbListing propertyBooked = properties.get(currentPropertyIndex);
-        Booking newBooking = new Booking(propertyBooked, grandTotal, checkinDate, checkoutDate);
-        DataHandler.addToBookingList(newBooking);
-    }
-    
-    private void showConfirmationStage() {
-        Stage confirmationStage = new Stage();
-        confirmationStage.setTitle("Description!");
-        
-        VBox root = new VBox();
-        
-            Label confirmationLabel = new  Label("Thank you for booking with us !");
-            confirmationLabel.getStyleClass().add("subLabels");
-            
-            Button closeButton = new Button("Close");
-                closeButton.setOnAction(e -> confirmationStage.close());
-                
-        root.getChildren().addAll(confirmationLabel, closeButton);
-        root.setSpacing(30);
-        root.setAlignment(Pos.CENTER);
-        root.getStyleClass().add("rootPV");
-        
-        int width = 300;
-        
-        Scene scene = new Scene(root,width,100);
-        scene.getStylesheets().add("stylesheet.css");
-        confirmationStage.setScene(scene);
-            confirmationStage.setX(this.getX() + (this.getWidth() - width)/2);
-            confirmationStage.setY(this.getY() + this.getHeight()/2);
-        confirmationStage.show();
-    }
-    
-    /**
-     * 
-     */
-    private void setStagePosititon(Stage openingStage, Stage closingStage) {
-        double currentStagePositionX = closingStage.getX();
-        double currentStagePositionY = closingStage.getY();
-        openingStage.setX(currentStagePositionX);
-        openingStage.setY(currentStagePositionY);
-    }
-    
-    private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) {
-        return properties.get(currentPropertyIndex).getPrice()*(int)(Booking.calculateDuration(checkIn, checkOut));
+        BookingWindow bookingWindow = new BookingWindow(properties.get(currentPropertyIndex), this);
+        MainViewer.setStagePosititon(bookingWindow, this);
     }
 }
