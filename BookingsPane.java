@@ -115,7 +115,6 @@ public class BookingsPane extends MainViewerPane
         
         DataHandler.removeFromBookingList(booking);
         
-        //PropertyViewer propertyViewer = new PropertyViewer(bookingProperty.getNeighbourhood(), -1, -1, null);
         BookingWindow bookingWindow = new BookingWindow(bookingProperty, mainViewer);
     }
     

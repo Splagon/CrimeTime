@@ -150,7 +150,6 @@ public class BookingWindow extends Stage
     }
     
     private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
-        showConfirmationStage();
         bookingStage.close();
         
         Booking newBooking = new Booking(property, grandTotal, checkinDate, checkoutDate);
@@ -162,57 +161,7 @@ public class BookingWindow extends Stage
         }
     }
     
-    private void updateBooking(Booking booking) {
-        ArrayList<Booking> bookingsList = DataHandler.getBookingList();
-        
-        boolean found = false;
-        for (int i = 0; i < bookingsList.size() && found == false; i++) 
-        {
-            Booking currentBooking = bookingsList.get(i);
-            if (currentBooking.getPropertyID() == property.getId()) {
-                //Booking updatedBooking
-                //bookingsList.set(i, 
-                
-                found = true;
-            }
-        }
-        
-        if (parent.getClass().equals(MainViewer.class)) {
-            MainViewer mainViewer = (MainViewer) parent;
-            mainViewer.refreshPane();
-        }
-    }
-    
-    private void showConfirmationStage() {
-        Stage confirmationStage = new Stage();
-        confirmationStage.setTitle("Description!");
-        
-        VBox root = new VBox();
-        
-            Label confirmationLabel = new  Label("Thank you for booking with us !");
-            confirmationLabel.getStyleClass().add("subLabels");
-            
-            Button closeButton = new Button("Close");
-                closeButton.setOnAction(e -> confirmationStage.close());
-                
-        root.getChildren().addAll(confirmationLabel, closeButton);
-        root.setSpacing(30);
-        root.setAlignment(Pos.CENTER);
-        root.getStyleClass().add("rootPV");
-        
-        int width = 300;
-        
-        Scene scene = new Scene(root,width,100);
-        scene.getStylesheets().add("stylesheet.css");
-        confirmationStage.setScene(scene);
-            confirmationStage.setX(this.getX() + (this.getWidth() - width)/2);
-            confirmationStage.setY(this.getY() + this.getHeight()/2);
-        confirmationStage.show();
-    }
-    
     private void goBackAction() {
-        MainViewer.setStagePosititon(parent, bookingStage);
-        parent.show();
         bookingStage.close();
     }
 }
