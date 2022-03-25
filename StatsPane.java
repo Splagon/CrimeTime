@@ -27,12 +27,13 @@ public class StatsPane extends MainViewerPane
     ArrayList<VBox> statsOrder = new ArrayList<>();
     int currentStat = 0;
     VBox statsWindow;
+    private Animations animations = new Animations();
     
     public StatsPane(MainViewer mainViewer)
     {
         super(mainViewer);
         titleName = "Statistics";
-        hasMinMaxBox = true;
+        hasMinMaxBox = true; 
     }
     
     public void makePane() {
@@ -287,31 +288,7 @@ public class StatsPane extends MainViewerPane
         statsWindow.getChildren().remove(getStatsOrderObject(currentStat));
         currentStat = change; 
         statsWindow.getChildren().add(getStatsOrderObject(currentStat));
-        fadeIn(statsWindow, 1000);
-    }
-    
-    /**
-     * Fade a certain node out
-     * @params Node node - The node in which this will happen to; long time - The amount of time that the animation will last for. 
-     */
-    private void fadeOut(Node node, long time)
-    {
-        FadeTransition effect = new FadeTransition(Duration.millis(time), node);
-        effect.setFromValue(1.0);
-        effect.setToValue(0.0);
-        effect.play();
-    }
-    
-    /**
-     * Fade a certain node in
-     * @params Node node - The node in which this will happen to; long time - The amount of time that the animation will last for. 
-     */
-    private void fadeIn(Node node, long time)
-    {
-        FadeTransition effect = new FadeTransition(Duration.millis(time), node);
-        effect.setFromValue(0.0);
-        effect.setToValue(1.0);
-        effect.play();
+        animations.fadeIn(statsWindow, 1000);
     }
     
     /**

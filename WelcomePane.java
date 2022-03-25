@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 public class WelcomePane extends MainViewerPane
 {
     private static Pane welcomePane;
+    private Animations animations = new Animations();
     
     public WelcomePane(MainViewer mainViewer)
     {
@@ -32,6 +33,7 @@ public class WelcomePane extends MainViewerPane
         
         //Buttons in the window
         Button startButton = new Button("Start"); 
+        startButton.setOnMouseEntered(e -> animations.spin(3000, startButton));
         startButton.setOnAction(e -> mainViewer.changeToPriceSelectorPane());
         
         //layout of the whole window
