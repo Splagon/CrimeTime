@@ -63,6 +63,9 @@ public class MainViewer extends Stage
     // the stage which holds the stats viewer
     private StatisticsViewer statisticsViewer;
     
+    //animations for the panels
+    private Animations animations = new Animations();
+    
     /**
      * Constructor for objects of class MapViewer
      */
@@ -70,8 +73,8 @@ public class MainViewer extends Stage
     {         
         DataHandler.initialiseHandler();
         
-        sceneWidth = 1100;
-        sceneHeight = 635;
+        sceneWidth = 1300;
+        sceneHeight = 650;
         
         lowestPrice = StatisticsData.getLowestPrice();
         highestPrice = StatisticsData.getHighestPrice();
@@ -201,6 +204,7 @@ public class MainViewer extends Stage
         updateButtonText();
         setButtonsDisabled(currentPaneIndex);
         
+        animations.fadeIn(paneToChangeTo.getPane(), 1000);
         root.setCenter(paneToChangeTo.getPane());
         
         addTopMinMaxBox(paneToChangeTo);
