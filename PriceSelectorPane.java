@@ -15,7 +15,6 @@ import javafx.scene.layout.HBox;
 public class PriceSelectorPane extends MainViewerPane
 {
     private static Pane priceSelectorPane;
-    private static Label statusLabel;
     
     public PriceSelectorPane(MainViewer mainViewer)
     {
@@ -37,8 +36,6 @@ public class PriceSelectorPane extends MainViewerPane
         ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
         ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
         
-        statusLabel = new Label(mainViewer.showStatus(confirm));
-        
         //Layout of the window
         BorderPane window = new BorderPane(); //root of the window
         VBox titleAndInstruction = new VBox();
@@ -46,7 +43,6 @@ public class PriceSelectorPane extends MainViewerPane
         //Adding elements to the window
         window.setCenter(minMaxBox);
         window.setTop(titleAndInstruction);
-        window.setBottom(statusLabel); 
 
         titleAndInstruction.getChildren().addAll(title, instruction);
         
@@ -65,15 +61,9 @@ public class PriceSelectorPane extends MainViewerPane
         maxBox.getStyleClass().add("priceMinMaxBoxes");
         
         minMaxBox.getStyleClass().add("priceMinMaxBox");
-        
-        statusLabel.getStyleClass().add("priceStatusLabel");
     }
     
     public Pane getPane() {
         return priceSelectorPane;
-    }
-    
-    public void updateStatus(String status) {
-        statusLabel.setText(status);
     }
 }
