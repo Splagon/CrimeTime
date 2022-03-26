@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import com.opencsv.CSVReader;
 import java.net.URISyntaxException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * 
@@ -19,15 +21,20 @@ public class AirbnbDataLoader {
      * Return an ArrayList containing the rows in the AirBnB London data set csv file.
      */
     public ArrayList<AirbnbListing> load() {
-        System.out.print("Begin loading Airbnb london dataset...");
+        //System.out.print("Begin loading Airbnb london dataset...");
         ArrayList<AirbnbListing> listings = new ArrayList<AirbnbListing>();
-        try{
+        try 
+        {
             URL url = getClass().getResource("airbnb-london.csv");
             CSVReader reader = new CSVReader(new FileReader(new File(url.toURI()).getAbsolutePath()));
+            
             String [] line;
+            
             //skip the first row (column headers)
             reader.readNext();
-            while ((line = reader.readNext()) != null) {
+            
+            while ((line = reader.readNext()) != null) 
+            {
                 String id = line[0];
                 String name = line[1];
                 String host_id = line[2];
@@ -51,11 +58,15 @@ public class AirbnbDataLoader {
                     );
                 listings.add(listing);
             }
-        } catch(IOException | URISyntaxException e){
-            System.out.println("Failure! Something went wrong");
-            e.printStackTrace();
+        } 
+        catch(IOException | URISyntaxException e)
+        {
+            Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText("Failure! Something went wrong");
+                alert.setContentText("Unfortunately, the application is unable to\nopen the list of properties.");
+            alert.show();
         }
-        System.out.println("Success! Number of loaded records: " + listings.size());
+        //System.out.println("Success! Number of loaded records: " + listings.size());
         return listings;
     }
 

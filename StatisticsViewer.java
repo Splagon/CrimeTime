@@ -47,7 +47,7 @@ public class StatisticsViewer extends Stage
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
         
         //StatisticsData.initialiseHandler();
-        StatisticsData.setBoroughListings(selectedMinPrice, selectedMaxPrice);
+        StatisticsData.setListingsAtPrice(selectedMinPrice, selectedMaxPrice);
         window = new VBox();
         GridPane statsGrid = new GridPane();
         

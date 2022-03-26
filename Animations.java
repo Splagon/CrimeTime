@@ -10,7 +10,7 @@ import javafx.util.Duration;
  * @version 25/03/22
  */
 public class Animations
-{
+{ 
     /**
      * Fade a certain node out
      * @params Node node - The node in which this will happen to; long time - The amount of time that the animation will last for. 
@@ -42,9 +42,70 @@ public class Animations
      */
     public static void spin(long time, Node node) 
     {
-         RotateTransition effect = new RotateTransition(Duration.millis(time), node);
-         effect.setByAngle(360);
-         effect.setCycleCount(1);
-         effect.play();
+        RotateTransition effect = new RotateTransition(Duration.millis(time), node);
+            
+        double currentRotation = node.rotateProperty().getValue() % 360.0;
+        
+        if (currentRotation == 0.0)
+        {
+            effect.setByAngle(360.0);
+            effect.setCycleCount(1);
+            effect.play();
+        }
+    }
+    
+    public static void spin(Node node) 
+    {
+        RotateTransition effect = new RotateTransition(Duration.millis(500000), node);
+            
+        double currentRotation = node.rotateProperty().getValue() % 360.0;
+        
+        if (currentRotation == 0.0)
+        {
+            effect.setByAngle(360.0);
+            effect.setCycleCount(Timeline.INDEFINITE);
+            effect.play();
+        }
+    }
+    
+    public void spinAndGrowIn(long time, Node node) 
+    {    
+        double currentRotation = node.rotateProperty().getValue() % 360.0;
+        
+        if (currentRotation == 0.0)
+        {
+            RotateTransition rotateEffect = new RotateTransition(Duration.millis(time), node);
+            ScaleTransition scaleEffect = new ScaleTransition(Duration.millis(time), node);
+            
+            rotateEffect.setToAngle(360.0);
+            
+            scaleEffect.setToX(1.3);
+            scaleEffect.setToY(1.3);
+            
+            ParallelTransition parallelTransitionOne = new ParallelTransition();
+                parallelTransitionOne.getChildren().addAll(rotateEffect, scaleEffect);
+                node.setOnMouseExited(e -> parallelTransitionOne.setOnFinished(ex -> spinAndGrowOut(time, node)));
+                parallelTransitionOne.setOnFinished(e -> node.setOnMouseExited(ex -> spinAndGrowOut(time, node)));
+                parallelTransitionOne.play();
+        }
+    }
+    
+    public void spinAndGrowOut(long time, Node node) 
+    {    
+        double currentRotation = node.rotateProperty().getValue() % 360.0;
+        
+        RotateTransition rotateEffect = new RotateTransition(Duration.millis(time), node);
+        ScaleTransition scaleEffect = new ScaleTransition(Duration.millis(time), node);
+    
+        System.out.println(360.0 - currentRotation);
+        rotateEffect.setToAngle(0.0);
+            
+        scaleEffect.setToX(1);
+        scaleEffect.setToY(1);
+            
+        ParallelTransition parallelTransitionOne = new ParallelTransition();
+            parallelTransitionOne.getChildren().addAll(rotateEffect, scaleEffect);
+            parallelTransitionOne.play();
+
     }
 }

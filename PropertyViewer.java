@@ -6,22 +6,22 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.paint.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+//import java.io.FileInputStream;
+//import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import javafx.geometry.*;
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
 import java.net.URL;
-import javax.script.*;
-import javafx.scene.Node;
-import javafx.stage.Popup;
+//import javax.script.*;
+//import javafx.scene.Node;
+//import javafx.stage.Popup;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ComboBox;
-import javafx.collections.ObservableList;
+//import javafx.collections.ObservableList;
 import javafx.stage.*;
-import javafx.event.EventHandler;
-import java.net.URL;
+//import javafx.event.EventHandler;
+//import java.net.URL;
 import java.net.URLConnection;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -32,8 +32,7 @@ import javafx.util.Callback;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.Tooltip;
 import java.time.temporal.ChronoUnit;
-import java.net.SocketTimeoutException;
-import java.net.MalformedURLException;
+import java.io.IOException;
 
 /**
  * Property viewer is the class that is responsible for displaying the properties 
@@ -137,11 +136,7 @@ public class PropertyViewer extends Stage {
                 else {
                     menu.getSelectionModel().select("Filter by:");
                 }
-            menu.setOnAction(e -> { 
-                                      sortedBy = menu.getValue(); // Initialize sortedby variable
-                                      try { sortAction(); }
-                                      catch (Exception ev) {}
-                                  }); 
+            menu.setOnAction(e -> menuButtonAction(menu));
                   
         topPane.setPrefHeight(60);         
         topPane.getChildren().addAll(titleLabel, menu);   
@@ -250,29 +245,42 @@ public class PropertyViewer extends Stage {
         AirbnbListing listing = properties.get(currentPropertyIndex);
         // then, we update the variables
         hostLabel.setText(hostPrefix + listing.getHost_name());
-        if (listing.getHost_name().equals("")){
+        
+        if (listing.getHost_name().equals(""))
+        {
             hostLabel.setText("No data");
         }
+        
         priceLabel.setText(pricePrefix + listing.getPrice());
         noOfReviewsLabel.setText(listing.getNumberOfReviews() + noOfReviewsPostfix);
         roomTypeLabel.setText(listing.getRoom_type());
         minNightsLabel.setText(listing.getMinimumNights() + minNightsPostfix);
         descriptionLabel.setText(listing.getName());
+        
         // if the user didn't close the description window of the previous property, we close it.
-        if(descriptionStage != null) {
+        if(descriptionStage != null) 
+        {
             closeDescription();
         }
+        
         // Used MapBox api to load a map pointing the location of current property displayed.
-        try  {
+        try  
+        {
             URL url = new URL("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",12,0/800x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw");
             URLConnection connection = url.openConnection();
             connection.connect(); // test internet connectivity, if no connection: throws an exception
             webEngine.load(url.toString());
-        } catch(Exception e) {
+        } 
+        catch (IOException e) {
             noConnectionAlert();
             this.close();
             applicationConnected = false;
         }
+    }
+    
+    private void menuButtonAction(ComboBox<String> menu) {
+        sortedBy = menu.getValue(); // Initialize sortedby variable
+        sortAction();
     }
     
     /**

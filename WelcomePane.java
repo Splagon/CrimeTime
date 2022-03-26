@@ -17,7 +17,6 @@ import javafx.geometry.Pos;
 public class WelcomePane extends MainViewerPane
 {
     private static Pane welcomePane;
-    private Animations animations = new Animations();
     
     /**
      * Constructor for objects of class WelcomePane
@@ -49,9 +48,9 @@ public class WelcomePane extends MainViewerPane
         Label instruction9 = new Label("- A pop up should appear where you are to view different stats.");
         
         //Buttons in the window
-        Button startButton = new Button("Start"); 
-        startButton.setOnMouseEntered(e -> animations.spin(1000, startButton));
-        startButton.setOnAction(e -> mainViewer.changeToPriceSelectorPane());
+        Button startButton = new Button("Start");
+            startButton.setOnMouseEntered(e -> Animations.spin(1000, startButton));
+            startButton.setOnAction(e -> mainViewer.changeToPriceSelectorPane());
         
         //layout of the whole window
         VBox window = new VBox();

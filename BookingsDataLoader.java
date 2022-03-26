@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.net.URISyntaxException;
 import java.io.IOException;
 import java.io.FileWriter;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Write a description of class BookingsDataLoader here.
@@ -19,17 +21,22 @@ import java.io.FileWriter;
 public class BookingsDataLoader
 {
     public ArrayList<Booking> load(String bookingsDataFileName) {
-        System.out.print("Begin loading Airbnb london dataset...");
+        //System.out.print("Begin loading Airbnb london dataset...");
         ArrayList<Booking> bookings = new ArrayList<Booking>();
+        
         try 
         {
             URL bookingsDataURL = getClass().getResource(bookingsDataFileName);
             CSVReader reader = new CSVReader(new FileReader(new File(bookingsDataURL.toURI()).getAbsolutePath()));
+            
             String [] line;
+            
             //skip the first row (column headers)
             reader.readNext();
-            while ((line = reader.readNext()) != null) {
-                if (line[0].length() > 0){
+            while ((line = reader.readNext()) != null) 
+            {
+                if (line[0].length() > 0)
+                {
                     String propertyID = line[0];
                     int grandTotal = Integer.valueOf(line[1]);
                     LocalDate checkInDate = LocalDate.parse(line[2]);
@@ -42,7 +49,10 @@ public class BookingsDataLoader
         } 
         catch(IOException | URISyntaxException e) 
         {
-            System.out.println("Failure! Something went wrong with loading bookings");
+            Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText("Failure! Something went wrong");
+                alert.setContentText("Unfortunately, the application is unable to\nopen the bookings file.");
+            alert.show();
         } 
         catch(NullPointerException e) 
         {
@@ -56,12 +66,17 @@ public class BookingsDataLoader
                 writer.writeNext(new String[] {"Property ID", "Grand Total of Booking", "Check In Date", "Check Out Date"});
                 writer.close();
             }
-            catch (Exception ex) 
+            catch (IOException ex) 
             {
-                System.out.println("File could not be created");
+                Alert alert = new Alert(AlertType.ERROR);
+                    alert.setHeaderText("Failure! Something went wrong");
+                    alert.setContentText("Unfortunately, the application is unable to\ncreate a new bookings file.");
+                alert.show();
             }
         }
-        System.out.println("Success! Number of loaded bookings: " + bookings.size());
+        
+        //System.out.println("Success! Number of loaded bookings: " + bookings.size());
+        
         return bookings;
     }
 }

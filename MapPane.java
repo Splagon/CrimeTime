@@ -131,13 +131,12 @@ public class MapPane extends MainViewerPane
                     rowSpace = new StackPane();
                     if (mapPositions[m][n] != null) {
                         MapButton boroughButton = new MapButton(mapPositions[m][n]);
-                        boroughButton.setShape(new Circle(hexagonWidth));
-                        boroughButton.setMinSize(hexagonWidth*0.97, hexagonWidth*0.85);
-                        boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
-                        //boroughButton.setStyle("-fx-font-size: " + String.valueOf(20.0/94.0 * hexagonWidth) + ";");
-                        boroughButton.getStyleClass().add("boroughButton");
-                        boroughButton.setOnAction(e -> openPropertyViewer(boroughButton.getBoroughName()));
-                        
+                            boroughButton.setShape(new Circle(hexagonWidth));
+                            boroughButton.setMinSize(hexagonWidth*0.97, hexagonWidth*0.85);
+                            boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
+                            boroughButton.getStyleClass().add("boroughButton");
+                            boroughButton.setOnAction(e -> openPropertyViewer(boroughButton.getBoroughName()));
+                            
                         ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
                             hexagonOutline.setFitWidth(hexagonWidth);
                             hexagonOutline.setFitHeight(hexagonWidth);
@@ -145,15 +144,17 @@ public class MapPane extends MainViewerPane
                         ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
                         ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), (int) hexagonWidth, noOfPropertiesStats);
                         
-                        // Rectangle bgTest = new Rectangle(hexagonWidth,hexagonWidth);
-                            // bgTest.setFill(Color.FUCHSIA);
-                        
-                        rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);                        
+                        rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
                     }
                     else {
                         Rectangle emptySpace = createSpacerRectangle((int) hexagonWidth);
                         rowSpace.getChildren().add(emptySpace);
                     }
+                    
+                    final StackPane rowSpaceToAdd = rowSpace;
+                        Animations boroughButtonAnimation = new Animations();
+                        rowSpaceToAdd.setOnMouseEntered(e -> boroughButtonAnimation.spinAndGrowIn(500, rowSpaceToAdd));
+
                     row.getChildren().add(rowSpace);
                 }
                 
@@ -189,12 +190,11 @@ public class MapPane extends MainViewerPane
                 alert.setHeaderText("No Available Properties in " + boroughName);
                 alert.setContentText("Unfortunately, there are no available properties in this\nborough within your price range. Welcome to the London\nhousing market...");
             alert.show();
-        };
+        }
     }
     
     private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) {
-        ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(StatisticsData.getBoroughMapColour(boroughName, mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice(), noOfPropertiesStats));
+        ColorAdjust shader = StatisticsData.getBoroughMapColour(boroughName, noOfPropertiesStats);
             
         hexagon.setFitWidth(heightWidth);
         hexagon.setFitHeight(heightWidth);
@@ -205,8 +205,7 @@ public class MapPane extends MainViewerPane
     }
     
     private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) {
-        ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(StatisticsData.getBoroughMapColour(percentile));
+        ColorAdjust shader = StatisticsData.getBoroughMapColour(percentile);
             
         hexagon.setFitWidth(heightWidth);
         hexagon.setFitHeight(heightWidth);
