@@ -11,6 +11,10 @@ import javafx.scene.web.WebEngine;
 import java.awt.Desktop;
 import java.net.URI;
 import java.time.LocalDate;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * A class the represetns the bookings pane in the main viewer.
@@ -124,16 +128,30 @@ public class BookingsPane extends MainViewerPane
     
     private void contactAction(Booking booking)  {
         Desktop desktop;
-        if (Desktop.isDesktopSupported() 
-            && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
-            try {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL))
+        {
+            try 
+            {
                 URI mailto = new URI("mailto:" + booking.getProperty().getMailHost_name(false) + "@kcl.ac.uk?subject=About%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "&body=Hello%20" + booking.getProperty().getMailHost_name(true) + ",%0A%0DI%20need%20to%20edit%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "%20in%20the%20property%20called%20'" + booking.getProperty().getMailName() + "'%20(Property%20iD%20:" + booking.getProperty().getId() + ")%0A%0D");
-                desktop.mail(mailto);
+                Desktop.getDesktop().mail(mailto);
             }
-            catch (Exception e) {}
-        } else {
-          throw new RuntimeException("OS isn't supported...");
+            catch (IOException | URISyntaxException e) 
+            {
+                showEmailNotWorkingAlert("Issue opening Mail");
+            }
+        } 
+        else 
+        {
+            showEmailNotWorkingAlert("OS is not supported");
         }
+    }
+    
+    private void showEmailNotWorkingAlert(String titleText) 
+    {
+        Alert alert = new Alert(AlertType.WARNING);
+            alert.setHeaderText(titleText);
+            alert.setContentText("Unfortunately, the application is unable to\naccess your email to create a draft email.");
+        alert.show(); 
     }
     
     private void cancelBookingAction(Booking booking)  {

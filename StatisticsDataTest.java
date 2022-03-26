@@ -219,6 +219,80 @@ public class StatisticsDataTest
     }
     
     @Test
+    public void getBoroughMapColourValidValues() 
+    {
+        String boroughName = "Enfield";
+        int minPrice = 50;
+        int maxPrice = 100;
+        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(minPrice, maxPrice);
+        
+        getBoroughMapColourTest(boroughName, noOfPropertiesStats, true);
+    }
+    
+    @Test
+    public void getBoroughMapColourInvalidBoroughNameValidPrices() 
+    {
+        String boroughName = "Manchester City FC";
+        int minPrice = 50;
+        int maxPrice = 100;
+        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(minPrice, maxPrice);
+        
+        getBoroughMapColourTest(boroughName, noOfPropertiesStats, false);
+    }
+    
+    @Test
+    public void getBoroughMapColourValidBoroughNameInvalidPrices() 
+    {
+        String boroughName = "Harrow";
+        int minPrice = 100;
+        int maxPrice = 50;
+        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(minPrice, maxPrice);
+        
+        getBoroughMapColourTest(boroughName, noOfPropertiesStats, false);
+    }
+    
+    @Test
+    public void getBoroughMapColourAllInvalidValues() 
+    {
+        String boroughName = "Macclesfield Town FC";
+        int minPrice = 50;
+        int maxPrice = 100;
+        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(minPrice, maxPrice);
+        
+        getBoroughMapColourTest(boroughName, noOfPropertiesStats, false);
+    }
+    
+    @Test
+    public void getBoroughMapColourValidNameNoMinPriceNoMaxPrice() 
+    {
+        String boroughName = "Kingston upon Thames";
+        int minPrice = -1;
+        int maxPrice = -1;
+        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(minPrice, maxPrice);
+        
+        getBoroughMapColourTest(boroughName, noOfPropertiesStats, true);
+    }
+    
+    private void getBoroughMapColourTest(String boroughName, NoOfPropertiesStats noOfPropertiesStats, boolean isValidTest) 
+    {
+        int minPrice = noOfPropertiesStats.getMinPrice();
+        int maxPrice = noOfPropertiesStats.getMaxPrice();
+        int noOfPropertiesInBorough = StatisticsData.getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
+
+        ColorAdjust colourAdjust = StatisticsData.getBoroughMapColour(boroughName, noOfPropertiesStats);
+
+        assertNotNull(colourAdjust.getBrightness());
+        
+        if (! isValidTest) 
+        {
+            ColorAdjust ZerothPercentileColour = StatisticsData.getBoroughMapColour(0);
+            assertTrue(colourAdjust.getBrightness() == ZerothPercentileColour.getBrightness());
+        }
+    }
+    
+    //String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats
+    
+    @Test
     public void getBoroughMapColourCheckAllPercentiles()
     {
         for (int percentile = 0; percentile <= 100; percentile++)
@@ -242,7 +316,7 @@ public class StatisticsDataTest
     private void checkPercentileTest(int percentile) 
     {
         ColorAdjust colourAdjust = StatisticsData.getBoroughMapColour(percentile);
-        assertTrue(colourAdjust.getBrightness() == StatisticsData.getBrightness(percentile));
+        assertNotNull(colourAdjust.getBrightness());
     }
     
     @Test
@@ -305,7 +379,7 @@ public class StatisticsDataTest
         getSortedNumberOfPropertiesInBoroughsTest(listings, true);
     }
     
-    private void getSortedNumberOfPropertiesInBoroughsTest(ArrayList<Borough> listings, boolean containsValue)
+    private void getSortedNumberOfPropertiesInBoroughsTest(ArrayList<Borough> listings, boolean isValidTest)
     {
         assertNotNull(listings);
         assertTrue(listings.size() == StatisticsData.getBoroughNames().size());
@@ -314,7 +388,7 @@ public class StatisticsDataTest
         {
             Borough boroughBeingChecked = listings.get(i);
             
-            if (containsValue)
+            if (isValidTest)
             {
                 assertTrue(boroughBeingChecked.getNoOfPropertiesInBorough() >= 0);
             }

@@ -245,9 +245,13 @@ public class StatisticsData extends DataHandler
         return average;
     }
     
-    public static ColorAdjust getBoroughMapColour(String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats) 
-    {     
-        int noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
+    public static ColorAdjust getBoroughMapColour(String boroughName, NoOfPropertiesStats noOfPropertiesStats) 
+    {   
+        int minPrice = noOfPropertiesStats.getMinPrice();
+        int maxPrice = noOfPropertiesStats.getMaxPrice();
+        int noOfPropertiesInBorough = 0;
+        
+        noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
         
         ColorAdjust colourAdjust = new ColorAdjust();
         

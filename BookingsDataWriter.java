@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.io.FileReader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Write a description of class BookingsDataWriter here.
@@ -28,13 +30,9 @@ public class BookingsDataWriter
             
             writer.close();
         }
-        catch (IOException | URISyntaxException e)
+        catch (IOException | URISyntaxException | NullPointerException e)
         {
-            System.out.println("Failure! Something went wrong with loading bookings file");
-        }
-        catch (NullPointerException e)
-        {
-            System.out.println("Bookings file not found");
+            showFileNotFoundAlert();
         }
     }
     
@@ -66,7 +64,15 @@ public class BookingsDataWriter
         }
         catch (IOException | URISyntaxException e)
         {
-            System.out.println("Failure! Something went wrong with loading bookings file");
+            showFileNotFoundAlert();
         }
+    }
+    
+    private void showFileNotFoundAlert() 
+    {
+        Alert alert = new Alert(AlertType.WARNING);
+            alert.setHeaderText("Failure! Something went wrong");
+            alert.setContentText("Unfortunately, the application is unable to\nopen the bookings file.");
+        alert.show();
     }
 }

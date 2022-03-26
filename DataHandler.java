@@ -59,41 +59,52 @@ public class DataHandler
     }
     
     public static AirbnbListing getProperty(String iD) {
-        try {
-            for (AirbnbListing listing : listings) {
-                if (listing.getId().equals(iD)) {
+        try
+        {
+            for (AirbnbListing listing : listings)
+            {
+                if (listing.getId().equals(iD)) 
+                {
                     return listing;
                 }
             }
         }
-        catch (NullPointerException e) {
-            System.out.println("DATA HANLDER NOT INITIALISED");
+        catch (NullPointerException e) 
+        {
+            DataHandler.initialiseHandler();
         }
+        
         return null;
     }
 
     public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough, int minPrice, int maxPrice)
     {
-        ArrayList<AirbnbListing> listingsFromBorough = sortedBoroughs.get(borough).getBoroughListings();
         ArrayList<AirbnbListing> listingsFromBoroughWithinParameters = new ArrayList<>();
         
-        Iterator i = listingsFromBorough.iterator();
-
-        if (! (minPrice < 0 && maxPrice < 0)) {        
-            while (i.hasNext()) {
-                AirbnbListing nextListing = (AirbnbListing) i.next();
-                
-                if (nextListing.getPrice() >= minPrice) {
-                    if (nextListing.getPrice() <= maxPrice || maxPrice < 0) {
-                        listingsFromBoroughWithinParameters.add(nextListing);
+        if (boroughs.contains(borough))
+        {
+            ArrayList<AirbnbListing> listingsFromBorough = sortedBoroughs.get(borough).getBoroughListings();
+            Iterator i = listingsFromBorough.iterator();
+    
+            if (! (minPrice < 0 && maxPrice < 0)) 
+            {        
+                while (i.hasNext()) 
+                {
+                    AirbnbListing nextListing = (AirbnbListing) i.next();
+                    if (nextListing.getPrice() >= minPrice) 
+                    {
+                        if (nextListing.getPrice() <= maxPrice || maxPrice < 0) 
+                        {
+                            listingsFromBoroughWithinParameters.add(nextListing);
+                        }
                     }
                 }
             }
+            else 
+            {
+                listingsFromBoroughWithinParameters = listingsFromBorough;
+            }
         }
-        else {
-            listingsFromBoroughWithinParameters = listingsFromBorough;
-        }
-        
         return listingsFromBoroughWithinParameters;
     }
 
@@ -224,9 +235,7 @@ public class DataHandler
 
     public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough)
     {
-        ArrayList<AirbnbListing> listingsFromBorough = getPropertiesFromBorough(borough, -1, -1);
-
-        return listingsFromBorough;
+        return getPropertiesFromBorough(borough, -1, -1);
     }
 
     /**

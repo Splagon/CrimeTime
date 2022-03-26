@@ -189,11 +189,11 @@ public class MapPane extends MainViewerPane
                 alert.setHeaderText("No Available Properties in " + boroughName);
                 alert.setContentText("Unfortunately, there are no available properties in this\nborough within your price range. Welcome to the London\nhousing market...");
             alert.show();
-        };
+        }
     }
     
     private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) {
-        ColorAdjust shader = StatisticsData.getBoroughMapColour(boroughName, mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice(), noOfPropertiesStats);
+        ColorAdjust shader = StatisticsData.getBoroughMapColour(boroughName, noOfPropertiesStats);
             
         hexagon.setFitWidth(heightWidth);
         hexagon.setFitHeight(heightWidth);

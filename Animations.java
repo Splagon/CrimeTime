@@ -10,7 +10,7 @@ import javafx.util.Duration;
  * @version 25/03/22
  */
 public class Animations
-{
+{ 
     /**
      * Fade a certain node out
      * @params Node node - The node in which this will happen to; long time - The amount of time that the animation will last for. 
@@ -42,9 +42,15 @@ public class Animations
      */
     public static void spin(long time, Node node) 
     {
-         RotateTransition effect = new RotateTransition(Duration.millis(time), node);
-         effect.setByAngle(360);
-         effect.setCycleCount(1);
-         effect.play();
+        RotateTransition effect = new RotateTransition(Duration.millis(time), node);
+            
+        double currentRotation = node.rotateProperty().getValue() % 360.0;
+        
+        if (currentRotation == 0.0)
+        {
+            effect.setByAngle(360.0);
+            effect.setCycleCount(1);
+            effect.play();
+        }
     }
 }
