@@ -193,8 +193,7 @@ public class MapPane extends MainViewerPane
     }
     
     private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) {
-        ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(StatisticsData.getBoroughMapColour(boroughName, mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice(), noOfPropertiesStats));
+        ColorAdjust shader = StatisticsData.getBoroughMapColour(boroughName, mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice(), noOfPropertiesStats);
             
         hexagon.setFitWidth(heightWidth);
         hexagon.setFitHeight(heightWidth);
@@ -205,8 +204,7 @@ public class MapPane extends MainViewerPane
     }
     
     private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) {
-        ColorAdjust shader = new ColorAdjust();
-            shader.setBrightness(StatisticsData.getBoroughMapColour(percentile));
+        ColorAdjust shader = StatisticsData.getBoroughMapColour(percentile);
             
         hexagon.setFitWidth(heightWidth);
         hexagon.setFitHeight(heightWidth);

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import javafx.scene.paint.Color;
+import javafx.scene.effect.ColorAdjust;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Collections;
@@ -18,7 +19,7 @@ public class StatisticsData extends DataHandler
 {
     // instance variables - replace the example below with your own
     //private ArrayList<AirbnbListing> listings; 
-    private static ArrayList<AirbnbListing> boroughListings = new ArrayList<>();
+    private static ArrayList<AirbnbListing> listingsAtPrice = new ArrayList<>();
     // private static String[] boroughs = {"Kingston upon Thames", "Croydon", "Bromley", "Hounslow", "Ealing", "Havering", "Hillingdon", 
             // "Harrow", "Brent", "Barnet", "Enfield", "Waltham Forest", "Redbridge", "Sutton", "Lambeth", "Southwark",
             // "Lewisham", "Greenwich", "Bexley", "Richmond upon Thames", "Merton", "Wandsworth", "Hammersmith and Fulham", 
@@ -37,39 +38,38 @@ public class StatisticsData extends DataHandler
     public static void initialiseHandler() {
         DataHandler.initialiseHandler();
         listings = getData();
-        boroughListings = listings;
+        listingsAtPrice = listings;
     }
 
-    public static void setBoroughListings(int selectedMinPrice, int selectedMaxPrice)
+    public static void setListingsAtPrice(int selectedMinPrice, int selectedMaxPrice)
     {
-        boroughListings = DataHandler.getPropertiesAtPrice(selectedMinPrice, selectedMaxPrice);
+        listingsAtPrice = DataHandler.getPropertiesAtPrice(selectedMinPrice, selectedMaxPrice);
     }
     
-    // public static void setPropertyList(String borough)
-    // {
-        // boroughListings = sortBoroughs().get(borough);
-    // }
-    
     /**
-     * @return Boolean average number of reviews per property. 
+     * @param useListingsAtPrice Should the average be of all listings or of
+     * listings between the selected min and max price?
+     * @return average number of reviews per property. 
      */
-    public static double getAverageNoReviews(boolean value)
+    public static double getAverageNoReviews(boolean useListingsAtPrice)
     {
-        ArrayList<AirbnbListing> data = determineList(value);
+        ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
         double scoreCounter = 0; 
         for (int i = 0; i < data.size(); i++) {
             scoreCounter += data.get(i).getNumberOfReviews();
         }
-        double average = scoreCounter / listings.size(); 
+        double average = scoreCounter / data.size(); 
         return average; 
     }
 
     /**
-     * @return int the number of home and apartment airbnb properties 
+     * @param useListingsAtPrice Should the average be of all listings or of
+     * listings between the selected min and max price?
+     * @return the number of home and apartment airbnb properties 
      */
-    public static int getNoHomeAndApartments(boolean value)
+    public static int getNoHomeAndApartments(boolean useListingsAtPrice)
     {
-        ArrayList<AirbnbListing> data = determineList(value);
+        ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
         int counter = 0;
         for (int i = 0; i < data.size(); i++) {
             AirbnbListing property = data.get(i);
@@ -82,11 +82,13 @@ public class StatisticsData extends DataHandler
     }
 
     /**
-     * @return int the number of available properties
+     * @param useListingsAtPrice Should the average be of all listings or of
+     * listings between the selected min and max price?
+     * @return the number of available properties
      */
-    public static int getAvailableInfo(boolean value)
+    public static int getAvailableInfo(boolean useListingsAtPrice)
     {
-        ArrayList<AirbnbListing> data = determineList(value);
+        ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
         int counter = 0; 
         for (int i = 0; i < data.size(); i++) {
             if(data.get(i).getAvailability365() != 0)
@@ -97,32 +99,32 @@ public class StatisticsData extends DataHandler
         return counter; 
     }
 
-    /**
-     * @return String the most expensive borough
-     */
-    public static String getExpensiveInfoTest()
-    {
-        String expensiveBorough = "";
-        int lastTotalPrice = 0;
-        for(int i = 0; i < boroughs.size(); i++) // A for loop iterating through the boroughs array
-        {
-            ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(boroughs.get(i));
-            int totalPrice = 0;
-            for (int j = 0; j < boroughProperty.size(); j++) 
-            {
-                AirbnbListing property = boroughProperty.get(j);
-                totalPrice += property.getPrice() * property.getMinimumNights();
-            }
-            System.out.println(totalPrice);
-            System.out.println(lastTotalPrice);
-            if(totalPrice > lastTotalPrice)
-            {
-                lastTotalPrice = totalPrice;
-                expensiveBorough = boroughs.get(i);
-            }
-        }
-        return expensiveBorough; 
-    }
+    // /**
+     // * @return String the most expensive borough
+     // */
+    // public static String getExpensiveInfoTest()
+    // {
+        // String expensiveBorough = "";
+        // int lastTotalPrice = 0;
+        // for(int i = 0; i < boroughs.size(); i++) // A for loop iterating through the boroughs array
+        // {
+            // ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(boroughs.get(i));
+            // int totalPrice = 0;
+            // for (int j = 0; j < boroughProperty.size(); j++) 
+            // {
+                // AirbnbListing property = boroughProperty.get(j);
+                // totalPrice += property.getPrice() * property.getMinimumNights();
+            // }
+            // System.out.println(totalPrice);
+            // System.out.println(lastTotalPrice);
+            // if(totalPrice > lastTotalPrice)
+            // {
+                // lastTotalPrice = totalPrice;
+                // expensiveBorough = boroughs.get(i);
+            // }
+        // }
+        // return expensiveBorough; 
+    // }
 
     /**
      * @return String the most expensive borough
@@ -157,11 +159,13 @@ public class StatisticsData extends DataHandler
     }
 
     /**
-     * @return double The standard deviation of price from all of the airbnb properties
+     * @param useListingsAtPrice Should the average be of all listings or of
+     * listings between the selected min and max price?
+     * @return The standard deviation of price from all of the airbnb properties
      */
-    public static double getPriceSDInfo(boolean value)
+    public static double getPriceSDInfo(boolean useListingsAtPrice)
     {
-        ArrayList<AirbnbListing> data = determineList(value);
+        ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
         double standardDeviation = 0; 
         int x = 0;
         int y = 0; 
@@ -223,9 +227,14 @@ public class StatisticsData extends DataHandler
         return information;
     }
     
-    public static int getAveragePrice(boolean value)
+    /**
+     * @param useListingsAtPrice Should the average be of all listings or of
+     * listings between the selected min and max price?
+     * @return ???????????????
+     */
+    public static int getAveragePrice(boolean useListingsAtPrice)
     {
-        ArrayList<AirbnbListing> data = determineList(value);
+        ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
         int totalPrice = 0;
         int average = 0;
         for(int i = 0; i > data.size(); i++)
@@ -236,25 +245,37 @@ public class StatisticsData extends DataHandler
         return average;
     }
     
-    public static double getBoroughMapColour(String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats) 
+    public static ColorAdjust getBoroughMapColour(String boroughName, int minPrice, int maxPrice, NoOfPropertiesStats noOfPropertiesStats) 
     {     
         int noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
         
+        ColorAdjust colourAdjust = new ColorAdjust();
+        
         double brightness = getBrightness(noOfPropertiesInBorough, noOfPropertiesStats);
         
-        return brightness;
+        colourAdjust.setBrightness(brightness);
+        
+        return colourAdjust;
     }
     
-    public static double getBoroughMapColour(int percentile) 
+    public static ColorAdjust getBoroughMapColour(int percentile) 
+    {
+        ColorAdjust colourAdjust = new ColorAdjust();
+        
+        double brightness = getBrightness(percentile);
+        
+        colourAdjust.setBrightness(brightness);
+        
+        return colourAdjust;
+    }
+    
+    protected static double getBrightness(int percentile) 
     {
         NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(25, 50, 75);
-        
-        double brightness = getBrightness(percentile, noOfPropertiesStats);
-        
-        return brightness;
+        return getBrightness(percentile, noOfPropertiesStats);
     }
     
-    private static double getBrightness(int noOfPropertiesInBorough, NoOfPropertiesStats noOfPropertiesStats) 
+    protected static double getBrightness(int noOfPropertiesInBorough, NoOfPropertiesStats noOfPropertiesStats) 
     {
         int median = noOfPropertiesStats.getMedian();
         int firstQuartile = noOfPropertiesStats.getFirstQuartile();
@@ -336,15 +357,21 @@ public class StatisticsData extends DataHandler
         return HighAvgReviewBorough;
     }
     
-    private static ArrayList<AirbnbListing> determineList(boolean value)
+    protected static ArrayList<AirbnbListing> determineList(boolean useListingsAtPrice)
     {
-        if(value)
+        if(useListingsAtPrice)
         {
-            return boroughListings;
+            return listingsAtPrice;
         }
         else
         {
             return listings;
         }
+    }
+    
+    protected static void clear()
+    {
+        DataHandler.clear();
+        listingsAtPrice = new ArrayList<AirbnbListing>();
     }
 }

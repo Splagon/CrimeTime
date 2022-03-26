@@ -72,7 +72,7 @@ public class MainViewer extends Stage
      */
     public MainViewer()
     {         
-        DataHandler.initialiseHandler();
+        StatisticsData.initialiseHandler();
         
         sceneWidth = 1300;
         sceneHeight = 650;

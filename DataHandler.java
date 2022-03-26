@@ -134,14 +134,12 @@ public class DataHandler
             }
             else 
             {
-                boolean boroughFound = false;
                 String boroughName = boroughOfCurrentRunOfListings;
                 
-                if (data.keySet().contains(boroughName)) 
+                if (boroughs.contains(boroughName)) 
                 {
                     Borough borough = data.get(boroughName);
                     borough.addListingToBorough(currentRunOfListingsFromSameBorough);
-                    boroughFound = true;
                 }                
                 else 
                 {
@@ -307,5 +305,17 @@ public class DataHandler
     public static void removeFromBookingList(Booking booking) {
         bookingList.remove(booking);
         saveBookingList(1);
+    }
+    
+    protected static ArrayList<String> getBoroughNames()
+    {
+        return boroughs;
+    }
+    
+    protected static void clear() {
+        listings = null;
+        bookingList = new ArrayList<Booking>();
+        boroughs = new ArrayList<String>();
+        sortedBoroughs = null;
     }
 }
