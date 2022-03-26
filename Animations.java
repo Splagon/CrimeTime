@@ -56,7 +56,7 @@ public class Animations
     
     public static void spin(Node node) 
     {
-        RotateTransition effect = new RotateTransition(Duration.millis(1), node);
+        RotateTransition effect = new RotateTransition(Duration.millis(5000000), node);
             
         double currentRotation = node.rotateProperty().getValue() % 360.0;
         
