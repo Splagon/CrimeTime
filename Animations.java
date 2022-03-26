@@ -53,4 +53,45 @@ public class Animations
             effect.play();
         }
     }
+    
+    public void spinAndGrowIn(long time, Node node) 
+    {    
+        double currentRotation = node.rotateProperty().getValue() % 360.0;
+        
+        if (currentRotation == 0.0)
+        {
+            RotateTransition rotateEffect = new RotateTransition(Duration.millis(time), node);
+            ScaleTransition scaleEffect = new ScaleTransition(Duration.millis(time), node);
+            
+            rotateEffect.setToAngle(360.0);
+            
+            scaleEffect.setToX(1.3);
+            scaleEffect.setToY(1.3);
+            
+            ParallelTransition parallelTransitionOne = new ParallelTransition();
+                parallelTransitionOne.getChildren().addAll(rotateEffect, scaleEffect);
+                node.setOnMouseExited(e -> parallelTransitionOne.setOnFinished(ex -> spinAndGrowOut(time, node)));
+                parallelTransitionOne.setOnFinished(e -> node.setOnMouseExited(ex -> spinAndGrowOut(time, node)));
+                parallelTransitionOne.play();
+        }
+    }
+    
+    public void spinAndGrowOut(long time, Node node) 
+    {    
+        double currentRotation = node.rotateProperty().getValue() % 360.0;
+        
+        RotateTransition rotateEffect = new RotateTransition(Duration.millis(time), node);
+        ScaleTransition scaleEffect = new ScaleTransition(Duration.millis(time), node);
+    
+        System.out.println(360.0 - currentRotation);
+        rotateEffect.setToAngle(0.0);
+            
+        scaleEffect.setToX(1);
+        scaleEffect.setToY(1);
+            
+        ParallelTransition parallelTransitionOne = new ParallelTransition();
+            parallelTransitionOne.getChildren().addAll(rotateEffect, scaleEffect);
+            parallelTransitionOne.play();
+
+    }
 }
