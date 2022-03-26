@@ -78,6 +78,7 @@ public class MainViewer extends Stage
         highestPrice = StatisticsData.getHighestPrice();
         
         root = new BorderPane();
+        Animations.spin(root);
         
         //panel switcher buttons
         prevPanelButton = new Button(prevButtonPreFix + "Bookings");
