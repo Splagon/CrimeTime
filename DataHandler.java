@@ -158,42 +158,7 @@ public class DataHandler
         
         return data;
     }
-    // public static Map<String, ArrayList<AirbnbListing>> sortBoroughs()
-    // {
-        // Map<String, ArrayList<AirbnbListing>> data = new HashMap<>(); 
-        // for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
-        // {
-            // for(int columns = 0; columns < mapPositions[rows].length; columns++)
-            // {   
-                // if(mapPositions[rows][columns] != null)
-                // {
-                    // ArrayList<AirbnbListing> properties = new ArrayList<>();
-                    // data.put(mapPositions[rows][columns], properties);
-                // }
-            // }
-        // }
-
-        // Iterator i = listings.iterator();
-        // while(i.hasNext())
-        // {
-            // AirbnbListing nextListing = (AirbnbListing) i.next();
-            // for(Map.Entry<String, ArrayList<AirbnbListing>> set : data.entrySet()) {
-                // String key = set.getKey();
-
-                // if (key != null) {
-                    // if(set.getKey().toLowerCase().equals(nextListing.getNeighbourhood().toLowerCase()))
-                    // {
-                        // ArrayList<AirbnbListing> list = set.getValue();
-                        // list.add(nextListing);
-                        // data.put(key, list);
-                    // }
-                // }
-            // }
-        // }
-
-        // return data; 
-    // }
-
+    
     public static ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
         ArrayList<AirbnbListing> unsortedListing = getPropertiesFromBorough(borough, minPrice, maxPrice);
         return selectionSort(unsortedListing, sortingElement);
