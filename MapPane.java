@@ -77,7 +77,10 @@ public class MapPane extends MainViewerPane
     public void makeHexagonMap()  {
         String[][] mapPositions = StatisticsData.getMapPositions();
         
-        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice());
+        int minPrice = mainViewer.getSelectedMinPrice();
+        int maxPrice = mainViewer.getSelectedMaxPrice();
+        
+        NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(minPrice, maxPrice);
         
         double sceneWidth = mainViewer.getMainScene().getWidth();
         double sceneHeight = mainViewer.getMainScene().getHeight();
@@ -139,11 +142,12 @@ public class MapPane extends MainViewerPane
                     {
                         StackPane tempRowSpace = new StackPane();
                         
-                        MapButton boroughButton = new MapButton(mapPositions[m][n]);
+                        String boroughName = mapPositions[m][n];
+                        
+                        MapButton boroughButton = new MapButton(boroughName);
                             boroughButton.setShape(new Circle(hexagonWidth));
                             boroughButton.setMinSize(hexagonWidth*0.97, hexagonWidth*0.85);
                             boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
-                            boroughButton.getStyleClass().add("boroughButton");
                             boroughButton.setOnAction(e -> openPropertyViewer(boroughButton.getBoroughName()));
                             
                         ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
@@ -157,14 +161,20 @@ public class MapPane extends MainViewerPane
                         
                         final StackPane rowSpace = new StackPane();
                         
-                        Animations animations = new Animations();
-                        boroughButton.setOnMouseEntered(e -> animations.spinAndGrowIn(500, rowSpace));
+                        if (StatisticsData.getPropertiesFromBorough(boroughName, minPrice, maxPrice).size() > 0)
+                        {
+                            Animations animations = new Animations();
+                            boroughButton.setOnMouseEntered(e -> animations.spinAndGrowIn(500, rowSpace));
+                            boroughButton.getStyleClass().add("boroughButton");
+                        }
+                        else
+                        {
+                            boroughButton.getStyleClass().add("boroughButtonEmpty");
+                        }
                         
                         rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
                         row.getChildren().add(rowSpace);
                     }
-                    
-                    
                 }
                 
                 if (m % 2 == 1) 

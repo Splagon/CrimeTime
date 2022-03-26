@@ -47,6 +47,19 @@
         -fx-text-fill: white;
 }
 
+.boroughButtonEmpty {
+        -fx-background-color: rgba(00,00,00,0.0);
+        -fx-text-fill: black;
+        -fx-border-width: 0;
+        -fx-alignment: center;
+}
+.boroughButtonEmpty:hover {
+        -fx-background-color: rgba(00,00,00,0.0);
+        -fx-text-fill: lightgrey;
+        -fx-border-width: 0;
+        -fx-alignment: center;
+} 
+
 .propertyViewerInfoLabels {
     -fx-padding: 10px;
     -fx-font: 12px "Ariel";
