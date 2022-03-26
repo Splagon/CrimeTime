@@ -283,7 +283,7 @@ public class StatisticsData extends DataHandler
         
         double brightness;
         
-        if (noOfPropertiesInBorough == 0) 
+        if (noOfPropertiesInBorough <= 0) 
         {
             brightness = 0.00;
         }

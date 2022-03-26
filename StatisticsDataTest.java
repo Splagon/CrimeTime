@@ -229,9 +229,26 @@ public class StatisticsDataTest
     {
         for (int percentile = 0; percentile <= 100; percentile++)
         {
-            ColorAdjust colourAdjust = StatisticsData.getBoroughMapColour(percentile);
-            assertTrue(colourAdjust.getBrightness() == StatisticsData.getBrightness(percentile));
+            checkPercentileTest(percentile);
         }
+    }
+    
+    @Test
+    public void getBoroughMapColourCheckNegativePercentile()
+    {
+        checkPercentileTest(-20);
+    }
+    
+    @Test
+    public void getBoroughMapColourCheckPercentileOver100()
+    {
+        checkPercentileTest(120);
+    }
+    
+    private void checkPercentileTest(int percentile) 
+    {
+        ColorAdjust colourAdjust = StatisticsData.getBoroughMapColour(percentile);
+        assertTrue(colourAdjust.getBrightness() == StatisticsData.getBrightness(percentile));
     }
     
     @Test
@@ -239,7 +256,7 @@ public class StatisticsDataTest
     {
         ArrayList<Borough> listings = StatisticsData.getSortedNumberOfPropertiesInBoroughs(25, 40);
         
-        getSortedNumberOfPropertiesInBoroughs(listings, true);
+        getSortedNumberOfPropertiesInBoroughsTest(listings, true);
     }
     
     @Test
@@ -247,7 +264,7 @@ public class StatisticsDataTest
     {
         ArrayList<Borough> listings = StatisticsData.getSortedNumberOfPropertiesInBoroughs(40, 40);
         
-        getSortedNumberOfPropertiesInBoroughs(listings, true);
+        getSortedNumberOfPropertiesInBoroughsTest(listings, true);
     }
         
     
@@ -256,7 +273,7 @@ public class StatisticsDataTest
     {
         ArrayList<Borough> listings = StatisticsData.getSortedNumberOfPropertiesInBoroughs(40, 25);
         
-        getSortedNumberOfPropertiesInBoroughs(listings, false);
+        getSortedNumberOfPropertiesInBoroughsTest(listings, false);
     }
     
     @Test
@@ -268,7 +285,7 @@ public class StatisticsDataTest
     {
         ArrayList<Borough> listings = StatisticsData.getSortedNumberOfPropertiesInBoroughs(25, -1);
         
-        getSortedNumberOfPropertiesInBoroughs(listings, true);
+        getSortedNumberOfPropertiesInBoroughsTest(listings, true);
     }
     
     @Test
@@ -280,7 +297,7 @@ public class StatisticsDataTest
     {
         ArrayList<Borough> listings = StatisticsData.getSortedNumberOfPropertiesInBoroughs(-1, 40);
         
-        getSortedNumberOfPropertiesInBoroughs(listings, true);
+        getSortedNumberOfPropertiesInBoroughsTest(listings, true);
     }
     
     @Test
@@ -291,10 +308,10 @@ public class StatisticsDataTest
     {
         ArrayList<Borough> listings = StatisticsData.getSortedNumberOfPropertiesInBoroughs(-1, -1);
         
-        getSortedNumberOfPropertiesInBoroughs(listings, true);
+        getSortedNumberOfPropertiesInBoroughsTest(listings, true);
     }
     
-    private void getSortedNumberOfPropertiesInBoroughs(ArrayList<Borough> listings, boolean containsValue)
+    private void getSortedNumberOfPropertiesInBoroughsTest(ArrayList<Borough> listings, boolean containsValue)
     {
         assertNotNull(listings);
         assertTrue(listings.size() == StatisticsData.getBoroughNames().size());
