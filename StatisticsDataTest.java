@@ -16,13 +16,6 @@ import javafx.scene.effect.ColorAdjust;
 public class StatisticsDataTest
 {
     /**
-     * Default constructor for test class StatisticsDataTest
-     */
-    public StatisticsDataTest()
-    {
-    }
-
-    /**
      * Sets up the test fixture.
      *
      * Called before every test case method.
@@ -55,10 +48,7 @@ public class StatisticsDataTest
     {
         StatisticsData.setListingsAtPrice(25, 40);
         
-        ArrayList listings = StatisticsData.determineList(true);
-        
-        assertNotNull(listings);
-        assertTrue(listings.size() <= StatisticsData.determineList(false).size());
+        getListingsAtPriceTest(true);
     }
     
     @Test
@@ -66,21 +56,19 @@ public class StatisticsDataTest
     {
         StatisticsData.setListingsAtPrice(40, 40);
         
-        ArrayList listings = StatisticsData.determineList(true);
-        
-        assertNotNull(listings);
-        assertTrue(listings.size() <= StatisticsData.determineList(false).size());
+        getListingsAtPriceTest(true);
     }
     
     @Test
+    /**
+     * If the min price is greater than the max price, which due to button
+     * implementation should not occur), then no listings should be returned.
+     */
     public void getListingsAtPriceDifferentInvalidValues()
     {
         StatisticsData.setListingsAtPrice(40, 25);
         
-        ArrayList listings = StatisticsData.determineList(true);
-        
-        assertNotNull(listings);
-        assertTrue(listings.size() == 0);
+        getListingsAtPriceTest(false);
     }
     
     @Test
@@ -92,10 +80,7 @@ public class StatisticsDataTest
     {
         StatisticsData.setListingsAtPrice(25, -1);
         
-        ArrayList listings = StatisticsData.determineList(true);
-        
-        assertNotNull(listings);
-        assertTrue(listings.size() <= StatisticsData.determineList(false).size());
+        getListingsAtPriceTest(true);
     }
     
     @Test
@@ -107,10 +92,7 @@ public class StatisticsDataTest
     {
         StatisticsData.setListingsAtPrice(-1, 40);
         
-        ArrayList listings = StatisticsData.determineList(true);
-        
-        assertNotNull(listings);
-        assertTrue(listings.size() <= StatisticsData.determineList(false).size());
+        getListingsAtPriceTest(true);
     }
     
     @Test
@@ -121,10 +103,22 @@ public class StatisticsDataTest
     {
         StatisticsData.setListingsAtPrice(-1, -1);
         
-        ArrayList listings = StatisticsData.determineList(true);
-        
+        getListingsAtPriceTest(true);
+    }
+    
+    private void getListingsAtPriceTest(boolean containsValue)
+    {
+        ArrayList<AirbnbListing> listings = StatisticsData.determineList(true);
         assertNotNull(listings);
-        assertTrue(listings.size() <= StatisticsData.determineList(false).size());
+        
+        if (containsValue) 
+        {
+            assertTrue(listings.size() <= StatisticsData.determineList(false).size());
+        }
+        else
+        {
+            assertTrue(listings.size() == 0);
+        }
     }
     
     @Test
@@ -330,6 +324,7 @@ public class StatisticsDataTest
             }
 
             if (i != 0) {
+                // makes sure the boroughs are sorted
                 assertTrue(boroughBeingChecked.getNoOfPropertiesInBorough() >= listings.get(i-1).getNoOfPropertiesInBorough());
             }
         }
