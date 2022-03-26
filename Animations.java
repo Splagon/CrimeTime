@@ -69,11 +69,15 @@ public class Animations
     }
     
     public void spinAndGrowIn(long time, Node node) 
-    {    
+    {   
+        double currentRotationu = node.rotateProperty().getValue();
         double currentRotation = node.rotateProperty().getValue() % 360.0;
         
         if (currentRotation == 0.0)
         {
+            node.setViewOrder(-1.0);
+            node.getParent().setViewOrder(-1.0);
+            
             RotateTransition rotateEffect = new RotateTransition(Duration.millis(time), node);
             ScaleTransition scaleEffect = new ScaleTransition(Duration.millis(time), node);
             
@@ -96,8 +100,7 @@ public class Animations
         
         RotateTransition rotateEffect = new RotateTransition(Duration.millis(time), node);
         ScaleTransition scaleEffect = new ScaleTransition(Duration.millis(time), node);
-    
-        System.out.println(360.0 - currentRotation);
+        
         rotateEffect.setToAngle(0.0);
             
         scaleEffect.setToX(1);
@@ -106,6 +109,8 @@ public class Animations
         ParallelTransition parallelTransitionOne = new ParallelTransition();
             parallelTransitionOne.getChildren().addAll(rotateEffect, scaleEffect);
             parallelTransitionOne.play();
-
+            
+        node.setViewOrder(1.0);
+        node.getParent().setViewOrder(1.0);
     }
 }

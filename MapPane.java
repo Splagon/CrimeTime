@@ -119,17 +119,26 @@ public class MapPane extends MainViewerPane
                 FlowPane row = new FlowPane();
                    row.setHgap(gapSize);
                    row.setMinWidth(Double.MAX_VALUE);
-                    
-                StackPane rowSpace;
                 
                 if (m % 2 == 0) {
                         createInsetRectangle(hexagonWidth, row, gapSize);
                 }
                 
                 //columns
-                for (int n = 0; n < mapPositions[m].length; n++) {
-                    rowSpace = new StackPane();
-                    if (mapPositions[m][n] != null) {
+                for (int n = 0; n < mapPositions[m].length; n++) 
+                {
+                    
+                    if (mapPositions[m][n] == null) 
+                    {
+                        StackPane rowSpace = new StackPane();
+                        Rectangle emptySpace = createSpacerRectangle((int) hexagonWidth);
+                        rowSpace.getChildren().add(emptySpace);
+                        row.getChildren().add(rowSpace);
+                    }
+                    else
+                    {
+                        StackPane tempRowSpace = new StackPane();
+                        
                         MapButton boroughButton = new MapButton(mapPositions[m][n]);
                             boroughButton.setShape(new Circle(hexagonWidth));
                             boroughButton.setMinSize(hexagonWidth*0.97, hexagonWidth*0.85);
@@ -143,24 +152,26 @@ public class MapPane extends MainViewerPane
                         
                         ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
                         ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), (int) hexagonWidth, noOfPropertiesStats);
+                            
+                        tempRowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
+                        
+                        final StackPane rowSpace = new StackPane();
+                        
+                        Animations animations = new Animations();
+                        boroughButton.setOnMouseEntered(e -> animations.spinAndGrowIn(500, rowSpace));
                         
                         rowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
-                    }
-                    else {
-                        Rectangle emptySpace = createSpacerRectangle((int) hexagonWidth);
-                        rowSpace.getChildren().add(emptySpace);
+                        row.getChildren().add(rowSpace);
                     }
                     
-                    final StackPane rowSpaceToAdd = rowSpace;
-                        Animations boroughButtonAnimation = new Animations();
-                        rowSpaceToAdd.setOnMouseEntered(e -> boroughButtonAnimation.spinAndGrowIn(500, rowSpaceToAdd));
-
-                    row.getChildren().add(rowSpace);
+                    
                 }
                 
-                if (m % 2 == 1) {
+                if (m % 2 == 1) 
+                {
                    createInsetRectangle(hexagonWidth, row, gapSize);
                 }
+                
                 AnchorPane.setTopAnchor(row, m * (newHeight/mapPositions.length + gapSize));
                 mapView.getChildren().add(row);
             }
