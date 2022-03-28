@@ -162,6 +162,7 @@
 
 .priceConfirm {
     -fx-background-color: white;
+    -fx-border-color: black;
 }
 
 .priceConfirm: hover {
@@ -176,6 +177,7 @@
 
 .priceMinMaxBoxes {
     -fx-background-color: white;
+    -fx-border-color: black;
 }
 
 .priceMinMaxBox {
