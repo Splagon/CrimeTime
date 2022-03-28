@@ -32,8 +32,8 @@ public class MainViewer extends Stage
     private MainViewerPane bookingsPane = new BookingsPane(this);
     
     // set width and height of the window
-    private static final int SCENE_WIDTH = 1300;
-    private static final int SCENE_HEIGHT = 650;
+    private static final int SCENE_WIDTH = 1250;
+    private static final int SCENE_HEIGHT = 770;
     
     // the user-selected min and max price
     private Integer selectedMinPrice;
@@ -77,9 +77,11 @@ public class MainViewer extends Stage
         Animations.spin(root);
         
         makePanelSwitcherPane();
-        
-        root.setMinSize(SCENE_WIDTH, SCENE_HEIGHT);
+    
         mainScene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+        
+        this.setMinWidth(SCENE_WIDTH);
+        this.setMinHeight(SCENE_HEIGHT);
         
         //sets the intital pane to the first Pane
         setPane(0);
@@ -294,7 +296,7 @@ public class MainViewer extends Stage
         
         if (selectedMinPrice == null && selectedMaxPrice == null) 
         {    
-            buttonDisablerForMapPane(prevPanelButton, nextPaneIndex);
+            buttonDisablerForMapPane(prevPanelButton, prevPaneIndex);
             buttonDisablerForMapPane(nextPanelButton, nextPaneIndex);
         }
         else

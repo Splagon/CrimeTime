@@ -16,21 +16,32 @@ public abstract class MainViewerPane extends Pane
     
     /**
      * Constructor for objects of class MainViewerPane
+     * 
+     * @param mainViewer The parent of the classpane
      */
     public MainViewerPane(MainViewer mainViewer)
     {
         this.mainViewer = mainViewer;
     }
     
+    /**
+     * Builds the map pane
+     */
     public abstract void makePane();
     
     public abstract Pane getPane();
     
-    public String getTitleName() {
+    public String getTitleName() 
+    {
         return titleName;
     }
     
-    public boolean getHasMinMaxBox() {
+    /**
+     * @return Returns whether the min max combobox should appear in the top
+     *         right of the screen.
+     */
+    public boolean getHasMinMaxBox() 
+    {
         return hasMinMaxBox;
     }
 }

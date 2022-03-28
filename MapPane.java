@@ -26,6 +26,8 @@ import javafx.geometry.Pos;
 public class MapPane extends MainViewerPane
 {   
     private static Pane mapPane;
+    
+    //Holds the hexagonal map of the boroughs
     private static AnchorPane mapView;
     
     // the stage which holds the stats viewer
@@ -35,10 +37,15 @@ public class MapPane extends MainViewerPane
     {
         super(mainViewer);
         titleName = "Map of London";
-        hasMinMaxBox = false;
+        hasMinMaxBox = true;
     }
-    
-    public void makePane() {
+
+    @Override
+    /**
+     * Builds the map pane
+     */
+    public void makePane() 
+    {
         BorderPane window = new BorderPane();
         
         VBox infoPane = new VBox();
@@ -71,8 +78,11 @@ public class MapPane extends MainViewerPane
         priceChanger.setPadding(new Insets(10, 0, 0, 0));
         
         window.setLeft(infoPane);
+        
         window.setCenter(mapView);
-        window.setRight(priceChanger);
+            window.setAlignment(mapView, Pos.CENTER);
+            
+        //window.setRight(priceChanger);
         
         mapPane = window;
     }
@@ -92,39 +102,43 @@ public class MapPane extends MainViewerPane
         final double HEIGHT_TO_WIDTH_RATIO = 1 / WIDTH_TO_HEIGHT_RATIO;
         
         double newWidth = sceneWidth * 0.655;
-        double newHeight = sceneHeight * 0.804;
+        double newHeight = sceneHeight * 0.800;
         
         double newWidthToHeightRatio = newWidth/newHeight;
         
         final double gapSize = 5.0;
 
-        // pane is too narrow
+        // pane is narrow; height needs to be adjusted to fit
         if (newWidthToHeightRatio < WIDTH_TO_HEIGHT_RATIO) {
             newHeight = newWidth * HEIGHT_TO_WIDTH_RATIO;
         }
-        // pane is too wide
+        // pane is too wide; width needs to be adjusted to fit
         else if (newWidthToHeightRatio > WIDTH_TO_HEIGHT_RATIO) {
             newWidth = newHeight * WIDTH_TO_HEIGHT_RATIO;
         }
-        
-        //newHeight = 510;
-        //newWidth = 720;
             
         mapView = new AnchorPane();
-            mapView.setPrefSize(newWidth, newHeight);
-            mapView.setMinSize(670, 310);
+            mapView.setMaxSize(newWidth, newHeight);
+            double maxHexagonsPerLine = 0;
             
-            setMinWidth(1050);
-            setMinHeight(620);
+            for (int i = 0; i < mapPositions.length; i++)
+            {
+                if (maxHexagonsPerLine < mapPositions[i].length)
+                {
+                    maxHexagonsPerLine = mapPositions[i].length;
+                }
+            }
             
-            //double hexagonWidth = 94.0;
-            double hexagonWidth = (int) (newWidth / 7.5);
+            final double gapsPerLine = gapSize * (maxHexagonsPerLine + 1);
+            final double hexagonWidth = (int) ((newWidth - gapsPerLine) / (maxHexagonsPerLine + 0.5) );
+            
             //rows
             for (int m = 0; m < mapPositions.length; m++) {
                 
                 FlowPane row = new FlowPane();
                    row.setHgap(gapSize);
-                   row.setMinWidth(Double.MAX_VALUE);
+                   row.setMinWidth(newWidth);
+                   row.setMaxWidth(newWidth);
                 
                 if (m % 2 == 0) {
                         createInsetRectangle(hexagonWidth, row, gapSize);
@@ -184,8 +198,11 @@ public class MapPane extends MainViewerPane
                 {
                    createInsetRectangle(hexagonWidth, row, gapSize);
                 }
+                             
+                final double heightOffset = m * (0.75 * hexagonWidth + gapSize);
                 
-                AnchorPane.setTopAnchor(row, m * (newHeight/mapPositions.length + gapSize));
+                AnchorPane.setTopAnchor(row, heightOffset);
+                
                 mapView.getChildren().add(row);
             }
             
@@ -194,7 +211,10 @@ public class MapPane extends MainViewerPane
     
     private void createInsetRectangle(double hexagonWidth, FlowPane row, double gapSize) {
         StackPane rowSpace = new StackPane();
-        Rectangle insetSpace = createSpacerRectangle((int) ((hexagonWidth - gapSize) / 2.0));
+        
+        final int insetSpacerWidth = (int) ((hexagonWidth - gapSize) / 2.0);
+        Rectangle insetSpace = createSpacerRectangle(insetSpacerWidth);
+        
         rowSpace.getChildren().add(insetSpace);
         row.getChildren().add(rowSpace);
     }
