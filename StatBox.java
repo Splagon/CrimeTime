@@ -121,7 +121,7 @@ public class StatBox extends Pane
      * title list and stat list. If it reaches the start of both of the lists, set the labels to
      * the last element in the lists. 
      */
-    public void leftButtonAction(ActionEvent event)
+    private void leftButtonAction(ActionEvent event)
     {
         if(current - 1 < 0)
         {
@@ -140,7 +140,7 @@ public class StatBox extends Pane
      * title list and stat list. If it reaches the end of both of the lists, set the labels to
      * the first element in the lists.
      */
-    public void rightButtonAction(ActionEvent event)
+    private void rightButtonAction(ActionEvent event)
     {
         if(current + 1 >= titleList.size())
         {
@@ -154,6 +154,11 @@ public class StatBox extends Pane
         }
     }
     
+    /**
+     * Update a particular statistic's information label which displays the data of that statistic
+     * @param String title The title of the stat which data will be updated
+     * @param String newStat The updated data as a String
+     */
     public void updateInfo(String title, String newStat)
     {
         for(int i=0;i < titleList.size(); i++)
