@@ -28,6 +28,9 @@ public class MapPane extends MainViewerPane
     private static Pane mapPane;
     private static AnchorPane mapView;
     
+    // the stage which holds the stats viewer
+    private StatisticsViewer statisticsViewer;
+    
     public MapPane(MainViewer mainViewer)
     {
         super(mainViewer);
@@ -326,9 +329,12 @@ public class MapPane extends MainViewerPane
         return statsBox;
     }
     
+    public StatisticsViewer getStatisticsViewer() 
+    {
+        return statisticsViewer;
+    }
+    
     private void showMoreStats() {
-        StatisticsViewer statisticsViewer = mainViewer.getStatisticsViewer();
-        
         if (statisticsViewer == null) {
             statisticsViewer = new StatisticsViewer(mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice());
             statisticsViewer.show();
@@ -336,15 +342,14 @@ public class MapPane extends MainViewerPane
         updateStats();
     }
     
-    private void updateStats() {
-        StatisticsViewer statisticsViewer = mainViewer.getStatisticsViewer();
-        
+    private void updateStats() 
+    {
         if (statisticsViewer == null) {
             return;
         }
         
         int selectedMinPrice = mainViewer.getSelectedMinPrice();
-        int selectedMaxPrice = statisticsViewer.getCurrentMaxPrice();
+        int selectedMaxPrice = mainViewer.getSelectedMaxPrice();
         
         if (statisticsViewer.getCurrentMinPrice() != selectedMinPrice || statisticsViewer.getCurrentMaxPrice() != selectedMaxPrice) {
             statisticsViewer.update(selectedMinPrice, selectedMaxPrice);

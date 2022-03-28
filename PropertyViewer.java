@@ -358,7 +358,7 @@ public class PropertyViewer extends Stage {
         // New property viewer stage is created.
         Stage stage = new PropertyViewer(borough, minPrice, maxPrice, sortedBy);
         // We open the stage at the same positions of the initial one, for better UX.
-        MainViewer.setStagePosititon(stage, this);
+        stage = MainViewer.setStagePosititon(stage, this);
         // if description window is opened, we close it for better UX.
         closeDescription();
         

@@ -14,23 +14,26 @@ import java.util.ArrayList;
 
 
 /**
- * Write a description of class MapViewer here.
+ * The MainViewer is one of three major windows of the application. The MainViewer
+ * contains the main panels involved in the project and is first window to be shown
+ * to the user. Consequently, it is also used to access the other windows.
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
- * @version 25/03/22
+ * @version 28/03/22
  */
 public class MainViewer extends Stage
 {
-    // all of the panes visible in the welcome scene
+    // all of the panes visible in the main viewer window
     private MainViewerPane welcomePane = new WelcomePane(this);
     private MainViewerPane priceSelectorPane = new PriceSelectorPane(this);
     private MainViewerPane mapPane = new MapPane(this);
     private MainViewerPane statsPane = new StatsPane(this);
     private MainViewerPane bookingsPane = new BookingsPane(this);
     
-    private int sceneWidth;
-    private int sceneHeight;
+    // set width and height of the window
+    private static final int SCENE_WIDTH = 1300;
+    private static final int SCENE_HEIGHT = 650;
     
     // the user-selected min and max price
     private Integer selectedMinPrice;
@@ -46,7 +49,6 @@ public class MainViewer extends Stage
     // buttons to switch to the next Pane
     private Button prevPanelButton;
     private Button nextPanelButton;
-    
     private final String prevButtonPreFix = "<-- ";
     private final String nextButtonPostFix = " -->";
     
@@ -61,24 +63,38 @@ public class MainViewer extends Stage
     
     private Scene mainScene;
     
-    // the stage which holds the stats viewer
-    private StatisticsViewer statisticsViewer;
-    
     /**
-     * Constructor for objects of class MapViewer
+     * Initialises and displays the MainViewer
      */
     public MainViewer()
-    {         
+    {   
         StatisticsData.initialiseHandler();
-        
-        sceneWidth = 1300;
-        sceneHeight = 650;
         
         lowestPrice = StatisticsData.getLowestPrice();
         highestPrice = StatisticsData.getHighestPrice();
         
         root = new BorderPane();
         Animations.spin(root);
+        
+        makePanelSwitcherPane();
+        
+        root.setMinSize(SCENE_WIDTH, SCENE_HEIGHT);
+        mainScene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+        
+        //sets the intital pane to the first Pane
+        setPane(0);
+        
+        mainScene.getStylesheets().add("stylesheet.css");
+        root.getStyleClass().add("mainRoot");
+    }
+
+    /**
+     * Initialises the buttons at the bottom corners of the window which are used
+     * to navigate between the different screens.
+     */
+    private void makePanelSwitcherPane() 
+    {
+        panelSwitcherPane = new AnchorPane();
         
         //panel switcher buttons
         prevPanelButton = new Button(prevButtonPreFix + "Bookings");
@@ -89,19 +105,6 @@ public class MainViewer extends Stage
         //styling for the buttons
         prevPanelButton.getStyleClass().add("smallWindowButtons");
         nextPanelButton.getStyleClass().add("smallWindowButtons");
-        
-        makePanelSwitcherPane();
-        
-        mainScene = new Scene(root, sceneWidth, sceneHeight);
-        
-        setPane(0);
-        
-        mainScene.getStylesheets().add("stylesheet.css");
-        root.getStyleClass().add("mainRoot");
-    }
-    
-    private void makePanelSwitcherPane() {
-        panelSwitcherPane = new AnchorPane();
         
         //switches panel once the button is clicked
         prevPanelButton.setOnAction(e -> goToPrevPanel());
@@ -118,13 +121,12 @@ public class MainViewer extends Stage
         root.setBottom(panelSwitcherPane);
     }
     
-    private void goToPrevPanel() {
-        // currentSceneIndex--;
-        
-        // if (currentSceneIndex < 0) {
-            // currentSceneIndex = paneOrder.length - 1;
-        // }
-        
+    /**
+     * Used by the previous panel switcher button to switch to the next panel.
+     */
+    private void goToPrevPanel() 
+    {   
+        //decreases the current pane index
         currentPaneIndex = decreaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
         
         updateButtonText();
@@ -132,13 +134,12 @@ public class MainViewer extends Stage
         setPane(currentPaneIndex);
     }
     
-    private void goToNextPanel() {
-        // currentSceneIndex++;
-        
-        // if (currentSceneIndex >= paneOrder.length) {
-            // currentSceneIndex = 0;
-        // }
-        
+    /**
+     * Used by the previous panel switcher button to switch to the next panel.
+     */
+    private void goToNextPanel() 
+    {  
+        //increases the current pane index
         currentPaneIndex = increaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
         
         updateButtonText();
@@ -146,10 +147,20 @@ public class MainViewer extends Stage
         setPane(currentPaneIndex);
     }
     
+    /**
+     * Decreases the index and applies appropriate wrap around according to the
+     * list passed in.
+     * 
+     * @param index The current index of the list.
+     * @param list The list that the index represents.
+     * 
+     * @return The new decremented index number with appropriate wrap around applied.
+     */
     private int decreaseIndex(int index, List list)
     {
         index--;
         
+        //allows for wrap around
         if (index < 0) {
             index = list.size() - 1;
         }
@@ -157,10 +168,20 @@ public class MainViewer extends Stage
         return index;
     }
     
+    /**
+     * Increases the index and applies appropriate wrap around according to the
+     * list passed in.
+     * 
+     * @param index The current index of the list.
+     * @param list The list that the index represents.
+     * 
+     * @return The new incremented index number with appropriate wrap around applied.
+     */
     private int increaseIndex(int index, List list)
     {
         index++;
         
+        //allows for wrap around
         if (index >= list.size()) {
             index = 0;
         }
@@ -171,7 +192,8 @@ public class MainViewer extends Stage
     /**
      * Updates the text of the next and previous pane buttons
      */
-    private void updateButtonText() {
+    private void updateButtonText() 
+    {
         String nameOfPaneToChangeTo = paneOrder[currentPaneIndex].getClass().toString();
         nameOfPaneToChangeTo = nameOfPaneToChangeTo.substring(6);
         
@@ -181,18 +203,16 @@ public class MainViewer extends Stage
         MainViewerPane prevPane = paneOrder[prevSceneIndex];
         MainViewerPane nextPane = paneOrder[nextSceneIndex];
         
-        setPrevNextButtonText(prevPane, nextPane);
-    }
-    
-    /**
-     * Appends the name of the next and previous pane to the appropriate button
-     */
-    private void setPrevNextButtonText(MainViewerPane prevPane, MainViewerPane nextPane)
-    {
+        //sets the text of the next and previous buttons according to the next pane
         prevPanelButton.setText(prevButtonPreFix + prevPane.getTitleName());
         nextPanelButton.setText(nextPane.getTitleName() + nextButtonPostFix);
     }
     
+    /**
+     * Sets the pane according to the index passed in.
+     * 
+     * @param newSceneIndex The index of the pane to set. 
+     */
     public void setPane(int newSceneIndex) 
     {
         currentPaneIndex = newSceneIndex;
@@ -201,7 +221,7 @@ public class MainViewer extends Stage
         
         paneToChangeTo.makePane();
         updateButtonText();
-        setButtonsDisabled(currentPaneIndex);
+        setButtonsDisabled();
  
         Animations.fadeIn(paneToChangeTo.getPane(), 1000);
         
@@ -214,12 +234,23 @@ public class MainViewer extends Stage
         setScene(mainScene);
     }
     
+    /**
+     * Refreshes the pane by rebuilding the scene.
+     */
     public void refreshPane() 
     {
         setPane(currentPaneIndex);
     }
     
-    private void addTopMinMaxBox(MainViewerPane paneToChangeTo) {
+    /**
+     * Adds a minimum and maximum price selector combo box to the top right of
+     * the window if the pane requires it to.
+     * 
+     * @param paneToChangeTo The pane that will be displayed
+     */
+    private void addTopMinMaxBox(MainViewerPane paneToChangeTo) 
+    {
+        //checks whether the pane should have a min max combobox
         if (paneToChangeTo.getHasMinMaxBox()) 
         {
             AnchorPane topPane = new AnchorPane();
@@ -245,6 +276,7 @@ public class MainViewer extends Stage
             
             root.setTop(topPane);
         }
+        //adds an empty pane if there is no combobox.
         else
         {
             AnchorPane emptyPane = new AnchorPane();
@@ -252,15 +284,18 @@ public class MainViewer extends Stage
         }
     }
     
-    private void setButtonsDisabled(int currentSceneIndex) 
+    /**
+     * Checks whether the panel switcher buttons should be disabled.
+     */
+    private void setButtonsDisabled() 
     {
-        int nextSceneIndex = increaseIndex(currentSceneIndex, Arrays.asList(paneOrder));
-        int prevSceneIndex = decreaseIndex(currentSceneIndex, Arrays.asList(paneOrder));
+        int nextPaneIndex = increaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
+        int prevPaneIndex = decreaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
         
         if (selectedMinPrice == null && selectedMaxPrice == null) 
         {    
-            buttonDisablerForMapPane(prevPanelButton, prevSceneIndex);
-            buttonDisablerForMapPane(nextPanelButton, nextSceneIndex);
+            buttonDisablerForMapPane(prevPanelButton, nextPaneIndex);
+            buttonDisablerForMapPane(nextPanelButton, nextPaneIndex);
         }
         else
         {
@@ -273,6 +308,9 @@ public class MainViewer extends Stage
      * If the selected min and max price is not chosen, the next and previous 
      * pane buttons are disabled if the next or previous pane are the map
      * respectively.
+     * 
+     * @param button The button to disable.
+     * @param index The current index of paneOrder.
      */
     private void buttonDisablerForMapPane(Button button, int index) 
     {
@@ -293,8 +331,8 @@ public class MainViewer extends Stage
      * @return HBox containing the minimum and maximum price combo boxes with a 
      *         confirm button.
      */
-    public HBox createMinMaxBox() {
-        //adding the options to the price selection box, as well as assigning appropriate values
+    public HBox createMinMaxBox() 
+    {
         HBox minMaxBox = new HBox();
         
         ComboBox<String> minBox = new ComboBox<String>();
@@ -302,6 +340,7 @@ public class MainViewer extends Stage
         minBox.setValue("Min Price:");
         maxBox.setValue("Max Price:");
         
+        //adds the options to the price selection box
         ArrayList<String> options = getPriceSelectionOptions(lowestPrice, highestPrice);
         
         minBox.getItems().add("No Min");
@@ -314,11 +353,13 @@ public class MainViewer extends Stage
             confirm.setDisable(true);
             confirm.setOnAction(e -> confirmButtonAction());
         
+        //Sets the minimum and maximum price respectively when they have been selected
         minBox.setOnAction(e -> getSelectionOfUser(minBox, confirm, true));
         maxBox.setOnAction(e -> getSelectionOfUser(maxBox, confirm, false));
         
         minMaxBox.getChildren().addAll(minBox, maxBox, confirm);
         
+        //Initially sets to the user's selection if one has been made.
         minMaxBox = setInitialMinMaxBoxSelection(minMaxBox);
         
         return minMaxBox;
@@ -397,10 +438,6 @@ public class MainViewer extends Stage
         if (selectedMinPrice == null && selectedMaxPrice == null) 
         {
             confirm.setDisable(true);
-            // Alert alert = new Alert(AlertType.WARNING);
-                // alert.setHeaderText("Both your min and max have not been selected");
-                // alert.setContentText("Unfortunately, you will need to select both and a max price");
-            // alert.show();
             return;
         }
         else if (selectedMinPrice != null && selectedMaxPrice == null) 
@@ -489,36 +526,6 @@ public class MainViewer extends Stage
     {
         ArrayList<String> options = new ArrayList<String>();
         
-        // for (int i = low; i <= 100; i+=10) 
-        // {
-            // Integer num = i;
-            // options.add(num.toString());
-        // }
-        
-        // for (int i = 100; i < 200; i+=25) 
-        // {
-            // Integer num = i;
-            // options.add(num.toString());
-        // }
-        
-        // for (int i = 200; i < 500; i+=50) 
-        // {
-            // Integer num = i;
-            // options.add(num.toString());
-        // }
-        
-        // for (int i = 500; i < 1000; i+=100) 
-        // {
-            // Integer num = i;
-            // options.add(num.toString());
-        // }
-        
-        // for (int i = 1000; i <= high; i+=1000) 
-        // {
-            // Integer num = i;
-            // options.add(num.toString());
-        // }
-        
         for (int i = low; i <= high;) 
         {
             Integer num = i;
@@ -574,18 +581,23 @@ public class MainViewer extends Stage
         return getScene();
     }
     
-    public StatisticsViewer getStatisticsViewer() 
-    {
-        return statisticsViewer;
-    }
-    
     /**
+     * Used to set the position of the new stage to be open to be at the same
+     * position as the parent stage is/was at.
      * 
+     * @param openingStage The stage to open.
+     * @param parentStage The stage which is opening the new stage.
+     * 
+     * @return The new stage with the appropriate positioning.
      */
-    public static void setStagePosititon(Stage openingStage, Stage closingStage) {
-        double currentStagePositionX = closingStage.getX();
-        double currentStagePositionY = closingStage.getY();
+    public static Stage setStagePosititon(Stage openingStage, Stage parentStage) 
+    {
+        double currentStagePositionX = parentStage.getX();
+        double currentStagePositionY = parentStage.getY();
+        
         openingStage.setX(currentStagePositionX);
         openingStage.setY(currentStagePositionY);
+        
+        return openingStage;
     }
 }

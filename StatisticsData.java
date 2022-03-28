@@ -18,37 +18,37 @@ import java.util.Map;
 public class StatisticsData extends DataHandler
 {
     // instance variables - replace the example below with your own
-    //private ArrayList<AirbnbListing> listings; 
     private static ArrayList<AirbnbListing> listingsAtPrice = new ArrayList<>();
-    // private static String[] boroughs = {"Kingston upon Thames", "Croydon", "Bromley", "Hounslow", "Ealing", "Havering", "Hillingdon", 
-            // "Harrow", "Brent", "Barnet", "Enfield", "Waltham Forest", "Redbridge", "Sutton", "Lambeth", "Southwark",
-            // "Lewisham", "Greenwich", "Bexley", "Richmond upon Thames", "Merton", "Wandsworth", "Hammersmith and Fulham", 
-            // "Kensington and Chelsea", "City of London", "Westminster", "Camden", "Tower Hamlets", "Islington", "Hackney",
-            // "Haringey", "Newham", "Barking and Dagenham"};
-            
-
-    /**
-     * Constructor for objects of class StatisticsData
-     */
-    public StatisticsData()
-    {
-        //listings = getData(); 
-    }
     
-    public static void initialiseHandler() {
+    /**
+     * Used to initialise the values and allows for this to be done
+     * statically.
+     */
+    public static void initialiseHandler() 
+    {
         DataHandler.initialiseHandler();
-        listings = getData();
         listingsAtPrice = listings;
     }
 
+    /**
+     * Used to produce a list of all properties between the minimum
+     * and maximum user-selected price.
+     * 
+     * @param selectedMinPrice The minimum price selected by the user
+     * @param selectedMaxPrice The maximum price selected by the user
+     */
     public static void setListingsAtPrice(int selectedMinPrice, int selectedMaxPrice)
     {
         listingsAtPrice = DataHandler.getPropertiesAtPrice(selectedMinPrice, selectedMaxPrice);
     }
     
     /**
-     * @param useListingsAtPrice Should the average be of all listings or of
-     * listings between the selected min and max price?
+     * Produces a double conveying the average number of reviews according to 
+     * the parameters.
+     * 
+     * @param useListingsAtPrice If true, the average is of the listings
+     *                           between the user-selected min and max price.
+     *                           If false, the average is of all properties.
      * @return average number of reviews per property. 
      */
     public static double getAverageNoReviews(boolean useListingsAtPrice)
@@ -63,15 +63,20 @@ public class StatisticsData extends DataHandler
     }
 
     /**
-     * @param useListingsAtPrice Should the average be of all listings or of
-     * listings between the selected min and max price?
-     * @return the number of home and apartment airbnb properties 
+     * Gets the total number of home and apartments according to the parameters.
+     * 
+     * @param useListingsAtPrice If true, the total is of the listings
+     *                           between the user-selected min and max price.
+     *                           If false, the total is of all properties.
+     * @return The number of home and apartment airbnb properties 
      */
     public static int getNoHomeAndApartments(boolean useListingsAtPrice)
     {
         ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
+        
         int counter = 0;
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = 0; i < data.size(); i++) 
+        {
             AirbnbListing property = data.get(i);
             if(property.getRoom_type().equals("Entire home/apt"))
             {
@@ -82,20 +87,27 @@ public class StatisticsData extends DataHandler
     }
 
     /**
-     * @param useListingsAtPrice Should the average be of all listings or of
-     * listings between the selected min and max price?
+     * Produces the number of properties currently available of the list of properties.
+     * 
+     * @param useListingsAtPrice If true, the information is of the listings
+     *                           between the user-selected min and max price.
+     *                           If false, the information is of all properties.
+     * 
      * @return the number of available properties
      */
     public static int getAvailableInfo(boolean useListingsAtPrice)
     {
         ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
+        
         int counter = 0; 
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = 0; i < data.size(); i++) 
+        {
             if(data.get(i).getAvailability365() != 0)
             {
                 counter += 1; 
             }
         }
+        
         return counter; 
     }
 
@@ -127,11 +139,12 @@ public class StatisticsData extends DataHandler
     // }
 
     /**
-     * @return String the most expensive borough
+     * @return The name of the most expensive borough
      */
     public static String getExpensiveInfo()
     {
         String expensiveBorough = "";
+        
         int lastTotalPrice = 0; 
         for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
         {
@@ -155,12 +168,17 @@ public class StatisticsData extends DataHandler
                 }
             }
         }
+        
         return expensiveBorough; 
     }
 
     /**
-     * @param useListingsAtPrice Should the average be of all listings or of
-     * listings between the selected min and max price?
+     * Produces the standard deviation of the list of properties.
+     * 
+     * @param useListingsAtPrice If true, the standard deviation is of the listings
+     *                           between the user-selected min and max price.
+     *                           If false, the standard deviation is of all properties.
+     * 
      * @return The standard deviation of price from all of the airbnb properties
      */
     public static double getPriceSDInfo(boolean useListingsAtPrice)
@@ -169,127 +187,157 @@ public class StatisticsData extends DataHandler
         double standardDeviation = 0; 
         int x = 0;
         int y = 0; 
+        
         int size = data.size(); 
         for (int i = 0; i < size; i++) {
             int price = data.get(i).getPrice();
             x += (price)*(price);
             y += price;
         }
+        
         if(size >= 1)
         {
             standardDeviation = Math.sqrt((x/size) - (y/size)*(y/size));
         }
+        
         return standardDeviation; 
     }
     
     
     /**
-     * @return HashMap information which stores the average price per night in each borough
+     * @return A hashmap containing the average price per night in each borough
      */
     public static HashMap<String, Integer> getAveragePricePerBorough()
     {
         HashMap<String, Integer> information = new HashMap<>();
-        for(String boroughName : sortedBoroughs.keySet()) {
+        
+        for (String boroughName : sortedBoroughs.keySet()) 
+        {
             ArrayList<AirbnbListing> properties = sortedBoroughs.get(boroughName).getBoroughListings();
             int totalPrice = 0; 
             for(int i = 0; i < properties.size(); i++)
             {
                 totalPrice += properties.get(i).getPrice(); 
             }
+            
             if(properties.size() >= 1)
             {
                 Integer averagePrice = new Integer(totalPrice / properties.size());
                 information.put(boroughName, averagePrice);
             }
         }
+        
         return information;
     }
     
     /**
-     * @return HashMap information which stores the average reviews per each borough
+     * @return A hashmap containing the average reviews per each borough
      */
     public static HashMap<String, Integer> getAverageReviewsPerBorough()
     {
         HashMap<String, Integer> information = new HashMap<>();
-        for(String boroughName : sortedBoroughs.keySet()) {
+        
+        for (String boroughName : sortedBoroughs.keySet()) 
+        {
             ArrayList<AirbnbListing> properties = sortedBoroughs.get(boroughName).getBoroughListings();
             int totalReviews = 0; 
             for(int i = 0; i < properties.size(); i++)
             {
                 totalReviews += properties.get(i).getNumberOfReviews(); 
             }
+            
             if(properties.size() >= 1)
             {
                 Integer averageReviews = new Integer(totalReviews / properties.size());
                 information.put(boroughName, averageReviews);
             }
         }
+        
         return information;
     }
     
     /**
-     * @param useListingsAtPrice Should the average be of all listings or of
-     * listings between the selected min and max price?
+     * @param useListingsAtPrice If true, the average is of the listings
+     *                           between the user-selected min and max price.
+     *                           If false, the average is of all properties.
      * @return ???????????????
      */
     public static int getAveragePrice(boolean useListingsAtPrice)
     {
         ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
+        
         int totalPrice = 0;
         int average = 0;
         for(int i = 0; i > data.size(); i++)
         {
             totalPrice += data.get(i).getPrice();
         }
-        average = totalPrice / data.size(); 
+        average = totalPrice / data.size();
+        
         return average;
     }
     
+    /**
+     * Calculates how the colour of the hexagon should adjust dependendent
+     * on the number of properties within the respective borough and in
+     * respect to the other boroughs.
+     * 
+     * @param boroughName The name of the respective borough to check
+     * @param noOfPropertiesStats The data container for the stats about
+     *                            the boroughs and the number of properties
+     *                            within them.
+     *                            
+     * @return The colour adjust used to adjust the colour of the hexagon.
+     */
     public static ColorAdjust getBoroughMapColour(String boroughName, NoOfPropertiesStats noOfPropertiesStats) 
     {   
         int minPrice = noOfPropertiesStats.getMinPrice();
         int maxPrice = noOfPropertiesStats.getMaxPrice();
-        int noOfPropertiesInBorough = 0;
+        int noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
         
-        noOfPropertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice).size();
-        
-        ColorAdjust colourAdjust = new ColorAdjust();
-        
-        double brightness = getBrightness(noOfPropertiesInBorough, noOfPropertiesStats);
-        
-        colourAdjust.setBrightness(brightness);
-        
-        return colourAdjust;
+        return getColourAdjust(noOfPropertiesInBorough, noOfPropertiesStats);
     }
     
+    /**
+     * Calculates how the colour of the hexagon should adjust dependendent
+     * on the percentile passed in and an even distribution. This is used
+     * to make the key and automatically adjust the colour if the colour of
+     * the hexagons are changed
+     */
     public static ColorAdjust getBoroughMapColour(int percentile) 
     {
-        ColorAdjust colourAdjust = new ColorAdjust();
-        
-        double brightness = getBrightness(percentile);
-        
-        colourAdjust.setBrightness(brightness);
-        
-        return colourAdjust;
-    }
-    
-    protected static double getBrightness(int percentile) 
-    {
         NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(25, 50, 75);
-        return getBrightness(percentile, noOfPropertiesStats);
+        return getColourAdjust(percentile, noOfPropertiesStats);
     }
     
-    protected static double getBrightness(int noOfPropertiesInBorough, NoOfPropertiesStats noOfPropertiesStats) 
+    /**
+     * Calculates how the colour of the hexagon should adjust dependendent
+     * on the number of properties within the respective borough and in
+     * respect to the other boroughs.
+     * 
+     * @param noOfPropertiesInBorough The number of properties in the 
+     *                                respective borough.
+     * @param noOfPropertiesStats The data container for the stats about
+     *                            the boroughs and the number of properties
+     *                            within them.
+     *                            
+     * @return The colour adjust used to adjust the colour of the hexagon.
+     */
+    protected static ColorAdjust getColourAdjust(int noOfPropertiesInBorough, NoOfPropertiesStats noOfPropertiesStats) 
     {
         int median = noOfPropertiesStats.getMedian();
         int firstQuartile = noOfPropertiesStats.getFirstQuartile();
         int thirdQuartile = noOfPropertiesStats.getThirdQuartile();
         
+        ColorAdjust colourAdjust = new ColorAdjust();
+        
         double brightness;
         
+        // Checks which quartile the borough lies between and sets
+        // the appropriate colour.
         if (noOfPropertiesInBorough <= 0) 
         {
-            brightness = 0.00;
+            brightness = 0.0;
         }
         else if (noOfPropertiesInBorough < firstQuartile) 
         {
@@ -303,19 +351,30 @@ public class StatisticsData extends DataHandler
         {
             brightness = 0.65;
         }
-        else {
+        else 
+        {
             brightness = 0.8;
         }
         
         brightness = (brightness-0.5) * -2;
         
-        return brightness;
+        colourAdjust.setBrightness(brightness);
+        
+        return colourAdjust;
     }
     
+    /**
+     * @param minPrice The user-selected minimum price.
+     * @param maxPrice The user-selected maximum price.
+     * 
+     * @return An Arraylist of boroughs sorted by the number of
+     *         properties in the borough.
+     */
     public static ArrayList<Borough> getSortedNumberOfPropertiesInBoroughs(int minPrice, int maxPrice)
     {
         ArrayList<Borough> sortedNumberOfPropertiesAtPrice = new ArrayList<Borough>();
-
+        
+        // Adds all the boroughs to the list unordered
         for (String boroughName : boroughs) 
         {
             ArrayList<AirbnbListing> propertiesInBorough = getPropertiesFromBorough(boroughName, minPrice, maxPrice);
@@ -323,6 +382,7 @@ public class StatisticsData extends DataHandler
             sortedNumberOfPropertiesAtPrice.add(boroughToAdd);
         }
         
+        // Sorts the list using the specified comparator (sorts by number of properties)
         Collections.sort(sortedNumberOfPropertiesAtPrice, Borough.sortByNoOfPropertiesInBorough);
         
         return sortedNumberOfPropertiesAtPrice;
@@ -331,10 +391,12 @@ public class StatisticsData extends DataHandler
     public static String getHighAvgReview()
     {
         String HighAvgReviewBorough = "";
-        int lastHighAvgReview = 0; 
-        for(int rows = 0; rows < mapPositions.length; rows++) // A for loop iterating through the boroughs array
+        int lastHighAvgReview = 0;
+        
+        // A for loop iterating through the boroughs array
+        for(int rows = 0; rows < mapPositions.length; rows++) // rows
         {
-            for(int columns = 0; columns < mapPositions[rows].length; columns++)
+            for(int columns = 0; columns < mapPositions[rows].length; columns++) // columns
             {   
                 if(mapPositions[rows][columns] != null)
                 {
@@ -373,6 +435,10 @@ public class StatisticsData extends DataHandler
         }
     }
     
+    /**
+     * Used to clear the current values in the class and in the DataHandler.
+     * Only used for testing.
+     */
     protected static void clear()
     {
         DataHandler.clear();

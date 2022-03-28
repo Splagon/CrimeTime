@@ -45,12 +45,14 @@ public class DataHandler
     }
 
     public static void initialiseHandler() {
-        airbnbDataLoader = new AirbnbDataLoader();
-        listings = airbnbDataLoader.load();
+        if (listings == null || listings.isEmpty())
+        {
+            airbnbDataLoader = new AirbnbDataLoader();
+            listings = airbnbDataLoader.load();
+            sortedBoroughs = sortBoroughs();
+        }
         
         loadBookingsData();
-        
-        sortedBoroughs = sortBoroughs();
     }
     
     private static void loadBookingsData() {
@@ -287,9 +289,6 @@ public class DataHandler
     }
     
     protected static void clear() {
-        listings = null;
         bookingList = new ArrayList<Booking>();
-        boroughs = new ArrayList<String>();
-        sortedBoroughs = null;
     }
 }
