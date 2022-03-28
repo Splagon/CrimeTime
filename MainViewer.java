@@ -74,7 +74,7 @@ public class MainViewer extends Stage
         highestPrice = StatisticsData.getHighestPrice();
         
         root = new BorderPane();
-        Animations.spin(root);
+        //Animations.spin(root);
         
         makePaneSwitcherPane();
         
@@ -99,10 +99,8 @@ public class MainViewer extends Stage
         //pane switcher buttons with intial labels and their intial state
         prevPaneButton = new Button(prevButtonPreFix + bookingsPane.getTitleName());
         prevPaneButton.setPrefSize(155, 20);
-        prevPaneButton.setDisable(true);
         nextPaneButton = new Button(priceSelectorPane.getTitleName() + nextButtonPostFix);
         nextPaneButton.setPrefSize(155, 20);
-        nextPaneButton.setDisable(true);
         
         //styling for the buttons
         prevPaneButton.getStyleClass().add("smallWindowButtons");
@@ -197,7 +195,7 @@ public class MainViewer extends Stage
     private void updateButtonText() 
     {
         String nameOfPaneToChangeTo = paneOrder[currentPaneIndex].getClass().toString();
-        nameOfPaneToChangeTo = nameOfPaneToChangeTo.substring(6);
+        nameOfPaneToChangeTo = nameOfPaneToChangeTo.substring(6); //removes "Class " from the begging of the String created
         
         int prevSceneIndex = decreaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
         int nextSceneIndex = increaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
@@ -298,11 +296,28 @@ public class MainViewer extends Stage
         {    
             buttonDisablerForMapPane(prevPaneButton, prevPaneIndex);
             buttonDisablerForMapPane(nextPaneButton, nextPaneIndex);
+            if (currentPaneIndex == 0)
+            {
+                //checks to see if the start button has been preesed and sets the state of pane switcher buttons accordingly
+                WelcomePane pane = (WelcomePane) paneOrder[currentPaneIndex]; //needs to be cast in order to use the method of a WelcomePane
+                prevPaneButton.setDisable(!pane.hasStartBeenPressed());
+                nextPaneButton.setDisable(!pane.hasStartBeenPressed());
+            }
         }
         else
         {
-            prevPaneButton.setDisable(false);
-            nextPaneButton.setDisable(false);
+            if (currentPaneIndex == 0)
+            {
+                //checks to see if the start button has been preesed and sets the state of pane switcher buttons accordingly
+                WelcomePane pane = (WelcomePane) paneOrder[currentPaneIndex]; //needs to be cast in order to use the method of a WelcomePane
+                prevPaneButton.setDisable(!pane.hasStartBeenPressed());
+                nextPaneButton.setDisable(!pane.hasStartBeenPressed());
+            }
+            else
+            {
+                prevPaneButton.setDisable(false);
+                nextPaneButton.setDisable(false);
+            }
         }
     }
     
@@ -563,6 +578,9 @@ public class MainViewer extends Stage
      */
     public void changeToPriceSelectorPane() 
     {
+        //changes the boolean within WelcomePane to show that start has now been pressed
+        WelcomePane pane = (WelcomePane) paneOrder[currentPaneIndex]; //needs to be cast in order to use the method of a WelcomePane
+        pane.startPressed();
         setPane(1);
     }
     
