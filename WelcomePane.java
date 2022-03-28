@@ -18,6 +18,9 @@ public class WelcomePane extends MainViewerPane
 {
     private static Pane welcomePane;
     
+    //used in the main viewer to disable the paneswitcher button until the start button has been pressed
+    private boolean startHasBeenPressed = false;
+    
     /**
      * Constructor for objects of class WelcomePane
      * 
@@ -33,7 +36,8 @@ public class WelcomePane extends MainViewerPane
     /**
      * This constructs the pane and its functionality and adds any styling
      */
-    public void makePane() {
+    public void makePane() 
+    {
         //All labels in the window
         Label title = new Label("Welcome!");
         Label instructionsTitle = new Label("Instructions: ");
@@ -94,7 +98,24 @@ public class WelcomePane extends MainViewerPane
      * 
      * @return it will return type Pane
      */
-    public Pane getPane() {
+    public Pane getPane() 
+    {
         return welcomePane;
+    }
+    
+    /**
+     * will set that the value of startHasBeenPressed to true once it is called
+     */
+    public void startPressed()
+    {
+        startHasBeenPressed = true;
+    }
+    
+    /**
+     * returns the current value of startHasBeenPressed
+     */
+    public boolean hasStartBeenPressed()
+    {
+        return startHasBeenPressed;
     }
 }

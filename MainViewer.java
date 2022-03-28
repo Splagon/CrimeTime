@@ -44,11 +44,11 @@ public class MainViewer extends Stage
     private int highestPrice;
     
     // the pane containing the pane switcher buttons
-    private AnchorPane panelSwitcherPane;
+    private AnchorPane paneSwitcherPane;
     
     // buttons to switch to the next Pane
-    private Button prevPanelButton;
-    private Button nextPanelButton;
+    private Button prevPaneButton;
+    private Button nextPaneButton;
     private final String prevButtonPreFix = "<-- ";
     private final String nextButtonPostFix = " -->";
     
@@ -76,7 +76,7 @@ public class MainViewer extends Stage
         root = new BorderPane();
         Animations.spin(root);
         
-        makePanelSwitcherPane();
+        makePaneSwitcherPane();
         
         root.setMinSize(SCENE_WIDTH, SCENE_HEIGHT);
         mainScene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
@@ -92,39 +92,41 @@ public class MainViewer extends Stage
      * Initialises the buttons at the bottom corners of the window which are used
      * to navigate between the different screens.
      */
-    private void makePanelSwitcherPane() 
+    private void makePaneSwitcherPane() 
     {
-        panelSwitcherPane = new AnchorPane();
+        paneSwitcherPane = new AnchorPane();
         
-        //panel switcher buttons
-        prevPanelButton = new Button(prevButtonPreFix + "Bookings");
-        prevPanelButton.setPrefSize(155, 20);
-        nextPanelButton = new Button("Price Selection" + nextButtonPostFix);
-        nextPanelButton.setPrefSize(155, 20);
+        //pane switcher buttons with intial labels and their intial state
+        prevPaneButton = new Button(prevButtonPreFix + bookingsPane.getTitleName());
+        prevPaneButton.setPrefSize(155, 20);
+        prevPaneButton.setDisable(true);
+        nextPaneButton = new Button(priceSelectorPane.getTitleName() + nextButtonPostFix);
+        nextPaneButton.setPrefSize(155, 20);
+        nextPaneButton.setDisable(true);
         
         //styling for the buttons
-        prevPanelButton.getStyleClass().add("smallWindowButtons");
-        nextPanelButton.getStyleClass().add("smallWindowButtons");
+        prevPaneButton.getStyleClass().add("smallWindowButtons");
+        nextPaneButton.getStyleClass().add("smallWindowButtons");
         
         //switches panel once the button is clicked
-        prevPanelButton.setOnAction(e -> goToPrevPanel());
-        nextPanelButton.setOnAction(e -> goToNextPanel());
+        prevPaneButton.setOnAction(e -> goToPrevPane());
+        nextPaneButton.setOnAction(e -> goToNextPane());
         
-        AnchorPane.setTopAnchor(prevPanelButton, 5.0);
-        AnchorPane.setLeftAnchor(prevPanelButton, 0.0);
-        AnchorPane.setTopAnchor(nextPanelButton, 5.0);
-        AnchorPane.setRightAnchor(nextPanelButton, 0.0);
+        AnchorPane.setTopAnchor(prevPaneButton, 5.0);
+        AnchorPane.setLeftAnchor(prevPaneButton, 0.0);
+        AnchorPane.setTopAnchor(nextPaneButton, 5.0);
+        AnchorPane.setRightAnchor(nextPaneButton, 0.0);
         
-        panelSwitcherPane.getChildren().add(prevPanelButton);
-        panelSwitcherPane.getChildren().add(nextPanelButton);
+        paneSwitcherPane.getChildren().add(prevPaneButton);
+        paneSwitcherPane.getChildren().add(nextPaneButton);
         
-        root.setBottom(panelSwitcherPane);
+        root.setBottom(paneSwitcherPane);
     }
     
     /**
      * Used by the previous panel switcher button to switch to the next panel.
      */
-    private void goToPrevPanel() 
+    private void goToPrevPane() 
     {   
         //decreases the current pane index
         currentPaneIndex = decreaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
@@ -137,7 +139,7 @@ public class MainViewer extends Stage
     /**
      * Used by the previous panel switcher button to switch to the next panel.
      */
-    private void goToNextPanel() 
+    private void goToNextPane() 
     {  
         //increases the current pane index
         currentPaneIndex = increaseIndex(currentPaneIndex, Arrays.asList(paneOrder));
@@ -204,8 +206,8 @@ public class MainViewer extends Stage
         MainViewerPane nextPane = paneOrder[nextSceneIndex];
         
         //sets the text of the next and previous buttons according to the next pane
-        prevPanelButton.setText(prevButtonPreFix + prevPane.getTitleName());
-        nextPanelButton.setText(nextPane.getTitleName() + nextButtonPostFix);
+        prevPaneButton.setText(prevButtonPreFix + prevPane.getTitleName());
+        nextPaneButton.setText(nextPane.getTitleName() + nextButtonPostFix);
     }
     
     /**
@@ -294,13 +296,13 @@ public class MainViewer extends Stage
         
         if (selectedMinPrice == null && selectedMaxPrice == null) 
         {    
-            buttonDisablerForMapPane(prevPanelButton, nextPaneIndex);
-            buttonDisablerForMapPane(nextPanelButton, nextPaneIndex);
+            buttonDisablerForMapPane(prevPaneButton, prevPaneIndex);
+            buttonDisablerForMapPane(nextPaneButton, nextPaneIndex);
         }
         else
         {
-            prevPanelButton.setDisable(false);
-            nextPanelButton.setDisable(false);
+            prevPaneButton.setDisable(false);
+            nextPaneButton.setDisable(false);
         }
     }
     
@@ -556,26 +558,43 @@ public class MainViewer extends Stage
         return options;
     }
     
+    /**
+     * once called will display the price selection pane
+     */
     public void changeToPriceSelectorPane() 
     {
         setPane(1);
     }
     
+    /**
+     * once called will display the map pane
+     */
     public void changeToMapPane() 
     {
         setPane(2);
     }
     
+    /**
+     * will return the current selected value of the min combo box
+     * @return if nothing is currently selected it will then return null
+     */
     public Integer getSelectedMinPrice() 
     {
         return selectedMinPrice;
     }
     
+    /**
+     * will return the current selected value of the max combo box
+     * @return if nothing is currently selected it will then return null
+     */
     public Integer getSelectedMaxPrice() 
     {
         return selectedMaxPrice;
     }
     
+    /**
+     * will return the current scene
+     */
     public Scene getMainScene() 
     {
         return getScene();
