@@ -42,32 +42,41 @@ public class StatisticsViewer extends Stage
         constructScene(selectedMinPrice, selectedMaxPrice);
     }
     
+    /**
+     * Constructs the scene
+     * @param int selectedMinPrice - The current minimum price selected by the user. int selectedMaxPrice - The current maximum price selected by the user.
+     */
     private void constructScene(int selectedMinPrice, int selectedMaxPrice)  {
         // The layout of the window
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
         
-        //StatisticsData.initialiseHandler();
+        
         StatisticsData.setListingsAtPrice(selectedMinPrice, selectedMaxPrice);
         window = new VBox();
         GridPane statsGrid = new GridPane();
         
+        // Create the boxes that hold the statistics
         StatBox stat1 = new StatBox();
         StatBox stat2 = new StatBox();
         StatBox stat3 = new StatBox();
         StatBox stat4 = new StatBox();
         
+        // Add stats to the first box
         stat1.addInfo("Average Reviews Per Property:", formatData(StatisticsData.getAverageNoReviews(true)));
         stat1.addInfo("Total Available Properties:", formatData(StatisticsData.getAvailableInfo(true)));
         stat1.setFirst();
         
+        // Add stats to the second box
         stat2.addInfo("Entire Home and Apartments:", formatData(StatisticsData.getNoHomeAndApartments(true)));
         stat2.addInfo("Most Expensive Borough:", formatData(StatisticsData.getExpensiveInfo()));
         stat2.setFirst();
         
+        // Add stats to the third box
         stat3.addInfo("Standard Deviation of Price (£):", formatData(StatisticsData.getPriceSDInfo(true)));
         stat3.addInfo("Borough with the Highest \nAverage Amount of Reviews:", formatData(StatisticsData.getHighAvgReview()));
         stat3.setFirst();
         
+        // Add stats to the fourth box
         stat4.addInfo("No. of Properties in Borough\nMinimum:", String.valueOf(noOfPropertiesStats.getMinNoOfPropertiesInBorough()));
         stat4.addInfo("No. of Properties in Borough\nLower Quartile:", String.valueOf(noOfPropertiesStats.getFirstQuartile()));
         stat4.addInfo("No. of Properties in Borough\nMedian:", String.valueOf(noOfPropertiesStats.getMedian()));
@@ -75,7 +84,6 @@ public class StatisticsViewer extends Stage
         stat4.addInfo("No. of Properties in Borough\nMaximum:", String.valueOf(noOfPropertiesStats.getMaxNoOfPropertiesInBorough()));
         stat4.setFirst();
         
-
         // The "title" labels in the window
         Label title = new Label("Statistics Based on Price Selected");
         Label reviewTitle = new Label("Average Reviews Per Property:");
@@ -91,30 +99,28 @@ public class StatisticsViewer extends Stage
         window.getChildren().add(statsGrid); 
         title.setAlignment(Pos.CENTER);
         statsGrid.setAlignment(Pos.CENTER); 
-        
+    
         statsGrid.add(stat1, 0, 0);
         statsGrid.add(stat2, 0, 1);
         statsGrid.add(stat3, 1, 0);
         statsGrid.add(stat4, 1, 1);
 
-        //Set the scene and add CSS
+        // Set the scene and add CSS
         Scene scene = new Scene(window, 900,350);
-
         scene.getStylesheets().add("stylesheet.css");
-        
         window.getStyleClass().add("mainRoot");
-
         statsGrid.setId("statsgrid"); 
-
         title.getStyleClass().add("windowTitle");
         
+        // Set the title and set the scene
         setTitle("Information");
         setScene(scene);
     }
     
     /**
      * Convert a double data type to String then set it as a Label's text
-     * @params Label label - the label which will be affected; double dataToFormat - The data to format into a String
+     * @param Label label The label which will be affected.
+     * @param double dataToFormat The data to format into a String.
      */
     private String formatData(double dataToFormat) {
         String formatedData = String.format("%.2f", dataToFormat) + " (2 d.p)"; 
@@ -123,7 +129,8 @@ public class StatisticsViewer extends Stage
 
     /**
      * Convert an int data type to String then set it as a Label's text
-     * @params Label label - the label which will be affected; int dataToFormat - The data to format into a String
+     * @param Label label The label which will be affected.
+     * @param int dataToFormat The data to format into a String
      */
     private String formatData(int dataToFormat) {
         String formatedData = String.valueOf(dataToFormat);
@@ -132,7 +139,8 @@ public class StatisticsViewer extends Stage
 
     /**
      * Set a Label's text to a passed through String
-     * @params Label label - the label which will be affected; String dataToFormat - The String that the Label's text will be set to
+     * @param Label label The label which will be affected.
+     * @param String dataToFormat The String that the Label's text will be set to.
      */
     private String formatData(String dataToFormat) {
         return dataToFormat;
@@ -166,7 +174,7 @@ public class StatisticsViewer extends Stage
     }
     
     /**
-     * @return int the current max price
+     * @return int the current maximum price
      */
     public int getCurrentMaxPrice() {
         return noOfPropertiesStats.getMaxPrice();

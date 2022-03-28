@@ -30,6 +30,9 @@ public class StatsPane extends MainViewerPane
     VBox statsWindow;
     private Animations animations = new Animations();
     
+    /**
+     * Set the title Name to Statistics
+     */
     public StatsPane(MainViewer mainViewer)
     {
         super(mainViewer);
@@ -37,6 +40,9 @@ public class StatsPane extends MainViewerPane
         hasMinMaxBox = false; 
     }
     
+    /**
+     * Make the statistics pane
+     */
     public void makePane() {
         statsWindow = new VBox();
         
@@ -211,7 +217,10 @@ public class StatsPane extends MainViewerPane
     
     /**
      * Create a Bar Chart holding data 
-     * @params XYChart.Series chart - The data to go into the chart. String xAxisLabel - Label of the xAxis; String yAxisLabel - Label of the yAxis; String dataName - The label of the data.
+     * @param XYChart.Series chart The data to go into the chart. 
+     * @param String xAxisLabel Label of the xAxis.
+     * @param String yAxisLabel Label of the yAxis.
+     * @param String dataName The label of the data.
      * @return A BarChart object
      */
     private BarChart createBarChart(XYChart.Series chart, String xAxisLabel, String yAxisLabel, String dataName)
@@ -230,7 +239,7 @@ public class StatsPane extends MainViewerPane
     
     /**
      * Get a VBox object from the Stats Order List at a certain index. Index must be within the List's bounds. 
-     * @params int x - Index of the object needed.
+     * @param int x Index of the object needed.
      * @return VBox Object from the Stats Order List.
      */
     private VBox getStatsOrderObject(int x)
@@ -277,7 +286,7 @@ public class StatsPane extends MainViewerPane
     
     /**
      * Used to swap window content for the different Statistics displays (e.g. grid, barchat). 
-     * @params int change - set the current index of Stats Order list to this int. 
+     * @param int change Set the current index of Stats Order list to this int. 
      */
     private void swapWindowContent(int change)
     {
@@ -290,7 +299,8 @@ public class StatsPane extends MainViewerPane
     
     /**
      * Convert a double data type to String then set it as a Label's text
-     * @params Label label - the label which will be affected; double dataToFormat - The data to format into a String
+     * @param Label label The label which will be affected.
+     * @param double dataToFormat The data to format into a String.
      */
     private void setText(Label label, double dataToFormat) {
         String formattedLabel = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
@@ -299,7 +309,8 @@ public class StatsPane extends MainViewerPane
     
     /**
      * Convert an int data type to String then set it as a Label's text
-     * @params Label label - the label which will be affected; int dataToFormat - The data to format into a String
+     * @param Label label The label which will be affected.
+     * @param int dataToFormat The data to format into a String.
      */
     private void setText(Label label, int dataToFormat) {
         label.setText(String.valueOf(dataToFormat));
@@ -307,14 +318,15 @@ public class StatsPane extends MainViewerPane
     
     /**
      * Set a Label's text to a passed through String
-     * @params Label label - the label which will be affected; String dataToFormat - The String that the Label's text will be set to
+     * @param Label label The label which will be affected.
+     * @param String dataToFormat The String that the Label's text will be set to.
      */
     private void setText(Label label, String dataToFormat) {
         label.setText(dataToFormat);
     }
     
     /**
-     * @params HashMap<String, Integer> map - Containing data for each borough
+     * @param HashMap<String, Integer> Map Containing data for each borough
      * @return XYChart.Series object
      */
     private XYChart.Series getBarChartData(HashMap<String, Integer> map)
