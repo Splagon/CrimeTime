@@ -40,16 +40,18 @@ public class WelcomePane extends MainViewerPane
     {
         //All labels in the window
         Label title = new Label("Welcome!");
-        Label instructionsTitle = new Label("Instructions: ");
-        Label instruction1 = new Label("- When you are ready click start, this will send you to the next window where you will be able to enter your price range.");
-        Label instruction2 = new Label("- Once your price range has been selected you will then be able to view the map and see where the you be able to find a property. ");
+        Label instructionsTitle = new Label("Please read the following instructions: ");
+        Label instruction1 = new Label("- The pane switcher buttons at the bottom of the window will be disabled until you have clicked the start button.");
+        Label instruction2 = new Label("- Once you have clicked start you are then able to select your price range using the min max boxes in the middle of your sceen. ");
         Label instruction3 = new Label("- In order to view the map you will need to click the confirm button once both your min and max price have been slected.");
-        Label instruction4 = new Label("- You are able to move through the differnet panels by using the buttons in the bottom left and right corners.");
-        Label instruction5 = new Label("- You will able to click on a borough on the map and view the properties available within your selected price range.");
+        Label instruction4 = new Label("- You will able to click on a borough on the map and view the properties available within your selected price range.");
+        Label instruction5 = new Label("- The property viewer has a few different features: you can sort the list of poperties, book a property, move through the list and view some detials on each property");
         Label instruction6 = new Label("- You are able to book this property by clicking the book property button in the property viewer window.");
         Label instruction7 = new Label("- You can view all your booking in your bookings panel.");
         Label instruction8 = new Label("- If you want to view different more stats then in the map panel you can click the show more stats button.");
-        Label instruction9 = new Label("- A pop up should appear where you are to view different stats.");
+        Label instruction9 = new Label("- A pop up should appear where you are able to view different stats.");
+        Label instruction10 = new Label("- You are able to move through the differnet panes by using the buttons in the bottom left and right corners.");
+        Label instruction11 = new Label("- Once you are ready please click start.");
         
         //Buttons in the window
         Button startButton = new Button("Start");
@@ -59,14 +61,18 @@ public class WelcomePane extends MainViewerPane
         //layout of the whole window
         VBox window = new VBox();
         VBox instructions = new VBox();
+        instructions.setPrefSize(1000, 400);
         BorderPane instrcutionsAndStart = new BorderPane();
 
         //adding elements to the window
         window.getChildren().addAll(title, instrcutionsAndStart);
         window.setAlignment(Pos.CENTER);
-        instructions.getChildren().addAll(instructionsTitle, instruction1, instruction2, instruction3, instruction4, instruction5, instruction6, instruction7, instruction8, instruction9); 
+        instructions.getChildren().addAll(instructionsTitle, instruction1, instruction2, instruction3, instruction4, 
+                                        instruction5, instruction6, instruction7, instruction8, instruction9,
+                                        instruction10, instruction11); 
         instructions.setSpacing(5);
         instrcutionsAndStart.setLeft(instructions);
+        instructions.setAlignment(Pos.CENTER_LEFT);
         instrcutionsAndStart.setCenter(startButton);
         
         //add the CSS styling
@@ -85,6 +91,8 @@ public class WelcomePane extends MainViewerPane
         instruction7.getStyleClass().add("instructions"); 
         instruction8.getStyleClass().add("instructions");
         instruction9.getStyleClass().add("instructions");
+        instruction10.getStyleClass().add("instructions");
+        instruction11.getStyleClass().add("instructions");
         
         instrcutionsAndStart.getStyleClass().add("instructionsAndStart");
         

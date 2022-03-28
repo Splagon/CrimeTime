@@ -108,11 +108,12 @@
 .instructionsTitle {
     -fx-font: 24px "Ariel";
     -fx-underline: true;
+    -fx-wrap-text: true;
+    -fx-text-alignment: justify;
 }
 
 .instructions {
     -fx-font: 18px "Ariel";
-    -fx-spacing: 5;
     -fx-wrap-text: true;
     -fx-text-alignment: justify;
 }
