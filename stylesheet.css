@@ -15,12 +15,12 @@
 }
 
 .label {
-        -fx-font: 16px "Ariel";
+        -fx-font: 18px "Ariel";
         -fx-text-alignment: center;
 }
 
 .labelSmall {
-        -fx-font: 9px "Ariel";
+        -fx-font: 10px "Ariel";
         -fx-text-alignment: center;
 }
 
@@ -32,8 +32,13 @@
         -fx-alignment: center;
 }
 
-.statslabels {
+.statsLabelTitle {
     -fx-font-weight: bold; 
+    -fx-font: 24px "Ariel";
+}
+
+.statsLabels {
+    -fx-font: 22px "Ariel";
 }
 
 .boroughButton {
@@ -62,7 +67,7 @@
 
 .propertyViewerInfoLabels {
     -fx-padding: 10px;
-    -fx-font: 12px "Ariel";
+    -fx-font: 14px "Ariel";
 }
 
 // -------------- main ---------------------
@@ -87,7 +92,7 @@
 }
 
 .smallWindowButtons {
-    -fx-font: 14px "Ariel";
+    -fx-font: 15px "Ariel";
     -fx-background-color: lavender;
     -fx-border-color: indigo;
 }
@@ -189,7 +194,7 @@
 
 // -------------- map scene ---------------------
 .tooltip {
-    -fx-font: 14px "Ariel";
+    -fx-font: 16px "Ariel";
     
 }
 
@@ -245,11 +250,11 @@
     -fx-background-color : floralwhite;
 }
 #propertyLabel {
-    -fx-font: 20px "Ariel";
+    -fx-font: 24px "Ariel";
     -fx-font-weight: bold;
 }
 .subLabels  {
-    -fx-font: 15px "Ariel";
+    -fx-font: 18px "Ariel";
     -fx-font-weight: bold;
 }
 // ------------- Booking Window --------------------
@@ -262,13 +267,13 @@
 }
 
 .bookingListingLabels {
-    -fx-font: 16px "Ariel";
+    -fx-font: 18px "Ariel";
 }
 
 // ------------- Booking Viewer --------------------
 
 // ------------- Booking List --------------------
 # bookingList {
-    -fx-font: 15px "Ariel";
+    -fx-font: 18px "Ariel";
     -fx-font-weight: bold;
 }

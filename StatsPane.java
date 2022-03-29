@@ -198,14 +198,21 @@ public class StatsPane extends MainViewerPane
         priceSD.getStyleClass().add("statsvbox");
         highAvgReview.getStyleClass().add("statsvbox");
         
-        reviewInfo.getStyleClass().add("statslabels"); 
-        availableInfo.getStyleClass().add("statslabels"); 
-        noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
-        expensiveInfo.getStyleClass().add("statslabels"); 
-        priceSDInfo.getStyleClass().add("statslabels"); 
-        highAvgReviewInfo.getStyleClass().add("statslabels");
+        title.getStyleClass().add("windowTitle"); 
+        reviewTitle.getStyleClass().add("statsLabelTitle"); 
+        availableTitle.getStyleClass().add("statsLabelTitle"); 
+        noHomeAndApartmentsTitle.getStyleClass().add("statsLabelTitle");
+        expensiveTitle.getStyleClass().add("statsLabelTitle"); 
+        priceSDTitle.getStyleClass().add("statsLabelTitle"); 
+        highAvgReviewTitle.getStyleClass().add("statsLabelTitle");
         
-        title.getStyleClass().add("windowTitle");
+        reviewInfo.getStyleClass().add("statsLabels"); 
+        availableInfo.getStyleClass().add("statsLabels"); 
+        noHomeAndApartmentsInfo.getStyleClass().add("statsLabels"); 
+        expensiveInfo.getStyleClass().add("statsLabels"); 
+        priceSDInfo.getStyleClass().add("statsLabels"); 
+        highAvgReviewInfo.getStyleClass().add("statsLabels");
+        
         leftButtonVBox.getStyleClass().add("statsWindowAndButtons");
         rightButtonVBox.getStyleClass().add("statsWindowAndButtons");
         leftStatsButton.getStyleClass().add("smallWindowButtons");

@@ -146,8 +146,8 @@ public class MapPane extends MainViewerPane
                    row.setMinWidth(newWidth);
                    row.setMaxWidth(newWidth);
                 
-                //adds an offset rectangle at the start of the row every other
-                //line which is half the size of a hexagon
+                // adds an offset rectangle at the start of the row every other
+                // line which is half the size of a hexagon
                 if (m % 2 == 0) {
                         createInsetRectangle(hexagonWidth, row, gapSize);
                 }
@@ -155,7 +155,8 @@ public class MapPane extends MainViewerPane
                 //columns
                 for (int n = 0; n < mapPositions[m].length; n++) 
                 {
-                    
+                    // adds an invisible spacer to the row if there is no borough in
+                    // that location.
                     if (mapPositions[m][n] == null) 
                     {
                         StackPane rowSpace = new StackPane();
@@ -163,29 +164,33 @@ public class MapPane extends MainViewerPane
                         rowSpace.getChildren().add(emptySpace);
                         row.getChildren().add(rowSpace);
                     }
+                    // if there is a borough in that location, add a borough to that location
                     else
                     {
                         StackPane tempRowSpace = new StackPane();
                         
                         String boroughName = mapPositions[m][n];
                         
+                        // creates the map button
                         MapButton boroughButton = new MapButton(boroughName);
                             boroughButton.setShape(new Circle(hexagonWidth));
                             boroughButton.setMinSize(hexagonWidth*0.97, hexagonWidth*0.85);
                             boroughButton.setFont(new Font(boroughButton.getFont().getName(), 0.21 * hexagonWidth));
                             boroughButton.setOnAction(e -> openPropertyViewer(boroughButton.getBoroughName()));
-                            
+                        
+                        // creates the black hexagon outline
                         ImageView hexagonOutline = new ImageView(new Image("/hexagonOutline.png", true));
                             hexagonOutline.setFitWidth(hexagonWidth);
                             hexagonOutline.setFitHeight(hexagonWidth);
                         
+                        // creates the infill for the hexagon with the correct colour
                         ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
                         ImageView hexagonFilled = setHexagonFilledColour(hexagonFilledImage, boroughButton.getBoroughName(), (int) hexagonWidth, noOfPropertiesStats);
                             
                         tempRowSpace.getChildren().addAll(hexagonFilled, hexagonOutline, boroughButton);
                         
+                        // adds the correct styling and adds the animation to the stackpane.
                         final StackPane rowSpace = new StackPane();
-                        
                         if (StatisticsData.getPropertiesFromBorough(boroughName, minPrice, maxPrice).size() > 0)
                         {
                             Animations animations = new Animations();
@@ -194,6 +199,7 @@ public class MapPane extends MainViewerPane
                         }
                         else
                         {
+                            // no boroughs in property
                             boroughButton.getStyleClass().add("boroughButtonEmpty");
                         }
                         
@@ -202,24 +208,34 @@ public class MapPane extends MainViewerPane
                     }
                 }
                 
-                //adds an offset rectangle at the end of the row every other
-                //line which is half the size of a hexagon
+                // adds an offset rectangle at the end of the row every other
+                // line which is half the size of a hexagon
                 if (m % 2 == 1) 
                 {
                    createInsetRectangle(hexagonWidth, row, gapSize);
                 }
-                             
+                
+                // sets the height of the row to align with the other rows
                 final double heightOffset = m * (0.75 * hexagonWidth + gapSize);
                 
                 AnchorPane.setTopAnchor(row, heightOffset);
                 
                 mapView.getChildren().add(row);
             }
-            
+        
+        // updates the stats if the stats viewer is open
         updateStats();
     }
     
-    private void createInsetRectangle(double hexagonWidth, FlowPane row, double gapSize) {
+    /**
+     * Creates a transparent inset spacer half the size of a normal hexagon
+     * 
+     * @param hexagonWidth The width of a hexagon
+     * @param row The row to add the inset to
+     * @param gapSize The size of the gaps between the hexagons
+     */
+    private void createInsetRectangle(double hexagonWidth, FlowPane row, double gapSize) 
+    {
         StackPane rowSpace = new StackPane();
         
         final int insetSpacerWidth = (int) ((hexagonWidth - gapSize) / 2.0);
@@ -229,17 +245,36 @@ public class MapPane extends MainViewerPane
         row.getChildren().add(rowSpace);
     }
     
-    private Rectangle createSpacerRectangle(int widthHeight) {
+    /**
+     * Creates a transparent rectangle of the size entered to be used as a spacer
+     * 
+     * @param widthHeight The width and height of the rectangle.
+     * 
+     * @return The rectangle to be used as a spacer
+     */
+    private Rectangle createSpacerRectangle(int widthHeight) 
+    {
         Rectangle spacerRectangle = new Rectangle(widthHeight, widthHeight);
         spacerRectangle.setFill(Color.TRANSPARENT);
         return spacerRectangle;
     }
     
-    private void openPropertyViewer(String boroughName) {
-        try {
+    /**
+     * Opens the property viewer for that borough and shows properties within
+     * the selected price range.
+     * 
+     * @param boroughName The name of the borough to show the properties of.
+     */
+    private void openPropertyViewer(String boroughName) 
+    {
+        // opens the property viewer if there are properties within the borough
+        try 
+        {
             PropertyViewer propertyViewer = new PropertyViewer(boroughName, mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice(), null);  
         }
-        catch (IndexOutOfBoundsException e) {
+        // otherwise an warning alert is shown
+        catch (IndexOutOfBoundsException e) 
+        {
             Alert alert = new Alert(AlertType.WARNING);
                 alert.setHeaderText("No Available Properties in " + boroughName);
                 alert.setContentText("Unfortunately, there are no available properties in this\nborough within your price range. Welcome to the London\nhousing market...");
@@ -247,7 +282,18 @@ public class MapPane extends MainViewerPane
         }
     }
     
-    private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) {
+    /**
+     * Applies and adjusts the colour of the hexagon dependent on the borough's properties
+     * 
+     * @param hexagon The hexagon image to adjust the colour of.
+     * @param boroughName
+     * @param heightWidth
+     * @param noOfPropertiesStats
+     * 
+     * @return
+     */
+    private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) 
+    {
         ColorAdjust shader = StatisticsData.getBoroughMapColour(boroughName, noOfPropertiesStats);
             
         hexagon.setFitWidth(heightWidth);
