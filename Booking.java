@@ -43,7 +43,8 @@ public class Booking
     /**
      * @return The period length between to dates in days.
      */
-    public static long calculateDuration(LocalDate checkInDate, LocalDate checkOutDate) {
+    public static long calculateDuration(LocalDate checkInDate, LocalDate checkOutDate) 
+    {
         long days = checkInDate.until(checkOutDate, ChronoUnit.DAYS);
         return days;
     }
@@ -52,7 +53,8 @@ public class Booking
      * Convert booking fields into an array of strings.
      * @return Array of strings containing porperty id, grand total, check in and check out date.
      */
-    public String[] convertToCSV() {
+    public String[] convertToCSV() 
+    {
         String[] line = new String[4];
         
         line[0] = property.getId();
@@ -66,41 +68,48 @@ public class Booking
     /**
      * @return The grand total
      */
-    public int getGrandTotal() {
+    public int getGrandTotal() 
+    {
         return grandTotal;
     }
     
     /**
      * @return The property concerned by the booking.
      */
-    public AirbnbListing getProperty() {
+    public AirbnbListing getProperty() 
+    {
         return property;
     }
+    
     /**
      * @return The property ID 
      */
-    public String getPropertyID() {
+    public String getPropertyID() 
+    {
         return property.getId();
     }
     
     /**
      * @return The check In date 
      */
-    public LocalDate getCheckInDate() {
+    public LocalDate getCheckInDate() 
+    {
         return checkIn;
     }
     
     /**
      * @return The check out date
      */
-    public LocalDate getCheckOutDate() {
+    public LocalDate getCheckOutDate() 
+    {
         return checkOut;
     }
     
     /**
      * @return The duration of the stay
      */
-    public long getDuration() {
+    public long getDuration() 
+    {
         return duration;
     }
 }

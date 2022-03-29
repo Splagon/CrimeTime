@@ -22,23 +22,28 @@ public class Borough
         this.listingsInBorough = listingsInBorough;
     }
     
-    public String getName() {
+    public String getName() 
+    {
         return boroughName;
     }
     
-    public ArrayList<AirbnbListing> getBoroughListings() {
+    public ArrayList<AirbnbListing> getBoroughListings() 
+    {
         return listingsInBorough;
     }
     
-    public void addListingToBorough(AirbnbListing listing) {
+    public void addListingToBorough(AirbnbListing listing) 
+    {
         listingsInBorough.add(listing);
     }
     
-    public void addListingToBorough(ArrayList<AirbnbListing> listings) {
+    public void addListingToBorough(ArrayList<AirbnbListing> listings) 
+    {
         listingsInBorough.addAll(listings);
     }
     
-    public int getNoOfPropertiesInBorough() {
+    public int getNoOfPropertiesInBorough() 
+    {
         return listingsInBorough.size();
     }
     
