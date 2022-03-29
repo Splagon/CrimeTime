@@ -60,43 +60,44 @@ public class WelcomePane extends MainViewerPane
         
         //layout of the whole window
         VBox window = new VBox();
-        VBox instructions = new VBox();
-        instructions.setPrefSize(1000, 400);
-        BorderPane instrcutionsAndStart = new BorderPane();
+            VBox instructions = new VBox();
+                instructions.setPrefSize(1000, 400);
+                instructions.setSpacing(5);
+                instructions.setAlignment(Pos.CENTER_LEFT);
+                instructions.getChildren().addAll(instructionsTitle, instruction1, instruction2, instruction3, instruction4, 
+                                            instruction5, instruction6, instruction7, instruction8, instruction9,
+                                            instruction10, instruction11);
+            
+            BorderPane instrcutionsAndStart = new BorderPane();
+                instrcutionsAndStart.setLeft(instructions);
+                instrcutionsAndStart.setCenter(startButton);
 
-        //adding elements to the window
-        window.getChildren().addAll(title, instrcutionsAndStart);
-        window.setAlignment(Pos.CENTER);
-        instructions.getChildren().addAll(instructionsTitle, instruction1, instruction2, instruction3, instruction4, 
-                                        instruction5, instruction6, instruction7, instruction8, instruction9,
-                                        instruction10, instruction11); 
-        instructions.setSpacing(5);
-        instrcutionsAndStart.setLeft(instructions);
-        instructions.setAlignment(Pos.CENTER_LEFT);
-        instrcutionsAndStart.setCenter(startButton);
-        
-        //add the CSS styling
-        window.getStylesheets().add("stylesheet.css");
-        
-        title.getStyleClass().add("windowTitle");
-        
-        instructionsTitle.getStyleClass().add("instructionsTitle"); 
-        
-        instruction1.getStyleClass().add("instructions"); 
-        instruction2.getStyleClass().add("instructions"); 
-        instruction3.getStyleClass().add("instructions"); 
-        instruction4.getStyleClass().add("instructions"); 
-        instruction5.getStyleClass().add("instructions"); 
-        instruction6.getStyleClass().add("instructions"); 
-        instruction7.getStyleClass().add("instructions"); 
-        instruction8.getStyleClass().add("instructions");
-        instruction9.getStyleClass().add("instructions");
-        instruction10.getStyleClass().add("instructions");
-        instruction11.getStyleClass().add("instructions");
-        
-        instrcutionsAndStart.getStyleClass().add("instructionsAndStart");
-        
-        startButton.getStyleClass().add("startButton");
+            //adding elements to the window
+            window.getChildren().addAll(title, instrcutionsAndStart);
+            window.setAlignment(Pos.CENTER);
+            
+            //add the CSS styling
+            window.getStylesheets().add("stylesheet.css");
+            
+            title.getStyleClass().add("windowTitle");
+            
+            instructionsTitle.getStyleClass().add("instructionsTitle"); 
+            
+            instruction1.getStyleClass().add("instructions"); 
+            instruction2.getStyleClass().add("instructions"); 
+            instruction3.getStyleClass().add("instructions"); 
+            instruction4.getStyleClass().add("instructions"); 
+            instruction5.getStyleClass().add("instructions"); 
+            instruction6.getStyleClass().add("instructions"); 
+            instruction7.getStyleClass().add("instructions"); 
+            instruction8.getStyleClass().add("instructions");
+            instruction9.getStyleClass().add("instructions");
+            instruction10.getStyleClass().add("instructions");
+            instruction11.getStyleClass().add("instructions");
+            
+            instrcutionsAndStart.getStyleClass().add("instructionsAndStart");
+            
+            startButton.getStyleClass().add("startButton");
     
         welcomePane = window;
     }

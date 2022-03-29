@@ -43,7 +43,7 @@ public class PriceSelectorPane extends MainViewerPane
         
         //adds the min max box and the confirm button creeated in mainviewer
         HBox minMaxBox = mainViewer.createMinMaxBox();
-        minMaxBox.setSpacing(5);
+            minMaxBox.setSpacing(5);
         
         Button confirm = (Button) minMaxBox.getChildren().get(2);
         
@@ -52,27 +52,27 @@ public class PriceSelectorPane extends MainViewerPane
         
         //Layout of the window
         BorderPane window = new BorderPane();
-        VBox titleAndInstruction = new VBox();
-        
-        //Adding elements to the window
-        window.setCenter(minMaxBox);
-        window.setTop(titleAndInstruction);
-
-        titleAndInstruction.getChildren().addAll(title, instruction);
-        
-        //Creating the scene and adding the css styling
-        title.getStyleClass().add("windowTitle");
-        
-        instruction.getStyleClass().add("priceInstruction");
-        
-        titleAndInstruction.getStyleClass().add("priceTitleAndTitle");
-        
-        confirm.getStyleClass().add("priceConfirm");
-        
-        minBox.getStyleClass().add("priceMinMaxBoxes");
-        maxBox.getStyleClass().add("priceMinMaxBoxes");
-        
-        minMaxBox.getStyleClass().add("priceMinMaxBox");
+            VBox titleAndInstruction = new VBox();
+            
+            //Adding elements to the window
+            window.setCenter(minMaxBox);
+            window.setTop(titleAndInstruction);
+    
+            titleAndInstruction.getChildren().addAll(title, instruction);
+            
+            //Creating the scene and adding the css styling
+            title.getStyleClass().add("windowTitle");
+            
+            instruction.getStyleClass().add("priceInstruction");
+            
+            titleAndInstruction.getStyleClass().add("priceTitleAndTitle");
+            
+            confirm.getStyleClass().add("priceConfirm");
+            
+            minBox.getStyleClass().add("priceMinMaxBoxes");
+            maxBox.getStyleClass().add("priceMinMaxBoxes");
+            
+            minMaxBox.getStyleClass().add("priceMinMaxBox");
         
         priceSelectorPane = window;
     }

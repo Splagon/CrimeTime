@@ -88,8 +88,10 @@ public class Animations
             
             ParallelTransition parallelTransitionOne = new ParallelTransition();
                 parallelTransitionOne.getChildren().addAll(rotateEffect, scaleEffect);
+                
                 node.setOnMouseExited(e -> parallelTransitionOne.setOnFinished(ex -> spinAndGrowOut(time, node)));
                 parallelTransitionOne.setOnFinished(e -> node.setOnMouseExited(ex -> spinAndGrowOut(time, node)));
+                
                 parallelTransitionOne.play();
         }
     }

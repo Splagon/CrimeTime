@@ -36,8 +36,10 @@ public class BookingWindow extends Stage
         openBookingWindow(property);
     }
     
-    public void openBookingWindow(AirbnbListing listing) {
- 
+    public void openBookingWindow(AirbnbListing listing) 
+    {
+        ArrayList<Booking> bookingsAtProperty = bookingsAtProperty(listing);
+        
         bookingStage = new Stage();
         bookingStage.setTitle("Booking Window");
         
@@ -69,7 +71,7 @@ public class BookingWindow extends Stage
                     checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights()));
                     gridPane.add(checkOut, 1, 1);
                     
-                Label grandTotalLabel = new Label("The price for your stay is: £" + listing.getPrice());
+                Label grandTotalLabel = new Label("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue()));
                     checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights())));
                     checkOut.setOnAction(e -> grandTotalLabel.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
                     
@@ -80,31 +82,60 @@ public class BookingWindow extends Stage
                                 @Override
                                 public void updateItem(LocalDate item, boolean empty) {
                                     super.updateItem(item, empty);
-                                    if (item.isBefore(checkIn.getValue())) {
+                                    if (item.isBefore(checkIn.getValue()))
+                                    {
                                         setDisable(true);
                                         setStyle("-fx-background-color: #ffc0cb;");
-                                    } else if(item.isAfter(checkIn.getValue().minusDays(1)) && item.isBefore(checkIn.getValue().plusDays(listing.getMinimumNights()))){
+                                    } 
+                                    else if(item.isAfter(checkIn.getValue().minusDays(1)) && item.isBefore(checkIn.getValue().plusDays(listing.getMinimumNights())))
+                                    {
                                         setDisable(true);
                                         setStyle("-fx-background-color: #ffa07a;");
-                                    } else if (item.isAfter(checkIn.getValue().plusDays(listing.getMinimumNights()).minusDays(1)) && item.isBefore(checkOut.getValue())){
+                                    } 
+                                    else if (item.isAfter(checkIn.getValue().plusDays(listing.getMinimumNights()).minusDays(1)) && item.isBefore(checkOut.getValue()))
+                                    {
                                         setStyle("-fx-background-color: #90ee90;");
+                                    }
+                                    
+                                    for (Booking booking : bookingsAtProperty)
+                                    {
+                                        if (item.isAfter(booking.getCheckInDate().minusDays(1)) && item.isBefore(booking.getCheckOutDate().plusDays(1)))
+                                        {
+                                            setDisable(true);
+                                            setStyle("-fx-background-color: #ffc0cb;");
+                                        }
                                     }
                                 }      
                             };
                         }
                     };
                     
-                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() {
+                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() 
+                    {
                         @Override
-                        public DateCell call(final DatePicker datePicker) {
-                            return new DateCell() {
+                        public DateCell call(final DatePicker datePicker) 
+                        {
+                            return new DateCell() 
+                            {
                                 @Override
-                                public void updateItem(LocalDate item, boolean empty) {
+                                public void updateItem(LocalDate item, boolean empty) 
+                                {
                                     super.updateItem(item, empty);
-                                    if (item.isBefore(LocalDate.now())) {
+                                    
+                                    if (item.isBefore(LocalDate.now())) 
+                                    {
                                         setDisable(true);
                                         setStyle("-fx-background-color: #ffc0cb;");
-                                    }  
+                                    } 
+                                    
+                                    for (Booking booking : bookingsAtProperty)
+                                    {
+                                        if (item.isAfter(booking.getCheckInDate().minusDays(1)) && item.isBefore(booking.getCheckOutDate().plusDays(1)))
+                                        {
+                                            setDisable(true);
+                                            setStyle("-fx-background-color: #ffc0cb;");
+                                        }
+                                    }
                                 }      
                             };
                         }
@@ -145,6 +176,21 @@ public class BookingWindow extends Stage
         bookingStage.show();
     }
     
+    private ArrayList<Booking> bookingsAtProperty(AirbnbListing listing)
+    {
+        ArrayList<Booking> bookingsAtProperties = new ArrayList<Booking>();
+        
+        for (Booking booking : DataHandler.getBookingList())
+        {
+            if (booking.getPropertyID().equals(listing.getId()))
+            {
+                bookingsAtProperties.add(booking);
+            }
+        }
+        
+        return bookingsAtProperties;
+    }
+    
     private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) {
         return property.getPrice()*(int)(Booking.calculateDuration(checkIn, checkOut));
     }
@@ -159,6 +205,31 @@ public class BookingWindow extends Stage
             MainViewer mainViewer = (MainViewer) parent;
             mainViewer.refreshPane();
         }
+    
+        Stage confirmationStage = new Stage();
+        confirmationStage.setTitle("Description!");
+        
+        VBox root = new VBox();
+        
+            Label confirmationLabel = new  Label("Thank you for booking with us !");
+            confirmationLabel.getStyleClass().add("subLabels");
+            
+            Button closeButton = new Button("Close");
+                closeButton.setOnAction(e -> confirmationStage.close());
+                
+        root.getChildren().addAll(confirmationLabel, closeButton);
+        root.setSpacing(30);
+        root.setAlignment(Pos.CENTER);
+        root.getStyleClass().add("rootPV");
+        
+        int width = 300;
+        
+        Scene scene = new Scene(root,width,100);
+        scene.getStylesheets().add("stylesheet.css");
+        confirmationStage.setScene(scene);
+            confirmationStage.setX(this.getX() + (this.getWidth() - width)/2);
+            confirmationStage.setY(this.getY() + this.getHeight()/2);
+        confirmationStage.show();
     }
     
     private void goBackAction() {

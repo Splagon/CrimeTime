@@ -74,7 +74,6 @@ public class MainViewer extends Stage
         highestPrice = StatisticsData.getHighestPrice();
         
         root = new BorderPane();
-        //Animations.spin(root);
         
         makePaneSwitcherPane();
         
@@ -85,7 +84,7 @@ public class MainViewer extends Stage
         this.setMinWidth(SCENE_WIDTH);
         this.setMinHeight(SCENE_HEIGHT);
         
-        //sets the intital pane to the first Pane
+        //sets the intital pane to the welcome Pane
         setPane(0);
         
         mainScene.getStylesheets().add("stylesheet.css");
@@ -165,7 +164,8 @@ public class MainViewer extends Stage
         index--;
         
         //allows for wrap around
-        if (index < 0) {
+        if (index < 0) 
+        {
             index = list.size() - 1;
         }
         
@@ -186,7 +186,8 @@ public class MainViewer extends Stage
         index++;
         
         //allows for wrap around
-        if (index >= list.size()) {
+        if (index >= list.size()) 
+        {
             index = 0;
         }
         
@@ -483,7 +484,7 @@ public class MainViewer extends Stage
                 confirm.setDisable(true);
                 Alert alert = new Alert(AlertType.WARNING);
                     alert.setHeaderText("Your min price must be less than or equal to your max price!");
-                    alert.setContentText("Unfortunately, your min price is not less than your max price!");
+                    alert.setContentText("Unfortunately, your min price is not less than your max price! In order to use the confirm button and use view properties you must have a valid min and max price.");
                 alert.show();
                 return;
             }
