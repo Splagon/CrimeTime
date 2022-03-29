@@ -205,6 +205,31 @@ public class BookingWindow extends Stage
             MainViewer mainViewer = (MainViewer) parent;
             mainViewer.refreshPane();
         }
+    
+        Stage confirmationStage = new Stage();
+        confirmationStage.setTitle("Description!");
+        
+        VBox root = new VBox();
+        
+            Label confirmationLabel = new  Label("Thank you for booking with us !");
+            confirmationLabel.getStyleClass().add("subLabels");
+            
+            Button closeButton = new Button("Close");
+                closeButton.setOnAction(e -> confirmationStage.close());
+                
+        root.getChildren().addAll(confirmationLabel, closeButton);
+        root.setSpacing(30);
+        root.setAlignment(Pos.CENTER);
+        root.getStyleClass().add("rootPV");
+        
+        int width = 300;
+        
+        Scene scene = new Scene(root,width,100);
+        scene.getStylesheets().add("stylesheet.css");
+        confirmationStage.setScene(scene);
+            confirmationStage.setX(this.getX() + (this.getWidth() - width)/2);
+            confirmationStage.setY(this.getY() + this.getHeight()/2);
+        confirmationStage.show();
     }
     
     private void goBackAction() {
