@@ -14,7 +14,7 @@ public class Launcher extends Application
      * The start method is the main entry point for every JavaFX application. 
      * It is called when the system is ready for the application to begin running.
      *
-     * @param  stage the primary stage for this application.
+     * @param stage the primary stage for this application.
      */
     public void start(Stage stage)
     {
