@@ -76,6 +76,41 @@ public class BookingWindow extends Stage
                     checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights())));
                     checkOut.setOnAction(e -> grandTotalLabel.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
                     
+                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() 
+                    {
+                        @Override
+                        public DateCell call(final DatePicker datePicker) 
+                        {
+                            return new DateCell() 
+                            {
+                                @Override
+                                public void updateItem(LocalDate item, boolean empty) 
+                                {
+                                    super.updateItem(item, empty);
+                                    
+                                    if (item.isBefore(LocalDate.now())) 
+                                    {
+                                        setDisable(true);
+                                        setStyle("-fx-background-color: #ffc0cb;");
+                                    } 
+                                    
+                                    for (Booking booking : bookingsAtProperty)
+                                    {
+                                        LocalDate checkInDate = booking.getCheckInDate();
+                                        LocalDate checkoutDate = booking.getCheckOutDate();
+                                        int minNights = booking.getProperty().getMinimumNights();
+                                        
+                                        if (item.isAfter(checkInDate.minusDays(minNights + 1)) && item.isBefore(checkoutDate))
+                                        {
+                                            setDisable(true);
+                                            setStyle("-fx-background-color: #ffc0cb;");
+                                        }
+                                    }
+                                }      
+                            };
+                        }
+                    };
+                    
                     final Callback<DatePicker, DateCell> dayCellFactoryOut = new Callback<DatePicker, DateCell>() {
                         @Override
                         public DateCell call(final DatePicker datePicker) {
@@ -100,43 +135,14 @@ public class BookingWindow extends Stage
                                     
                                     for (Booking booking : bookingsAtProperty)
                                     {
-                                        if (item.isAfter(booking.getCheckInDate().minusDays(1)) && item.isBefore(booking.getCheckOutDate().plusDays(1)))
+                                        LocalDate checkInDate = booking.getCheckInDate();
+                                        LocalDate checkOutDate = booking.getCheckOutDate();
+                                        int minNights = booking.getProperty().getMinimumNights();
+
+                                        if (item.isAfter(checkInDate.minusDays(1)) && item.isBefore(checkOutDate))
                                         {
                                             setDisable(true);
                                             setStyle("-fx-background-color: #ffc0cb;");
-                                            setTooltip(new Tooltip("Property already booked for these dates"));
-                                        }
-                                    }
-                                }      
-                            };
-                        }
-                    };
-                    
-                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() 
-                    {
-                        @Override
-                        public DateCell call(final DatePicker datePicker) 
-                        {
-                            return new DateCell() 
-                            {
-                                @Override
-                                public void updateItem(LocalDate item, boolean empty) 
-                                {
-                                    super.updateItem(item, empty);
-                                    
-                                    if (item.isBefore(LocalDate.now())) 
-                                    {
-                                        setDisable(true);
-                                        setStyle("-fx-background-color: #ffc0cb;");
-                                    } 
-                                    
-                                    for (Booking booking : bookingsAtProperty)
-                                    {
-                                        if (item.isAfter(booking.getCheckInDate().minusDays(1)) && item.isBefore(booking.getCheckOutDate().plusDays(1)))
-                                        {
-                                            setDisable(true);
-                                            setStyle("-fx-background-color: #ffc0cb;");
-                                            setTooltip(new Tooltip("Property already booked for these dates"));
                                         }
                                     }
                                 }      
