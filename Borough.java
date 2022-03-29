@@ -2,7 +2,7 @@ import java.util.Comparator;
 import java.util.ArrayList;
 
 /**
- * Write a description of class Borough here.
+ * This class handles all the properties in a borough
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
