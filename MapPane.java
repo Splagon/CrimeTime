@@ -85,18 +85,6 @@ public class MapPane extends MainViewerPane
             
             window.setCenter(mapView);
                 window.setAlignment(mapView, Pos.CENTER);
-
-        infoPane.getChildren().addAll(titleLabel, key, stats);
-        infoPane.setPadding(new Insets(10, 20, 10, 10));
-        infoPane.setSpacing(15);
-        
-        priceChanger.getChildren().add(minMaxBox);
-        priceChanger.setPadding(new Insets(10, 0, 0, 0));
-        
-        window.setLeft(infoPane);
-        
-        window.setCenter(mapView);
-            window.setAlignment(mapView, Pos.CENTER);
         
         mapPane = window;
     }
