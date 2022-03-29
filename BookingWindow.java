@@ -14,7 +14,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Write a description of class BookingWindow here.
+ * 
+ * Creates the booking window. The name of the property is shown at the top,
+ * then two date pickers are used in the center of the pane and finally a 
+ * "confirm booking" and "go back" buttons have been added to the bottom. 
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
@@ -23,19 +26,48 @@ import java.util.Iterator;
 public class BookingWindow extends Stage
 {
     private Stage bookingStage;
+    // holds an instance of the stage the booking window is opened from.
     private Stage parent;
+    // Property that is being booked. 
     private AirbnbListing property;
-    private MainViewer mainViewer;
-    private boolean isUpdating;
     
+    /**
+     * Constructor for Booking Window.
+     */
     public BookingWindow (AirbnbListing property, Stage parent) 
     {
         this.property = property;
-        this.mainViewer = mainViewer;
         this.parent = parent;
         openBookingWindow(property);
     }
     
+    /**
+     * Retrieves all the bookings of a particular property.
+     * 
+     * @AirbnbListing listing The property whose bookings are retrieved.
+     */
+    private ArrayList<Booking> bookingsAtProperty(AirbnbListing listing)
+    {
+        ArrayList<Booking> bookingsAtProperties = new ArrayList<Booking>();
+        
+        for (Booking booking : DataHandler.getBookingList())
+        {
+            if (booking.getPropertyID().equals(listing.getId()))
+            {
+                bookingsAtProperties.add(booking);
+            }
+        }
+        
+        return bookingsAtProperties;
+    }
+    
+    /**
+     * Creates the booking window. The name of the property is shown at the top,
+     * then two date pickers are used in the center of the pane and finally a 
+     * "confirm booking" and "go back" buttons have been added to the bottom. 
+     * 
+     * @param listing The property that is currently being booked.
+     */
     public void openBookingWindow(AirbnbListing listing) 
     {
         ArrayList<Booking> bookingsAtProperty = bookingsAtProperty(listing);
@@ -68,12 +100,11 @@ public class BookingWindow extends Stage
                 Label checkOutlabel = new Label("Check-Out Date:");
                     gridPane.add(checkOutlabel, 1, 0);
                 DatePicker checkOut = new DatePicker();
+                    // we set the initial date of the checkout date picker to the day after the minimum nights of the property.
                     checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights()));
                     gridPane.add(checkOut, 1, 1);
-                    
-                Label grandTotalLabel = new Label("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue()));
-                    checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights())));
-                    checkOut.setOnAction(e -> grandTotalLabel.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
+                // Each time the check in date is modified, we set the check out date to: check in date + Min nights 
+                checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights())));
                     
                     final Callback<DatePicker, DateCell> dayCellFactoryOut = new Callback<DatePicker, DateCell>() {
                         @Override
@@ -141,8 +172,13 @@ public class BookingWindow extends Stage
                         }
                     };
                     
+                    // adding the behavior of each date picker.
                     checkIn.setDayCellFactory(dayCellFactoryIn);
                     checkOut.setDayCellFactory(dayCellFactoryOut);
+                    
+                    Label grandTotalLabel = new Label("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue()));
+                        // Each time a check out date has been selected, we update the price of the stay 
+                        checkOut.setOnAction(e -> grandTotalLabel.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
                     
               vbox.setAlignment(Pos.CENTER);
               vbox.getChildren().addAll(gridPane, grandTotalLabel);
@@ -170,31 +206,30 @@ public class BookingWindow extends Stage
         scene.getStylesheets().add("stylesheet.css");
             
         bookingStage.setScene(scene);
-        
+        // Makes the parent window unclickable when bookingStage is open.
         bookingStage.initModality(Modality.WINDOW_MODAL);
         bookingStage.initOwner(parent);
         bookingStage.show();
     }
     
-    private ArrayList<Booking> bookingsAtProperty(AirbnbListing listing)
-    {
-        ArrayList<Booking> bookingsAtProperties = new ArrayList<Booking>();
-        
-        for (Booking booking : DataHandler.getBookingList())
-        {
-            if (booking.getPropertyID().equals(listing.getId()))
-            {
-                bookingsAtProperties.add(booking);
-            }
-        }
-        
-        return bookingsAtProperties;
-    }
-    
+    /**
+     * Update the total amount of the user's stay, depending on its check-in and out.
+     * 
+     * @param checkIn The date the users checks-in.
+     * @param checkOut The date the users checks-out.
+     * @return The duration in days between two dates
+     */
     private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) {
         return property.getPrice()*(int)(Booking.calculateDuration(checkIn, checkOut));
     }
     
+    /**
+     * A new Booking has been made. Adds it to booking list, closes booking stage and shows confirmation.
+     * 
+     * @param grandTotal The price of the stay.
+     * @param checkinDate The check-In date selected by the user.
+     * @param checkoutDate The check-Out date selected by the user.
+    */
     private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
         bookingStage.close();
         
@@ -204,14 +239,27 @@ public class BookingWindow extends Stage
         if (parent.getClass().equals(MainViewer.class)) {
             MainViewer mainViewer = (MainViewer) parent;
             mainViewer.refreshPane();
+            showConfirmationStage(true);
+        }else{
+            showConfirmationStage(false);
         }
+    }
     
+    /**
+     * Displays confimation window. 
+     */
+    private void showConfirmationStage(boolean isEdit) {
         Stage confirmationStage = new Stage();
-        confirmationStage.setTitle("Description!");
+        confirmationStage.setTitle("Confirmation Window");
         
         VBox root = new VBox();
         
-            Label confirmationLabel = new  Label("Thank you for booking with us !");
+            Label confirmationLabel;
+            if(isEdit){
+                confirmationLabel = new  Label("Your modifications have been taken \n into consideration.");
+            }else{
+                confirmationLabel = new  Label("Thank you for booking with us !");
+            }
             confirmationLabel.getStyleClass().add("subLabels");
             
             Button closeButton = new Button("Close");
@@ -222,16 +270,19 @@ public class BookingWindow extends Stage
         root.setAlignment(Pos.CENTER);
         root.getStyleClass().add("rootPV");
         
-        int width = 300;
+        int width = 400;
         
-        Scene scene = new Scene(root,width,100);
+        Scene scene = new Scene(root,width,130);
         scene.getStylesheets().add("stylesheet.css");
+            confirmationStage.setX(parent.getX() + (parent.getWidth() - width)/2);
+            confirmationStage.setY(parent.getY() + parent.getHeight()/2);
         confirmationStage.setScene(scene);
-            confirmationStage.setX(this.getX() + (this.getWidth() - width)/2);
-            confirmationStage.setY(this.getY() + this.getHeight()/2);
         confirmationStage.show();
     }
     
+    /**
+     * Closes the booking window.
+     */
     private void goBackAction() {
         bookingStage.close();
     }
