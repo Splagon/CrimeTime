@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-
 /**
  * The MainViewer is one of three major windows of the application. The MainViewer
  * contains the main panels involved in the project and is first window to be shown

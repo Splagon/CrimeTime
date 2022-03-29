@@ -1,11 +1,11 @@
 import javafx.scene.layout.Pane;
 
 /**
- * Write a description of class MainViewerPane here.
+ * The super class of all panes which are used in the mainViewer
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
- * @version 25/03/22
+ * @version 29/03/22
  */
 public abstract class MainViewerPane extends Pane
 {

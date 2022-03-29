@@ -16,7 +16,7 @@ import javafx.animation.*;
 import javafx.util.Duration;
 
 /**
- * Write a description of class StatsPane here.
+ * 
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
