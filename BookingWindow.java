@@ -15,10 +15,7 @@ import java.util.Iterator;
 import javafx.scene.control.Tooltip;
 
 /**
- * 
- * Creates the booking window. The name of the property is shown at the top,
- * then two date pickers are used in the center of the pane and finally a 
- * "confirm booking" and "go back" buttons have been added to the bottom. 
+ * Class responsible for the booking window. 
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
@@ -32,7 +29,12 @@ public class BookingWindow extends Stage
     // Property that is being booked. 
     private AirbnbListing property;
     
-    
+    /**
+     * Constructor of booking window.
+     * 
+     * @param property The property that is being booked.
+     * @param parent The stage by which the booking window has been opened.
+     */
     public BookingWindow (AirbnbListing property, Stage parent) 
     {
         this.property = property;
@@ -178,7 +180,8 @@ public class BookingWindow extends Stage
                             };
                         }
                     };
-                    
+                
+                    // sets the behavior of the date pickers
                     checkIn.setDayCellFactory(dayCellFactoryIn);
                     checkOut.setDayCellFactory(dayCellFactoryOut);
                     
@@ -218,6 +221,11 @@ public class BookingWindow extends Stage
         bookingStage.show();
     }
     
+    /**
+     * Get the bookings of a particular property.
+     * 
+     * @param listing The property we want to get the bookings from.
+     */
     private ArrayList<Booking> getBookingsAtProperty(AirbnbListing listing)
     {
         ArrayList<Booking> bookingsAtProperties = new ArrayList<Booking>();
@@ -233,11 +241,25 @@ public class BookingWindow extends Stage
         return bookingsAtProperties;
     }
     
+     /**
+     * Update the total amount of the user's stay, depending on its check-in and out.
+     * 
+     * @param checkIn The date the users checks-in.
+     * @param checkOut The date the users checks-out.
+     * @return The duration in days between two dates
+     */
     private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) 
     {
         return property.getPrice()*(int)(Booking.calculateDuration(checkIn, checkOut));
     }
     
+    /**
+     * A new Booking has been made. Adds it to booking list, closes booking stage and shows confirmation.
+     * 
+     * @param grandTotal The price of the stay.
+     * @param checkinDate The check-In date selected by the user.
+     * @param checkoutDate The check-Out date selected by the user.
+    */
     private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) 
     {
         bookingStage.close();
@@ -245,11 +267,14 @@ public class BookingWindow extends Stage
         Booking newBooking = new Booking(property, grandTotal, checkinDate, checkoutDate);
         DataHandler.addToBookingList(newBooking);
         
-        if (parent.getClass().equals(MainViewer.class)) {
+        if (parent.getClass().equals(MainViewer.class)) 
+        {
             MainViewer mainViewer = (MainViewer) parent;
             mainViewer.refreshPane();
             showConfirmationStage(true);
-        }else{
+        }
+        else
+        {
             showConfirmationStage(false);
         }
     }
