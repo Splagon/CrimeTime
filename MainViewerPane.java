@@ -31,6 +31,9 @@ public abstract class MainViewerPane extends Pane
     
     public abstract Pane getPane();
     
+    /**
+     * @return String titleName the title of the pane
+     */
     public String getTitleName() 
     {
         return titleName;
