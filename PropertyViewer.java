@@ -90,9 +90,16 @@ public class PropertyViewer extends Stage {
         currentPropertyIndex = 0;
         applicationConnected = true;
        
-        makePropertyViewerScene();
+        makePropertyViewerScene(null);
          
         this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
+    }
+    
+    public PropertyViewer(Booking booking)
+    {
+        this.borough = booking.getProperty().getNeighbourhood();
+        
+        makePropertyViewerScene(booking);
     }
     
     /**
@@ -102,13 +109,22 @@ public class PropertyViewer extends Stage {
      * at the right and left buttons to let the user change property and finally 
      * at the bottom a grid pane displaying characteristics of the property.
      */
-    private void makePropertyViewerScene() {
+    private void makePropertyViewerScene(Booking booking) {
         setTitle("Neighbourhood: " + borough);
         // Generates the list of properties that will be displayed depending 
         // on the borough, price range and sorting parameter selected by the user.
-        if(sortedBy != null){
+        
+        if (booking != null)
+        {
+            properties = new ArrayList<AirbnbListing>();
+            properties.add(booking.getProperty());
+        }
+        else if (sortedBy != null)
+        {
             properties = DataHandler.getPropertiesSortedBy(borough, minPrice, maxPrice, sortedBy);
-        }else {
+        }
+        else 
+        {
             properties = DataHandler.getPropertiesFromBorough(borough, minPrice, maxPrice);
         }
         
@@ -165,7 +181,8 @@ public class PropertyViewer extends Stage {
         root.setAlignment(nextButton, Pos.CENTER);
         root.setRight(nextButton);
         
-        if(properties.size() == 1) {
+        if(properties.size() == 1) 
+        {
             nextButton.setDisable(true);
             prevButton.setDisable(true);
             // We display a short message to inform the user why the buttons are disabled 
@@ -266,7 +283,7 @@ public class PropertyViewer extends Stage {
         // Used MapBox api to load a map pointing the location of current property displayed.
         try  
         {
-            URL url = new URL("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",12,0/800x460@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw");
+            URL url = new URL("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",13,0/890x500@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw");
             URLConnection connection = url.openConnection();
             connection.connect(); // test internet connectivity, if no connection: throws an exception
             webEngine.load(url.toString());

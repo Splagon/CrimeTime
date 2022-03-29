@@ -21,7 +21,7 @@ import javafx.geometry.Pos;
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
- * @version 25/03/22
+ * @version 29/03/22
  */
 public class MapPane extends MainViewerPane
 {   
@@ -85,6 +85,18 @@ public class MapPane extends MainViewerPane
             
             window.setCenter(mapView);
                 window.setAlignment(mapView, Pos.CENTER);
+
+        infoPane.getChildren().addAll(titleLabel, key, stats);
+        infoPane.setPadding(new Insets(10, 20, 10, 10));
+        infoPane.setSpacing(15);
+        
+        priceChanger.getChildren().add(minMaxBox);
+        priceChanger.setPadding(new Insets(10, 0, 0, 0));
+        
+        window.setLeft(infoPane);
+        
+        window.setCenter(mapView);
+            window.setAlignment(mapView, Pos.CENTER);
         
         mapPane = window;
     }
@@ -291,11 +303,11 @@ public class MapPane extends MainViewerPane
      * Applies and adjusts the colour of the hexagon dependent on the borough's properties
      * 
      * @param hexagon The hexagon image to adjust the colour of.
-     * @param boroughName
-     * @param heightWidth
-     * @param noOfPropertiesStats
+     * @param boroughName The name of the borough to get the colour of.
+     * @param heightWidth The width and height of the hexagon.
+     * @param noOfPropertiesStats The stats pertaining to the overall boroughs.
      * 
-     * @return
+     * @return A filled hexagon with the correct colour applied.
      */
     private ImageView setHexagonFilledColour(ImageView hexagon, String boroughName, int heightWidth, NoOfPropertiesStats noOfPropertiesStats) 
     {
@@ -309,7 +321,17 @@ public class MapPane extends MainViewerPane
         return hexagon;
     }
     
-    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) {
+    /**
+     * Applies and adjusts the colour of the hexagon dependent on the percentile
+     * 
+     * @param hexagon The hexagon image to adjust the colour of.
+     * @param heightWidth The width and height of the hexagon.
+     * @param percentile The percentile to get the colour of.
+     * 
+     * @return A filled hexagon with the correct colour applied.
+     */
+    private ImageView setHexagonFilledColour(ImageView hexagon, int heightWidth, int percentile) 
+    {
         ColorAdjust shader = StatisticsData.getBoroughMapColour(percentile);
             
         hexagon.setFitWidth(heightWidth);
@@ -320,7 +342,13 @@ public class MapPane extends MainViewerPane
         return hexagon;
     }
     
-    private GridPane createKey() {
+    /**
+     * Creates the key panel within the map pane
+     * 
+     * @return A GridPane containing the key panel
+     */
+    private GridPane createKey() 
+    {
         GridPane key = new GridPane();
         key.getStyleClass().add("infoGrid");
         
@@ -336,7 +364,8 @@ public class MapPane extends MainViewerPane
         Label keyLabelPercentile100 = new Label("Above Upper Quartile");
         
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++)
+        {
             StackPane completeHexagon = new StackPane();
             
             ImageView hexagonFilledImage = new ImageView(new Image("/hexagonFilledGreen.png"));
@@ -366,7 +395,13 @@ public class MapPane extends MainViewerPane
         return key;
     }
     
-    private VBox createStatsPanel() {
+    /**
+     * Creates the stats panel within the map pane
+     * 
+     * @return A VBox containing the stats panel
+     */
+    private VBox createStatsPanel() 
+    {
         NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice());
         
         VBox statsBox = new VBox();
@@ -415,41 +450,64 @@ public class MapPane extends MainViewerPane
         return statisticsViewer;
     }
     
-    private void showMoreStats() {
-        if (statisticsViewer == null) {
+    /**
+     * Used by the 'Show More Stats!' button to display the statistics viewer.
+     */
+    private void showMoreStats() 
+    {
+        if (statisticsViewer == null) 
+        {
             statisticsViewer = new StatisticsViewer(mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice());
             statisticsViewer.show();
             
-            statisticsViewer.setOnCloseRequest(e -> {statisticsViewer = null;});
+            //sets the statistics viewer variable in this class to null if the stats viewer is closed
+            statisticsViewer.setOnCloseRequest(e -> { statisticsViewer = null; });
         }
+        
         updateStats();
     }
     
+    /**
+     * Updates the statistics viewer when the map is updated/selected price is changed.
+     */
     private void updateStats() 
     {
-        if (statisticsViewer == null) {
+        if (statisticsViewer == null) 
+        {
             return;
         }
         
         int selectedMinPrice = mainViewer.getSelectedMinPrice();
         int selectedMaxPrice = mainViewer.getSelectedMaxPrice();
         
-        if (statisticsViewer.getCurrentMinPrice() != selectedMinPrice || statisticsViewer.getCurrentMaxPrice() != selectedMaxPrice) {
+        if (statisticsViewer.getCurrentMinPrice() != selectedMinPrice || statisticsViewer.getCurrentMaxPrice() != selectedMaxPrice)
+        {
             statisticsViewer.update(selectedMinPrice, selectedMaxPrice);
         }
     }
     
-    private GridPane alignItemsInGridPane(GridPane grid) {
-        for (Node node : grid.getChildren()) {
+    /**
+     * Aligns all the nodes in the grid to be central.
+     * 
+     * @param grid The gridPane to align the nodes of.
+     * 
+     * @return GridPane The gridPane with aligned nodes.
+     */
+    private GridPane alignItemsInGridPane(GridPane grid) 
+    {
+        for (Node node : grid.getChildren()) 
+        {
             grid.setHalignment(node, HPos.CENTER);
             grid.setValignment(node, VPos.CENTER);
             node.maxWidth(Double.MAX_VALUE);
             node.maxHeight(Double.MAX_VALUE);
         }
+        
         return grid;
     }
     
-    public Pane getPane() {
+    public Pane getPane() 
+    {
         return mapPane;
     }
 }
