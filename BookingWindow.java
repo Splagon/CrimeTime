@@ -289,9 +289,12 @@ public class BookingWindow extends Stage
         VBox root = new VBox();
         
             Label confirmationLabel;
-            if(isEdit){
+            if(isEdit)
+            {
                 confirmationLabel = new  Label("Your modifications have been taken \n into consideration.");
-            }else{
+            }
+            else
+            {
                 confirmationLabel = new  Label("Thank you for booking with us !");
             }
             confirmationLabel.getStyleClass().add("subLabels");
@@ -317,7 +320,8 @@ public class BookingWindow extends Stage
     /**
      * Closes the booking window.
      */
-    private void goBackAction() {
+    private void goBackAction() 
+    {
         bookingStage.close();
     }
 }
