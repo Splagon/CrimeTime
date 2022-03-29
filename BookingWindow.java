@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.Scene;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javafx.scene.control.Tooltip;
 
 /**
  * Write a description of class BookingWindow here.
@@ -38,7 +39,7 @@ public class BookingWindow extends Stage
     
     public void openBookingWindow(AirbnbListing listing) 
     {
-        ArrayList<Booking> bookingsAtProperty = bookingsAtProperty(listing);
+        ArrayList<Booking> bookingsAtProperty = getBookingsAtProperty(listing);
         
         bookingStage = new Stage();
         bookingStage.setTitle("Booking Window");
@@ -75,6 +76,41 @@ public class BookingWindow extends Stage
                     checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights())));
                     checkOut.setOnAction(e -> grandTotalLabel.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
                     
+                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() 
+                    {
+                        @Override
+                        public DateCell call(final DatePicker datePicker) 
+                        {
+                            return new DateCell() 
+                            {
+                                @Override
+                                public void updateItem(LocalDate item, boolean empty) 
+                                {
+                                    super.updateItem(item, empty);
+                                    
+                                    if (item.isBefore(LocalDate.now())) 
+                                    {
+                                        setDisable(true);
+                                        setStyle("-fx-background-color: #ffc0cb;");
+                                    } 
+                                    
+                                    for (Booking booking : bookingsAtProperty)
+                                    {
+                                        LocalDate checkInDate = booking.getCheckInDate();
+                                        LocalDate checkoutDate = booking.getCheckOutDate();
+                                        int minNights = booking.getProperty().getMinimumNights();
+                                        
+                                        if (item.isAfter(checkInDate.minusDays(minNights + 1)) && item.isBefore(checkoutDate))
+                                        {
+                                            setDisable(true);
+                                            setStyle("-fx-background-color: #ffc0cb;");
+                                        }
+                                    }
+                                }      
+                            };
+                        }
+                    };
+                    
                     final Callback<DatePicker, DateCell> dayCellFactoryOut = new Callback<DatePicker, DateCell>() {
                         @Override
                         public DateCell call(final DatePicker datePicker) {
@@ -99,38 +135,11 @@ public class BookingWindow extends Stage
                                     
                                     for (Booking booking : bookingsAtProperty)
                                     {
-                                        if (item.isAfter(booking.getCheckInDate().minusDays(1)) && item.isBefore(booking.getCheckOutDate().plusDays(1)))
-                                        {
-                                            setDisable(true);
-                                            setStyle("-fx-background-color: #ffc0cb;");
-                                        }
-                                    }
-                                }      
-                            };
-                        }
-                    };
-                    
-                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() 
-                    {
-                        @Override
-                        public DateCell call(final DatePicker datePicker) 
-                        {
-                            return new DateCell() 
-                            {
-                                @Override
-                                public void updateItem(LocalDate item, boolean empty) 
-                                {
-                                    super.updateItem(item, empty);
-                                    
-                                    if (item.isBefore(LocalDate.now())) 
-                                    {
-                                        setDisable(true);
-                                        setStyle("-fx-background-color: #ffc0cb;");
-                                    } 
-                                    
-                                    for (Booking booking : bookingsAtProperty)
-                                    {
-                                        if (item.isAfter(booking.getCheckInDate().minusDays(1)) && item.isBefore(booking.getCheckOutDate().plusDays(1)))
+                                        LocalDate checkInDate = booking.getCheckInDate();
+                                        LocalDate checkOutDate = booking.getCheckOutDate();
+                                        int minNights = booking.getProperty().getMinimumNights();
+
+                                        if (item.isAfter(checkInDate.minusDays(1)) && item.isBefore(checkOutDate))
                                         {
                                             setDisable(true);
                                             setStyle("-fx-background-color: #ffc0cb;");
@@ -176,7 +185,7 @@ public class BookingWindow extends Stage
         bookingStage.show();
     }
     
-    private ArrayList<Booking> bookingsAtProperty(AirbnbListing listing)
+    private ArrayList<Booking> getBookingsAtProperty(AirbnbListing listing)
     {
         ArrayList<Booking> bookingsAtProperties = new ArrayList<Booking>();
         
@@ -191,11 +200,13 @@ public class BookingWindow extends Stage
         return bookingsAtProperties;
     }
     
-    private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) {
+    private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) 
+    {
         return property.getPrice()*(int)(Booking.calculateDuration(checkIn, checkOut));
     }
     
-    private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
+    private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) 
+    {
         bookingStage.close();
         
         Booking newBooking = new Booking(property, grandTotal, checkinDate, checkoutDate);
