@@ -12,6 +12,9 @@ public class MapButton extends Button
 {
     private String boroughName;
     
+    /**
+     * Constructor for objects of type MapButton
+     */
     public MapButton(String boroughName)
     {
         // Sets the name of the button to be the first 4 letters of the borough name
@@ -23,6 +26,11 @@ public class MapButton extends Button
         setTooltip(new Tooltip(boroughName));
     }
     
+    /**
+     * returns the name of the borough
+     * 
+     * @return String - the name of the borough
+     */
     public String getBoroughName() 
     {
         return boroughName;

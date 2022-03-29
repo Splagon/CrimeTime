@@ -119,12 +119,13 @@ public class DataHandler
         {
             AirbnbListing nextListing = (AirbnbListing) i.next();
 
-            if (nextListing.getPrice() >= minPrice) {
-                if (nextListing.getPrice() <= maxPrice || maxPrice < 0) {
+            if (nextListing.getPrice() >= minPrice) 
+            {
+                if (nextListing.getPrice() <= maxPrice || maxPrice < 0) 
+                {
                     listingsAtPrice.add(nextListing);
                 }
             }
-
         }
         return listingsAtPrice;
     }
@@ -231,7 +232,8 @@ public class DataHandler
         {
             AirbnbListing currentProperty = (AirbnbListing) i.next();
             int currentPrice = currentProperty.getPrice();
-            if (currentPrice < lowest || lowest < 0) {
+            if (currentPrice < lowest || lowest < 0) 
+            {
                 lowest = currentPrice;
             }
         }
@@ -251,7 +253,8 @@ public class DataHandler
         {
             AirbnbListing currentProperty = (AirbnbListing) i.next();
             int currentPrice = currentProperty.getPrice();
-            if (currentPrice > highest) {
+            if (currentPrice > highest) 
+            {
                 highest = currentPrice;
             }
         }

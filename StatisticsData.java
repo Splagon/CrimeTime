@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
- * @version 25/03/22
+ * @version 29/03/22
  */
 public class StatisticsData extends DataHandler
 {
@@ -56,7 +56,8 @@ public class StatisticsData extends DataHandler
         ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
         double scoreCounter = 0; 
         double average = 0; 
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = 0; i < data.size(); i++) 
+        {
             scoreCounter += data.get(i).getNumberOfReviews();
         }
         if(data.size() > 0)
@@ -166,7 +167,8 @@ public class StatisticsData extends DataHandler
         int y = 0; 
         
         int size = data.size(); 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) 
+        {
             int price = data.get(i).getPrice();
             x += (price)*(price);
             y += price;
@@ -237,7 +239,7 @@ public class StatisticsData extends DataHandler
      * @param useListingsAtPrice If true, the average is of the listings
      *                           between the user-selected min and max price.
      *                           If false, the average is of all properties.
-     * @return ???????????????
+     * @return int - the average price 
      */
     public static int getAveragePrice(boolean useListingsAtPrice)
     {
@@ -365,6 +367,11 @@ public class StatisticsData extends DataHandler
         return sortedNumberOfPropertiesAtPrice;
     }
     
+    /**
+     * Calculates the borough which has on average the highest number of reviews
+     * 
+     * @return static String - the name of the borough
+     */
     public static String getHighAvgReview()
     {
         String HighAvgReviewBorough = "";
@@ -385,7 +392,8 @@ public class StatisticsData extends DataHandler
                         averageReview += property.getNumberOfReviews();
                     }
                     
-                    if(boroughProperty.size() >= 1){
+                    if(boroughProperty.size() >= 1)
+                    {
                         averageReview = averageReview / boroughProperty.size();
                     }
 
