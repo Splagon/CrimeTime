@@ -145,7 +145,7 @@ public class StatisticsData extends DataHandler
     /**
      * @return The name of the most expensive borough
      */
-    public static String getExpensiveInfo()
+    public static String getExpensiveInfo(boolean useListingsAtPrice, int min, int max)
     {
         String expensiveBorough = "";
         
@@ -156,14 +156,21 @@ public class StatisticsData extends DataHandler
             {   
                 if(mapPositions[rows][columns] != null)
                 {
-                    ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns]);
+                    ArrayList<AirbnbListing> boroughProperty = new ArrayList<>();
+                    if(useListingsAtPrice){
+                        boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns], min, max);
+                    }
+                    else{
+                        boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns]);
+                    }
                     int totalPrice = 0;
+                    String test = new String();
                     for (int j = 0; j < boroughProperty.size(); j++) 
                     {
                         AirbnbListing property = boroughProperty.get(j);
                         totalPrice += property.getPrice() * property.getMinimumNights();
                     }
-
+                    totalPrice = totalPrice / boroughProperty.size(); 
                     if(totalPrice > lastTotalPrice)
                     {
                         lastTotalPrice = totalPrice;
@@ -172,7 +179,6 @@ public class StatisticsData extends DataHandler
                 }
             }
         }
-        
         return expensiveBorough; 
     }
 
@@ -392,7 +398,7 @@ public class StatisticsData extends DataHandler
         return sortedNumberOfPropertiesAtPrice;
     }
     
-    public static String getHighAvgReview()
+    public static String getHighAvgReview(boolean useListingsAtPrice, int min, int max)
     {
         String HighAvgReviewBorough = "";
         int lastHighAvgReview = 0;
@@ -404,7 +410,13 @@ public class StatisticsData extends DataHandler
             {   
                 if(mapPositions[rows][columns] != null)
                 {
-                    ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns]);
+                    ArrayList<AirbnbListing> boroughProperty = new ArrayList<>();
+                    if(useListingsAtPrice){
+                        boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns], min, max);
+                    }
+                    else{
+                        boroughProperty = getPropertiesFromBorough(mapPositions[rows][columns]);
+                    }
                     int averageReview = 0;
                     for (int j = 0; j < boroughProperty.size(); j++) 
                     {
