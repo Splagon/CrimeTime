@@ -54,20 +54,6 @@ public class Animations
         }
     }
     
-    public static void spin(Node node) 
-    {
-        RotateTransition effect = new RotateTransition(Duration.millis(5000000), node);
-            
-        double currentRotation = node.rotateProperty().getValue() % 360.0;
-        
-        if (currentRotation == 0.0)
-        {
-            effect.setByAngle(360.0);
-            effect.setCycleCount(Timeline.INDEFINITE);
-            effect.play();
-        }
-    }
-    
     public void spinAndGrowIn(long time, Node node) 
     {   
         double currentRotationu = node.rotateProperty().getValue();
