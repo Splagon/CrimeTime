@@ -117,6 +117,9 @@ public class StatisticsData extends DataHandler
     }
 
     /**
+     * @param boolean useListingsAtPrice Determine whether the price selected will affect the statistic
+     * @param int min The minimum price selected
+     * @param int max The maximum price selected
      * @return The name of the most expensive borough
      */
     public static String getExpensiveInfo(boolean useListingsAtPrice, int min, int max)
@@ -375,7 +378,9 @@ public class StatisticsData extends DataHandler
     
     /**
      * Calculates the borough which has on average the highest number of reviews
-     * 
+     * @param boolean useListingsAtPrice Determine whether the price selected will affect the statistic
+     * @param int min The minimum price selected
+     * @param int max The maximum price selected
      * @return static String - the name of the borough
      */
     public static String getHighAvgReview(boolean useListingsAtPrice, int min, int max)
