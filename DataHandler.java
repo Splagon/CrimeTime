@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Write a description of class DataHandler here.
+ * The DataHandler class is used to handle the data in the system. 
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
@@ -55,11 +55,17 @@ public class DataHandler
         loadBookingsData();
     }
     
+    /**
+     * Load the bookings data
+     */
     private static void loadBookingsData() {
         bookingsDataLoader = new BookingsDataLoader();
         bookingList = bookingsDataLoader.load(bookingsDataFileName);
     }
     
+    /**
+     * @return AirbnbListing object corresponding to a String ID
+     */
     public static AirbnbListing getProperty(String iD) {
         try
         {
@@ -79,6 +85,12 @@ public class DataHandler
         return null;
     }
 
+    /**
+     * @param String borough The borough that the AirbnbListings are based
+     * @param int minPrice The lower end of the price range
+     * @param int maxPrice The higher end of the price range
+     * @return ArrayList<AirbnbListing> object containing AirbnbListings from a certain borough within a certain price range
+     */
     public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough, int minPrice, int maxPrice)
     {
         ArrayList<AirbnbListing> listingsFromBoroughWithinParameters = new ArrayList<>();
@@ -110,6 +122,11 @@ public class DataHandler
         return listingsFromBoroughWithinParameters;
     }
 
+    /**
+     * @param int minPrice The lower end of the price range
+     * @param int maxPrice The higher end of the price range
+     * @return ArrayList<AirbnbListing> object containing AirbnbListings from a given price range
+     */
     public static ArrayList<AirbnbListing> getPropertiesAtPrice(int minPrice, int maxPrice)
     {
         ArrayList<AirbnbListing> listingsAtPrice = new ArrayList<AirbnbListing>();
@@ -119,16 +136,20 @@ public class DataHandler
         {
             AirbnbListing nextListing = (AirbnbListing) i.next();
 
-            if (nextListing.getPrice() >= minPrice) {
-                if (nextListing.getPrice() <= maxPrice || maxPrice < 0) {
+            if (nextListing.getPrice() >= minPrice) 
+            {
+                if (nextListing.getPrice() <= maxPrice || maxPrice < 0) 
+                {
                     listingsAtPrice.add(nextListing);
                 }
             }
-
         }
         return listingsAtPrice;
     }
 
+    /**
+     * @return static Hashmap<String, Borough> object containing a String relating to a borough name and a Borough object which holds the AirnbnbListings in that borough
+     */
     private static HashMap<String, Borough> sortBoroughs() 
     {
         HashMap<String, Borough> data = new HashMap<>(); 
@@ -170,11 +191,25 @@ public class DataHandler
         return data;
     }
     
+    /**
+     * Sort properties from a certain borough based on a price range and by a certain sortingElement
+     * @param String borough The borough name
+     * @param int maxPrice The higher end of the price range
+     * @param int minPrice The lower end of the price range
+     * @param String sortingElement The element that the AirbnbListings will be sorted based upon
+     * @return ArrayList<AirbnbListing> object containing a sorted list of AirbnbListings within a certain price range sorted by a certain element
+     */
     public static ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
         ArrayList<AirbnbListing> unsortedListing = getPropertiesFromBorough(borough, minPrice, maxPrice);
         return selectionSort(unsortedListing, sortingElement);
     }
 
+    /**
+     * Carry out a selection sort
+     * @param ArrayList<AirbnbListing> unsortedList The list to sort
+     * @param String sortingElement The element to sort the list by
+     * @return ArrayList<AirbnbListing> object A sorted list based on the sortingElement passed through
+     */
     private static ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
         switch (sortingElement) 
         {
@@ -200,6 +235,11 @@ public class DataHandler
         return unsortedList;
     }
 
+    /**
+     * Get all of the properties from a certain borough
+     * @param String borough The name of the borough that the AirbnbListings will be from
+     * @return ArrayList<AirbnbListing> object A list of properties from a certain borough
+     */
     public static ArrayList<AirbnbListing> getPropertiesFromBorough(String borough)
     {
         return getPropertiesFromBorough(borough, -1, -1);
@@ -213,6 +253,9 @@ public class DataHandler
         return listings; 
     }
 
+    /**
+     * @return String[][] object Containing the map positions of the boroughs
+     */
     public static String[][] getMapPositions() 
     {
         return mapPositions;
@@ -231,7 +274,8 @@ public class DataHandler
         {
             AirbnbListing currentProperty = (AirbnbListing) i.next();
             int currentPrice = currentProperty.getPrice();
-            if (currentPrice < lowest || lowest < 0) {
+            if (currentPrice < lowest || lowest < 0) 
+            {
                 lowest = currentPrice;
             }
         }
@@ -251,43 +295,68 @@ public class DataHandler
         {
             AirbnbListing currentProperty = (AirbnbListing) i.next();
             int currentPrice = currentProperty.getPrice();
-            if (currentPrice > highest) {
+            if (currentPrice > highest) 
+            {
                 highest = currentPrice;
             }
         }
         return highest;
     }
     
+    /**
+     * @return ArrayList<Booking> object Containing a list of all of the bookings on the system
+     */
     public static ArrayList<Booking> getBookingList() {
         loadBookingsData();
         return bookingList;
     }
     
+    /**
+     * @param Booking booking  The booking to add to the booking list
+     */
     public static void addToBookingList(Booking booking) {
         bookingList.add(booking);
         saveBooking(booking);
     }
     
+    /**
+     * Save a bookijg by writing it to the booking csv file
+     * @param Booking booking The booking to save
+     */
     private static void saveBooking(Booking booking) {
         BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
         bookingsDataWriter.write(booking, bookingsDataFileName);
     }
     
+    /**
+     * Rearrange the booking list display
+     * @param int itemsRemoved The amount of bookings to rearrange
+     */
     public static void saveBookingList(int itemsRemoved) {
         BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
         bookingsDataWriter.write(bookingList, bookingsDataFileName, itemsRemoved);
     }
     
+    /**
+     * Remove a Booking from the booking list
+     * @param Booking booking The booking to remove
+     */
     public static void removeFromBookingList(Booking booking) {
         bookingList.remove(booking);
         saveBookingList(1);
     }
     
+    /**
+     * @return ArrayList<String> object A list of the borough names
+     */
     protected static ArrayList<String> getBoroughNames()
     {
         return boroughs;
     }
     
+    /**
+     * Clear the bookings list
+     */
     protected static void clear() {
         bookingList = new ArrayList<Booking>();
     }

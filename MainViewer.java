@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-
 /**
  * The MainViewer is one of three major windows of the application. The MainViewer
  * contains the main panels involved in the project and is first window to be shown
@@ -164,7 +163,8 @@ public class MainViewer extends Stage
         index--;
         
         //allows for wrap around
-        if (index < 0) {
+        if (index < 0) 
+        {
             index = list.size() - 1;
         }
         
@@ -185,7 +185,8 @@ public class MainViewer extends Stage
         index++;
         
         //allows for wrap around
-        if (index >= list.size()) {
+        if (index >= list.size()) 
+        {
             index = 0;
         }
         

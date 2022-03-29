@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Write a description of class StatisticsViewer here.
+ * Makes the Statistics Window and displays statistics based on the price selected
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
@@ -68,12 +68,12 @@ public class StatisticsViewer extends Stage
         
         // Add stats to the second box
         stat2.addInfo("Entire Home and Apartments:", formatData(StatisticsData.getNoHomeAndApartments(true)));
-        stat2.addInfo("Most Expensive Borough:", formatData(StatisticsData.getExpensiveInfo()));
+        stat2.addInfo("Most Expensive Borough\non Average:", formatData(StatisticsData.getExpensiveInfo(true, selectedMinPrice, selectedMaxPrice)));
         stat2.setFirst();
         
         // Add stats to the third box
         stat3.addInfo("Standard Deviation of Price (£):", formatData(StatisticsData.getPriceSDInfo(true)));
-        stat3.addInfo("Borough with the Highest \nAverage Amount of Reviews:", formatData(StatisticsData.getHighAvgReview()));
+        stat3.addInfo("Borough with the Highest \nAverage Amount of Reviews:", formatData(StatisticsData.getHighAvgReview(true, selectedMinPrice, selectedMaxPrice)));
         stat3.setFirst();
         
         // Add stats to the fourth box
@@ -122,7 +122,8 @@ public class StatisticsViewer extends Stage
      * @param Label label The label which will be affected.
      * @param double dataToFormat The data to format into a String.
      */
-    private String formatData(double dataToFormat) {
+    private String formatData(double dataToFormat) 
+    {
         String formatedData = String.format("%.2f", dataToFormat) + " (2 d.p)"; 
         return formatedData;
     }
@@ -132,7 +133,8 @@ public class StatisticsViewer extends Stage
      * @param Label label The label which will be affected.
      * @param int dataToFormat The data to format into a String
      */
-    private String formatData(int dataToFormat) {
+    private String formatData(int dataToFormat) 
+    {
         String formatedData = String.valueOf(dataToFormat);
         return formatedData;
     }
@@ -142,7 +144,8 @@ public class StatisticsViewer extends Stage
      * @param Label label The label which will be affected.
      * @param String dataToFormat The String that the Label's text will be set to.
      */
-    private String formatData(String dataToFormat) {
+    private String formatData(String dataToFormat) 
+    {
         return dataToFormat;
     }
 
@@ -160,7 +163,8 @@ public class StatisticsViewer extends Stage
     /**
      * Recreate the scene with the updated statistics data 
      */
-    public void update(int selectedMinPrice, int selectedMaxPrice) {
+    public void update(int selectedMinPrice, int selectedMaxPrice) 
+    {
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
         //updateInfo();
         constructScene(selectedMinPrice, selectedMaxPrice);
@@ -169,14 +173,16 @@ public class StatisticsViewer extends Stage
     /**
      * @return int the curret minimum price
      */
-    public int getCurrentMinPrice() {
+    public int getCurrentMinPrice() 
+    {
         return noOfPropertiesStats.getMinPrice();
     }
     
     /**
      * @return int the current maximum price
      */
-    public int getCurrentMaxPrice() {
+    public int getCurrentMaxPrice() 
+    {
         return noOfPropertiesStats.getMaxPrice();
     }
 }

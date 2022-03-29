@@ -109,7 +109,8 @@ public class PropertyViewer extends Stage {
      * at the right and left buttons to let the user change property and finally 
      * at the bottom a grid pane displaying characteristics of the property.
      */
-    private void makePropertyViewerScene(Booking booking) {
+    private void makePropertyViewerScene(Booking booking) 
+    {
         setTitle("Neighbourhood: " + borough);
         // Generates the list of properties that will be displayed depending 
         // on the borough, price range and sorting parameter selected by the user.
@@ -146,10 +147,12 @@ public class PropertyViewer extends Stage {
             menu.setId("menu");
                 menu.getItems().addAll("Price ↑", "Price ↓", "Name ↑", "Name ↓", "Reviews ↑", "Reviews ↓");
                 // Makes the sorting element chosen written in the box
-                if (sortedBy != null) {
+                if (sortedBy != null) 
+                {
                     menu.getSelectionModel().select(sortedBy);
                 } 
-                else {
+                else 
+                {
                     menu.getSelectionModel().select("Filter by:");
                 }
             menu.setOnAction(e -> menuButtonAction(menu));
@@ -249,7 +252,8 @@ public class PropertyViewer extends Stage {
         
         setResizable(false);
         setScene(scene);
-        if (applicationConnected) {
+        if (applicationConnected) 
+        {
             show();
         }
     }
@@ -257,7 +261,8 @@ public class PropertyViewer extends Stage {
     /**
      * Updates the variables of the property displayed.  
      */
-    private void update() {
+    private void update() 
+    {
         // first, we retrieve the property at the current index
         AirbnbListing listing = properties.get(currentPropertyIndex);
         // then, we update the variables
@@ -288,14 +293,16 @@ public class PropertyViewer extends Stage {
             connection.connect(); // test internet connectivity, if no connection: throws an exception
             webEngine.load(url.toString());
         } 
-        catch (IOException e) {
+        catch (IOException e) 
+        {
             noConnectionAlert();
             this.close();
             applicationConnected = false;
         }
     }
     
-    private void menuButtonAction(ComboBox<String> menu) {
+    private void menuButtonAction(ComboBox<String> menu) 
+    {
         sortedBy = menu.getValue(); // Initialize sortedby variable
         sortAction();
     }
@@ -303,10 +310,12 @@ public class PropertyViewer extends Stage {
     /**
      * Displays the next property in the properties' list.
      */
-    private void viewNextProperty() {
+    private void viewNextProperty() 
+    {
         currentPropertyIndex++;
         
-        if (currentPropertyIndex > properties.size() - 1) {
+        if (currentPropertyIndex > properties.size() - 1) 
+        {
             currentPropertyIndex = 0;
         }
         
@@ -316,10 +325,12 @@ public class PropertyViewer extends Stage {
     /**
      * Displays the previous property in the properties' list.
      */
-    private void viewPreviousProperty() {
+    private void viewPreviousProperty() 
+    {
         currentPropertyIndex--;
         
-        if (currentPropertyIndex < 0) {
+        if (currentPropertyIndex < 0) 
+        {
             currentPropertyIndex = properties.size() -  1;
         }
         
@@ -329,7 +340,8 @@ public class PropertyViewer extends Stage {
     /**
      *  Open or close the description window of the property displayed.
      */
-    private void popUpAction(){
+    private void popUpAction()
+    {
         if (descriptionStage == null) 
         {
             createDescriptionStage();
@@ -344,7 +356,8 @@ public class PropertyViewer extends Stage {
     /**
      * Creates the stage of the description window.
      */
-    private void createDescriptionStage() {
+    private void createDescriptionStage() 
+    {
         descriptionStage = new Stage();
         descriptionStage.setTitle("Description!");
         
@@ -371,7 +384,8 @@ public class PropertyViewer extends Stage {
      * On sorting request, a new property wiewer stage is 
      * created with the sorting condition taken into account.
      */
-    private void sortAction() {
+    private void sortAction() 
+    {
         // New property viewer stage is created.
         Stage stage = new PropertyViewer(borough, minPrice, maxPrice, sortedBy);
         // We open the stage at the same positions of the initial one, for better UX.
@@ -407,7 +421,8 @@ public class PropertyViewer extends Stage {
     /**
      * Displays an alert showing the user that he is not connected to internet.
      */
-    private void noConnectionAlert(){
+    private void noConnectionAlert()
+    {
         Alert alert = new Alert(AlertType.WARNING);
             alert.setHeaderText("No internet Connection");
             alert.setContentText("Unfortunately you will need a stable internet connection \n to run the property viewer correctly, we apologise \n for the inconvenience caused. \n Come back !");
@@ -422,7 +437,8 @@ public class PropertyViewer extends Stage {
      * 
      * @param bookingProperty The property that is currently being booked.
      */
-    private void openBookingWindow(AirbnbListing bookingProperty) {
+    private void openBookingWindow(AirbnbListing bookingProperty) 
+    {
         BookingWindow bookingWindow = new BookingWindow(bookingProperty, this);
     }
 }

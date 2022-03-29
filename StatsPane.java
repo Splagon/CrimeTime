@@ -16,7 +16,8 @@ import javafx.animation.*;
 import javafx.util.Duration;
 
 /**
- * Write a description of class StatsPane here.
+ * Makes the Statistics Window and displays general statistics that are not influenced 
+ * by the price selected.
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
@@ -60,7 +61,7 @@ public class StatsPane extends MainViewerPane
         Label reviewTitle = new Label("Average Reviews Per Property:");
         Label availableTitle = new Label("Total Available Properties:");
         Label noHomeAndApartmentsTitle = new Label("Entire Home and Apartments:");
-        Label expensiveTitle = new Label("Most Expensive Borough:");
+        Label expensiveTitle = new Label("Most Expensive Borough\non Average:");
         Label priceSDTitle = new Label("Standard Deviation of Price (£):");
         Label highAvgReviewTitle = new Label("Borough with the Highest \nAverage Amount of Reviews:"); 
         
@@ -152,9 +153,9 @@ public class StatsPane extends MainViewerPane
         setText(reviewInfo, StatisticsData.getAverageNoReviews(false));
         setText(noHomeAndApartmentsInfo, StatisticsData.getNoHomeAndApartments(false));
         setText(availableInfo, StatisticsData.getAvailableInfo(false));
-        setText(expensiveInfo, StatisticsData.getExpensiveInfo());
+        setText(expensiveInfo, StatisticsData.getExpensiveInfo(false, 0, 0));
         setText(priceSDInfo, StatisticsData.getPriceSDInfo(false));
-        setText(highAvgReviewInfo, StatisticsData.getHighAvgReview());
+        setText(highAvgReviewInfo, StatisticsData.getHighAvgReview(false, 0, 0));
         
         //Create the left button
         Button leftStatsButton = new Button();
@@ -197,6 +198,13 @@ public class StatsPane extends MainViewerPane
         expensive.getStyleClass().add("statsvbox");
         priceSD.getStyleClass().add("statsvbox");
         highAvgReview.getStyleClass().add("statsvbox");
+        // reviews.setMinSize(200,150);
+        // available.setMinSize(200,150);
+        // noHomeAndApartments.setMinSize(200,150);
+        // expensive.setMinSize(200,150);
+        // priceSD.setMinSize(200,150);
+        // highAvgReview.setMinSize(200,150);
+        
         
         title.getStyleClass().add("windowTitle"); 
         reviewTitle.getStyleClass().add("statsLabelTitle"); 

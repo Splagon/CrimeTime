@@ -112,15 +112,19 @@ public class AirbnbListing {
         return host_name;
     }
     
-    public String getMailHost_name(boolean withSpaces) {
-        if (withSpaces){
+    public String getMailHost_name(boolean withSpaces) 
+    {
+        if (withSpaces)
+        {
             return host_name.replaceAll("\\s", "%20");
         }
-        else {
+        else 
+        {
             String URL_mail_host_name = host_name;
             String[] unacceptableSymbols = new String[] {"\\s", ",", ";", "<", ">", "/", "'", "#", "~", "-", "_", "=", "&", "^", "$", "£", "!", "|"};
             
-            for (String symbol : unacceptableSymbols) {
+            for (String symbol : unacceptableSymbols) 
+            {
                 URL_mail_host_name = URL_mail_host_name.replaceAll(symbol, "");
             }
             
@@ -128,52 +132,64 @@ public class AirbnbListing {
         }
     }
 
-    public String getNeighbourhood() {
+    public String getNeighbourhood() 
+    {
         return neighbourhood;
     }
 
-    public double getLatitude() {
+    public double getLatitude() 
+    {
         return latitude;
     }
 
-    public double getLongitude() {
+    public double getLongitude() 
+    {
         return longitude;
     }
 
-    public String getRoom_type() {
+    public String getRoom_type() 
+    {
         return room_type;
     }
 
-    public int getPrice() {
+    public int getPrice() 
+    {
         return price;
     }
 
-    public int getMinimumNights() {
+    public int getMinimumNights() 
+    {
         return minimumNights;
     }
 
-    public int getNumberOfReviews() {
+    public int getNumberOfReviews() 
+    {
         return numberOfReviews;
     }
 
-    public String getLastReview() {
+    public String getLastReview() 
+    {
         return lastReview;
     }
 
-    public double getReviewsPerMonth() {
+    public double getReviewsPerMonth() 
+    {
         return reviewsPerMonth;
     }
 
-    public int getCalculatedHostListingsCount() {
+    public int getCalculatedHostListingsCount() 
+    {
         return calculatedHostListingsCount;
     }
 
-    public int getAvailability365() {
+    public int getAvailability365() 
+    {
         return availability365;
     }
 
     @Override
-    public String toString() {
+    public String toString() 
+    {
         return "AirbnbListing{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +

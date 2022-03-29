@@ -12,7 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 /**
- * Write a description of class BookingsDataLoader here.
+ * Loads the data concerning the user's bookings
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
@@ -20,8 +20,13 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class BookingsDataLoader
 {
-    public ArrayList<Booking> load(String bookingsDataFileName) {
-        //System.out.print("Begin loading Airbnb london dataset...");
+    /**
+     * Loads the bookings data file to the application.
+     * 
+     * @param bookingsDataFileName The file name of the bookings data file.
+     */
+    public ArrayList<Booking> load(String bookingsDataFileName) 
+    {
         ArrayList<Booking> bookings = new ArrayList<Booking>();
         
         try 
@@ -33,6 +38,7 @@ public class BookingsDataLoader
             
             //skip the first row (column headers)
             reader.readNext();
+            
             while ((line = reader.readNext()) != null) 
             {
                 if (line[0].length() > 0)
@@ -43,26 +49,31 @@ public class BookingsDataLoader
                     LocalDate checkOutDate = LocalDate.parse(line[3]);
     
                     Booking booking = new Booking(DataHandler.getProperty(propertyID), grandTotal, checkInDate, checkOutDate);
+                    
+                    //adds to the list of bookings
                     bookings.add(booking);
                 }
             }
-        } 
+        }
+        // throws an error if there is an interruption or the URI is wrong
         catch(IOException | URISyntaxException e) 
         {
             Alert alert = new Alert(AlertType.ERROR);
                 alert.setHeaderText("Failure! Something went wrong");
                 alert.setContentText("Unfortunately, the application is unable to\nopen the bookings file.");
             alert.show();
-        } 
+        }
+        // if the file does not exist, create one
         catch(NullPointerException e) 
         {
             File file = new File(System.getProperty("user.dir") + "/bookingsData.csv");
+            
             try 
             {
                 FileWriter fileWriter = new FileWriter(file);
                 CSVWriter writer = new CSVWriter(fileWriter);
                 
-                //column headers
+                // adds column headers
                 writer.writeNext(new String[] {"Property ID", "Grand Total of Booking", "Check In Date", "Check Out Date"});
                 writer.close();
             }
@@ -74,8 +85,6 @@ public class BookingsDataLoader
                 alert.show();
             }
         }
-        
-        //System.out.println("Success! Number of loaded bookings: " + bookings.size());
         
         return bookings;
     }
