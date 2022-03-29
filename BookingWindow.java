@@ -71,7 +71,7 @@ public class BookingWindow extends Stage
                     checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights()));
                     gridPane.add(checkOut, 1, 1);
                     
-                Label grandTotalLabel = new Label("The price for your stay is: £" + listing.getPrice());
+                Label grandTotalLabel = new Label("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue()));
                     checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights())));
                     checkOut.setOnAction(e -> grandTotalLabel.setText("The price for your stay is: £" + updateGrandTotal(checkIn.getValue(), checkOut.getValue())));
                     

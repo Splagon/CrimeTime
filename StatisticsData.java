@@ -115,33 +115,6 @@ public class StatisticsData extends DataHandler
         return counter; 
     }
 
-    // /**
-     // * @return String the most expensive borough
-     // */
-    // public static String getExpensiveInfoTest()
-    // {
-        // String expensiveBorough = "";
-        // int lastTotalPrice = 0;
-        // for(int i = 0; i < boroughs.size(); i++) // A for loop iterating through the boroughs array
-        // {
-            // ArrayList<AirbnbListing> boroughProperty = getPropertiesFromBorough(boroughs.get(i));
-            // int totalPrice = 0;
-            // for (int j = 0; j < boroughProperty.size(); j++) 
-            // {
-                // AirbnbListing property = boroughProperty.get(j);
-                // totalPrice += property.getPrice() * property.getMinimumNights();
-            // }
-            // System.out.println(totalPrice);
-            // System.out.println(lastTotalPrice);
-            // if(totalPrice > lastTotalPrice)
-            // {
-                // lastTotalPrice = totalPrice;
-                // expensiveBorough = boroughs.get(i);
-            // }
-        // }
-        // return expensiveBorough; 
-    // }
-
     /**
      * @return The name of the most expensive borough
      */
