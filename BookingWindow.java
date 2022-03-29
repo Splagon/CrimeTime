@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.Scene;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javafx.scene.control.Tooltip;
 
 /**
  * Write a description of class BookingWindow here.
@@ -38,7 +39,7 @@ public class BookingWindow extends Stage
     
     public void openBookingWindow(AirbnbListing listing) 
     {
-        ArrayList<Booking> bookingsAtProperty = bookingsAtProperty(listing);
+        ArrayList<Booking> bookingsAtProperty = getBookingsAtProperty(listing);
         
         bookingStage = new Stage();
         bookingStage.setTitle("Booking Window");
@@ -134,6 +135,7 @@ public class BookingWindow extends Stage
                                         {
                                             setDisable(true);
                                             setStyle("-fx-background-color: #ffc0cb;");
+                                            setTooltip(new Tooltip("Property already booked for these dates"));
                                         }
                                     }
                                 }      
@@ -176,7 +178,7 @@ public class BookingWindow extends Stage
         bookingStage.show();
     }
     
-    private ArrayList<Booking> bookingsAtProperty(AirbnbListing listing)
+    private ArrayList<Booking> getBookingsAtProperty(AirbnbListing listing)
     {
         ArrayList<Booking> bookingsAtProperties = new ArrayList<Booking>();
         
@@ -191,11 +193,13 @@ public class BookingWindow extends Stage
         return bookingsAtProperties;
     }
     
-    private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) {
+    private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) 
+    {
         return property.getPrice()*(int)(Booking.calculateDuration(checkIn, checkOut));
     }
     
-    private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) {
+    private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) 
+    {
         bookingStage.close();
         
         Booking newBooking = new Booking(property, grandTotal, checkinDate, checkoutDate);
