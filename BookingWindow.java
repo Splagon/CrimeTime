@@ -32,6 +32,7 @@ public class BookingWindow extends Stage
     // Property that is being booked. 
     private AirbnbListing property;
     
+    
     public BookingWindow (AirbnbListing property, Stage parent) 
     {
         this.property = property;
@@ -178,7 +179,6 @@ public class BookingWindow extends Stage
                         }
                     };
                     
-                    // adding the behavior of each date picker.
                     checkIn.setDayCellFactory(dayCellFactoryIn);
                     checkOut.setDayCellFactory(dayCellFactoryOut);
                     
@@ -237,7 +237,7 @@ public class BookingWindow extends Stage
     {
         return property.getPrice()*(int)(Booking.calculateDuration(checkIn, checkOut));
     }
-
+    
     private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) 
     {
         bookingStage.close();
