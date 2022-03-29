@@ -17,7 +17,7 @@ import javafx.geometry.Pos;
 
 
 /**
- * Write a description of class MapPane here.
+ * Displays the pane containing the map and some stats.
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).

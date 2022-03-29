@@ -12,7 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 /**
- * Write a description of class BookingsDataWriter here.
+ * Writes new bookings to the data file
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
@@ -20,7 +20,15 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class BookingsDataWriter
 {
-    public void write(Booking booking, String bookingsDataFileName) {
+    /**
+     * Writes a singular booking to the file.
+     * 
+     * @param booking Booking to write.
+     * @param bookingsDataFileName File name of the bookings data.
+     */
+    public void write(Booking booking, String bookingsDataFileName) 
+    {
+        // try writing the booking to the file
         try 
         {
             URL bookingsDataURL = getClass().getResource(bookingsDataFileName);
@@ -36,13 +44,22 @@ public class BookingsDataWriter
         }
     }
     
-    public void write(ArrayList<Booking> bookingsList, String bookingsDataFileName, int itemsRemoved) {
+    /**
+     * Clears and rewrites the bookings in the list to the file
+     * 
+     * @param bookingList List of bookings to write.
+     * @param bookingsDataFileName File name of the bookings data.
+     * @param itemsRemoved How many items have been removed from the list.
+     */
+    public void write(ArrayList<Booking> bookingsList, String bookingsDataFileName, int itemsRemoved) 
+    {
         try 
         {
             URL bookingsDataURL = getClass().getResource(bookingsDataFileName);
             
             String file = new File(bookingsDataURL.toURI()).getAbsolutePath();
             
+            //skip column headers
             CSVReader reader = new CSVReader(new FileReader(file));
             String[] columnHeaders = reader.readNext();
             reader.close();
@@ -51,12 +68,16 @@ public class BookingsDataWriter
             writer.writeNext(columnHeaders);
             int numOfColums = columnHeaders.length;
             
-            for (Iterator i = bookingsList.iterator(); i.hasNext();) {
+            // write bookings to file
+            for (Iterator i = bookingsList.iterator(); i.hasNext();) 
+            {
                 Booking nextBooking = (Booking) i.next();
                 writer.writeNext(nextBooking.convertToCSV());
             }
             
-            for (int j = 0; j < itemsRemoved; j++) {
+            // clear further columns that may contain data
+            for (int j = 0; j < itemsRemoved; j++) 
+            {
                 writer.writeNext(new String[numOfColums]);
             }
             
@@ -68,6 +89,9 @@ public class BookingsDataWriter
         }
     }
     
+    /**
+     * Displays an alert if the file hasn't been found.
+     */
     private void showFileNotFoundAlert() 
     {
         Alert alert = new Alert(AlertType.WARNING);

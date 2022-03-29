@@ -29,6 +29,7 @@ public class BookingWindow extends Stage
     private MainViewer mainViewer;
     private boolean isUpdating;
     
+    
     public BookingWindow (AirbnbListing property, Stage parent) 
     {
         this.property = property;
