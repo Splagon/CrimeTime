@@ -104,6 +104,7 @@ public class BookingWindow extends Stage
                                         {
                                             setDisable(true);
                                             setStyle("-fx-background-color: #ffc0cb;");
+                                            setTooltip(new Tooltip("Property already booked for these dates"));
                                         }
                                     }
                                 }      
