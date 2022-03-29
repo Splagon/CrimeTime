@@ -33,6 +33,11 @@ public class MapPane extends MainViewerPane
     // the stage which holds the stats viewer
     private StatisticsViewer statisticsViewer;
     
+    /**
+     * Constructor for objects of class MapPane
+     * 
+     * @param MainViewer mainViewer - used to call methods within the MainViewer
+     */
     public MapPane(MainViewer mainViewer)
     {
         super(mainViewer);
@@ -40,7 +45,6 @@ public class MapPane extends MainViewerPane
         hasMinMaxBox = true;
     }
 
-    @Override
     /**
      * Builds the map pane
      */
@@ -48,45 +52,46 @@ public class MapPane extends MainViewerPane
     {
         BorderPane window = new BorderPane();
         
-        VBox infoPane = new VBox();
-            Label titleLabel = new Label("Boroughs of London");
-                titleLabel.getStyleClass().add("windowTitle");
-            VBox stats = createStatsPanel();
-            GridPane key = createKey();
+            VBox infoPane = new VBox();
+                Label titleLabel = new Label("Boroughs of London");
+                    titleLabel.getStyleClass().add("windowTitle");
+                VBox stats = createStatsPanel();
+                GridPane key = createKey();
+                
+            VBox priceChanger = new VBox();
+                HBox minMaxBox = mainViewer.createMinMaxBox();
+                    minMaxBox = mainViewer.setInitialMinMaxBoxSelection(minMaxBox);
+                
+            Button confirm = (Button) minMaxBox.getChildren().get(2);
             
-        VBox priceChanger = new VBox();
-            HBox minMaxBox = mainViewer.createMinMaxBox();
-                minMaxBox = mainViewer.setInitialMinMaxBoxSelection(minMaxBox);
+            ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
+            ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
             
-        Button confirm = (Button) minMaxBox.getChildren().get(2);
-        
-        ComboBox<String> minBox = (ComboBox<String>) minMaxBox.getChildren().get(0);
-        ComboBox<String> maxBox = (ComboBox<String>) minMaxBox.getChildren().get(1);
-        
-        //styling the min and max box as well as the confirm button for the map panel
-        window.getStylesheets().add("stylesheet.css");
-        confirm.getStyleClass().add("confirmForMap");
-        minBox.getStyleClass().add("mapMinMaxBoxes");
-        maxBox.getStyleClass().add("mapMinMaxBoxes");
-        minMaxBox.getStyleClass().add("mapMinMaxBox");
+            //styling the min and max box as well as the confirm button for the map panel
+            window.getStylesheets().add("stylesheet.css");
+            confirm.getStyleClass().add("confirmForMap");
+            minBox.getStyleClass().add("mapMinMaxBoxes");
+            maxBox.getStyleClass().add("mapMinMaxBoxes");
+            minMaxBox.getStyleClass().add("mapMinMaxBox");
+                
+            infoPane.getChildren().addAll(titleLabel, key, stats);
+            infoPane.setPadding(new Insets(10, 20, 10, 10));
+            infoPane.setSpacing(15);
             
-        infoPane.getChildren().addAll(titleLabel, key, stats);
-        infoPane.setPadding(new Insets(10, 20, 10, 10));
-        infoPane.setSpacing(15);
-        
-        priceChanger.getChildren().add(minMaxBox);
-        priceChanger.setPadding(new Insets(10, 0, 0, 0));
-        
-        window.setLeft(infoPane);
-        
-        window.setCenter(mapView);
-            window.setAlignment(mapView, Pos.CENTER);
+            priceChanger.getChildren().add(minMaxBox);
+            priceChanger.setPadding(new Insets(10, 0, 0, 0));
             
-        //window.setRight(priceChanger);
+            window.setLeft(infoPane);
+            
+            window.setCenter(mapView);
+                window.setAlignment(mapView, Pos.CENTER);
         
         mapPane = window;
     }
     
+    /**
+     * Makes the borough hexagon map
+     */
     public void makeHexagonMap() 
     {
         String[][] mapPositions = StatisticsData.getMapPositions();
