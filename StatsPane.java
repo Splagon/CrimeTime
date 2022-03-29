@@ -198,12 +198,12 @@ public class StatsPane extends MainViewerPane
         priceSD.getStyleClass().add("statsvbox");
         highAvgReview.getStyleClass().add("statsvbox");
         
-        reviewInfo.getStyleClass().add("statslabels"); 
-        availableInfo.getStyleClass().add("statslabels"); 
-        noHomeAndApartmentsInfo.getStyleClass().add("statslabels"); 
-        expensiveInfo.getStyleClass().add("statslabels"); 
-        priceSDInfo.getStyleClass().add("statslabels"); 
-        highAvgReviewInfo.getStyleClass().add("statslabels");
+        reviewInfo.getStyleClass().add("statsLabels"); 
+        availableInfo.getStyleClass().add("statsLabels"); 
+        noHomeAndApartmentsInfo.getStyleClass().add("statsLabels"); 
+        expensiveInfo.getStyleClass().add("statsLabels"); 
+        priceSDInfo.getStyleClass().add("statsLabels"); 
+        highAvgReviewInfo.getStyleClass().add("statsLabels");
         
         title.getStyleClass().add("windowTitle");
         leftButtonVBox.getStyleClass().add("statsWindowAndButtons");
