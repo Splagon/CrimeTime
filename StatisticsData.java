@@ -55,10 +55,14 @@ public class StatisticsData extends DataHandler
     {
         ArrayList<AirbnbListing> data = determineList(useListingsAtPrice);
         double scoreCounter = 0; 
+        double average = 0; 
         for (int i = 0; i < data.size(); i++) {
             scoreCounter += data.get(i).getNumberOfReviews();
         }
-        double average = scoreCounter / data.size(); 
+        if(data.size() > 0)
+        {
+            average = scoreCounter / data.size(); 
+        }
         return average; 
     }
 
