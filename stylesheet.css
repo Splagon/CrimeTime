@@ -7,6 +7,8 @@
     -fx-padding: 10;
     -fx-spacing: 8;
     -fx-border-color: black;
+    -fx-pref-width: 350;
+    -fx-pref-height: 150;
 }
 
 .statsWindowAndButtons{

@@ -164,7 +164,8 @@ public class MainViewer extends Stage
         index--;
         
         //allows for wrap around
-        if (index < 0) {
+        if (index < 0) 
+        {
             index = list.size() - 1;
         }
         
@@ -185,7 +186,8 @@ public class MainViewer extends Stage
         index++;
         
         //allows for wrap around
-        if (index >= list.size()) {
+        if (index >= list.size()) 
+        {
             index = 0;
         }
         

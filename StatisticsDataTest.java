@@ -164,7 +164,7 @@ public class StatisticsDataTest
     @Test
     public void getExpensiveInfo()
     {
-        String mostExpensiveBorough = StatisticsData.getExpensiveInfo();
+        String mostExpensiveBorough = StatisticsData.getExpensiveInfo(false, 0, 0);
         assertNotNull(mostExpensiveBorough);
         
         ArrayList<String> boroughNames = StatisticsData.getBoroughNames();
@@ -408,7 +408,7 @@ public class StatisticsDataTest
     @Test
     public void getHighAvgReview()
     {
-        String boroughWithHighestAvgReview = StatisticsData.getHighAvgReview();
+        String boroughWithHighestAvgReview = StatisticsData.getHighAvgReview(false, 0, 0);
         assertNotNull(boroughWithHighestAvgReview);
         
         ArrayList<String> boroughNames = StatisticsData.getBoroughNames();

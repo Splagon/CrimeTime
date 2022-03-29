@@ -68,12 +68,12 @@ public class StatisticsViewer extends Stage
         
         // Add stats to the second box
         stat2.addInfo("Entire Home and Apartments:", formatData(StatisticsData.getNoHomeAndApartments(true)));
-        stat2.addInfo("Most Expensive Borough:", formatData(StatisticsData.getExpensiveInfo()));
+        stat2.addInfo("Most Expensive Borough\non Average:", formatData(StatisticsData.getExpensiveInfo(true, selectedMinPrice, selectedMaxPrice)));
         stat2.setFirst();
         
         // Add stats to the third box
         stat3.addInfo("Standard Deviation of Price (£):", formatData(StatisticsData.getPriceSDInfo(true)));
-        stat3.addInfo("Borough with the Highest \nAverage Amount of Reviews:", formatData(StatisticsData.getHighAvgReview()));
+        stat3.addInfo("Borough with the Highest \nAverage Amount of Reviews:", formatData(StatisticsData.getHighAvgReview(true, selectedMinPrice, selectedMaxPrice)));
         stat3.setFirst();
         
         // Add stats to the fourth box

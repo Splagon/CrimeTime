@@ -38,6 +38,9 @@ public class BookingsPane extends MainViewerPane
         hasMinMaxBox = false;
     }
     
+    /**
+     * This constructs the pane and its functionality and adds any styling
+     */
     public void makePane() {
             //creating the pane for the bookings and adding any styling
         BorderPane pane = new BorderPane();
@@ -77,6 +80,12 @@ public class BookingsPane extends MainViewerPane
         bookingsPane = pane;
     }
     
+    /**
+     * Once called will create a BorderPane which should display the details of the user's
+     * bokking
+     * 
+     * @return returns a BorderPane
+     */
     private BorderPane createBookingListing(Booking booking) {
         AirbnbListing property = booking.getProperty();
         Label propertyName = new Label("Property: " + property.getName());  
@@ -92,13 +101,13 @@ public class BookingsPane extends MainViewerPane
         durationLabel.getStyleClass().add("bookingListingLabels");
         priceLabel.getStyleClass().add("bookingListingLabels");
         
-        Button viewPropertyButton = makeBookingPaneButton("View Property", booking);
+        Button viewPropertyButton = makeBookingPaneButton("View Property");
             viewPropertyButton.setOnAction(e -> viewPropertyAction(booking));
-        Button contactButton = makeBookingPaneButton("Contact Host", booking);
+        Button contactButton = makeBookingPaneButton("Contact Host");
             contactButton.setOnAction(e -> contactAction(booking));
-        Button editButton = makeBookingPaneButton("Edit Booking", booking);
+        Button editButton = makeBookingPaneButton("Edit Booking");
             editButton.setOnAction(e -> editBookingAction(booking));
-        Button cancelButton = makeBookingPaneButton("Cancel Booking", booking);
+        Button cancelButton = makeBookingPaneButton("Cancel Booking");
             cancelButton.setOnAction(e -> cancelBookingAction(booking));
         
         BorderPane bookingListing = new BorderPane();
@@ -114,7 +123,14 @@ public class BookingsPane extends MainViewerPane
         return bookingListing;
     }
     
-    private Button makeBookingPaneButton(String buttonName, Booking booking)
+    /**
+     * Creates a button of the prefered size and with the text set based on the buttonName param.
+     * Also adds the styling to the created button.
+     * 
+     * @param String buttonName - sets the text of the button to this String
+     * @return Button returns the button created
+     */
+    private Button makeBookingPaneButton(String buttonName)
     {
         Button button = new Button(buttonName);
             button.setPrefSize(140, 20);
@@ -123,6 +139,11 @@ public class BookingsPane extends MainViewerPane
         return button;
     }
     
+    /**
+     * The user is able to view the property they have booked.
+     * 
+     * @param booking Booking to view.
+     */
     private void viewPropertyAction(Booking booking)
     {
         PropertyViewer propertyViewer = new PropertyViewer(booking);
@@ -130,6 +151,11 @@ public class BookingsPane extends MainViewerPane
         propertyViewer.show();
     }
     
+    /**
+     * The user is able to edit their booking for the property.
+     * 
+     *  * @param booking Booking to edit.
+     */
     private void editBookingAction(Booking booking)
     {
         AirbnbListing bookingProperty = booking.getProperty();
@@ -175,7 +201,7 @@ public class BookingsPane extends MainViewerPane
     {
         Alert alert = new Alert(AlertType.WARNING);
             alert.setHeaderText(titleText);
-            alert.setContentText("Unfortunately, the application is unable to\naccess your email to create a draft email.");
+            alert.setContentText("Unfortunately, the application is unable to access your email to create a draft email.");
         alert.show(); 
     }
     
@@ -190,6 +216,11 @@ public class BookingsPane extends MainViewerPane
         mainViewer.refreshPane();
     }
     
+    /**
+     * returns the pane
+     * 
+     * @return it will return type Pane
+     */
     public Pane getPane() 
     {
         return bookingsPane;
