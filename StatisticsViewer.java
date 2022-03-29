@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Write a description of class StatisticsViewer here.
+ * Makes the Statistics Window and displays statistics based on the price selected
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
