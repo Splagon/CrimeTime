@@ -90,9 +90,16 @@ public class PropertyViewer extends Stage {
         currentPropertyIndex = 0;
         applicationConnected = true;
        
-        makePropertyViewerScene();
+        makePropertyViewerScene(null);
          
         this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
+    }
+    
+    public PropertyViewer(Booking booking)
+    {
+        this.borough = booking.getProperty().getNeighbourhood();
+        
+        makePropertyViewerScene(booking);
     }
     
     /**
@@ -102,13 +109,22 @@ public class PropertyViewer extends Stage {
      * at the right and left buttons to let the user change property and finally 
      * at the bottom a grid pane displaying characteristics of the property.
      */
-    private void makePropertyViewerScene() {
+    private void makePropertyViewerScene(Booking booking) {
         setTitle("Neighbourhood: " + borough);
         // Generates the list of properties that will be displayed depending 
         // on the borough, price range and sorting parameter selected by the user.
-        if(sortedBy != null){
+        
+        if (booking != null)
+        {
+            properties = new ArrayList<AirbnbListing>();
+            properties.add(booking.getProperty());
+        }
+        else if (sortedBy != null)
+        {
             properties = DataHandler.getPropertiesSortedBy(borough, minPrice, maxPrice, sortedBy);
-        }else {
+        }
+        else 
+        {
             properties = DataHandler.getPropertiesFromBorough(borough, minPrice, maxPrice);
         }
         
@@ -165,7 +181,8 @@ public class PropertyViewer extends Stage {
         root.setAlignment(nextButton, Pos.CENTER);
         root.setRight(nextButton);
         
-        if(properties.size() == 1) {
+        if(properties.size() == 1) 
+        {
             nextButton.setDisable(true);
             prevButton.setDisable(true);
             // We display a short message to inform the user why the buttons are disabled 

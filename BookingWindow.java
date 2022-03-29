@@ -36,8 +36,10 @@ public class BookingWindow extends Stage
         openBookingWindow(property);
     }
     
-    public void openBookingWindow(AirbnbListing listing) {
- 
+    public void openBookingWindow(AirbnbListing listing) 
+    {
+        ArrayList<Booking> bookingsAtProperty = bookingsAtProperty(listing);
+        
         bookingStage = new Stage();
         bookingStage.setTitle("Booking Window");
         
@@ -80,31 +82,60 @@ public class BookingWindow extends Stage
                                 @Override
                                 public void updateItem(LocalDate item, boolean empty) {
                                     super.updateItem(item, empty);
-                                    if (item.isBefore(checkIn.getValue())) {
+                                    if (item.isBefore(checkIn.getValue()))
+                                    {
                                         setDisable(true);
                                         setStyle("-fx-background-color: #ffc0cb;");
-                                    } else if(item.isAfter(checkIn.getValue().minusDays(1)) && item.isBefore(checkIn.getValue().plusDays(listing.getMinimumNights()))){
+                                    } 
+                                    else if(item.isAfter(checkIn.getValue().minusDays(1)) && item.isBefore(checkIn.getValue().plusDays(listing.getMinimumNights())))
+                                    {
                                         setDisable(true);
                                         setStyle("-fx-background-color: #ffa07a;");
-                                    } else if (item.isAfter(checkIn.getValue().plusDays(listing.getMinimumNights()).minusDays(1)) && item.isBefore(checkOut.getValue())){
+                                    } 
+                                    else if (item.isAfter(checkIn.getValue().plusDays(listing.getMinimumNights()).minusDays(1)) && item.isBefore(checkOut.getValue()))
+                                    {
                                         setStyle("-fx-background-color: #90ee90;");
+                                    }
+                                    
+                                    for (Booking booking : bookingsAtProperty)
+                                    {
+                                        if (item.isAfter(booking.getCheckInDate().minusDays(1)) && item.isBefore(booking.getCheckOutDate().plusDays(1)))
+                                        {
+                                            setDisable(true);
+                                            setStyle("-fx-background-color: #ffc0cb;");
+                                        }
                                     }
                                 }      
                             };
                         }
                     };
                     
-                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() {
+                    final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() 
+                    {
                         @Override
-                        public DateCell call(final DatePicker datePicker) {
-                            return new DateCell() {
+                        public DateCell call(final DatePicker datePicker) 
+                        {
+                            return new DateCell() 
+                            {
                                 @Override
-                                public void updateItem(LocalDate item, boolean empty) {
+                                public void updateItem(LocalDate item, boolean empty) 
+                                {
                                     super.updateItem(item, empty);
-                                    if (item.isBefore(LocalDate.now())) {
+                                    
+                                    if (item.isBefore(LocalDate.now())) 
+                                    {
                                         setDisable(true);
                                         setStyle("-fx-background-color: #ffc0cb;");
-                                    }  
+                                    } 
+                                    
+                                    for (Booking booking : bookingsAtProperty)
+                                    {
+                                        if (item.isAfter(booking.getCheckInDate().minusDays(1)) && item.isBefore(booking.getCheckOutDate().plusDays(1)))
+                                        {
+                                            setDisable(true);
+                                            setStyle("-fx-background-color: #ffc0cb;");
+                                        }
+                                    }
                                 }      
                             };
                         }
@@ -143,6 +174,21 @@ public class BookingWindow extends Stage
         bookingStage.initModality(Modality.WINDOW_MODAL);
         bookingStage.initOwner(parent);
         bookingStage.show();
+    }
+    
+    private ArrayList<Booking> bookingsAtProperty(AirbnbListing listing)
+    {
+        ArrayList<Booking> bookingsAtProperties = new ArrayList<Booking>();
+        
+        for (Booking booking : DataHandler.getBookingList())
+        {
+            if (booking.getPropertyID().equals(listing.getId()))
+            {
+                bookingsAtProperties.add(booking);
+            }
+        }
+        
+        return bookingsAtProperties;
     }
     
     private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) {
