@@ -494,6 +494,11 @@ public class MapPane extends MainViewerPane
         return grid;
     }
     
+    /**
+     * returns the pane
+     * 
+     * @return it will return type Pane
+     */
     public Pane getPane() 
     {
         return mapPane;
