@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 /**
+ * Loads the data from the Airbnb csv file
  * 
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).

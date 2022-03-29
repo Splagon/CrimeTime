@@ -122,7 +122,8 @@ public class StatisticsViewer extends Stage
      * @param Label label The label which will be affected.
      * @param double dataToFormat The data to format into a String.
      */
-    private String formatData(double dataToFormat) {
+    private String formatData(double dataToFormat) 
+    {
         String formatedData = String.format("%.2f", dataToFormat) + " (2 d.p)"; 
         return formatedData;
     }
@@ -132,7 +133,8 @@ public class StatisticsViewer extends Stage
      * @param Label label The label which will be affected.
      * @param int dataToFormat The data to format into a String
      */
-    private String formatData(int dataToFormat) {
+    private String formatData(int dataToFormat) 
+    {
         String formatedData = String.valueOf(dataToFormat);
         return formatedData;
     }
@@ -142,7 +144,8 @@ public class StatisticsViewer extends Stage
      * @param Label label The label which will be affected.
      * @param String dataToFormat The String that the Label's text will be set to.
      */
-    private String formatData(String dataToFormat) {
+    private String formatData(String dataToFormat) 
+    {
         return dataToFormat;
     }
 
@@ -160,7 +163,8 @@ public class StatisticsViewer extends Stage
     /**
      * Recreate the scene with the updated statistics data 
      */
-    public void update(int selectedMinPrice, int selectedMaxPrice) {
+    public void update(int selectedMinPrice, int selectedMaxPrice) 
+    {
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
         //updateInfo();
         constructScene(selectedMinPrice, selectedMaxPrice);
@@ -169,14 +173,16 @@ public class StatisticsViewer extends Stage
     /**
      * @return int the curret minimum price
      */
-    public int getCurrentMinPrice() {
+    public int getCurrentMinPrice() 
+    {
         return noOfPropertiesStats.getMinPrice();
     }
     
     /**
      * @return int the current maximum price
      */
-    public int getCurrentMaxPrice() {
+    public int getCurrentMaxPrice() 
+    {
         return noOfPropertiesStats.getMaxPrice();
     }
 }
