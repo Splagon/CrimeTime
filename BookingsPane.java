@@ -92,25 +92,21 @@ public class BookingsPane extends MainViewerPane
         durationLabel.getStyleClass().add("bookingListingLabels");
         priceLabel.getStyleClass().add("bookingListingLabels");
         
-        Button editButton = new Button("Edit Booking");
-            editButton.setPrefSize(140, 20);
-            editButton.setOnAction(e -> editBooking(booking));
-            editButton.getStyleClass().add("smallWindowButtons");
-        Button contactButton = new Button("Contact Host");
-            contactButton.setPrefSize(140, 20);
+        Button viewPropertyButton = makeBookingPaneButton("View Property", booking);
+            viewPropertyButton.setOnAction(e -> viewPropertyAction(booking));
+        Button contactButton = makeBookingPaneButton("Contact Host", booking);
             contactButton.setOnAction(e -> contactAction(booking));
-            contactButton.getStyleClass().add("smallWindowButtons");
-        Button cancelButton = new Button("Cancel Booking");
-            cancelButton.setPrefSize(140, 20);
+        Button editButton = makeBookingPaneButton("Edit Booking", booking);
+            editButton.setOnAction(e -> editBookingAction(booking));
+        Button cancelButton = makeBookingPaneButton("Cancel Booking", booking);
             cancelButton.setOnAction(e -> cancelBookingAction(booking));
-            cancelButton.getStyleClass().add("smallWindowButtons");
         
         BorderPane bookingListing = new BorderPane();
             VBox centerPane = new VBox(propertyName, hostName, dates, durationLabel, priceLabel);
                 centerPane.setSpacing(5);
                 centerPane.setAlignment(Pos.CENTER_LEFT);
-            VBox rightPane = new VBox(editButton, contactButton, cancelButton);
-                rightPane.setSpacing(20);
+            VBox rightPane = new VBox(viewPropertyButton, contactButton, editButton, cancelButton);
+                rightPane.setSpacing(10);
                 rightPane.setAlignment(Pos.CENTER);
         bookingListing.setCenter(centerPane);
         bookingListing.setRight(rightPane);
@@ -118,7 +114,24 @@ public class BookingsPane extends MainViewerPane
         return bookingListing;
     }
     
-    private void editBooking(Booking booking) {
+    private Button makeBookingPaneButton(String buttonName, Booking booking)
+    {
+        Button button = new Button(buttonName);
+            button.setPrefSize(140, 20);
+            button.getStyleClass().add("smallWindowButtons");
+            
+        return button;
+    }
+    
+    private void viewPropertyAction(Booking booking)
+    {
+        PropertyViewer propertyViewer = new PropertyViewer(booking);
+        
+        propertyViewer.show();
+    }
+    
+    private void editBookingAction(Booking booking)
+    {
         AirbnbListing bookingProperty = booking.getProperty();
         
         DataHandler.removeFromBookingList(booking);
@@ -126,13 +139,20 @@ public class BookingsPane extends MainViewerPane
         BookingWindow bookingWindow = new BookingWindow(bookingProperty, mainViewer);
     }
     
-    private void contactAction(Booking booking)  {
+    /**
+     * Opens the user's default email application and opens a new draft email
+     * with a preset email address, subject, and body.
+     * 
+     * @param booking The booking to contact the host about.
+     */
+    private void contactAction(Booking booking)  
+    {
         Desktop desktop;
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL))
         {
             try 
             {
-                URI mailto = new URI("mailto:" + booking.getProperty().getMailHost_name(false) + "@kcl.ac.uk?subject=About%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "&body=Hello%20" + booking.getProperty().getMailHost_name(true) + ",%0A%0DI%20need%20to%20edit%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "%20in%20the%20property%20called%20'" + booking.getProperty().getMailName() + "'%20(Property%20iD%20:" + booking.getProperty().getId() + ")%0A%0D");
+                URI mailto = new URI("mailto:" + booking.getProperty().getMailHost_name(false) + "@kcl.ac.uk?subject=About%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "&body=Hello%20" + booking.getProperty().getMailHost_name(true) + ",%0A%0DI%20need%20to%20edit%20the%20booking%20between%20" + booking.getCheckInDate().toString() + "%20and%20" + booking.getCheckOutDate().toString() + "%20in%20the%20property%20called%20'" + booking.getProperty().getMailName() + "'%20(Property%20iD:%20" + booking.getProperty().getId() + ")%0A%0D");
                 Desktop.getDesktop().mail(mailto);
             }
             catch (IOException | URISyntaxException e) 
@@ -146,6 +166,11 @@ public class BookingsPane extends MainViewerPane
         }
     }
     
+    /**
+     * Displays an alert which states that the email doesn't work
+     * 
+     * @param titleText The text to set the alert's title to.
+     */
     private void showEmailNotWorkingAlert(String titleText) 
     {
         Alert alert = new Alert(AlertType.WARNING);
@@ -154,12 +179,19 @@ public class BookingsPane extends MainViewerPane
         alert.show(); 
     }
     
-    private void cancelBookingAction(Booking booking)  {
+    /**
+     * Used to cancel the booking.
+     * 
+     * @param booking Booking to cancel.
+     */
+    private void cancelBookingAction(Booking booking) 
+    {
         DataHandler.removeFromBookingList(booking);
         mainViewer.refreshPane();
     }
     
-    public Pane getPane() {
+    public Pane getPane() 
+    {
         return bookingsPane;
     }
 }
