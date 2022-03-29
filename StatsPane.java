@@ -198,6 +198,14 @@ public class StatsPane extends MainViewerPane
         priceSD.getStyleClass().add("statsvbox");
         highAvgReview.getStyleClass().add("statsvbox");
         
+        title.getStyleClass().add("windowTitle"); 
+        reviewTitle.getStyleClass().add("statsLabelTitle"); 
+        availableTitle.getStyleClass().add("statsLabelTitle"); 
+        noHomeAndApartmentsTitle.getStyleClass().add("statsLabelTitle");
+        expensiveTitle.getStyleClass().add("statsLabelTitle"); 
+        priceSDTitle.getStyleClass().add("statsLabelTitle"); 
+        highAvgReviewTitle.getStyleClass().add("statsLabelTitle");
+        
         reviewInfo.getStyleClass().add("statsLabels"); 
         availableInfo.getStyleClass().add("statsLabels"); 
         noHomeAndApartmentsInfo.getStyleClass().add("statsLabels"); 
@@ -205,7 +213,6 @@ public class StatsPane extends MainViewerPane
         priceSDInfo.getStyleClass().add("statsLabels"); 
         highAvgReviewInfo.getStyleClass().add("statsLabels");
         
-        title.getStyleClass().add("windowTitle");
         leftButtonVBox.getStyleClass().add("statsWindowAndButtons");
         rightButtonVBox.getStyleClass().add("statsWindowAndButtons");
         leftStatsButton.getStyleClass().add("smallWindowButtons");
