@@ -44,7 +44,8 @@ public class StatsPane extends MainViewerPane
     /**
      * Make the statistics pane
      */
-    public void makePane() {
+    public void makePane() 
+    {
         statsWindow = new VBox();
         
         if(statsOrder.size() > 0)
@@ -143,6 +144,7 @@ public class StatsPane extends MainViewerPane
         statsOrder.add(statsGridVBox);
         statsOrder.add(AvgPriceBarChartVBox);
         statsOrder.add(AvgReviewsBarChartVBox);
+        
         // Adding components to the statsWindow VBox
         statsWindow.setAlignment(Pos.CENTER);
         statsWindow.getChildren().add(title); 
@@ -173,12 +175,14 @@ public class StatsPane extends MainViewerPane
         
         // Create a VBox to hold the right button
         VBox rightButtonVBox = new VBox();
+        
         // Add the right stats button to the VBox
         rightButtonVBox.getChildren().add(rightStatsButton);
         rightButtonVBox.setAlignment(Pos.CENTER);
         
         // Create a VBox to hold the left button
         VBox leftButtonVBox = new VBox();
+        
         // Add the left stats button to the VBox
         leftButtonVBox.getChildren().add(leftStatsButton);
         leftButtonVBox.setAlignment(Pos.CENTER);
@@ -198,13 +202,6 @@ public class StatsPane extends MainViewerPane
         expensive.getStyleClass().add("statsvbox");
         priceSD.getStyleClass().add("statsvbox");
         highAvgReview.getStyleClass().add("statsvbox");
-        // reviews.setMinSize(200,150);
-        // available.setMinSize(200,150);
-        // noHomeAndApartments.setMinSize(200,150);
-        // expensive.setMinSize(200,150);
-        // priceSD.setMinSize(200,150);
-        // highAvgReview.setMinSize(200,150);
-        
         
         title.getStyleClass().add("windowTitle"); 
         reviewTitle.getStyleClass().add("statsLabelTitle"); 
@@ -317,7 +314,8 @@ public class StatsPane extends MainViewerPane
      * @param Label label The label which will be affected.
      * @param double dataToFormat The data to format into a String.
      */
-    private void setText(Label label, double dataToFormat) {
+    private void setText(Label label, double dataToFormat) 
+    {
         String formattedLabel = String.valueOf(String.format("%.2f", dataToFormat) + " (2 d.p)"); 
         label.setText(formattedLabel);
     }
@@ -327,7 +325,8 @@ public class StatsPane extends MainViewerPane
      * @param Label label The label which will be affected.
      * @param int dataToFormat The data to format into a String.
      */
-    private void setText(Label label, int dataToFormat) {
+    private void setText(Label label, int dataToFormat) 
+    {
         label.setText(String.valueOf(dataToFormat));
     }
     
@@ -357,7 +356,8 @@ public class StatsPane extends MainViewerPane
     /**
      * @return The statsPane as a Pane object
      */
-    public Pane getPane() {
+    public Pane getPane() 
+    {
         return statsPane;
     }
 }

@@ -6,22 +6,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.paint.*;
-//import java.io.FileInputStream;
-//import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import javafx.geometry.*;
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
 import java.net.URL;
-//import javax.script.*;
-//import javafx.scene.Node;
-//import javafx.stage.Popup;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ComboBox;
-//import javafx.collections.ObservableList;
 import javafx.stage.*;
-//import javafx.event.EventHandler;
-//import java.net.URL;
 import java.net.URLConnection;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -46,7 +38,8 @@ import java.io.IOException;
  *         
  * @version 25/03/22
  */
-public class PropertyViewer extends Stage {
+public class PropertyViewer extends Stage
+{
     // List that holds the properties of a predetermined borough within a particular price range
     private ArrayList<AirbnbListing> properties;
     // The index of the current property displayed in "properties"

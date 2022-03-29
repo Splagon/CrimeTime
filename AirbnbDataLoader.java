@@ -17,11 +17,13 @@ import javafx.scene.control.Alert.AlertType;
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
  * @version 25/03/22
  */
-public class AirbnbDataLoader {
+public class AirbnbDataLoader 
+{
     /** 
      * Return an ArrayList containing the rows in the AirBnB London data set csv file.
      */
-    public ArrayList<AirbnbListing> load() {
+    public ArrayList<AirbnbListing> load() 
+    {
         //System.out.print("Begin loading Airbnb london dataset...");
         ArrayList<AirbnbListing> listings = new ArrayList<AirbnbListing>();
         try 
@@ -77,8 +79,10 @@ public class AirbnbDataLoader {
      * @return the Double value of the string, or -1.0 if the string is 
      * either empty or just whitespace
      */
-    private Double convertDouble(String doubleString){
-        if(doubleString != null && !doubleString.trim().equals("")){
+    private Double convertDouble(String doubleString)
+    {
+        if(doubleString != null && !doubleString.trim().equals(""))
+        {
             return Double.parseDouble(doubleString);
         }
         return -1.0;
@@ -90,11 +94,12 @@ public class AirbnbDataLoader {
      * @return the Integer value of the string, or -1 if the string is 
      * either empty or just whitespace
      */
-    private Integer convertInt(String intString){
-        if(intString != null && !intString.trim().equals("")){
+    private Integer convertInt(String intString)
+    {
+        if(intString != null && !intString.trim().equals(""))
+        {
             return Integer.parseInt(intString);
         }
         return -1;
     }
-
 }

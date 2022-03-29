@@ -41,7 +41,8 @@ public class BookingsPane extends MainViewerPane
     /**
      * This constructs the pane and its functionality and adds any styling
      */
-    public void makePane() {
+    public void makePane() 
+    {
             //creating the pane for the bookings and adding any styling
         BorderPane pane = new BorderPane();
         
@@ -86,7 +87,8 @@ public class BookingsPane extends MainViewerPane
      * 
      * @return returns a BorderPane
      */
-    private BorderPane createBookingListing(Booking booking) {
+    private BorderPane createBookingListing(Booking booking) 
+    {
         AirbnbListing property = booking.getProperty();
         Label propertyName = new Label("Property: " + property.getName());  
         Label hostName = new Label("Host name: " + property.getHost_name());

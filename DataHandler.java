@@ -44,7 +44,8 @@ public class DataHandler
         // initialise instance variables
     }
 
-    public static void initialiseHandler() {
+    public static void initialiseHandler() 
+    {
         if (listings == null || listings.isEmpty())
         {
             airbnbDataLoader = new AirbnbDataLoader();
@@ -58,7 +59,8 @@ public class DataHandler
     /**
      * Load the bookings data
      */
-    private static void loadBookingsData() {
+    private static void loadBookingsData() 
+    {
         bookingsDataLoader = new BookingsDataLoader();
         bookingList = bookingsDataLoader.load(bookingsDataFileName);
     }
@@ -66,7 +68,8 @@ public class DataHandler
     /**
      * @return AirbnbListing object corresponding to a String ID
      */
-    public static AirbnbListing getProperty(String iD) {
+    public static AirbnbListing getProperty(String iD) 
+    {
         try
         {
             for (AirbnbListing listing : listings)
@@ -199,7 +202,8 @@ public class DataHandler
      * @param String sortingElement The element that the AirbnbListings will be sorted based upon
      * @return ArrayList<AirbnbListing> object containing a sorted list of AirbnbListings within a certain price range sorted by a certain element
      */
-    public static ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) {
+    public static ArrayList<AirbnbListing> getPropertiesSortedBy(String borough, int minPrice, int maxPrice,String sortingElement) 
+    {
         ArrayList<AirbnbListing> unsortedListing = getPropertiesFromBorough(borough, minPrice, maxPrice);
         return selectionSort(unsortedListing, sortingElement);
     }
@@ -210,7 +214,8 @@ public class DataHandler
      * @param String sortingElement The element to sort the list by
      * @return ArrayList<AirbnbListing> object A sorted list based on the sortingElement passed through
      */
-    private static ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement){
+    private static ArrayList<AirbnbListing> selectionSort(ArrayList<AirbnbListing> unsortedList, String sortingElement)
+    {
         switch (sortingElement) 
         {
             case "Price ↑":
@@ -306,7 +311,8 @@ public class DataHandler
     /**
      * @return ArrayList<Booking> object Containing a list of all of the bookings on the system
      */
-    public static ArrayList<Booking> getBookingList() {
+    public static ArrayList<Booking> getBookingList() 
+    {
         loadBookingsData();
         return bookingList;
     }
@@ -314,7 +320,8 @@ public class DataHandler
     /**
      * @param Booking booking  The booking to add to the booking list
      */
-    public static void addToBookingList(Booking booking) {
+    public static void addToBookingList(Booking booking) 
+    {
         bookingList.add(booking);
         saveBooking(booking);
     }
@@ -323,7 +330,8 @@ public class DataHandler
      * Save a bookijg by writing it to the booking csv file
      * @param Booking booking The booking to save
      */
-    private static void saveBooking(Booking booking) {
+    private static void saveBooking(Booking booking) 
+    {
         BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
         bookingsDataWriter.write(booking, bookingsDataFileName);
     }
@@ -332,7 +340,8 @@ public class DataHandler
      * Rearrange the booking list display
      * @param int itemsRemoved The amount of bookings to rearrange
      */
-    public static void saveBookingList(int itemsRemoved) {
+    public static void saveBookingList(int itemsRemoved) 
+    {
         BookingsDataWriter bookingsDataWriter = new BookingsDataWriter();
         bookingsDataWriter.write(bookingList, bookingsDataFileName, itemsRemoved);
     }
@@ -341,7 +350,8 @@ public class DataHandler
      * Remove a Booking from the booking list
      * @param Booking booking The booking to remove
      */
-    public static void removeFromBookingList(Booking booking) {
+    public static void removeFromBookingList(Booking booking) 
+    {
         bookingList.remove(booking);
         saveBookingList(1);
     }
@@ -357,7 +367,8 @@ public class DataHandler
     /**
      * Clear the bookings list
      */
-    protected static void clear() {
+    protected static void clear() 
+    {
         bookingList = new ArrayList<Booking>();
     }
 }

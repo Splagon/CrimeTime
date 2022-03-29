@@ -13,7 +13,8 @@ import java.util.ArrayList;
  * @version 25/03/22
  */ 
 
-public class AirbnbListing {
+public class AirbnbListing 
+{
     /**
      * The id and name of the individual property
      */
@@ -74,7 +75,8 @@ public class AirbnbListing {
                          String host_name, String neighbourhood, double latitude,
                          double longitude, String room_type, int price,
                          int minimumNights, int numberOfReviews, String lastReview,
-                         double reviewsPerMonth, int calculatedHostListingsCount, int availability365) {
+                         double reviewsPerMonth, int calculatedHostListingsCount, int availability365) 
+    {
         this.id = id;
         this.name = name;
         this.host_id = host_id;
@@ -92,23 +94,28 @@ public class AirbnbListing {
         this.availability365 = availability365;
     }
 
-    public String getId() {
+    public String getId() 
+    {
         return id;
     }
 
-    public String getName() {
+    public String getName() 
+    {
         return name;
     }
     
-    public String getMailName() {    
+    public String getMailName() 
+    {    
         return name.replaceAll("\\s", "%20");
     }
 
-    public String getHost_id() {
+    public String getHost_id() 
+    {
         return host_id;
     }
 
-    public String getHost_name() {
+    public String getHost_name() 
+    {
         return host_name;
     }
     

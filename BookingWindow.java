@@ -282,7 +282,8 @@ public class BookingWindow extends Stage
     /**
      * Displays confimation window. 
      */
-    private void showConfirmationStage(boolean isEdit) {
+    private void showConfirmationStage(boolean isEdit) 
+    {
         Stage confirmationStage = new Stage();
         confirmationStage.setTitle("Confirmation Window");
         

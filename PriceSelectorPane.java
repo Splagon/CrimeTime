@@ -36,7 +36,8 @@ public class PriceSelectorPane extends MainViewerPane
     /**
      * This constructs the pane and its functionality and adds any styling
      */
-    public void makePane() {
+    public void makePane() 
+    {
         //All labels in the window
         Label title = new Label("Price Selection!");
         Label instruction = new Label("Please select a min and max for your price range: ");
@@ -82,7 +83,8 @@ public class PriceSelectorPane extends MainViewerPane
      * 
      * @return it will return type Pane
      */
-    public Pane getPane() {
+    public Pane getPane() 
+    {
         return priceSelectorPane;
     }
 }

@@ -46,7 +46,8 @@ public class StatisticsViewer extends Stage
      * Constructs the scene
      * @param int selectedMinPrice - The current minimum price selected by the user. int selectedMaxPrice - The current maximum price selected by the user.
      */
-    private void constructScene(int selectedMinPrice, int selectedMaxPrice)  {
+    private void constructScene(int selectedMinPrice, int selectedMaxPrice) 
+    {
         // The layout of the window
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
         

@@ -115,11 +115,13 @@ public class MapPane extends MainViewerPane
         double newWidthToHeightRatio = newWidth/newHeight;
 
         // pane is narrow; height needs to be adjusted to fit
-        if (newWidthToHeightRatio < WIDTH_TO_HEIGHT_RATIO) {
+        if (newWidthToHeightRatio < WIDTH_TO_HEIGHT_RATIO) 
+        {
             newHeight = newWidth * HEIGHT_TO_WIDTH_RATIO;
         }
         // pane is too wide; width needs to be adjusted to fit
-        else if (newWidthToHeightRatio > WIDTH_TO_HEIGHT_RATIO) {
+        else if (newWidthToHeightRatio > WIDTH_TO_HEIGHT_RATIO) 
+        {
             newWidth = newHeight * WIDTH_TO_HEIGHT_RATIO;
         }
         
@@ -153,7 +155,8 @@ public class MapPane extends MainViewerPane
                 
                 // adds an offset rectangle at the start of the row every other
                 // line which is half the size of a hexagon
-                if (m % 2 == 0) {
+                if (m % 2 == 0) 
+                {
                         createInsetRectangle(hexagonWidth, row, gapSize);
                 }
                 
