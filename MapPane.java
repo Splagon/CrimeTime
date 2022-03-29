@@ -87,7 +87,8 @@ public class MapPane extends MainViewerPane
         mapPane = window;
     }
     
-    public void makeHexagonMap()  {
+    public void makeHexagonMap() 
+    {
         String[][] mapPositions = StatisticsData.getMapPositions();
         
         int minPrice = mainViewer.getSelectedMinPrice();
@@ -95,6 +96,8 @@ public class MapPane extends MainViewerPane
         
         NoOfPropertiesStats noOfPropertiesStats = new NoOfPropertiesStats(minPrice, maxPrice);
         
+        // calculates the appropriate height and width of the map dependent
+        // on the current height and width of the scene
         double sceneWidth = mainViewer.getMainScene().getWidth();
         double sceneHeight = mainViewer.getMainScene().getHeight();
         
@@ -105,8 +108,6 @@ public class MapPane extends MainViewerPane
         double newHeight = sceneHeight * 0.800;
         
         double newWidthToHeightRatio = newWidth/newHeight;
-        
-        final double gapSize = 5.0;
 
         // pane is narrow; height needs to be adjusted to fit
         if (newWidthToHeightRatio < WIDTH_TO_HEIGHT_RATIO) {
@@ -116,11 +117,15 @@ public class MapPane extends MainViewerPane
         else if (newWidthToHeightRatio > WIDTH_TO_HEIGHT_RATIO) {
             newWidth = newHeight * WIDTH_TO_HEIGHT_RATIO;
         }
+        
+        // size of the gap between hexagons
+        final double gapSize = 7.0;
             
         mapView = new AnchorPane();
             mapView.setMaxSize(newWidth, newHeight);
-            double maxHexagonsPerLine = 0;
             
+            //calculates the largest amount of hexagons on a line
+            double maxHexagonsPerLine = 0;
             for (int i = 0; i < mapPositions.length; i++)
             {
                 if (maxHexagonsPerLine < mapPositions[i].length)
@@ -129,6 +134,7 @@ public class MapPane extends MainViewerPane
                 }
             }
             
+            //total amount of gaps on a line
             final double gapsPerLine = gapSize * (maxHexagonsPerLine + 1);
             final double hexagonWidth = (int) ((newWidth - gapsPerLine) / (maxHexagonsPerLine + 0.5) );
             
@@ -140,6 +146,8 @@ public class MapPane extends MainViewerPane
                    row.setMinWidth(newWidth);
                    row.setMaxWidth(newWidth);
                 
+                //adds an offset rectangle at the start of the row every other
+                //line which is half the size of a hexagon
                 if (m % 2 == 0) {
                         createInsetRectangle(hexagonWidth, row, gapSize);
                 }
@@ -194,6 +202,8 @@ public class MapPane extends MainViewerPane
                     }
                 }
                 
+                //adds an offset rectangle at the end of the row every other
+                //line which is half the size of a hexagon
                 if (m % 2 == 1) 
                 {
                    createInsetRectangle(hexagonWidth, row, gapSize);
@@ -358,6 +368,8 @@ public class MapPane extends MainViewerPane
         if (statisticsViewer == null) {
             statisticsViewer = new StatisticsViewer(mainViewer.getSelectedMinPrice(), mainViewer.getSelectedMaxPrice());
             statisticsViewer.show();
+            
+            statisticsViewer.setOnCloseRequest(e -> {statisticsViewer = null;});
         }
         updateStats();
     }
