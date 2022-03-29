@@ -16,7 +16,8 @@ import javafx.animation.*;
 import javafx.util.Duration;
 
 /**
- * Makes the Statistics Window and displays general statistics that are not influenced by the price selected.
+ * Makes the Statistics Window and displays general statistics that are not influenced 
+ * by the price selected.
  *
  * @author Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
  *         Matthew Palmer (K21005255), Aymen Berbache (K21074588).
