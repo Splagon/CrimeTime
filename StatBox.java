@@ -27,12 +27,16 @@ import java.awt.Font;
  */
 public class StatBox extends Pane
 {
-    // instance variables - replace the example below with your own
-    private Label titleLabel = new Label("default");
-    private Label statLabel = new Label("default");
+    // list of all titles and stats within the box respectively
+    private Label titleLabel = new Label();
+    private Label statLabel = new Label();
+    
+    // the current stat and its title
     private ArrayList<String> titleList; 
     private ArrayList<String> statList; 
-    private int current = 0; 
+    
+    // index of the stat.
+    private int index = 0; 
 
     /**
      * Constructor for objects of class StatBox
@@ -41,44 +45,46 @@ public class StatBox extends Pane
     {
         titleList = new ArrayList<>();
         statList = new ArrayList<>();
+        
         statLabel.getStyleClass().add("statslabels");
         
         //Create a VBox and add the title label and stat label to it
         VBox content = new VBox();
-        content.getChildren().addAll(titleLabel, statLabel);
-        content.setSpacing(10);
-        content.setAlignment(Pos.CENTER);
+            content.getChildren().addAll(titleLabel, statLabel);
+            content.setSpacing(10);
+            content.setAlignment(Pos.CENTER);
         
         //Create the left button
         Button leftButton = new Button();
-        leftButton.setText("<");
-        leftButton.setOnAction(this::leftButtonAction);
-        leftButton.setMinSize(10, 90);
-        leftButton.setAlignment(Pos.CENTER);
-        leftButton.getStyleClass().add("smallWindowButtons");
+            leftButton.setText("<");
+            leftButton.setOnAction(e -> leftButtonAction());
+            leftButton.setMinSize(10, 90);
+            leftButton.setAlignment(Pos.CENTER);
+            leftButton.getStyleClass().add("smallWindowButtons");
         
         //Create the right button
         Button rightButton = new Button();
-        rightButton.setText(">");
-        rightButton.setOnAction(this::rightButtonAction);
-        rightButton.setMinSize(10, 90);
-        rightButton.setAlignment(Pos.CENTER);
-        rightButton.getStyleClass().add("smallWindowButtons");
+            rightButton.setText(">");
+            rightButton.setOnAction(e -> rightButtonAction());
+            rightButton.setMinSize(10, 90);
+            rightButton.setAlignment(Pos.CENTER);
+            rightButton.getStyleClass().add("smallWindowButtons");
         
         //Create the border pane and add elements to it
         BorderPane pane = new BorderPane(); 
-        pane.setCenter(content);
-        pane.setLeft(leftButton);
-        pane.setRight(rightButton); 
-        pane.setMinSize(400, 140);
-        pane.setPadding(new Insets(20));
-        
+            pane.setCenter(content);
+            pane.setLeft(leftButton);
+            pane.setRight(rightButton); 
+            pane.setMinSize(400, 140);
+            pane.setPadding(new Insets(20));
         
         this.getChildren().add(pane);
     }
     
     /**
      * Set the stat label and title label to the String at index of the stat list and title list respectively
+     * 
+     * @index The index to set the labels to.
      */
     private void setLabels(int index)
     {
@@ -94,8 +100,8 @@ public class StatBox extends Pane
      */
     public void setFirst()
     {
-        current = 0;
-        setLabels(current); 
+        index = 0;
+        setLabels(index); 
     }
     
     /**
@@ -103,8 +109,8 @@ public class StatBox extends Pane
      */
     public void setLast()
     {
-        current = titleList.size() - 1; 
-        setLabels(current); 
+        index = titleList.size() - 1; 
+        setLabels(index); 
     }
     
     /**
@@ -121,17 +127,17 @@ public class StatBox extends Pane
      * title list and stat list. If it reaches the start of both of the lists, set the labels to
      * the last element in the lists. 
      */
-    private void leftButtonAction(ActionEvent event)
+    private void leftButtonAction()
     {
-        if(current - 1 < 0)
+        if(index - 1 < 0)
         {
             setLast();
-            current = titleList.size() - 1;
+            index = titleList.size() - 1;
         }
         else
         {
-            current -= 1;
-            setLabels(current); 
+            index -= 1;
+            setLabels(index); 
         }
     }
     
@@ -140,22 +146,23 @@ public class StatBox extends Pane
      * title list and stat list. If it reaches the end of both of the lists, set the labels to
      * the first element in the lists.
      */
-    private void rightButtonAction(ActionEvent event)
+    private void rightButtonAction()
     {
-        if(current + 1 >= titleList.size())
+        if(index + 1 >= titleList.size())
         {
             setFirst();
-            current = 0; 
+            index = 0; 
         }
         else
         {
-            current += 1; 
-            setLabels(current);
+            index += 1; 
+            setLabels(index);
         }
     }
     
     /**
      * Update a particular statistic's information label which displays the data of that statistic
+     * 
      * @param String title The title of the stat which data will be updated
      * @param String newStat The updated data as a String
      */

@@ -29,10 +29,13 @@ public abstract class MainViewerPane extends Pane
      */
     public abstract void makePane();
     
+    /**
+     * Returns the pane.
+     */
     public abstract Pane getPane();
     
     /**
-     * @return String titleName the title of the pane
+     * @return titleName the title of the pane
      */
     public String getTitleName() 
     {

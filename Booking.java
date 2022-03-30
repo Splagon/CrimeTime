@@ -51,6 +51,7 @@ public class Booking
     
     /**
      * Convert booking fields into an array of strings.
+     * 
      * @return Array of strings containing porperty id, grand total, check in and check out date.
      */
     public String[] convertToCSV() 

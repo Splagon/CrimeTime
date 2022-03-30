@@ -39,12 +39,18 @@ public class StatisticsDataTest
     }
 
     @Test
+    /**
+     * Tests if the data has been loaded in.
+     */
     public void loadData()
     {
         assertNotNull(DataHandler.getData());
     }
 
     @Test
+    /**
+     * Tests if the listings can be sorted with valid selected minimum and maximum prices.
+     */
     public void getListingsAtPriceDifferentValidValues()
     {
         StatisticsData.setListingsAtPrice(25, 40);
@@ -53,6 +59,9 @@ public class StatisticsDataTest
     }
     
     @Test
+    /**
+     * Tests if the listings can be sorted with equal selected minimum and maximum prices.
+     */
     public void getListingsAtPriceEqualValidValues()
     {
         StatisticsData.setListingsAtPrice(40, 40);
@@ -107,6 +116,11 @@ public class StatisticsDataTest
         getListingsAtPriceTest(true);
     }
     
+    /**
+     * Provides the error checking for the getListingsAt... tests.
+     * 
+     * @param containsValue Whether the list should contain a value
+     */
     private void getListingsAtPriceTest(boolean containsValue)
     {
         ArrayList<AirbnbListing> listings = StatisticsData.determineList(true);
@@ -123,6 +137,9 @@ public class StatisticsDataTest
     }
     
     @Test
+    /**
+     * Tests if the average number of reviews returns a value with valid selected minimum and maximum prices.
+     */
     public void getAverageNoReviewsOfListingsAtPrice()
     {
         StatisticsData.setListingsAtPrice(25, 40);
@@ -130,12 +147,18 @@ public class StatisticsDataTest
     }
     
     @Test
+    /**
+     * Tests if the average number of reviews returns a value using all listings.
+     */
     public void getAverageNoReviewsOfAllListings()
     {
         assertNotNull(StatisticsData.getAverageNoReviews(false));
     }
     
     @Test
+    /**
+     * Tests if the total number of homes and apartments returns a value with valid selected minimum and maximum prices.
+     */
     public void getNoHomeAndApartmentsOfListingsAtPrice()
     {
         StatisticsData.setListingsAtPrice(25, 40);
@@ -143,12 +166,18 @@ public class StatisticsDataTest
     }
     
     @Test
+    /**
+     * Tests if the total number of homes and apartments returns a value using all listings.
+     */
     public void getNoHomeAndApartmentsOfAllListings()
     {
         assertNotNull(StatisticsData.getNoHomeAndApartments(false));
     }
     
     @Test
+    /**
+     * Tests if the availiability information returns a value with valid selected minimum and maximum prices.
+     */
     public void getAvailableInfoOfListingsAtPrice()
     {
         StatisticsData.setListingsAtPrice(25, 40);
@@ -156,12 +185,18 @@ public class StatisticsDataTest
     }
     
     @Test
+    /**
+     * Tests if the availiability information returns a value using all listings.
+     */
     public void getAvailableInfoOfAllListings()
     {
         assertNotNull(StatisticsData.getAvailableInfo(false));
     }
     
     @Test
+    /**
+     * Tests if the most expensive borough information can be retrieved and is an actual borough.
+     */
     public void getExpensiveInfo()
     {
         String mostExpensiveBorough = StatisticsData.getExpensiveInfo(false, 0, 0);
@@ -172,6 +207,9 @@ public class StatisticsDataTest
     }
     
     @Test
+    /**
+     * Tests if the standard deviation has a value for valid selected minimum and maximum prices.
+     */
     public void getPriceSDInfoOfListingsAtPrice()
     {
         StatisticsData.setListingsAtPrice(25, 40);
@@ -179,6 +217,9 @@ public class StatisticsDataTest
     }
     
     @Test
+    /**
+     * Tests if the standard deviation has a value using all listings.
+     */
     public void getPriceSDInfoOfAllListings()
     {
         assertNotNull(StatisticsData.getPriceSDInfo(false));

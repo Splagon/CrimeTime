@@ -81,7 +81,7 @@ public class AirbnbDataLoader
      */
     private Double convertDouble(String doubleString)
     {
-        if(doubleString != null && !doubleString.trim().equals(""))
+        if (doubleString != null && !doubleString.trim().equals(""))
         {
             return Double.parseDouble(doubleString);
         }
@@ -96,7 +96,7 @@ public class AirbnbDataLoader
      */
     private Integer convertInt(String intString)
     {
-        if(intString != null && !intString.trim().equals(""))
+        if (intString != null && !intString.trim().equals(""))
         {
             return Integer.parseInt(intString);
         }

@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.*;
 
 /**
  * Class responsible for the booking window. 
@@ -43,26 +45,6 @@ public class BookingWindow extends Stage
     }
     
     /**
-     * Retrieves all the bookings of a particular property.
-     * 
-     * @AirbnbListing listing The property whose bookings are retrieved.
-     */
-    private ArrayList<Booking> bookingsAtProperty(AirbnbListing listing)
-    {
-        ArrayList<Booking> bookingsAtProperties = new ArrayList<Booking>();
-        
-        for (Booking booking : DataHandler.getBookingList())
-        {
-            if (booking.getPropertyID().equals(listing.getId()))
-            {
-                bookingsAtProperties.add(booking);
-            }
-        }
-        
-        return bookingsAtProperties;
-    }
-    
-    /**
      * Creates the booking window. The name of the property is shown at the top,
      * then two date pickers are used in the center of the pane and finally a 
      * "confirm booking" and "go back" buttons have been added to the bottom. 
@@ -71,7 +53,35 @@ public class BookingWindow extends Stage
      */
     public void openBookingWindow(AirbnbListing listing) 
     {
+        //contains all the bookings at the property
         ArrayList<Booking> bookingsAtProperty = getBookingsAtProperty(listing);
+        //contains the invalid check in and out dates
+        ArrayList<LocalDate> invalidDatesForCheckIn = new ArrayList<LocalDate>();
+        ArrayList<LocalDate> invalidDatesForCheckOut = new ArrayList<LocalDate>();
+        
+        //checks if there is already bookings at the property and what dates they
+        //are booked for.
+        for (Booking booking : bookingsAtProperty)
+        {
+            LocalDate checkInDate = booking.getCheckInDate();
+            LocalDate checkOutDate = booking.getCheckOutDate();
+            int minNights = booking.getProperty().getMinimumNights();
+            
+            LocalDate j = checkInDate;
+            
+            for (LocalDate i = checkInDate.minusDays(minNights); i.isBefore(checkOutDate.plusDays(1)); i = i.plusDays(1))
+            {
+                if (i.isBefore(checkInDate))
+                {
+                    invalidDatesForCheckIn.add(i);
+                }
+                else
+                {
+                    invalidDatesForCheckIn.add(i);
+                    invalidDatesForCheckOut.add(i);
+                }
+            }
+        }
         
         bookingStage = new Stage();
         bookingStage.setTitle("Booking Window");
@@ -105,8 +115,9 @@ public class BookingWindow extends Stage
                     checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights()));
                     gridPane.add(checkOut, 1, 1);
                 // Each time the check in date is modified, we set the check out date to: check in date + Min nights 
+                
                 checkIn.setOnAction(e -> checkOut.setValue(checkIn.getValue().plusDays(listing.getMinimumNights())));
-                    
+        
                     final Callback<DatePicker, DateCell> dayCellFactoryIn = new Callback<DatePicker, DateCell>() 
                     {
                         @Override
@@ -125,13 +136,9 @@ public class BookingWindow extends Stage
                                         setStyle("-fx-background-color: #ffc0cb;");
                                     } 
                                     
-                                    for (Booking booking : bookingsAtProperty)
+                                    for (LocalDate checkInDate : invalidDatesForCheckIn)
                                     {
-                                        LocalDate checkInDate = booking.getCheckInDate();
-                                        LocalDate checkoutDate = booking.getCheckOutDate();
-                                        int minNights = booking.getProperty().getMinimumNights();
-                                        
-                                        if (item.isAfter(checkInDate.minusDays(minNights + 1)) && item.isBefore(checkoutDate))
+                                        if (item.equals(checkInDate))
                                         {
                                             setDisable(true);
                                             setStyle("-fx-background-color: #ffc0cb;");
@@ -164,13 +171,9 @@ public class BookingWindow extends Stage
                                         setStyle("-fx-background-color: #90ee90;");
                                     }
                                     
-                                    for (Booking booking : bookingsAtProperty)
+                                    for (LocalDate checkOutDate : invalidDatesForCheckOut)
                                     {
-                                        LocalDate checkInDate = booking.getCheckInDate();
-                                        LocalDate checkOutDate = booking.getCheckOutDate();
-                                        int minNights = booking.getProperty().getMinimumNights();
-
-                                        if (item.isAfter(checkInDate.minusDays(1)) && item.isBefore(checkOutDate))
+                                        if (item.equals(checkOutDate))
                                         {
                                             setDisable(true);
                                             setStyle("-fx-background-color: #ffc0cb;");
@@ -198,7 +201,7 @@ public class BookingWindow extends Stage
             AnchorPane bottomPane = new AnchorPane();
         
                 Button bookButton = new Button("Confirm Booking");
-                    bookButton.setOnAction(e -> confirmationAction(updateGrandTotal(checkIn.getValue(), checkOut.getValue()),checkIn.getValue(), checkOut.getValue()));  
+                    bookButton.setOnAction(e -> confirmationAction(updateGrandTotal(checkIn.getValue(), checkOut.getValue()),checkIn.getValue(), checkOut.getValue(), invalidDatesForCheckIn, invalidDatesForCheckOut));  
                     bookButton.getStyleClass().add("smallWindowButtons");
                 bottomPane.setRightAnchor(bookButton, 0.0);
 
@@ -222,9 +225,9 @@ public class BookingWindow extends Stage
     }
     
     /**
-     * Get the bookings of a particular property.
+     * Retrieves all the bookings of a particular property.
      * 
-     * @param listing The property we want to get the bookings from.
+     * @AirbnbListing listing The property whose bookings are retrieved.
      */
     private ArrayList<Booking> getBookingsAtProperty(AirbnbListing listing)
     {
@@ -246,6 +249,7 @@ public class BookingWindow extends Stage
      * 
      * @param checkIn The date the users checks-in.
      * @param checkOut The date the users checks-out.
+     * 
      * @return The duration in days between two dates
      */
     private int updateGrandTotal(LocalDate checkIn, LocalDate checkOut) 
@@ -259,28 +263,43 @@ public class BookingWindow extends Stage
      * @param grandTotal The price of the stay.
      * @param checkinDate The check-In date selected by the user.
      * @param checkoutDate The check-Out date selected by the user.
+     * @param invalidDates Dates which are unavailable to book.
     */
-    private void confirmationAction(int grandTotal, LocalDate checkinDate, LocalDate checkoutDate) 
+    private void confirmationAction(int grandTotal, LocalDate checkInDate, LocalDate checkOutDate, ArrayList<LocalDate> invalidCheckInDates, ArrayList<LocalDate> invalidCheckOutDates) 
     {
-        bookingStage.close();
-        
-        Booking newBooking = new Booking(property, grandTotal, checkinDate, checkoutDate);
-        DataHandler.addToBookingList(newBooking);
-        
-        if (parent.getClass().equals(MainViewer.class)) 
+        // Rechecks and confirms that the dates are valid
+        if (! invalidCheckInDates.contains(checkInDate) && ! invalidCheckOutDates.contains(checkOutDate))
         {
-            MainViewer mainViewer = (MainViewer) parent;
-            mainViewer.refreshPane();
-            showConfirmationStage(true);
+            bookingStage.close();
+            
+            Booking newBooking = new Booking(property, grandTotal, checkInDate, checkOutDate);
+            DataHandler.addToBookingList(newBooking);
+            
+            if (parent.getClass().equals(MainViewer.class)) 
+            {
+                MainViewer mainViewer = (MainViewer) parent;
+                mainViewer.refreshPane();
+                showConfirmationStage(true);
+            }
+            else
+            {
+                showConfirmationStage(false);
+            }
         }
+        // Otherwise it produces an error message
         else
         {
-            showConfirmationStage(false);
+            Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText("Unable to book these dates");
+                alert.setContentText("Unfortunately, you may not book this property\nat this time as there is already a\nbooking here");
+            alert.show();
         }
     }
     
     /**
-     * Displays confimation window. 
+     * Displays confimation window.
+     * 
+     * @param isEdit Indicates whether the booking is being edited or not.
      */
     private void showConfirmationStage(boolean isEdit) 
     {
@@ -292,11 +311,11 @@ public class BookingWindow extends Stage
             Label confirmationLabel;
             if(isEdit)
             {
-                confirmationLabel = new  Label("Your modifications have been taken \n into consideration.");
+                confirmationLabel = new Label("Your modifications have been taken \n into consideration.");
             }
             else
             {
-                confirmationLabel = new  Label("Thank you for booking with us !");
+                confirmationLabel = new Label("Thank you for booking with us !");
             }
             confirmationLabel.getStyleClass().add("subLabels");
             
@@ -312,8 +331,9 @@ public class BookingWindow extends Stage
         
         Scene scene = new Scene(root,width,130);
         scene.getStylesheets().add("stylesheet.css");
-            confirmationStage.setX(parent.getX() + (parent.getWidth() - width)/2);
-            confirmationStage.setY(parent.getY() + parent.getHeight()/2);
+        
+        confirmationStage.setX(parent.getX() + (parent.getWidth() - width)/2);
+        confirmationStage.setY(parent.getY() + parent.getHeight()/2);
         confirmationStage.setScene(scene);
         confirmationStage.show();
     }

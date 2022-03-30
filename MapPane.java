@@ -498,8 +498,6 @@ public class MapPane extends MainViewerPane
     }
     
     /**
-     * returns the pane
-     * 
      * @return it will return type Pane
      */
     public Pane getPane() 

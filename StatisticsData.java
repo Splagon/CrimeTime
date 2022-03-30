@@ -17,7 +17,6 @@ import java.util.Map;
  */
 public class StatisticsData extends DataHandler
 {
-    // instance variables - replace the example below with your own
     private static ArrayList<AirbnbListing> listingsAtPrice = new ArrayList<>();
     
     /**

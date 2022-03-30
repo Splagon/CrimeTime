@@ -22,20 +22,21 @@ import java.util.HashMap;
  * @version 25/03/22
  */
 public class StatisticsViewer extends Stage
-{
-    // instance variables - replace the example below with your own
-    
-    // The information labels in the window
+{ 
+    // The stat boxes in the window
     private NoOfPropertiesStats noOfPropertiesStats;
-    StatBox stat1 = new StatBox();
-    StatBox stat2 = new StatBox();
-    StatBox stat3 = new StatBox();
-    StatBox stat4 = new StatBox();
+    private StatBox stat1 = new StatBox();
+    private StatBox stat2 = new StatBox();
+    private StatBox stat3 = new StatBox();
+    private StatBox stat4 = new StatBox();
     
-    VBox window;
+    private VBox window;
 
     /**
      * Constructor for objects of class StatisticsViewer
+     * 
+     * @param selectedMinPrice The minimum price selected by the user.
+     * @param selectedMaxPrice The maximum price selected by the user.
      */
     public StatisticsViewer(int selectedMinPrice, int selectedMaxPrice)
     {
@@ -44,7 +45,9 @@ public class StatisticsViewer extends Stage
     
     /**
      * Constructs the scene
-     * @param int selectedMinPrice - The current minimum price selected by the user. int selectedMaxPrice - The current maximum price selected by the user.
+     * 
+     * @param selectedMinPrice The minimum price selected by the user.
+     * @param selectedMaxPrice The maximum price selected by the user.
      */
     private void constructScene(int selectedMinPrice, int selectedMaxPrice) 
     {
@@ -69,12 +72,12 @@ public class StatisticsViewer extends Stage
         
         // Add stats to the second box
         stat2.addInfo("Entire Home and Apartments:", formatData(StatisticsData.getNoHomeAndApartments(true)));
-        stat2.addInfo("Most Expensive Borough\non Average:", formatData(StatisticsData.getExpensiveInfo(true, selectedMinPrice, selectedMaxPrice)));
+        stat2.addInfo("Most Expensive Borough\non Average:", StatisticsData.getExpensiveInfo(true, selectedMinPrice, selectedMaxPrice));
         stat2.setFirst();
         
         // Add stats to the third box
         stat3.addInfo("Standard Deviation of Price (£):", formatData(StatisticsData.getPriceSDInfo(true)));
-        stat3.addInfo("Borough with the Highest \nAverage Amount of Reviews:", formatData(StatisticsData.getHighAvgReview(true, selectedMinPrice, selectedMaxPrice)));
+        stat3.addInfo("Borough with the Highest \nAverage Amount of Reviews:", StatisticsData.getHighAvgReview(true, selectedMinPrice, selectedMaxPrice));
         stat3.setFirst();
         
         // Add stats to the fourth box
@@ -120,8 +123,11 @@ public class StatisticsViewer extends Stage
     
     /**
      * Convert a double data type to String then set it as a Label's text
-     * @param Label label The label which will be affected.
-     * @param double dataToFormat The data to format into a String.
+     * 
+     * @param label The label which will be affected.
+     * @param dataToFormat The data to format into a String.
+     * 
+     * @return The formatted double as a string.
      */
     private String formatData(double dataToFormat) 
     {
@@ -131,23 +137,16 @@ public class StatisticsViewer extends Stage
 
     /**
      * Convert an int data type to String then set it as a Label's text
-     * @param Label label The label which will be affected.
-     * @param int dataToFormat The data to format into a String
+     * 
+     * @param label The label which will be affected.
+     * @param dataToFormat The data to format into a String
+     * 
+     * @return The formatted integer as a string.
      */
     private String formatData(int dataToFormat) 
     {
         String formatedData = String.valueOf(dataToFormat);
         return formatedData;
-    }
-
-    /**
-     * Set a Label's text to a passed through String
-     * @param Label label The label which will be affected.
-     * @param String dataToFormat The String that the Label's text will be set to.
-     */
-    private String formatData(String dataToFormat) 
-    {
-        return dataToFormat;
     }
 
     /**
@@ -162,17 +161,19 @@ public class StatisticsViewer extends Stage
     }
     
     /**
-     * Recreate the scene with the updated statistics data 
+     * Rebuild the scene with the updated statistics data
+     * 
+     * @param selectedMinPrice The user-selected minimum price
+     * @param selectedMaxPrice The user-selected maximum price
      */
     public void update(int selectedMinPrice, int selectedMaxPrice) 
     {
         noOfPropertiesStats = new NoOfPropertiesStats(selectedMinPrice, selectedMaxPrice);
-        //updateInfo();
         constructScene(selectedMinPrice, selectedMaxPrice);
     }
     
     /**
-     * @return int the curret minimum price
+     * @return The current minimum price
      */
     public int getCurrentMinPrice() 
     {
@@ -180,7 +181,7 @@ public class StatisticsViewer extends Stage
     }
     
     /**
-     * @return int the current maximum price
+     * @return The current maximum price
      */
     public int getCurrentMaxPrice() 
     {

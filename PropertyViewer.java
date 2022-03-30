@@ -88,6 +88,12 @@ public class PropertyViewer extends Stage
         this.setOnCloseRequest(windowEvent -> this.closePropertyViewer());
     }
     
+    /**
+     * Used to create a property viewer which shows one property -
+     * The property which has been booked
+     * 
+     * @param booking The booking to show the property of.
+     */
     public PropertyViewer(Booking booking)
     {
         this.borough = booking.getProperty().getNeighbourhood();
@@ -101,18 +107,21 @@ public class PropertyViewer extends Stage
      * Hbox containing the title and the sorting comboBox, at the center the map, 
      * at the right and left buttons to let the user change property and finally 
      * at the bottom a grid pane displaying characteristics of the property.
+     * 
+     * @param booking The booking to show the user to property of.
      */
     private void makePropertyViewerScene(Booking booking) 
     {
         setTitle("Neighbourhood: " + borough);
-        // Generates the list of properties that will be displayed depending 
-        // on the borough, price range and sorting parameter selected by the user.
         
+        // Only shows the booking if one has been provided
         if (booking != null)
         {
             properties = new ArrayList<AirbnbListing>();
             properties.add(booking.getProperty());
         }
+        // Generates the list of properties that will be displayed depending 
+        // on the borough, price range and sorting parameter selected by the user.
         else if (sortedBy != null)
         {
             properties = DataHandler.getPropertiesSortedBy(borough, minPrice, maxPrice, sortedBy);
@@ -166,17 +175,20 @@ public class PropertyViewer extends Stage
         Button prevButton = new Button("Previous");
             prevButton.setOnAction(e -> viewPreviousProperty());
             prevButton.setPrefSize(130, 230);
-        prevButton.getStyleClass().add("smallWindowButtons");
-        root.setAlignment(prevButton, Pos.CENTER);
-        root.setLeft(prevButton);
+            prevButton.getStyleClass().add("smallWindowButtons");
+        
+            root.setAlignment(prevButton, Pos.CENTER);
+            root.setLeft(prevButton);
         
         Button nextButton = new Button("Next");
             nextButton.setOnAction(e -> viewNextProperty());
             nextButton.setPrefSize(130, 230);
-        nextButton.getStyleClass().add("smallWindowButtons");
-        root.setAlignment(nextButton, Pos.CENTER);
-        root.setRight(nextButton);
+            nextButton.getStyleClass().add("smallWindowButtons");
         
+            root.setAlignment(nextButton, Pos.CENTER);
+            root.setRight(nextButton);
+        
+        // disables left and right buttons if only one property is there.
         if(properties.size() == 1) 
         {
             nextButton.setDisable(true);
@@ -186,6 +198,7 @@ public class PropertyViewer extends Stage
             prevButton.setTooltip(new Tooltip("There are no other properties available in this borough"));
         }
         
+        // Create the information pane underneath the map
         GridPane info = new GridPane();
         
             info.setAlignment(Pos.CENTER);
@@ -238,13 +251,15 @@ public class PropertyViewer extends Stage
             info.getColumnConstraints().addAll(column1, column2, column3);
             
             info.setPadding(new Insets(20));
-
+            
         root.setBottom(info);
         
         update();
         
         setResizable(false);
         setScene(scene);
+        
+        // show the map if there is a connection
         if (applicationConnected) 
         {
             show();
@@ -278,7 +293,7 @@ public class PropertyViewer extends Stage
             closeDescription();
         }
         
-        // Used MapBox api to load a map pointing the location of current property displayed.
+        // Used MapBox API to load a map pointing the location of current property displayed.
         try  
         {
             URL url = new URL("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/pin-s-heart+285A98("+listing.getLongitude()+","+listing.getLatitude()+")/"+listing.getLongitude()+","+listing.getLatitude()+",13,0/890x500@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw");

@@ -57,8 +57,10 @@ public class BookingsPane extends MainViewerPane
                 ScrollPane scrollPane = new ScrollPane();
                     VBox bookingsPanel = new VBox();
                         ArrayList<Booking> bookingList = DataHandler.getBookingList();
-                        if (! bookingList.isEmpty()) {
-                            for(Booking booking : bookingList) {
+                        if (! bookingList.isEmpty()) 
+                        {
+                            for(Booking booking : bookingList) 
+                            {
                                 BorderPane bookingListing = createBookingListing(booking);
                                     bookingListing.getStyleClass().add("bookingListing");
                                     bookingsPanel.setMargin(bookingListing, new Insets(10));
@@ -68,7 +70,8 @@ public class BookingsPane extends MainViewerPane
                         else {
                             Label noBookingsLabel = new Label("There are no bookings currently...");
                             bookingsPanel.getChildren().add(noBookingsLabel);
-                        }       
+                        }     
+                        
                 scrollPane.setContent(bookingsPanel);
                 scrollPane.setFitToWidth(true);
         
