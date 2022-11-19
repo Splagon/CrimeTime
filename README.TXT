@@ -1,5 +1,5 @@
-PROJECT TITLE: AirBnB London Data Set Loader
+PROJECT TITLE: Crime Set London Data Set Loader
 PURPOSE OF PROJECT: To load the AirBnB London data set from the provided csv file into a Java data structure
 HOW TO START THIS PROJECT: Use the method 'load' in the the class 'AirbnbDataLoader'
 AUTHORS: KCL Informatics, PPA, Charles Suddens-Spiers (K21040272), Michael Higham (K21051343), 
-         Matthew Palmer (K21005255), Aymen Berbache (K21074588)
+         Matthew Palmer (K21005255)
