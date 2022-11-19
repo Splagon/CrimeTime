@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=BookingsDataLoader
+comment0.text=\n\ Loads\ the\ data\ concerning\ the\ user's\ bookings\n\n\ @author\ Charles\ Suddens-Spiers\ (K21040272),\ Michael\ Higham\ (K21051343),\ \n\ \ \ \ \ \ \ \ \ Matthew\ Palmer\ (K21005255),\ Aymen\ Berbache\ (K21074588).\n\ @version\ 25/03/22\n
+comment1.params=bookingsDataFileName
+comment1.target=java.util.ArrayList\ load(java.lang.String)
+comment1.text=\n\ Loads\ the\ bookings\ data\ file\ to\ the\ application.\n\ \n\ @param\ bookingsDataFileName\ The\ file\ name\ of\ the\ bookings\ data\ file.\n
+numComments=2

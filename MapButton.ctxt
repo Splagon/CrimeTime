@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=MapButton
+comment0.text=\n\ This\ class\ represents\ a\ button\ in\ the\ hexagon\ map\n\ \n\ @author\ Charles\ Suddens-Spiers\ (K21040272),\ Michael\ Higham\ (K21051343),\ \n\ \ \ \ \ \ \ \ \ Matthew\ Palmer\ (K21005255),\ Aymen\ Berbache\ (K21074588).\n\ @version\ 25/03/22\n
+comment1.params=boroughName
+comment1.target=MapButton(java.lang.String)
+comment1.text=\n\ Constructor\ for\ objects\ of\ type\ MapButton\n
+comment2.params=
+comment2.target=java.lang.String\ getBoroughName()
+comment2.text=\n\ returns\ the\ name\ of\ the\ borough\n\ \n\ @return\ String\ -\ the\ name\ of\ the\ borough\n
+numComments=3

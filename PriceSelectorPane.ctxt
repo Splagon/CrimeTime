@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=PriceSelectorPane
+comment0.text=\n\ This\ creates\ the\ price\ selection\ pane.\n\ On\ the\ pane\ there\ will\ be\ a\ title,\ an\ instruction\ of\ what\ to\ do,\ two\ drop\ boxes\ where\ the\ user\n\ can\ select\ their\ min\ and\ max\ price\ and\ a\ confirm\ button\ where\ the\ user\ can\ confirm\ their\n\ selection\ and\ view\ the\ map\ in\ order\ to\ see\ which\ properties\ are\ available\ to\ them\ and\ where\n\ they\ are.\n\n\ @author\ Charles\ Suddens-Spiers\ (K21040272),\ Michael\ Higham\ (K21051343),\ \n\ \ \ \ \ \ \ \ \ Matthew\ Palmer\ (K21005255),\ Aymen\ Berbache\ (K21074588).\n\ @version\ 25/03/22\n
+comment1.params=mainViewer
+comment1.target=PriceSelectorPane(MainViewer)
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ WelcomePane\n\ \n\ @param\ MainViewer\ mainViewer\ -\ used\ to\ call\ methods\ within\ the\ MainViewer\n
+comment2.params=
+comment2.target=void\ makePane()
+comment2.text=\n\ This\ constructs\ the\ pane\ and\ its\ functionality\ and\ adds\ any\ styling\n
+comment3.params=
+comment3.target=javafx.scene.layout.Pane\ getPane()
+comment3.text=\n\ returns\ the\ pane\n\ \n\ @return\ it\ will\ return\ type\ Pane\n
+numComments=4

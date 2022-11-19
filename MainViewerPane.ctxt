@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=MainViewerPane
+comment0.text=\n\ The\ super\ class\ of\ all\ panes\ which\ are\ used\ in\ the\ mainViewer\n\n\ @author\ Charles\ Suddens-Spiers\ (K21040272),\ Michael\ Higham\ (K21051343),\ \n\ \ \ \ \ \ \ \ \ Matthew\ Palmer\ (K21005255),\ Aymen\ Berbache\ (K21074588).\n\ @version\ 29/03/22\n
+comment1.params=mainViewer
+comment1.target=MainViewerPane(MainViewer)
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ MainViewerPane\n\ \n\ @param\ mainViewer\ The\ parent\ of\ the\ classpane\n
+comment2.params=
+comment2.target=void\ makePane()
+comment2.text=\n\ Builds\ the\ map\ pane\n
+comment3.params=
+comment3.target=javafx.scene.layout.Pane\ getPane()
+comment3.text=\n\ Returns\ the\ pane.\n
+comment4.params=
+comment4.target=java.lang.String\ getTitleName()
+comment4.text=\n\ @return\ titleName\ the\ title\ of\ the\ pane\n
+comment5.params=
+comment5.target=boolean\ getHasMinMaxBox()
+comment5.text=\n\ @return\ Returns\ whether\ the\ min\ max\ combobox\ should\ appear\ in\ the\ top\n\ \ \ \ \ \ \ \ \ right\ of\ the\ screen.\n
+numComments=6

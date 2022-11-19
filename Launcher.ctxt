@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Launcher
+comment0.text=\n\ Used\ to\ launch\ the\ application.\n\n\ @author\ Charles\ Suddens-Spiers\ (K21040272),\ Michael\ Higham\ (K21051343),\ \n\ \ \ \ \ \ \ \ \ Matthew\ Palmer\ (K21005255),\ Aymen\ Berbache\ (K21074588).\n\ @version\ 29/03/22\n
+comment1.params=stage
+comment1.target=void\ start(javafx.stage.Stage)
+comment1.text=\n\ The\ start\ method\ is\ the\ main\ entry\ point\ for\ every\ JavaFX\ application.\ \n\ It\ is\ called\ when\ the\ system\ is\ ready\ for\ the\ application\ to\ begin\ running.\n\n\ @param\ stage\ the\ primary\ stage\ for\ this\ application.\n
+numComments=2

@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=BookingsDataWriter
+comment0.text=\n\ Writes\ new\ bookings\ to\ the\ data\ file\n\n\ @author\ Charles\ Suddens-Spiers\ (K21040272),\ Michael\ Higham\ (K21051343),\ \n\ \ \ \ \ \ \ \ \ Matthew\ Palmer\ (K21005255),\ Aymen\ Berbache\ (K21074588).\n\ @version\ 25/03/22\n
+comment1.params=booking\ bookingsDataFileName
+comment1.target=void\ write(Booking,\ java.lang.String)
+comment1.text=\n\ Writes\ a\ singular\ booking\ to\ the\ file.\n\ \n\ @param\ booking\ Booking\ to\ write.\n\ @param\ bookingsDataFileName\ File\ name\ of\ the\ bookings\ data.\n
+comment2.params=bookingsList\ bookingsDataFileName\ itemsRemoved
+comment2.target=void\ write(java.util.ArrayList,\ java.lang.String,\ int)
+comment2.text=\n\ Clears\ and\ rewrites\ the\ bookings\ in\ the\ list\ to\ the\ file\n\ \n\ @param\ bookingList\ List\ of\ bookings\ to\ write.\n\ @param\ bookingsDataFileName\ File\ name\ of\ the\ bookings\ data.\n\ @param\ itemsRemoved\ How\ many\ items\ have\ been\ removed\ from\ the\ list.\n
+comment3.params=
+comment3.target=void\ showFileNotFoundAlert()
+comment3.text=\n\ Displays\ an\ alert\ if\ the\ file\ hasn't\ been\ found.\n
+numComments=4

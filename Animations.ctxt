@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Animations
+comment0.text=\n\ Performs\ animations\ on\ nodes\n\n\ @author\ Charles\ Suddens-Spiers\ (K21040272),\ Michael\ Higham\ (K21051343),\ \n\ \ \ \ \ \ \ \ \ Matthew\ Palmer\ (K21005255),\ Aymen\ Berbache\ (K21074588).\n\ @version\ 25/03/22\n
+comment1.params=node\ time
+comment1.target=void\ fadeOut(javafx.scene.Node,\ long)
+comment1.text=\n\ Fade\ a\ certain\ node\ out\n\ @params\ Node\ node\ -\ The\ node\ in\ which\ this\ will\ happen\ to;\ long\ time\ -\ The\ amount\ of\ time\ that\ the\ animation\ will\ last\ for.\ \n
+comment2.params=node\ time
+comment2.target=void\ fadeIn(javafx.scene.Node,\ long)
+comment2.text=\n\ Fade\ a\ certain\ node\ in\n\ @params\ Node\ node\ -\ The\ node\ in\ which\ this\ will\ happen\ to;\ long\ time\ -\ The\ amount\ of\ time\ that\ the\ animation\ will\ last\ for.\ \n
+comment3.params=time\ node
+comment3.target=void\ spin(long,\ javafx.scene.Node)
+comment3.text=\n\ Spins\ a\ certain\ node\n\ @param\ Node\ node\ -\ The\ node\ in\ which\ this\ will\ happen\ to\n\ @param\ long\ time\ -\ The\ amount\ of\ time\ this\ animation\ will\ last\ for\n
+comment4.params=time\ node
+comment4.target=void\ spinAndGrowIn(long,\ javafx.scene.Node)
+comment5.params=time\ node
+comment5.target=void\ spinAndGrowOut(long,\ javafx.scene.Node)
+numComments=6

@@ -1,0 +1,26 @@
+#BlueJ class context
+comment0.target=Borough
+comment0.text=\n\ This\ class\ handles\ all\ the\ properties\ in\ a\ borough\n\n\ @author\ Charles\ Suddens-Spiers\ (K21040272),\ Michael\ Higham\ (K21051343),\ \n\ \ \ \ \ \ \ \ \ Matthew\ Palmer\ (K21005255),\ Aymen\ Berbache\ (K21074588).\n\ @version\ 29/03/22\n
+comment1.params=boroughName\ listingsInBorough
+comment1.target=Borough(java.lang.String,\ java.util.ArrayList)
+comment1.text=\n\ Constructor\ for\ borough\ objects\n
+comment2.params=
+comment2.target=java.lang.String\ getName()
+comment2.text=\n\ returns\ the\ name\ of\ the\ borough\n
+comment3.params=
+comment3.target=java.util.ArrayList\ getBoroughListings()
+comment3.text=\n\ returns\ an\ ArrayList\ of\ AirbnbListing\ which\ is\ a\ list\ of\ all\ properties\ within\ a\ borough\n
+comment4.params=listing
+comment4.target=void\ addListingToBorough(AirbnbListing)
+comment4.text=\n\ Adds\ an\ AirbnbListing\ to\ the\ ArrayList\ of\ all\ Airbnb\ Listings\ within\ the\ borough\n
+comment5.params=listings
+comment5.target=void\ addListingToBorough(java.util.ArrayList)
+comment5.text=\n\ Adds\ multiple\ AirbnbListings\ to\ the\ ArrayList\ of\ all\ Airbnb\ Listings\ within\ the\ borough\n
+comment6.params=
+comment6.target=int\ getNoOfPropertiesInBorough()
+comment6.text=\n\ Returns\ the\ number\ of\ properties\ within\ a\ borough\ by\ return\ size\ of\ the\ ArrayList\ which\n\ holds\ all\ Airbnb\ Listings\ of\ a\ borough\n
+comment7.params=boroughOne\ boroughTwo
+comment7.target=int\ compare(Borough,\ Borough)
+comment8.params=boroughOne\ boroughTwo
+comment8.target=int\ compare(Borough,\ Borough)
+numComments=9
